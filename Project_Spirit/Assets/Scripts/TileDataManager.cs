@@ -7,6 +7,15 @@ public class TileDataManager : MonoBehaviour
     public static TileDataManager instance = null;        
     public int[,] tileArray = new int[103, 103];
 
+    public Sprite tileSprite;
+    public int x;
+    public int y;
+    public Vector2Int position;
+    public TileDataManager(Vector2Int _pos, Sprite _sprite) 
+    {
+        position = _pos; tileSprite = _sprite;
+    }
+
     enum TileType
     {
         None = 0,
@@ -23,6 +32,7 @@ public class TileDataManager : MonoBehaviour
             instance = this;
         else
             Destroy(this);
+
     }
 
     public void SetTileType(int x, int y, int type)
@@ -33,5 +43,13 @@ public class TileDataManager : MonoBehaviour
     public int GetTileType(int x, int y)
     {
         return tileArray[x, y];
-    }    
+    }
+    public void SetTileSprite(Sprite _sprite)
+    {
+        tileSprite = _sprite;
+    }
+    public Sprite GetTileSprit()
+    {
+        return tileSprite;
+    }
 }
