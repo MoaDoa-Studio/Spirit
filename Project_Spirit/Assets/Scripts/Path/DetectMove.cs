@@ -2,18 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DetectMove : MonoBehaviour
 {
-    TileDataManager[,] tileArray;
-    TileDataManager StartNode, TargetNode, CurNode;
-    List<TileDataManager> OpenList, ClosedList;
-
-    public Sprite[] sprites;
-    public Vector2Int bottomLeft, topRight, startPos, targetPos;
-    int sizeX = 20, sizeY = 20;
-
-
+    Node[,] NodeArray;
+    
+    int[,] intArray, StartNode, CurNode;
+    
+   
+    [SerializeField]
+    Button button;
+    [SerializeField]
+    Sprite[] sprites;
+    [SerializeField]
+    Vector2Int bottomLeft, topRight, startPos, targetPos;
+    
     enum Dir
     {
         Up = 0,
@@ -22,32 +26,37 @@ public class DetectMove : MonoBehaviour
         Right = 3
     }
 
+    enum Detect
+    {
+        None,
+        Normal,
+        Sign
+    }
+    Detect detection;
+
     private void Start()
     {
-        tileArray = new TileDataManager[sizeX, sizeY];
-
-        // tileArray의 각 요소를 초기화합니다.
-        for (int i = 0; i < sizeX; i++)
-        {
-            for (int j = 0; j < sizeY; j++)
-            {
-               // tileArray[i, j] = new TileDataManager(i,j,null); // TileDataManager의 기본 생성자를 호출하여 객체를 초기화합니다.
-            }
-        }
-
-        //check();
+       
     }
-    public void check()
-    {   
-        sizeX = topRight.x - bottomLeft.x + 1;
-        sizeY = topRight.y - bottomLeft.y + 1;
-
-        StartNode = tileArray[startPos.x - bottomLeft.x, startPos.y - bottomLeft.y];
-        TargetNode = tileArray[targetPos.x - bottomLeft.x, targetPos.y - bottomLeft.y];
-
-        OpenList = new List<TileDataManager> { StartNode };
-        ClosedList = new List<TileDataManager>();
-        CurNode = OpenList[0];
+    private void Update()
+    {
+        switch(detection)
+        {
+            case Detect.None:
+                break;
+            case Detect.Normal:
+                break;
+            case Detect.Sign:
+                break;
+        }
+    }
+    public void checkDirection()
+    {
+        Debug.Log(TileDataManager.instance.nodes[1, 1].x);
+        int startX = (int)startPos.x - (int)bottomLeft.x;
+        int startY = (int)startPos.y - (int)bottomLeft.y;
+        
+        Debug.Log(startX+" " +startY);
 
         // 바라보는 방향 기준으로 좌표 변화를 나타냄.  
         int[] frontX = { 0, -1, 0, 1 };  // Up , Left, Down, Right
@@ -61,33 +70,31 @@ public class DetectMove : MonoBehaviour
 
         int _dir = (int)Dir.Up;
 
-        Debug.Log(tileArray[CurNode.x + leftX[_dir], CurNode.y + leftY[_dir]]);
-        Debug.Log(tileArray[CurNode.x + leftX[_dir], CurNode.y + leftY[_dir]].tileSprite);
-        // 1. 현재 바라보는 방향으로 기준으로 왼쪽으로 갈 수 있는지 확인.
-        if (tileArray[CurNode.x + leftX[_dir], CurNode.y + leftY[_dir]].GetTileSprit() == GetdetectTileSprite(0))
-        {
+        int CurposX = 2;
+        int CurposY = 1;
+
+          Debug.Log(TileDataManager.instance.nodes[startX + leftX[_dir], startY + leftY[_dir]].x);  // x 좌표
+          Debug.Log(TileDataManager.instance.nodes[startX + leftX[_dir], startY + leftY[_dir]].y);  // y 좌표
+        //  1. 현재 바라보는 방향으로 기준으로 왼쪽으로 갈 수 있는지 확인.
+         if (TileDataManager.instance.nodes[CurposX + leftX[_dir], CurposY + leftY[_dir]].nodeSprite == GetdetectSprite(0))
+         {
             Debug.Log("왼쪽에 Ground가 있습니다.");
-        }
+         }
+        
         // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
-        if (tileArray[(CurNode.x + frontX[_dir]), (CurNode.y + frontY[_dir])].GetTileSprit() == GetdetectTileSprite(0))
+        if (TileDataManager.instance.nodes[(CurposX + frontX[_dir]), (CurposY + frontY[_dir])].nodeSprite == GetdetectSprite(0))
         {
-            Debug.Log("앞쪽에 Ground가 있습니다.");
+           Debug.Log("앞쪽에 Ground가 있습니다.");
         }
-        else
-            return;
+        // else
+        //    return;
     }
 
-    private Sprite GetdetectTileSprite(int _num)
+    private Sprite GetdetectSprite(int _num)
     {
-        if(_num == 0)
-        {
-            Sprite sprite = sprites[0];
-            return sprite;
-        }
+        if (_num == 0)
+            return sprites[0];
         else
-        {
             return null;
-        }
-
     }
 }
