@@ -16,7 +16,7 @@ public class DetectMove : MonoBehaviour
     int CurposX = 2;
     [SerializeField]
     int CurposY = 1;
-
+    
     Node[,] nodes;  // TileDataManager instance.
 
     // 바라보는 방향 기준 좌표 변화.  
@@ -29,8 +29,9 @@ public class DetectMove : MonoBehaviour
     int[] rightX = { 1, 0, -1, 0 };  // 우회전 변경 위치점
     int[] rightY = { 0, 1, 0, -1 };
 
+    public float moveSpeed = 1f;
     int _dir = (int)Dir.Up;
-
+    Vector2 currentPosition;
 
     enum Dir
     {
@@ -56,6 +57,8 @@ public class DetectMove : MonoBehaviour
     }
     private void Update()
     {
+        currentPosition = new Vector2(transform.position.x, transform.position.y);
+        //MoveNext(CurposX, CurposY);
         switch (detection)
         {
             case Detect.None:
@@ -81,14 +84,17 @@ public class DetectMove : MonoBehaviour
 
         if (leftx < TileDataManager.instance.sizeX && leftx >= 0 && lefty < TileDataManager.instance.sizeY && lefty >= 0)
         {
-            //if (nodes[leftx, lefty].x >= 0 && nodes[leftx, lefty].x < topRight.x && nodes[leftx, lefty].y < topRight.y && nodes[leftx, lefty].y >= 0)
-            //{
             //  1. 현재 바라보는 방향으로 기준으로 왼쪽으로 갈 수 있는지 확인.
             if (nodes[leftx, lefty].nodeSprite == GetdetectSprite(0))
             {
                 Debug.Log("왼쪽에 Ground가 있습니다.");
-                //  }
+                // 왼쪽 방향으로 90도 회전 
+                _dir = (_dir + 1) % 4;
 
+                CurposX += frontX[_dir];
+                CurposY += frontY[_dir];  
+                MoveNext(CurposX, CurposY);
+                
             }
         }
         if (frontx < TileDataManager.instance.sizeX && frontx >= 0 && fronty < TileDataManager.instance.sizeY && fronty >= 0)
@@ -98,11 +104,24 @@ public class DetectMove : MonoBehaviour
             if (nodes[frontx, fronty].nodeSprite == GetdetectSprite(0))
             {
                 Debug.Log("앞쪽에 Ground가 있습니다.");
+                 CurposX += frontX[_dir];  
+                 CurposY += frontY[_dir] ; 
+                 MoveNext(CurposX, CurposY);
             }
         }
-        else if (rightx < TileDataManager.instance.sizeX && rightx >= 0 && righty < TileDataManager.instance.sizeY && righty >= 0)
+        if (rightx < TileDataManager.instance.sizeX && rightx >= 0 && righty < TileDataManager.instance.sizeY && righty >= 0)
         {
+            // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
+            if (nodes[rightx, righty].nodeSprite == GetdetectSprite(0))
+            {
+                Debug.Log("앞쪽에 Ground가 있습니다.");
+                // 우측 방향이라면 90도 회전
+                _dir = (_dir - 1 + 4) % 4;
 
+                 CurposX += frontX[_dir];  
+                 CurposY += frontY[_dir]; 
+                 MoveNext(CurposX, CurposY);
+            }
         }
         else
             Debug.Log("아무것도 안들어갔음!");
@@ -117,5 +136,20 @@ public class DetectMove : MonoBehaviour
             return sprites[0];
         else
             return null;
+    }
+
+    private void MoveNext(int _curposx, int _curposy)
+    {
+        Vector2 targetVector = new Vector2(_curposx, _curposy);
+        Vector2 direction = (targetVector - currentPosition).normalized;
+
+        if(direction.magnitude >= 0.001f)
+        {
+            Vector2 movement = direction.normalized * moveSpeed * Time.deltaTime;
+
+            transform.Translate(movement);
+        }
+        else 
+            transform.position = targetVector;
     }
 }
