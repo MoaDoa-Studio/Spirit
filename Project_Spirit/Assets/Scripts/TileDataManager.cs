@@ -55,6 +55,7 @@ public class TileDataManager : MonoBehaviour
     {
         return tileArray[x, y];
     }
+    public Node[,] GetNodes() { return nodes; }
 
     private void InstantiateTile()
     {
