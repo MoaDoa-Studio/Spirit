@@ -89,7 +89,7 @@ public class TileDataManager : MonoBehaviour
                     if (tileSprite == targetSprite[0])
                     {
                         nodes[i, j].nodeSprite = tileSprite;
-                        Debug.Log(nodes[i, j].nodeSprite);
+                        //Debug.Log(nodes[i, j].nodeSprite);
                     }
                 }
             }

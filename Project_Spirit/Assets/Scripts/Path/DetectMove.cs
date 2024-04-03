@@ -44,10 +44,11 @@ public class DetectMove : MonoBehaviour
     enum Detect
     {
         None,
-        Normal,
+        Search,
+        Move,
         Sign
     }
-    Detect detection;
+    Detect detection = Detect.Search;
 
     private void Start()
     {
@@ -63,7 +64,11 @@ public class DetectMove : MonoBehaviour
         {
             case Detect.None:
                 break;
-            case Detect.Normal:
+            case Detect.Search:
+                checkDirection();
+                break;
+            case Detect.Move:
+                MoveNext(CurposX, CurposY);
                 break;
             case Detect.Sign:
                 break;
@@ -92,9 +97,10 @@ public class DetectMove : MonoBehaviour
                 _dir = (_dir + 1) % 4;
 
                 CurposX += frontX[_dir];
-                CurposY += frontY[_dir];  
-                MoveNext(CurposX, CurposY);
-                
+                CurposY += frontY[_dir];
+                detection = Detect.Move;
+                return;
+                Debug.Log("왼쪽 여기로 빠지면 안되는데");
             }
         }
         if (frontx < TileDataManager.instance.sizeX && frontx >= 0 && fronty < TileDataManager.instance.sizeY && fronty >= 0)
@@ -105,8 +111,10 @@ public class DetectMove : MonoBehaviour
             {
                 Debug.Log("앞쪽에 Ground가 있습니다.");
                  CurposX += frontX[_dir];  
-                 CurposY += frontY[_dir] ; 
-                 MoveNext(CurposX, CurposY);
+                 CurposY += frontY[_dir] ;
+                 detection = Detect.Move;
+                return;
+                Debug.Log("앞으로 여기로 빠지면 안되는데");
             }
         }
         if (rightx < TileDataManager.instance.sizeX && rightx >= 0 && righty < TileDataManager.instance.sizeY && righty >= 0)
@@ -120,7 +128,9 @@ public class DetectMove : MonoBehaviour
 
                  CurposX += frontX[_dir];  
                  CurposY += frontY[_dir]; 
-                 MoveNext(CurposX, CurposY);
+                 detection = Detect.Move;
+                return;
+                Debug.Log("오른쪽 여기로 빠지면 안되는데");
             }
         }
         else
@@ -131,7 +141,7 @@ public class DetectMove : MonoBehaviour
 
 
     private Sprite GetdetectSprite(int _num)
-    {
+    {   // Ground sprite일때.
         if (_num == 0)
             return sprites[0];
         else
@@ -149,7 +159,13 @@ public class DetectMove : MonoBehaviour
 
             transform.Translate(movement);
         }
-        else 
+        else
+        {
             transform.position = targetVector;
+            if(direction.magnitude == 0)
+            {
+                detection = Detect.Search;
+            }
+        }
     }
 }
