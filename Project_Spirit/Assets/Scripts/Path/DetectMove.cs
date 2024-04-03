@@ -35,7 +35,7 @@ public class DetectMove : MonoBehaviour
             }
         }
 
-        check();
+        //check();
     }
     public void check()
     {   

@@ -12,22 +12,37 @@ public class GetTiles : MonoBehaviour
     public Vector2Int bottomLeft, topRight, startPos, targetPos;
     int sizeX, sizeY;
 
-    TileDataManager [,] tileArray;
+    // 타일매니저 클래스의 인스턴스 접근
+    Node[,] nodes;
 
-
-    private void Awake()
+    private void Start()
     {   
+        nodes = TileDataManager.instance.nodes;
+
         sizeX = topRight.x - bottomLeft.x + 1;
         sizeY = topRight.y - bottomLeft.y + 1;
 
+        InstantiateTile();
         checkTileSprite();
     }
 
+    public void InstantiateTile()
+    {
+        nodes = new Node[sizeX, sizeY];
+
+        for(int i = 0; i < sizeX; i++)
+        {
+            for(int j = 0;  j < sizeY; j++)
+            {
+                nodes[i, j] = new Node();
+                Debug.Log(nodes[i, j]);
+            }
+        }
+
+    }
     // TileDataManager에 스프라이트 값 저장.
     public void checkTileSprite()
     {
-        //tileArray = new TileDataManager[sizeX, sizeY];
-
         for (int i = 0; i < sizeX; i++)
         {
             for(int j = 0; j < sizeY; j++)
@@ -44,10 +59,9 @@ public class GetTiles : MonoBehaviour
 
                     if(tileSprite == targetSprite) 
                     {
-                        Vector2Int pos = new Vector2Int(i , j);
-                        Sprite spr = tileSprite;
-                       //TileDataManager.instance.tileArray[i,j] = new TileDataManager(pos,tileSprite);
-                       
+                        //TileDataManager.instance.tileArray[i,j] = new TileDataManager(pos,tileSprite);
+                        nodes[i,j].nodeSprite = tileSprite;
+                        Debug.Log(nodes[i,j].nodeSprite);
                     }
                 }
             }

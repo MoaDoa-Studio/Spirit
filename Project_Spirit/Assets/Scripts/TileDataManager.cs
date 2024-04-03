@@ -7,6 +7,8 @@ public class TileDataManager : MonoBehaviour
     public static TileDataManager instance = null;        
     public int[,] tileArray = new int[103, 103];
 
+    // 각 타일의 정보를 담을 2차원 배열
+   public Node[,] nodes;   
     public Sprite tileSprite;
     public int x;
     public int y;
