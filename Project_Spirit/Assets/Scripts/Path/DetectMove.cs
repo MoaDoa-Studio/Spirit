@@ -51,6 +51,9 @@ public class DetectMove : MonoBehaviour
         CheckTile,
         Normal,
         Move,
+        Factory,
+        Loot,
+        Academy,
         Sign
     }
     Detect detection = Detect.None;
@@ -77,9 +80,16 @@ public class DetectMove : MonoBehaviour
             case Detect.Normal:
                 NormalDirection();
                 break;
+            case Detect.Factory:
+                break;
+            case Detect.Loot:
+                break;
+            case Detect.Academy:
+                break;
             case Detect.Move:
                 MoveNext(CurposX, CurposY);
                 break;
+
             case Detect.Sign:
                 break;
         }
