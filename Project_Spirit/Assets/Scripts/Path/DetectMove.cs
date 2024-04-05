@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +20,7 @@ public class DetectMove : MonoBehaviour
     int CurposY = 1;
     
     Node[,] nodes;  // TileDataManager instance.
+    Signal signal = new Signal();
 
     // 바라보는 방향 기준 좌표 변화.  
     int[] frontX = { 0, -1, 0, 1 };  // Up , Left, Down, Right
@@ -31,6 +34,7 @@ public class DetectMove : MonoBehaviour
 
     public float moveSpeed = 1f;
     int _dir = (int)Dir.Up;
+    int nxtposX, nxtposY;
     Vector2 currentPosition;
 
     enum Dir
@@ -44,15 +48,17 @@ public class DetectMove : MonoBehaviour
     enum Detect
     {
         None,
-        Search,
+        CheckTile,
+        Normal,
         Move,
         Sign
     }
-    Detect detection = Detect.Search;
+    Detect detection = Detect.None;
 
     private void Start()
     {
         nodes = TileDataManager.instance.GetNodes();
+        signal = GameObject.Find("[SignalManager]").GetComponent<Signal>();
         int startX = (int)startPos.x - (int)bottomLeft.x;
         int startY = (int)startPos.y - (int)bottomLeft.y;
     }
@@ -63,9 +69,13 @@ public class DetectMove : MonoBehaviour
         switch (detection)
         {
             case Detect.None:
+                detection = Detect.CheckTile;
                 break;
-            case Detect.Search:
-                checkDirection();
+            case Detect.CheckTile:
+                CheckTile();
+                break;
+            case Detect.Normal:
+                NormalDirection();
                 break;
             case Detect.Move:
                 MoveNext(CurposX, CurposY);
@@ -74,7 +84,45 @@ public class DetectMove : MonoBehaviour
                 break;
         }
     }
-    public void checkDirection()
+
+
+    private void CheckTile()
+    {   // 표시 0
+        nodes = TileDataManager.instance.GetNodes();
+        string callSign = nodes[CurposX, CurposY].nodeSprite.name;
+        int num = ExtractNumber(callSign);  // Sign type 판별.
+        if(nodes[CurposX, CurposY].isSignal)
+        {   
+            signal.SetSignType(num, nodes[CurposX,CurposY].rotation, _dir); // signal 에 sign 타입을 지정하고 dir 방향을 받음
+            Debug.Log("체크타일의 방향이 없어서 지금 방황중이니?");
+            // 정령 Dir = 신호 Dir이 같다면,
+            if(_dir == signal.dir)
+            {
+                Debug.Log("표지와 정령의 방향이 일치해요!");
+                CurposX += signal.pair.Item1;
+                CurposY += signal.pair.Item2;
+
+                // 표지방향으로 정령의 방향을 꺽어줘야함
+                _dir = signal.spiritDir;
+
+                // 길이 없으면 // return
+                detection = Detect.Move;
+            }
+            else
+            {
+
+                detection = Detect.Normal;
+            }
+        }
+        else
+        {
+            detection = Detect.Normal;
+        }
+
+    }
+
+
+    private void NormalDirection()
     {
         nodes = TileDataManager.instance.GetNodes();    // 매우 매우 중요!! 코드 간결화
                                                         //Debug.Log(TileDataManager.instance.nodes[1, 1].x);
@@ -90,9 +138,8 @@ public class DetectMove : MonoBehaviour
         if (leftx < TileDataManager.instance.sizeX && leftx >= 0 && lefty < TileDataManager.instance.sizeY && lefty >= 0)
         {
             //  1. 현재 바라보는 방향으로 기준으로 왼쪽으로 갈 수 있는지 확인.
-            if (nodes[leftx, lefty].nodeSprite == GetdetectSprite(0))
+            if (nodes[leftx, lefty].isWalk)
             {
-                Debug.Log("왼쪽에 Ground가 있습니다.");
                 // 왼쪽 방향으로 90도 회전 
                 _dir = (_dir + 1) % 4;
 
@@ -100,29 +147,26 @@ public class DetectMove : MonoBehaviour
                 CurposY += frontY[_dir];
                 detection = Detect.Move;
                 return;
-                Debug.Log("왼쪽 여기로 빠지면 안되는데");
+                
             }
         }
         if (frontx < TileDataManager.instance.sizeX && frontx >= 0 && fronty < TileDataManager.instance.sizeY && fronty >= 0)
         {
-            Debug.Log("else if로 들어옴?");
-            // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
-            if (nodes[frontx, fronty].nodeSprite == GetdetectSprite(0))
-            {
-                Debug.Log("앞쪽에 Ground가 있습니다.");
-                 CurposX += frontX[_dir];  
+             // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
+            if (nodes[frontx, fronty].isWalk)
+            {  
+                CurposX += frontX[_dir];  
                  CurposY += frontY[_dir] ;
                  detection = Detect.Move;
                 return;
-                Debug.Log("앞으로 여기로 빠지면 안되는데");
+              
             }
         }
         if (rightx < TileDataManager.instance.sizeX && rightx >= 0 && righty < TileDataManager.instance.sizeY && righty >= 0)
         {
             // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
-            if (nodes[rightx, righty].nodeSprite == GetdetectSprite(0))
+            if (nodes[rightx, righty].isWalk)
             {
-                Debug.Log("앞쪽에 Ground가 있습니다.");
                 // 우측 방향이라면 90도 회전
                 _dir = (_dir - 1 + 4) % 4;
 
@@ -130,7 +174,7 @@ public class DetectMove : MonoBehaviour
                  CurposY += frontY[_dir]; 
                  detection = Detect.Move;
                 return;
-                Debug.Log("오른쪽 여기로 빠지면 안되는데");
+                
             }
         }
         else
@@ -164,8 +208,25 @@ public class DetectMove : MonoBehaviour
             transform.position = targetVector;
             if(direction.magnitude == 0)
             {
-                detection = Detect.Search;
+                detection = Detect.None;
             }
+        }
+    }
+
+    static int ExtractNumber(string input)
+    {
+        // 정규표현식을 사용하여 숫자만 추출
+        Match match = Regex.Match(input, @"\d+");
+
+        // 추출된 숫자가 있는지 확인하고 반환
+        if (match.Success)
+        {
+            return int.Parse(match.Value);
+        }
+        else
+        {
+            // 숫자가 없는 경우 예외처리 또는 기본값 반환
+             return 100;
         }
     }
 }

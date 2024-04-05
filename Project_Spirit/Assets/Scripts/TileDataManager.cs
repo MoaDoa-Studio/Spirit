@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -86,13 +87,42 @@ public class TileDataManager : MonoBehaviour
                 {
                     // 가져온 타일의 스프라이트를 확인한다.
                     Sprite tileSprite = (tile as Tile).sprite;
-                    if (tileSprite == targetSprite[0])
+                    Matrix4x4 matrix = (tile as Tile).transform;
+                    Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
+                    nodes[i,j].nodeSprite = tileSprite;
+                    nodes[i,j].rotation = tileRotation;
+                    nodes[i, j].isWalk = true;
+                    if(tileSprite == targetSprite[1] || tileSprite == targetSprite[2] || tileSprite == targetSprite[3] || tileSprite == targetSprite[4] || tileSprite == targetSprite[5] || tileSprite == targetSprite[6] || tileSprite == targetSprite[7] || tileSprite == targetSprite[8])
                     {
-                        nodes[i, j].nodeSprite = tileSprite;
-                        //Debug.Log(nodes[i, j].nodeSprite);
+                        nodes[i,j].isSignal = true;
                     }
                 }
             }
         }
     }
+
+    static bool IsPositive(int[] array)
+    {
+        int left = 0;
+        int right = array.Length - 1;
+
+        if(right < 0)
+            return false;
+
+        while(left <= right)
+        {
+            int mid = (right - left ) / 2;
+
+            if (array[mid] > 0)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+        return left == array.Length;
+    }
+    
 }
