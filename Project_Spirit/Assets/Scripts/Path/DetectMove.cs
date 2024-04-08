@@ -15,9 +15,9 @@ public class DetectMove : MonoBehaviour
     [SerializeField]
     Vector2Int bottomLeft, topRight, startPos, targetPos;
     [SerializeField]
-    int CurposX = 2;
+    public int CurposX = 2;
     [SerializeField]
-    int CurposY = 1;
+    public int CurposY = 1;
     
     Node[,] nodes;  // TileDataManager instance.
     Signal signal = new Signal();
@@ -99,34 +99,46 @@ public class DetectMove : MonoBehaviour
     private void CheckTile()
     {   // 표시 0
         nodes = TileDataManager.instance.GetNodes();
-        string callSign = nodes[CurposX, CurposY].nodeSprite.name;
-        int num = ExtractNumber(callSign);  // Sign type 판별.
-        if(nodes[CurposX, CurposY].isSignal)
-        {   
-            signal.SetSignType(num, nodes[CurposX,CurposY].rotation, _dir); // signal 에 sign 타입을 지정하고 dir 방향을 받음
-            Debug.Log("체크타일의 방향이 없어서 지금 방황중이니?");
-            // 정령 Dir = 신호 Dir이 같다면,
-            if(_dir == signal.dir)
-            {
-                Debug.Log("표지와 정령의 방향이 일치해요!");
-                CurposX += signal.pair.Item1;
-                CurposY += signal.pair.Item2;
+        
+        // 길을 걸을 수 있는 타일일때.
+        if (nodes[CurposX,CurposY].isWalk)
+        {
 
-                // 표지방향으로 정령의 방향을 꺽어줘야함
-                _dir = signal.spiritDir;
+            string callSign = nodes[CurposX, CurposY].nodeSprite.name;
+            int num = ExtractNumber(callSign);  // Sign type 판별.
+            if(nodes[CurposX, CurposY].isSignal)
+            {   
+                signal.SetSignType(num, nodes[CurposX,CurposY].rotation, _dir, CurposX, CurposY); // signal 에 sign 타입을 지정하고 dir 방향을 받음
+                Debug.Log("체크타일의 방향이 없어서 지금 방황중이니?");
+                // 정령 Dir = 신호 Dir이 같다면,
+                if(_dir == signal.dir)
+                {
+                    Debug.Log("표지와 정령의 방향이 일치해요!");
+                    CurposX += signal.pair.Item1;
+                    CurposY += signal.pair.Item2;
 
-                // 길이 없으면 // return
-                detection = Detect.Move;
+                    // 표지방향으로 정령의 방향을 꺽어줘야함
+                    _dir = signal.spiritDir;
+
+                    // 타일 체크후 걸을 수 없다면..
+                    if (!nodes[CurposX,CurposY].isWalk)
+                    {
+                        detection = Detect.None;
+                    }
+                    else
+                       // 길이 없으면 // return
+                    detection = Detect.Move;
+                }
+                else
+                {
+
+                    detection = Detect.Normal;
+                }
             }
             else
             {
-
                 detection = Detect.Normal;
             }
-        }
-        else
-        {
-            detection = Detect.Normal;
         }
 
     }

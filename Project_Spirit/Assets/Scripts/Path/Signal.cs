@@ -13,7 +13,7 @@ public class Signal : MonoBehaviour
     Sprite[] signalSprite;
     [SerializeField]
     Tilemap tilemap;
-
+    Node[,] nodes;
     int[] frontdirX = { 0, -1, 0, 1 };
     int[] frontdirY = { 1, 0, -1, 0 };
 
@@ -26,6 +26,9 @@ public class Signal : MonoBehaviour
     public int dir;
     public int spiritDir;
     public (int,int) pair;
+
+    int curposX;
+    int curposy;
     enum Dir
     {
         Up = 0,
@@ -39,10 +42,13 @@ public class Signal : MonoBehaviour
       
     }
     // Sprite code => 해당하는 함수 호출
-    public void SetSignType(int _num, Quaternion _quaternion, int _dir)
+    public void SetSignType(int _num, Quaternion _quaternion, int _dir, int _curposX, int _curposY)
     {
+        nodes = TileDataManager.instance.GetNodes();
         int number = _num;
         Quaternion rot = _quaternion;
+        curposX = _curposX;
+        curposy = _curposY;
         signalType = (SignalType)number + 1;    // Type + 1 값으로 enum 선언.
         Debug.Log("표지탑은 다음과 같습니다." + ((SignalType)number + 1));
         dir = CheckRotation(rot);
@@ -84,16 +90,16 @@ public class Signal : MonoBehaviour
                 Right(_dir);
                 break;
             case SignalType.LeftFoward:
-                LeftFoward();
+                LeftFoward(_dir);
                 break;
             case SignalType.FowardRight:
-                FowardRight();
+                FowardRight(_dir);
                 break;
             case SignalType.LeftRight:
-                LeftRight();
+                LeftRight(_dir);
                 break;
             case SignalType.All:
-                All();
+                All(_dir);
                 break;
             case SignalType.Stop:
                 Stop();
@@ -132,26 +138,71 @@ public class Signal : MonoBehaviour
         signalType = SignalType.None;
     }
 
-    void LeftFoward()
+    void LeftFoward(int _dir)
     {
+        if (nodes[curposX,curposy].stack == 0)
+        {
+            Left(_dir);
+            nodes[curposX, curposy].stack += 1;
+        }
+        else
+        {
+            Forward(_dir);
+            nodes[curposX,curposy].stack = 0;
+        }
+        
+        signalType = SignalType.None;
+    }
+
+    void FowardRight(int _dir)
+    {
+        if (nodes[curposX, curposy].stack == 0)
+        {
+            Forward(_dir);
+            nodes[curposX, curposy].stack += 1;
+        }
+        else
+        {
+            Right(_dir);
+            nodes[curposX, curposy].stack = 0;
+        }
 
         signalType = SignalType.None;
     }
 
-    void FowardRight()
+    void LeftRight(int _dir)
     {
+        if (nodes[curposX, curposy].stack == 0)
+        {
+            Left(_dir);
+            nodes[curposX, curposy].stack += 1;
+        }
+        else
+        {
+            Right(_dir);
+            nodes[curposX, curposy].stack = 0;
+        }
 
         signalType = SignalType.None;
     }
 
-    void LeftRight()
+    void All(int _dir)
     {
-
-        signalType = SignalType.None;
-    }
-
-    void All()
-    {
+        if (nodes[curposX, curposy].stack == 0)
+        {
+            Left(_dir);
+            nodes[curposX, curposy].stack += 1;
+        }
+        else if (nodes[curposX, curposy].stack == 1)
+        {
+            Forward(_dir);
+            nodes[curposX, curposy].stack += 1; 
+        }
+        else
+        {
+            Right(_dir);
+            nodes[curposX,curposy].stack = 0;
+        }
 
         signalType = SignalType.None;
     }
