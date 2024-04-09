@@ -13,6 +13,8 @@ public class DetectMove : MonoBehaviour
     [SerializeField]
     Sprite[] sprites;
     [SerializeField]
+    Text stopduration;
+    [SerializeField]
     Vector2Int bottomLeft, topRight, startPos, targetPos;
     [SerializeField]
     public int CurposX = 2;
@@ -109,14 +111,24 @@ public class DetectMove : MonoBehaviour
             if(nodes[CurposX, CurposY].isSignal)
             {   
                 signal.SetSignType(num, nodes[CurposX,CurposY].rotation, _dir, CurposX, CurposY); // signal 에 sign 타입을 지정하고 dir 방향을 받음
-                Debug.Log("체크타일의 방향이 없어서 지금 방황중이니?");
+                //Debug.Log("체크타일의 방향이 없어서 지금 방황중이니?");
                 // 정령 Dir = 신호 Dir이 같다면,
                 if(_dir == signal.dir)
                 {
-                    Debug.Log("표지와 정령의 방향이 일치해요!");
+                    // 정지 표지였다면
+                    if(num == 7)
+                    {
+                        float stopDuration = float.Parse(stopduration.text);
+                        Debug.Log("멈춰있는 시간 :" + stopDuration);
+                        StopPattern(stopDuration);
+                        detection = Detect.Normal;
+                        
+                    }
+
+                    //Debug.Log("표지와 정령의 방향이 일치해요!");
                     CurposX += signal.pair.Item1;
                     CurposY += signal.pair.Item2;
-
+                    
                     // 표지방향으로 정령의 방향을 꺽어줘야함
                     _dir = signal.spiritDir;
 
@@ -250,5 +262,10 @@ public class DetectMove : MonoBehaviour
             // 숫자가 없는 경우 예외처리 또는 기본값 반환
              return 100;
         }
+    }
+
+    IEnumerator StopPattern(float _time)
+    {
+        yield return new WaitForSeconds(_time);
     }
 }

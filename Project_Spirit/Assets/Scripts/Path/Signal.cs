@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using System;
 using UnityEngine.Tilemaps;
@@ -13,6 +14,9 @@ public class Signal : MonoBehaviour
     Sprite[] signalSprite;
     [SerializeField]
     Tilemap tilemap;
+    [SerializeField]
+    Text stopduration;
+
     Node[,] nodes;
     int[] frontdirX = { 0, -1, 0, 1 };
     int[] frontdirY = { 1, 0, -1, 0 };
@@ -50,7 +54,7 @@ public class Signal : MonoBehaviour
         curposX = _curposX;
         curposy = _curposY;
         signalType = (SignalType)number + 1;    // Type + 1 값으로 enum 선언.
-        Debug.Log("표지탑은 다음과 같습니다." + ((SignalType)number + 1));
+        //Debug.Log("표지탑은 다음과 같습니다." + ((SignalType)number + 1));
         dir = CheckRotation(rot);
         spiritDir = _dir;
         Setdirerction(dir);
@@ -109,7 +113,7 @@ public class Signal : MonoBehaviour
 
     void Forward(int _dir)
     {  
-        Debug.Log("전진방향에서 회전방향 몇번 ? : " + _dir);
+        //Debug.Log("전진방향에서 회전방향 몇번 ? : " + _dir);
        
         int frontx = frontdirX[_dir];
         int fronty = frontdirY[_dir];
@@ -119,7 +123,7 @@ public class Signal : MonoBehaviour
     }
     void Left(int _dir)
     {
-        Debug.Log("왼쪽 표지방향 : " + _dir);
+        //Debug.Log("왼쪽 표지방향 : " + _dir);
         int leftx = leftdirX[_dir];
         int lefty = leftdirY[_dir];
 
@@ -129,7 +133,7 @@ public class Signal : MonoBehaviour
     }
     void Right(int _dir)
     {
-        Debug.Log("오른쪽 표지방향 : " + _dir);
+        //Debug.Log("오른쪽 표지방향 : " + _dir);
         int rightx = rightdirX[_dir];
         int righty = rightdirY[_dir];
 
@@ -209,7 +213,7 @@ public class Signal : MonoBehaviour
 
     void Stop()
     {
-
+        
         signalType = SignalType.None;
     }
 
@@ -228,5 +232,12 @@ public class Signal : MonoBehaviour
         }
 
         return intValue;
+    }
+
+    IEnumerator StopPattern(float _time)
+    {
+        yield return new WaitForSeconds(_time);
+
+        signalType = SignalType.None;
     }
 }
