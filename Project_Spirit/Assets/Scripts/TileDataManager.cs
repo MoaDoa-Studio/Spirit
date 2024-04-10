@@ -1,20 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class TileDataManager : MonoBehaviour
 {
     public static TileDataManager instance = null;        
     public int[,] tileArray = new int[103, 103];
+    [SerializeField]
+    Tilemap tilemap;
+    public Node[,] nodes;   
+    public Sprite[] targetSprite;
+    public Vector2Int position;
+    public Vector2Int bottomLeft, topRight, startPos, targetPos;
+    
+    public int x;
+    public int y;
+    public int sizeX, sizeY;
 
     enum TileType
     {
         None = 0,
-        Building = 1, // °Ç¹°
-        Cradle = 2, // ¿ä¶÷
-        Road = 3, // µµ·Î
-        Resource = 4, // ÀÚ¿ø
-        Mark = 5, // Ç¥½Ä
+        Building = 1, // ï¿½Ç¹ï¿½
+        Cradle = 2, // ï¿½ï¿½ï¿½
+        Road = 3, // ï¿½ï¿½ï¿½ï¿½
+        Resource = 4, // ï¿½Ú¿ï¿½
+        Mark = 5, // Ç¥ï¿½ï¿½
     }
     
     private void Awake()
@@ -23,6 +35,16 @@ public class TileDataManager : MonoBehaviour
             instance = this;
         else
             Destroy(this);
+
+    }
+
+    private void Start()
+    {
+        sizeX = topRight.x - bottomLeft.x + 1;
+        sizeY = topRight.y - bottomLeft.y + 1;
+
+        InstantiateTile();
+        CheckTileSprite();
     }
 
     public void SetTileType(int x, int y, int type)
@@ -43,4 +65,74 @@ public class TileDataManager : MonoBehaviour
     {
         return x >= 0 && x < 103 && y >= 0 && y < 103;
     }
+    }
+    public Node[,] GetNodes() { return nodes; }
+
+    private void InstantiateTile()
+    {
+        nodes = new Node[sizeX, sizeY];
+
+        for (int i = 0; i < sizeX; i++)
+        {
+            for (int j = 0; j < sizeY; j++)
+            {
+                nodes[i, j] = new Node(i,j);
+                nodes[i,j].x = i;
+                nodes[i,j].y = j;
+            }
+        }
+      
+    }
+
+    private void CheckTileSprite()
+    {
+        for (int i = 0; i < sizeX; i++)
+        {
+            for (int j = 0; j < sizeY; j++)
+            {
+                Vector3Int tilePosition = new Vector3Int(i, j);
+                TileBase tile = tilemap.GetTile(tilePosition);
+
+                if (tile != null)
+                {
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½.
+                    Sprite tileSprite = (tile as Tile).sprite;
+                    Matrix4x4 matrix = (tile as Tile).transform;
+                    Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
+                    nodes[i,j].nodeSprite = tileSprite;
+                    nodes[i,j].rotation = tileRotation;
+                    nodes[i, j].isWalk = true;
+                    if(tileSprite == targetSprite[1] || tileSprite == targetSprite[2] || tileSprite == targetSprite[3] || tileSprite == targetSprite[4] || tileSprite == targetSprite[5] || tileSprite == targetSprite[6] || tileSprite == targetSprite[7] || tileSprite == targetSprite[8])
+                    {
+                        nodes[i,j].isSignal = true;
+                    }
+                }
+            }
+        }
+    }
+
+    static bool IsPositive(int[] array)
+    {
+        int left = 0;
+        int right = array.Length - 1;
+
+        if(right < 0)
+            return false;
+
+        while(left <= right)
+        {
+            int mid = (right - left ) / 2;
+
+            if (array[mid] > 0)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+        return left == array.Length;
+    }
+    
 }
