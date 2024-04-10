@@ -27,11 +27,20 @@ public class TileDataManager : MonoBehaviour
 
     public void SetTileType(int x, int y, int type)
     {
+        if (!isRange(x, y))
+            return;
         tileArray[x, y] = type;
     }
 
     public int GetTileType(int x, int y)
     {
+        if (!isRange(x, y))
+            return -1;
         return tileArray[x, y];
-    }    
+    }
+    
+    public bool isRange(int x, int y)
+    {
+        return x >= 0 && x < 103 && y >= 0 && y < 103;
+    }
 }

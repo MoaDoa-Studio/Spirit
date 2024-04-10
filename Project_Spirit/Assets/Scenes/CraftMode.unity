@@ -108726,7 +108726,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7077958729839943807}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1347214061879989435}
+        m_TargetAssemblyTypeName: CraftManager, Assembly-CSharp
+        m_MethodName: OnClickBuildingSelectButton
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3491096265742294583, guid: b6e778a3d9f70124ca2ddb53c5cddcad, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &920644741616878225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108765,17 +108777,18 @@ MonoBehaviour:
   grid: {fileID: 1741788278}
   craftGrid: {fileID: 1147976849}
   craftMenuUI: {fileID: 792347608}
-  buildingParent: {fileID: 5073716371521491819}
+  buildingParent: {fileID: 7375720502442407807}
+  database: {fileID: 11400000, guid: 5d0da2b27a88ff04cbbaaacbe2d807ad, type: 2}
   gameTilemap: {fileID: 1665831515}
   gridTilemap: {fileID: 80033459}
-  stateTile:
-  - {fileID: 11400000, guid: a6200ee59e7243246a83e01b4f2dc8c1, type: 2}
-  - {fileID: 11400000, guid: 22cb63a57738b3842aa32087b2015761, type: 2}
-  - {fileID: 11400000, guid: 4d226d01ad4681643a2219dd803b473a, type: 2}
+  defaultTile: {fileID: 11400000, guid: a6200ee59e7243246a83e01b4f2dc8c1, type: 2}
+  greenTile: {fileID: 11400000, guid: 22cb63a57738b3842aa32087b2015761, type: 2}
+  orangeTile: {fileID: 11400000, guid: ed84657af5e8df74cb937ae8a496714a, type: 2}
+  redTile: {fileID: 11400000, guid: 4d226d01ad4681643a2219dd803b473a, type: 2}
   placement_LayerMask:
     serializedVersion: 2
     m_Bits: 8
-  building_Prefab: {fileID: 3491096265742294583, guid: 31c7f62e200b8f247a40050da13c958b, type: 3}
+  building_Prefab: {fileID: 3491096265742294583, guid: cb5b1df0b2b647a4d9ed4bef6061c7c0, type: 3}
 --- !u!1 &1872566171495973964
 GameObject:
   m_ObjectHideFlags: 0
@@ -108838,7 +108851,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8082595615621748815}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1347214061879989435}
+        m_TargetAssemblyTypeName: CraftManager, Assembly-CSharp
+        m_MethodName: OnClickBuildingSelectButton
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3491096265742294583, guid: cb5b1df0b2b647a4d9ed4bef6061c7c0, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &2090917840462296578
 Transform:
   m_ObjectHideFlags: 0
