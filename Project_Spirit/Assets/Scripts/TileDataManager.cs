@@ -65,7 +65,7 @@ public class TileDataManager : MonoBehaviour
     {
         return x >= 0 && x < 103 && y >= 0 && y < 103;
     }
-    }
+    
     public Node[,] GetNodes() { return nodes; }
 
     private void InstantiateTile()
@@ -133,6 +133,5 @@ public class TileDataManager : MonoBehaviour
             }
         }
         return left == array.Length;
-    }
-    
+    }    
 }
