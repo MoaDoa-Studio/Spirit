@@ -23,6 +23,8 @@ public class DetectMove : MonoBehaviour
     
     Node[,] nodes;  // TileDataManager instance.
     Signal signal = new Signal();
+    Vector2 currentPosition;
+    Vector2 nowPosition;
 
     // 바라보는 방향 기준 좌표 변화.  
     int[] frontX = { 0, -1, 0, 1 };  // Up , Left, Down, Right
@@ -36,9 +38,9 @@ public class DetectMove : MonoBehaviour
 
     public float moveSpeed = 1f;
     int _dir = (int)Dir.Up;
-    int nxtposX, nxtposY;
-    Vector2 currentPosition;
-
+    int spiritID;
+    public int spiritElement;
+    bool checking = false;
     enum Dir
     {
         Up = 0,
@@ -51,6 +53,7 @@ public class DetectMove : MonoBehaviour
     {
         None,
         CheckTile,
+        Wandering,
         Normal,
         Move,
         Factory,
@@ -64,13 +67,14 @@ public class DetectMove : MonoBehaviour
     {
         nodes = TileDataManager.instance.GetNodes();
         signal = GameObject.Find("[SignalManager]").GetComponent<Signal>();
+        spiritID = GetComponent<Spirit>().SpiritID;
+        spiritElement = GetComponent<Spirit>().SpiritElement;
         int startX = (int)startPos.x - (int)bottomLeft.x;
         int startY = (int)startPos.y - (int)bottomLeft.y;
     }
     private void Update()
     {
         currentPosition = new Vector2(transform.position.x, transform.position.y);
-        //MoveNext(CurposX, CurposY);
         switch (detection)
         {
             case Detect.None:
@@ -78,6 +82,9 @@ public class DetectMove : MonoBehaviour
                 break;
             case Detect.CheckTile:
                 CheckTile();
+                break;
+            case Detect.Wandering:
+                Wandering();
                 break;
             case Detect.Normal:
                 NormalDirection();
@@ -101,45 +108,44 @@ public class DetectMove : MonoBehaviour
     private void CheckTile()
     {   // 표시 0
         nodes = TileDataManager.instance.GetNodes();
-        
-        // 길을 걸을 수 있는 타일일때.
-        if (nodes[CurposX,CurposY].isWalk)
-        {
 
+        // 길을 걸을 수 있는 타일일때.
+        if (nodes[CurposX, CurposY].isWalk)
+        {
+            nodes[CurposX, CurposY].spiritElement = spiritElement;  // 노드에 정령원소 체크
             string callSign = nodes[CurposX, CurposY].nodeSprite.name;
             int num = ExtractNumber(callSign);  // Sign type 판별.
-            if(nodes[CurposX, CurposY].isSignal)
-            {   
-                signal.SetSignType(num, nodes[CurposX,CurposY].rotation, _dir, CurposX, CurposY); // signal 에 sign 타입을 지정하고 dir 방향을 받음
-                //Debug.Log("체크타일의 방향이 없어서 지금 방황중이니?");
+            if (nodes[CurposX, CurposY].isSignal)
+            {
+                signal.SetSignType(num, nodes[CurposX, CurposY].rotation, _dir, CurposX, CurposY); // signal 에 sign 타입을 지정하고 dir 방향을 받음
                 // 정령 Dir = 신호 Dir이 같다면,
-                if(_dir == signal.dir)
+                if (_dir == signal.dir)
                 {
                     // 정지 표지였다면
-                    if(num == 7)
+                    if (num == 7)
                     {
                         float stopDuration = float.Parse(stopduration.text);
                         Debug.Log("멈춰있는 시간 :" + stopDuration);
                         StopPattern(stopDuration);
                         detection = Detect.Normal;
-                        
-                    }
 
-                    //Debug.Log("표지와 정령의 방향이 일치해요!");
+                    }
+                    
                     CurposX += signal.pair.Item1;
                     CurposY += signal.pair.Item2;
-                    
-                    // 표지방향으로 정령의 방향을 꺽어줘야함
+
+                    // 표지방향으로 정령의 방향을 꺽어줌.
                     _dir = signal.spiritDir;
 
                     // 타일 체크후 걸을 수 없다면..
-                    if (!nodes[CurposX,CurposY].isWalk)
+                    if (!nodes[CurposX, CurposY].isWalk)
                     {
+
                         detection = Detect.None;
                     }
                     else
-                       // 길이 없으면 // return
-                    detection = Detect.Move;
+                        // 길이 없으면 // return
+                        detection = Detect.Move;
                 }
                 else
                 {
@@ -151,8 +157,9 @@ public class DetectMove : MonoBehaviour
             {
                 detection = Detect.Normal;
             }
-        }
 
+
+        }
     }
 
 
@@ -161,7 +168,6 @@ public class DetectMove : MonoBehaviour
         nodes = TileDataManager.instance.GetNodes();    // 매우 매우 중요!! 코드 간결화
                                                         //Debug.Log(TileDataManager.instance.nodes[1, 1].x);
                                                         //Debug.Log("간단하게 불러오는.. " + nodes[1, 1].x);
-
         int leftx = CurposX + leftX[_dir];
         int lefty = CurposY + leftY[_dir];
         int frontx = CurposX + frontX[_dir];
@@ -174,6 +180,9 @@ public class DetectMove : MonoBehaviour
             //  1. 현재 바라보는 방향으로 기준으로 왼쪽으로 갈 수 있는지 확인.
             if (nodes[leftx, lefty].isWalk)
             {
+                if (nodes[leftx, lefty].spiritElement == spiritElement) return;
+                
+                nodes[CurposX, CurposY].spiritElement = 0;
                 // 왼쪽 방향으로 90도 회전 
                 _dir = (_dir + 1) % 4;
 
@@ -188,7 +197,10 @@ public class DetectMove : MonoBehaviour
         {
              // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
             if (nodes[frontx, fronty].isWalk)
-            {  
+            {
+                if (nodes[frontx, fronty].spiritElement == spiritElement) return;
+
+                nodes[CurposX, CurposY].spiritElement = 0;
                 CurposX += frontX[_dir];  
                  CurposY += frontY[_dir] ;
                  detection = Detect.Move;
@@ -201,6 +213,8 @@ public class DetectMove : MonoBehaviour
             // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
             if (nodes[rightx, righty].isWalk)
             {
+                if (nodes[rightx, righty].spiritElement == spiritElement) return;
+                nodes[CurposX, CurposY].spiritElement = 0;
                 // 우측 방향이라면 90도 회전
                 _dir = (_dir - 1 + 4) % 4;
 
@@ -216,14 +230,10 @@ public class DetectMove : MonoBehaviour
         return;
     }
 
-
-
-    private Sprite GetdetectSprite(int _num)
-    {   // Ground sprite일때.
-        if (_num == 0)
-            return sprites[0];
-        else
-            return null;
+    private void Wandering()
+    {
+        nodes[CurposX,CurposY].spiritElement = spiritElement;
+        Debug.Log("배회중임");
     }
 
     private void MoveNext(int _curposx, int _curposy)
@@ -231,17 +241,19 @@ public class DetectMove : MonoBehaviour
         Vector2 targetVector = new Vector2(_curposx, _curposy);
         Vector2 direction = (targetVector - currentPosition).normalized;
 
-        if(direction.magnitude >= 0.001f)
+        if(direction.magnitude >= 0.1f)
         {
             Vector2 movement = direction.normalized * moveSpeed * Time.deltaTime;
-
+             
             transform.Translate(movement);
+          
         }
         else
         {
             transform.position = targetVector;
             if(direction.magnitude == 0)
             {
+               nowPosition = new Vector2(transform.position.x, transform.position.y);
                 detection = Detect.None;
             }
         }
