@@ -22,11 +22,11 @@ public class TileDataManager : MonoBehaviour
     enum TileType
     {
         None = 0,
-        Building = 1, // °Ç¹°
-        Cradle = 2, // ¿ä¶÷
-        Road = 3, // µµ·Î
-        Resource = 4, // ÀÚ¿ø
-        Mark = 5, // Ç¥½Ä
+        Building = 1, // ï¿½Ç¹ï¿½
+        Cradle = 2, // ï¿½ï¿½ï¿½
+        Road = 3, // ï¿½ï¿½ï¿½ï¿½
+        Resource = 4, // ï¿½Ú¿ï¿½
+        Mark = 5, // Ç¥ï¿½ï¿½
     }
     
     private void Awake()
@@ -49,13 +49,23 @@ public class TileDataManager : MonoBehaviour
 
     public void SetTileType(int x, int y, int type)
     {
+        if (!isRange(x, y))
+            return;
         tileArray[x, y] = type;
     }
 
     public int GetTileType(int x, int y)
     {
+        if (!isRange(x, y))
+            return -1;
         return tileArray[x, y];
     }
+    
+    public bool isRange(int x, int y)
+    {
+        return x >= 0 && x < 103 && y >= 0 && y < 103;
+    }
+    
     public Node[,] GetNodes() { return nodes; }
 
     private void InstantiateTile()
@@ -85,7 +95,7 @@ public class TileDataManager : MonoBehaviour
 
                 if (tile != null)
                 {
-                    // °¡Á®¿Â Å¸ÀÏÀÇ ½ºÇÁ¶óÀÌÆ®¸¦ È®ÀÎÇÑ´Ù.
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½.
                     Sprite tileSprite = (tile as Tile).sprite;
                     Matrix4x4 matrix = (tile as Tile).transform;
                     Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
@@ -123,6 +133,5 @@ public class TileDataManager : MonoBehaviour
             }
         }
         return left == array.Length;
-    }
-    
+    }    
 }
