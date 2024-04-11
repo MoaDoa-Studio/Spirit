@@ -65,6 +65,21 @@ public class TileDataManager : MonoBehaviour
             }
         }
     }
+
+    public void ChangeTileTypeByRange(Vector2Int upperRight, Vector2Int bottomLeft, int prevType, int type)
+    {
+        for (int i = bottomLeft.y; i <= upperRight.y; i++)
+        {
+            for (int j = bottomLeft.x; j <= upperRight.x; j++)
+            {
+                if (!isRange(j, i))
+                    continue;
+
+                if (tileArray[j, i] == prevType)
+                    tileArray[j, i] = type;
+            }
+        }        
+    }
     public int GetTileType(int x, int y)
     {
         if (!isRange(x, y))
