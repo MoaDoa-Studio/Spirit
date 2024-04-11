@@ -7,8 +7,12 @@ public class Building : MonoBehaviour
 {    
     private Vector2Int upperRight;
     private Vector2Int bottomLeft;
-    private Tuple<Vector2Int, Vector2Int> connectedRoad;
+    public Tuple<Vector2Int, Vector2Int> connectedRoads;
 
+    private void Start()
+    {
+        connectedRoads = null;
+    }
     public Tuple<Vector2Int, Vector2Int> GetBuildingPos()
     {
         return new Tuple<Vector2Int, Vector2Int>(upperRight, bottomLeft);
@@ -22,16 +26,16 @@ public class Building : MonoBehaviour
 
     public Tuple<Vector2Int, Vector2Int> GetConnectedRoad()
     {
-        if (connectedRoad == null)
+        if (connectedRoads == null)
         {
             Debug.Log("도로가 2개가 아닙니다.");
             return null;
         }
-        return connectedRoad;
+        return connectedRoads;
     }
 
-    public void SetConnectedRoad(Vector2Int a, Vector2Int b)
+    public void SetConnectedRoad(Tuple<Vector2Int, Vector2Int> connectedRoads)
     {
-        connectedRoad = new Tuple<Vector2Int, Vector2Int>(a, b);
+        this.connectedRoads = connectedRoads;
     }
 }
