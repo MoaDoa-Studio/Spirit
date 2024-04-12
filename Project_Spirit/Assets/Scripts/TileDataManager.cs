@@ -24,20 +24,19 @@ public class TileDataManager : MonoBehaviour
     enum TileType
     {
         None = 0,
-        Building = 1, // �ǹ�
-        Cradle = 2, // ���
-        Road = 3, // ����
-        Resource = 4, // �ڿ�
-        Mark = 5, // ǥ��
+        Building = 1, 
+        Cradle = 2, 
+        Road = 3,
+        Resource = 4,
+        Mark = 5,
     }
-
+    
     private void Awake()
     {
         if (instance == null)
             instance = this;
         else
             Destroy(this);
-
     }
 
     private void Start()
@@ -57,6 +56,33 @@ public class TileDataManager : MonoBehaviour
         tileArray[x, y] = type;
     }
 
+    public void SetTileTypeByRange(Vector2Int upperRight, Vector2Int bottomLeft, int type)
+    {
+        for (int i = bottomLeft.y; i <= upperRight.y; i++)
+        {
+            for (int j = bottomLeft.x; j <= upperRight.x; j++)
+            {
+                if (!isRange(j, i))
+                    continue;
+                tileArray[j, i] = type;
+            }
+        }
+    }
+
+    public void ChangeTileTypeByRange(Vector2Int upperRight, Vector2Int bottomLeft, int prevType, int type)
+    {
+        for (int i = bottomLeft.y; i <= upperRight.y; i++)
+        {
+            for (int j = bottomLeft.x; j <= upperRight.x; j++)
+            {
+                if (!isRange(j, i))
+                    continue;
+
+                if (tileArray[j, i] == prevType)
+                    tileArray[j, i] = type;
+            }
+        }        
+    }
     public int GetTileType(int x, int y)
     {
         if (!isRange(x, y))
@@ -97,7 +123,7 @@ public class TileDataManager : MonoBehaviour
                 TileBase tile = tilemap.GetTile(tilePosition);
 
                 if (tile != null)
-                {
+                {                    
                     Sprite tileSprite = (tile as Tile).sprite;
                     Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
                     nodes[i, j].nodeSprite = tileSprite;
