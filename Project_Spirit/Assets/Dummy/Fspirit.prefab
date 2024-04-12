@@ -108,7 +108,7 @@ MonoBehaviour:
   topRight: {x: 20, y: 20}
   startPos: {x: 0, y: 1}
   targetPos: {x: 10, y: 10}
-  CurposX: 15
+  CurposX: 12
   CurposY: 5
   moveSpeed: 1
   spiritElement: 0

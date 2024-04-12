@@ -26,8 +26,9 @@ public class Signal : MonoBehaviour
 
     int[] rightdirX = { 1, 0, -1, 0 }; 
     int[] rightdirY = { 0, 1, 0, -1 };
-
+    [HideInInspector]
     public int dir;
+    [HideInInspector]
     public int spiritDir;
     public (int,int) pair;
 

@@ -15,10 +15,9 @@ public class TileDataManager : MonoBehaviour
     public Sprite[] targetSprite;
     public Vector2Int position;
     public Vector2Int bottomLeft, topRight, startPos, targetPos;
-    public List<Tuple<Vector2Int, Vector2Int>> buildingList;
+   
     public List<Tuple<int[,], int[,]>> AttachedRoad { get; set; }
-    public int x;
-    public int y;
+   
     public int sizeX, sizeY;
 
     enum TileType
@@ -46,7 +45,6 @@ public class TileDataManager : MonoBehaviour
 
         InstantiateTile();
         CheckEveryTile();
-        CheckEveryBuilding();
     }
 
     public void SetTileType(int x, int y, int type)
@@ -138,16 +136,6 @@ public class TileDataManager : MonoBehaviour
         }
     }
 
-    private void CheckEveryBuilding()
-    {
-       
-        CraftManager craftManager = GetComponentInChildren<CraftManager>();
-
-        for(int i = 0; i < buildingList.Count; i++)
-        {
-           
-        }
-    }
 }
   /*  static bool IsPositive(int[] array)
     {

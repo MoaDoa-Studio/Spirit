@@ -21,7 +21,6 @@ public class Spirit : MonoBehaviour
     {
         if(collision.gameObject.tag == "Spirit")
         {
-            
             int element = collision.gameObject.GetComponent<Spirit>().SpiritElement;
             if(element != SpiritElement )
             {

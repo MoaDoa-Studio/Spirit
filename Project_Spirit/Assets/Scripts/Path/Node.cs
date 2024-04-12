@@ -21,12 +21,12 @@ public class Node : MonoBehaviour
     // (0.00000, 0.00000, 0.70711, 0.70711) , (0.00000, 0.00000, 1.00000, 0.00000), (0.00000, 0.00000, -0.70711, 0.70711)
     public Quaternion rotation;
     
-    public Node(int _x, int _y)
+    public Node(float _x, float _y)
     {
         x = _x;
         y = _y;
     }
-    public int x;
-    public int y;
+    public float x;
+    public float y;
     
 }
