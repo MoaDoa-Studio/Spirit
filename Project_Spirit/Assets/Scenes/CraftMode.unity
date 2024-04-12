@@ -108785,10 +108785,6 @@ MonoBehaviour:
   greenTile: {fileID: 11400000, guid: 22cb63a57738b3842aa32087b2015761, type: 2}
   orangeTile: {fileID: 11400000, guid: ed84657af5e8df74cb937ae8a496714a, type: 2}
   redTile: {fileID: 11400000, guid: 4d226d01ad4681643a2219dd803b473a, type: 2}
-  placement_LayerMask:
-    serializedVersion: 2
-    m_Bits: 8
-  building_Prefab: {fileID: 3491096265742294583, guid: cb5b1df0b2b647a4d9ed4bef6061c7c0, type: 3}
 --- !u!1 &1872566171495973964
 GameObject:
   m_ObjectHideFlags: 0
@@ -109315,6 +109311,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d9309f1e061bd49b992448b70f45ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilemap: {fileID: 1665831515}
+  targetSprite: []
+  position: {x: 0, y: 0}
+  bottomLeft: {x: 0, y: 0}
+  topRight: {x: 0, y: 0}
+  startPos: {x: 0, y: 0}
+  targetPos: {x: 0, y: 0}
+  x: 0
+  y: 0
+  sizeX: 0
+  sizeY: 0
 --- !u!222 &5139864941121444960
 CanvasRenderer:
   m_ObjectHideFlags: 0

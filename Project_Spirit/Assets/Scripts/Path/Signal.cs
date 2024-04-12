@@ -41,10 +41,6 @@ public class Signal : MonoBehaviour
         Right = 3
     }
 
-    public void Start()
-    {
-      
-    }
     // Sprite code => 해당하는 함수 호출
     public void SetSignType(int _num, Quaternion _quaternion, int _dir, int _curposX, int _curposY)
     {
@@ -213,7 +209,7 @@ public class Signal : MonoBehaviour
 
     void Stop()
     {
-        
+        StopPattern(3f);
         signalType = SignalType.None;
     }
 

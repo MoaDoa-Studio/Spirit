@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 3059819406419193742}
   - component: {fileID: 5100335694892879102}
   - component: {fileID: 195883930426738359}
+  - component: {fileID: 1809951604393546943}
   m_Layer: 0
   m_Name: Fspirit
-  m_TagString: Untagged
+  m_TagString: Spirit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,7 +110,7 @@ MonoBehaviour:
   targetPos: {x: 10, y: 10}
   CurposX: 15
   CurposY: 5
-  moveSpeed: 0.7
+  moveSpeed: 1
   spiritElement: 0
 --- !u!114 &5100335694892879102
 MonoBehaviour:
@@ -163,3 +164,30 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.8, y: 1}
   m_Direction: 0
+--- !u!50 &1809951604393546943
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4082394135774721312}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

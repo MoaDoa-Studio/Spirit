@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Tilemaps;
@@ -6,15 +7,16 @@ using UnityEngine.Tilemaps;
 
 public class TileDataManager : MonoBehaviour
 {
-    public static TileDataManager instance = null;        
+    public static TileDataManager instance = null;
     public int[,] tileArray = new int[103, 103];
     [SerializeField]
     Tilemap tilemap;
-    public Node[,] nodes;   
+    public Node[,] nodes;
     public Sprite[] targetSprite;
     public Vector2Int position;
     public Vector2Int bottomLeft, topRight, startPos, targetPos;
-    
+    public List<Tuple<Vector2Int, Vector2Int>> buildingList;
+    public List<Tuple<int[,], int[,]>> AttachedRoad { get; set; }
     public int x;
     public int y;
     public int sizeX, sizeY;
@@ -28,7 +30,7 @@ public class TileDataManager : MonoBehaviour
         Resource = 4, // �ڿ�
         Mark = 5, // ǥ��
     }
-    
+
     private void Awake()
     {
         if (instance == null)
@@ -44,7 +46,8 @@ public class TileDataManager : MonoBehaviour
         sizeY = topRight.y - bottomLeft.y + 1;
 
         InstantiateTile();
-        CheckTileSprite();
+        CheckEveryTile();
+        CheckEveryBuilding();
     }
 
     public void SetTileType(int x, int y, int type)
@@ -60,12 +63,12 @@ public class TileDataManager : MonoBehaviour
             return -1;
         return tileArray[x, y];
     }
-    
+
     public bool isRange(int x, int y)
     {
         return x >= 0 && x < 103 && y >= 0 && y < 103;
     }
-    
+
     public Node[,] GetNodes() { return nodes; }
 
     private void InstantiateTile()
@@ -76,15 +79,15 @@ public class TileDataManager : MonoBehaviour
         {
             for (int j = 0; j < sizeY; j++)
             {
-                nodes[i, j] = new Node(i,j);
-                nodes[i,j].x = i;
-                nodes[i,j].y = j;
+                nodes[i, j] = new Node(i, j);
+                nodes[i, j].x = i;
+                nodes[i, j].y = j;
             }
         }
-      
+
     }
 
-    private void CheckTileSprite()
+    private void CheckEveryTile()
     {
         for (int i = 0; i < sizeX; i++)
         {
@@ -95,23 +98,37 @@ public class TileDataManager : MonoBehaviour
 
                 if (tile != null)
                 {
-                    // ������ Ÿ���� ��������Ʈ�� Ȯ���Ѵ�.
                     Sprite tileSprite = (tile as Tile).sprite;
-                    Matrix4x4 matrix = (tile as Tile).transform;
                     Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
-                    nodes[i,j].nodeSprite = tileSprite;
-                    nodes[i,j].rotation = tileRotation;
+                    nodes[i, j].nodeSprite = tileSprite;
+                    nodes[i, j].rotation = tileRotation;
                     nodes[i, j].isWalk = true;
-                    if(tileSprite == targetSprite[1] || tileSprite == targetSprite[2] || tileSprite == targetSprite[3] || tileSprite == targetSprite[4] || tileSprite == targetSprite[5] || tileSprite == targetSprite[6] || tileSprite == targetSprite[7] || tileSprite == targetSprite[8])
+                    if (tileSprite == targetSprite[1] || tileSprite == targetSprite[2] || tileSprite == targetSprite[3] || tileSprite == targetSprite[4] || tileSprite == targetSprite[5] || tileSprite == targetSprite[6] || tileSprite == targetSprite[7] || tileSprite == targetSprite[8])
                     {
-                        nodes[i,j].isSignal = true;
+                        nodes[i, j].isSignal = true;
                     }
                 }
             }
         }
     }
 
-    static bool IsPositive(int[] array)
+    private void CheckEveryBuilding()
+    {
+        buildingList = GetComponentInChildren<CraftManager>().buildingList;
+        CraftManager craftManager = GetComponentInChildren<CraftManager>();
+
+        for(int i = 0; i < buildingList.Count; i++)
+        {
+            if (craftManager.isOverTwoRoadsAttackedBuilding(buildingList[i]))
+            {
+                int[,] roadNextBuild1 = AttachedRoad[i].Item1;
+                int[,] roadNextBuild2 = AttachedRoad[i].Item2;
+              
+            }
+        }
+    }
+}
+  /*  static bool IsPositive(int[] array)
     {
         int left = 0;
         int right = array.Length - 1;
@@ -135,3 +152,4 @@ public class TileDataManager : MonoBehaviour
         return left == array.Length;
     }    
 }
+  */

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Tilemaps;
@@ -6,13 +7,16 @@ using UnityEngine.Tilemaps;
 
 public class Node : MonoBehaviour
 {
-    public int nodeValue;   // 타일의 값
-    public int rotationStack;   // 플레이어가 해당 노드를 몇번 회전 시켰는지? 
+    public int nodeValue;   
+    public int rotationStack;   
     public int stack = 0;
     public int spiritElement;
     public bool isSignal = false;
     public bool isWalk = false;
-    public Sprite nodeSprite;   // 타일 스프라이트
+    public bool isFactory = false;
+    public bool isLoot = false;
+    public Sprite nodeSprite;
+   
     // Tile 90, 180, 270도
     // (0.00000, 0.00000, 0.70711, 0.70711) , (0.00000, 0.00000, 1.00000, 0.00000), (0.00000, 0.00000, -0.70711, 0.70711)
     public Quaternion rotation;
@@ -25,4 +29,8 @@ public class Node : MonoBehaviour
     public int x;
     public int y;
   
+    public (int[,] , int[,]) Pair(int[,] array1, int[,]array2)
+    {
+        return (array1, array2);
+    }
 }
