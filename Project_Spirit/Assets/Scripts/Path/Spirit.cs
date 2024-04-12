@@ -16,6 +16,7 @@ public class Spirit : MonoBehaviour
         SDefaultLife = 100f;
     }
 
+    #region 정령충돌 감지
     private void OnTriggerEnter(Collider collision)
     {
         if(collision.gameObject.tag == "Spirit")
@@ -42,4 +43,5 @@ public class Spirit : MonoBehaviour
             
         }
     }
+    #endregion
 }

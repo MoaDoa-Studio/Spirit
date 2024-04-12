@@ -28,9 +28,5 @@ public class Node : MonoBehaviour
     }
     public int x;
     public int y;
-  
-    public (int[,] , int[,]) Pair(int[,] array1, int[,]array2)
-    {
-        return (array1, array2);
-    }
+    
 }

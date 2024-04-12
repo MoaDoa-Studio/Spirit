@@ -19,20 +19,18 @@ public class DetectMove : MonoBehaviour
     
     Node[,] nodes;  // TileDataManager instance.
     Signal signal = new Signal();
-    Vector2 currentPosition;
     SpriteRenderer spriteRenderer;
-    List<Tuple<Vector2Int, Vector2Int>> buildingList = new List<Tuple<Vector2Int, Vector2Int>>(); // 건물 우상단, 좌하단 좌표 저장.
-
+    
     public int CurposX = 2;
     public int CurposY = 1;
     // 바라보는 방향 기준 좌표 변화.  
     int[] frontX = { 0, -1, 0, 1 };  // Up , Left, Down, Right
     int[] frontY = { 1, 0, -1, 0 };
 
-    int[] leftX = { -1, 0, 1, 0 }; // 좌회전 변경 위치점
-    int[] leftY = { 0, -1, 0, 1 }; // 좌회전 이후에 현재 바라보는 방향이 반시계방향으로 90도 회전
+    int[] leftX = { -1, 0, 1, 0 }; 
+    int[] leftY = { 0, -1, 0, 1 }; 
 
-    int[] rightX = { 1, 0, -1, 0 };  // 우회전 변경 위치점
+    int[] rightX = { 1, 0, -1, 0 };  
     int[] rightY = { 0, 1, 0, -1 };
 
     public float moveSpeed = 1f;
@@ -111,20 +109,20 @@ public class DetectMove : MonoBehaviour
 
 
     private void CheckTile()
-    {   // 표시 0
+    {   
         nodes = TileDataManager.instance.GetNodes();
 
-        // 길을 걸을 수 있는 타일일때.
         if (nodes[CurposX, CurposY].isWalk)
         {
-            nodes[CurposX, CurposY].spiritElement = spiritElement;  // 노드에 정령원소 체크
+            // 노드 정령원소 확인.
+            nodes[CurposX, CurposY].spiritElement = spiritElement;  
             string signName = nodes[CurposX, CurposY].nodeSprite.name;
-            signType = ExtractNumber(signName);  // Sign type 판별.
+            // Sign type 판별.
+            signType = ExtractNumber(signName);  
             
             if (nodes[CurposX, CurposY].isSignal)
             {
                 detection = Detect.Mark_Check;
-                
             }
             
             else
@@ -140,8 +138,7 @@ public class DetectMove : MonoBehaviour
     private void BaseMove()
     {
         nodes = TileDataManager.instance.GetNodes();    // 매우 매우 중요!! 코드 간결화
-                                                        //Debug.Log(TileDataManager.instance.nodes[1, 1].x);
-                                                        //Debug.Log("간단하게 불러오는.. " + nodes[1, 1].x);
+                                                        
         int leftx = CurposX + leftX[_dir];
         int lefty = CurposY + leftY[_dir];
         int frontx = CurposX + frontX[_dir];
@@ -219,17 +216,14 @@ public class DetectMove : MonoBehaviour
         {  
             float stopDuration = float.Parse(stopduration.text);
             StartCoroutine(StopSign(stopDuration));
-
-            return;
+             return;
         }
-        
         else
             signal.SetSignType(_signType, nodes[CurposX, CurposY].rotation, _dir, CurposX, CurposY); // signal 에 sign 타입을 지정하고 dir 방향을 받음
-                                                                                           // 정령 Dir = 신호 Dir이 같다면,
+                                                                                          
         
         if (_dir == signal.dir)
         {
-
             CurposX += signal.pair.Item1;
             CurposY += signal.pair.Item2;
 
@@ -238,19 +232,13 @@ public class DetectMove : MonoBehaviour
 
             // 타일 체크후 걸을 수 없다면..
             if (!nodes[CurposX, CurposY].isWalk)
-            {
-
-                detection = Detect.None;
-            }
+            { detection = Detect.None;}
             else
-            {
-                // 다음 칸이 공장 혹은 자원 채집하는 곳이라면..
-                detection = Detect.Move;
-            }
+            {// 다음 칸이 공장 혹은 자원 채집하는 곳이라면..
+                detection = Detect.Move;}
         }
         else
         {
-
             detection = Detect.Basic_MoveMent;
         }
     }
@@ -271,15 +259,11 @@ public class DetectMove : MonoBehaviour
             transform.position = targetVector;
             detection = Detect.None;
             return;
-            //if(direction.magnitude == 0)
         }
         else
         {
             Vector2 movement = direction.normalized * moveSpeed * Time.smoothDeltaTime;
-             
             transform.Translate(movement);
-            //{
-            //}
         }
     }
 
@@ -318,7 +302,7 @@ public class DetectMove : MonoBehaviour
     IEnumerator StopSign(float _time)
     {
         yield return new WaitForSeconds(_time);
-        Debug.Log("여기 호출되엇ㅇ므");
+        Debug.Log("정지신호 호출");
         detection = Detect.Basic_MoveMent;
         Debug.Log("detection의 상태는 " + detection);
     }

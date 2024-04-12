@@ -41,22 +41,6 @@ public class Signal : MonoBehaviour
         Right = 3
     }
 
-    // Sprite code => 해당하는 함수 호출
-    public void SetSignType(int _num, Quaternion _quaternion, int _dir, int _curposX, int _curposY)
-    {
-        nodes = TileDataManager.instance.GetNodes();
-        int number = _num;
-        Quaternion rot = _quaternion;
-        curposX = _curposX;
-        curposy = _curposY;
-        signalType = (SignalType)number + 1;    // Type + 1 값으로 enum 선언.
-        //Debug.Log("표지탑은 다음과 같습니다." + ((SignalType)number + 1));
-        dir = CheckRotation(rot);
-        spiritDir = _dir;
-        Setdirerction(dir);
-    }
-
-    // Signal의 방향을 분석하고, 
     enum SignalType
     {
         None = 0,
@@ -71,9 +55,6 @@ public class Signal : MonoBehaviour
     }
     SignalType signalType;
     
-    
-    // 해당 오브젝트가 z축으로 얼마나 회전해있는지로 방향값을 측정함
-
     public void Setdirerction(int _dir)
     {
         switch(signalType)
@@ -107,6 +88,22 @@ public class Signal : MonoBehaviour
         }
     }
 
+    #region 스프라이트 표식 분류
+    // Sprite code => 해당하는 함수 호출
+    public void SetSignType(int _num, Quaternion _quaternion, int _dir, int _curposX, int _curposY)
+    {
+        nodes = TileDataManager.instance.GetNodes();
+        int number = _num;
+        Quaternion rot = _quaternion;
+        curposX = _curposX;
+        curposy = _curposY;
+        signalType = (SignalType)number + 1;    // Type + 1 값으로 enum 선언.
+        dir = CheckRotation(rot);
+        spiritDir = _dir;
+        Setdirerction(dir);
+    }
+    #endregion
+    #region 표식방향 인지
     void Forward(int _dir)
     {  
         //Debug.Log("전진방향에서 회전방향 몇번 ? : " + _dir);
@@ -209,10 +206,17 @@ public class Signal : MonoBehaviour
 
     void Stop()
     {
-        StopPattern(3f);
+        StartCoroutine(StopPattern(3f));
         signalType = SignalType.None;
     }
+    IEnumerator StopPattern(float _time)
+    {
+        yield return new WaitForSeconds(_time);
 
+        signalType = SignalType.None;
+    }
+    #endregion
+    #region 표식회전값 체크
     int CheckRotation(Quaternion _quaternion)
     {   // Quaternion을 오일러 각도로 변환
         Vector3 eulerRotation = _quaternion.eulerAngles;
@@ -229,11 +233,5 @@ public class Signal : MonoBehaviour
 
         return intValue;
     }
-
-    IEnumerator StopPattern(float _time)
-    {
-        yield return new WaitForSeconds(_time);
-
-        signalType = SignalType.None;
-    }
+    #endregion
 }

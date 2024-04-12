@@ -140,17 +140,12 @@ public class TileDataManager : MonoBehaviour
 
     private void CheckEveryBuilding()
     {
-        buildingList = GetComponentInChildren<CraftManager>().buildingList;
+       
         CraftManager craftManager = GetComponentInChildren<CraftManager>();
 
         for(int i = 0; i < buildingList.Count; i++)
         {
-            if (craftManager.isOverTwoRoadsAttackedBuilding(buildingList[i]))
-            {
-                int[,] roadNextBuild1 = AttachedRoad[i].Item1;
-                int[,] roadNextBuild2 = AttachedRoad[i].Item2;
-              
-            }
+           
         }
     }
 }
