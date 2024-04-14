@@ -28,6 +28,9 @@ public class TileDataManager : MonoBehaviour
         Road = 3,
         Resource = 4,
         Mark = 5,
+        Rock = 6,
+        Wood = 7,
+        Elemental_Essence = 8
     }
     
     private void Awake()
@@ -115,7 +118,7 @@ public class TileDataManager : MonoBehaviour
         }
 
     }
-
+    #region 정령 타일 초기화
     private void CheckEveryTile()
     {
         for (int i = 0; i < sizeX; i++)
@@ -141,7 +144,8 @@ public class TileDataManager : MonoBehaviour
             }
         }
     }
-
+    #endregion
+    #region 빌딩 - 정령타일 동기화
     public void CheckBuildings()
     {
         buildingList = BuildingDataManager.instance.GetBuildingList(); 
@@ -165,30 +169,5 @@ public class TileDataManager : MonoBehaviour
             }
         }
     }
-
+    #endregion
 }
-  /*  static bool IsPositive(int[] array)
-    {
-        int left = 0;
-        int right = array.Length - 1;
-
-        if(right < 0)
-            return false;
-
-        while(left <= right)
-        {
-            int mid = (right - left ) / 2;
-
-            if (array[mid] > 0)
-            {
-                left = mid + 1;
-            }
-            else
-            {
-                right = mid - 1;
-            }
-        }
-        return left == array.Length;
-    }    
-}
-  */
