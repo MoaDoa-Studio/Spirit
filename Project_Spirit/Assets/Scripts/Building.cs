@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Building : MonoBehaviour
-{    
-    private Vector2Int upperRight;
-    private Vector2Int bottomLeft;
+{
+    [HideInInspector]
+    public Vector2Int upperRight;
+    [HideInInspector]
+    public Vector2Int bottomLeft;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
 
+    public int MaxPlayer = 4;
     private void Start()
     {
         connectedRoads = null;

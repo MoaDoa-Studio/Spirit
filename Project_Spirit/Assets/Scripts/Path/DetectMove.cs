@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,10 +36,11 @@ public class DetectMove : MonoBehaviour
     int[] rightY = { 0, 1, 0, -1 };
 
     public float moveSpeed = 1f;
+    public int spiritElement;
     int _dir = (int)Dir.Up;
     int spiritID;
     int signType;
-    public int spiritElement;
+    bool isFactory = false;
    
     enum Dir
     {
@@ -71,6 +74,7 @@ public class DetectMove : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         int startX = (int)startPos.x - (int)bottomLeft.x;
         int startY = (int)startPos.y - (int)bottomLeft.y;
+        
     }
     private void Update()
     {  
@@ -81,15 +85,18 @@ public class DetectMove : MonoBehaviour
                 break;
             case Detect.CheckTile:
                 CheckTile();
+                Debug.Log("체크타일");
                 break;
             case Detect.Factory_MoveMent:
-                FactoryMove();
+                FactoryWork(); // 공장에서 움직임 시작
+                Debug.Log("공장");
                 break;
             case Detect.Basic_MoveMent:
                 BaseMove();
+                Debug.Log("ㅇ움직임 체크");
                 break;
             case Detect.Factory:
-                FactoryWork();
+                FactoryWork(); // 일하는 값
                 break;
             case Detect.Loot:
                 break;
@@ -111,23 +118,31 @@ public class DetectMove : MonoBehaviour
     private void CheckTile()
     {   
         nodes = TileDataManager.instance.GetNodes();
-
+        if (isFactory) return;
         if (nodes[(int)CurposX, (int)CurposY].isWalk)
         {
-            // 노드 정령원소 확인.
-            nodes[(int)CurposX, (int)CurposY].spiritElement = spiritElement;  
-            string signName = nodes[(int)CurposX, (int)CurposY].nodeSprite.name;
-            // Sign type 판별.
-            signType = ExtractNumber(signName);  
-            
-            if (nodes[(int)CurposX, (int)CurposY].isSignal)
+            if(nodes[(int)CurposX, (int)CurposY].isBuild)
             {
-                detection = Detect.Mark_Check;
+                detection = Detect.Factory_MoveMent;
             }
-            
             else
             {
-                detection = Detect.Basic_MoveMent;
+                // 노드 정령원소 확인.
+                nodes[(int)CurposX, (int)CurposY].spiritElement = spiritElement;  
+                string signName = nodes[(int)CurposX, (int)CurposY].nodeSprite.name;
+                // Sign type 판별.
+                signType = ExtractNumber(signName);  
+            
+                if (nodes[(int)CurposX, (int)CurposY].isSignal)
+                {
+                    detection = Detect.Mark_Check;
+                }
+            
+                else
+                {
+                    detection = Detect.Basic_MoveMent;
+                }
+
             }
 
 
@@ -153,7 +168,6 @@ public class DetectMove : MonoBehaviour
             {
                 // 가야할 타일에 같은 정령이 있다면.
                 if (nodes[(int)leftx, (int)lefty].spiritElement == spiritElement) return;
-                // 공장 혹은 자원 채집하는 곳이라면.. 꽉 차있다고 하면...
                 
                 nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
                 // 왼쪽 방향으로 90도 회전 
@@ -161,50 +175,43 @@ public class DetectMove : MonoBehaviour
 
                 CurposX += frontX[_dir];
                 CurposY += frontY[_dir];
-
-                // if(nodes[curposx,curposy].isFactory) detection = Detect.EnterFactory
                 detection = Detect.Move;
                 return;
             }
         }
-        if (frontx < TileDataManager.instance.sizeX && frontx >= 0 && fronty < TileDataManager.instance.sizeY && fronty >= 0)
+         if (frontx < TileDataManager.instance.sizeX && frontx >= 0 && fronty < TileDataManager.instance.sizeY && fronty >= 0)
         {
              // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
             if (nodes[(int)frontx, (int)fronty].isWalk)
             {
                 if (nodes[(int)frontx, (int)fronty].spiritElement == spiritElement) return;
-
+               
                 nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
                 CurposX += frontX[_dir];  
-                 CurposY += frontY[_dir] ;
-
-                // if(nodes[curposx,curposy].isFactory) detection = Detect.EnterFactory
+                CurposY += frontY[_dir] ;
                 detection = Detect.Move;
                 return;
             }
         }
-        if (rightx < TileDataManager.instance.sizeX && rightx >= 0 && righty < TileDataManager.instance.sizeY && righty >= 0)
+         if (rightx < TileDataManager.instance.sizeX && rightx >= 0 && righty < TileDataManager.instance.sizeY && righty >= 0)
         {
             // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
             if (nodes[(int)rightx, (int)righty].isWalk)
             {
                 if (nodes[(int)rightx, (int)righty].spiritElement == spiritElement) return;
+                
                 nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
-                // 우측 방향이라면 90도 회전
                 _dir = (_dir - 1 + 4) % 4;
 
                  CurposX += frontX[_dir];  
                  CurposY += frontY[_dir];
-
-                // if(nodes[curposx,curposy].isFactory) detection = Detect.EnterFactory => 이동할때 점프하는 애니메이션 나오는 함수
-                detection = Detect.Move;
+                 detection = Detect.Move;
                 return;
-                
             }
         }
         else
             Debug.Log("아무것도 안들어갔음!");
-        return;
+       
     }
 
     private void StopMove()
@@ -243,10 +250,44 @@ public class DetectMove : MonoBehaviour
         }
     }
 
-    private void FactoryMove()
+    private void GetFactoryPoint()
     {
+        if (!isFactory)
+        {
+            Debug.Log("나 공장 일함? 헿");
+            Vector2 sP = nodes[(int)CurposX, (int)CurposY].building.connectedRoads.Item1;
+            Vector2 nP = nodes[(int)CurposX, (int)CurposY].building.connectedRoads.Item2;
+            Vector2 transformPosition = new Vector2(transform.position.x, transform.position.y);
+            Vector2 target = Vector2.zero;
+            float distanceToA = Vector2.Distance(transformPosition, sP);
+            float distanceToB = Vector2.Distance(transformPosition, nP);
+            if (distanceToA < distanceToB)
+            {
+                isFactory = true;
+                target = nP;
+                CurposX = target.x; CurposY = target.y;
+                RedirectionafterFactory(CurposX, CurposY);
+            }
+            else
+            {
+                isFactory = true;
+                target = sP;
+                CurposX = target.x; CurposY = target.y;
+                RedirectionafterFactory(CurposX, CurposY);
+            } 
+
+            transform.position = new Vector2(target.x + 0.5f, target.y + 0.5f);
+
+        }
         
     }
+    private void FactoryWork()
+    {
+        StartCoroutine(Buildpattern());
+        detection = Detect.None;
+        return;
+    }
+
 
     private void Move(int _curposx, int _curposy)
     {
@@ -267,20 +308,6 @@ public class DetectMove : MonoBehaviour
         }
     }
 
-    private void FactoryWork()
-    {
-        // 일하는 시간만큼 spriterenderer = null
-        float workatFactory = 10f;
-        while(workatFactory <= 0)
-        {
-            spriteRenderer.enabled = false;
-            workatFactory -= Time.deltaTime;
-        }
-        spriteRenderer.enabled = true;
-        workatFactory = 10f;
-        // 이동 로직 구현
-        detection = Detect.None;
-    }
 
     static int ExtractNumber(string input)
     {
@@ -299,6 +326,7 @@ public class DetectMove : MonoBehaviour
         }
     }
 
+
     IEnumerator StopSign(float _time)
     {
         yield return new WaitForSeconds(_time);
@@ -306,4 +334,44 @@ public class DetectMove : MonoBehaviour
         detection = Detect.Basic_MoveMent;
         Debug.Log("detection의 상태는 " + detection);
     }
+
+    IEnumerator Buildpattern()
+    {
+        GetFactoryPoint();
+        spriteRenderer.enabled = false;
+        yield return new WaitForSeconds(7f);
+
+        isFactory = false;
+        spriteRenderer.enabled = true;
+        detection = Detect.None;
+        
+    }
+
+    private void RedirectionafterFactory(float _curposX, float _curposY)
+    {
+        int[] FactorydirX = { 0, 0, 1, -1 };
+        int[] FactorydirY = { 1, -1, 0, 0 };
+
+        for(int i = 0; i < 4; i++)
+        {
+            if (nodes[(int)_curposX + FactorydirX[i], (int)_curposY + FactorydirY[i]].isBuild)
+            {
+                if (i == 0)
+                {
+                    _dir = (int)Dir.Down;
+                }
+                else if (i == 1)
+                {
+                    _dir = (int)Dir.Up;
+                }
+                else if (i == 2)
+                {
+                    _dir = (int)Dir.Left;
+                }
+                else
+                    _dir = (int)Dir.Right;
+            }
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -15,9 +16,8 @@ public class TileDataManager : MonoBehaviour
     public Sprite[] targetSprite;
     public Vector2Int position;
     public Vector2Int bottomLeft, topRight, startPos, targetPos;
-   
-    public List<Tuple<int[,], int[,]>> AttachedRoad { get; set; }
-   
+    List<Building> buildingList;
+    
     public int sizeX, sizeY;
 
     enum TileType
@@ -44,6 +44,11 @@ public class TileDataManager : MonoBehaviour
         sizeY = topRight.y - bottomLeft.y + 1;
 
         InstantiateTile();
+        CheckEveryTile();
+    }
+
+    public void Update()
+    {
         CheckEveryTile();
     }
 
@@ -124,12 +129,37 @@ public class TileDataManager : MonoBehaviour
                 {                    
                     Sprite tileSprite = (tile as Tile).sprite;
                     Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
+                    SetTileType(i,j,3); // 일단 걸을 수 있다!로 다 해놓으셈 타일있으면 => Craftmanager
                     nodes[i, j].nodeSprite = tileSprite;
                     nodes[i, j].rotation = tileRotation;
                     nodes[i, j].isWalk = true;
                     if (tileSprite == targetSprite[1] || tileSprite == targetSprite[2] || tileSprite == targetSprite[3] || tileSprite == targetSprite[4] || tileSprite == targetSprite[5] || tileSprite == targetSprite[6] || tileSprite == targetSprite[7] || tileSprite == targetSprite[8])
                     {
                         nodes[i, j].isSignal = true;
+                    }
+                }
+            }
+        }
+    }
+
+    public void CheckBuildings()
+    {
+        buildingList = BuildingDataManager.instance.GetBuildingList(); 
+        if(buildingList != null)
+        {
+            for(int i = 0; i < buildingList.Count; i++)
+            {
+                if (buildingList[i].GetConnectedRoad() != null)
+                {   for(int j = buildingList[i].upperRight.x; j >= buildingList[i].bottomLeft.x; j--)
+                    {   for(int k = buildingList[i].upperRight.y; k >= buildingList[i].bottomLeft.y; k--)
+                        {
+                            nodes[j, k].building = buildingList[i];
+                            nodes[j, k].isWalk = true;
+                            nodes[j, k].isBuild = true;
+                            Debug.Log(nodes[j, k].isWalk);
+                            SetTileType(j, k,3);
+                            CheckEveryTile();
+                        }
                     }
                 }
             }

@@ -21,6 +21,7 @@ public partial class CraftManager : MonoBehaviour
 
     private GameObject mouseIndicator;
     private Tile selectedRoad;
+    Node[,] nodes;
     private int[,] copyArray = new int[103, 103];
     private List<Vector3Int> roadBufferList = new List<Vector3Int>();    
     public bool IsPointerOverUI()
@@ -44,6 +45,7 @@ public partial class CraftManager : MonoBehaviour
         craftMode = CraftMode.None;
         mouseIndicator = null; 
         deleteStart = Vector3Int.back;
+        
     }
 
     void ChangeCraftMode(CraftMode mode)
@@ -192,6 +194,7 @@ partial class CraftManager
         
         mouseIndicator = null;
         ChangeCraftMode(CraftMode.Default);
+    
     }
 
     bool isBuildingOvelapBuilding(Vector2Int upperRight, Vector2Int bottomLeft)
@@ -406,7 +409,8 @@ partial class CraftManager
         {
             Tuple<Vector2Int, Vector2Int> buildingPos = building.GetBuildingPos();
             Tuple<Vector2Int, Vector2Int> TwoRoads = isTwoRoadsAttackedBuilding(buildingPos.Item1, buildingPos.Item2);            
-            building.SetConnectedRoad(TwoRoads);            
+            building.SetConnectedRoad(TwoRoads);
+            TileDataManager.instance.CheckBuildings();
         }
     }
     Tuple<Vector2Int, Vector2Int> isTwoRoadsAttackedBuilding(Vector2Int upperRight, Vector2Int bottomLeft)
@@ -420,7 +424,7 @@ partial class CraftManager
             int[] dy = { 1, -1, 0, 0 };
             for(int i = 0; i < 4; i++)
             {
-                if (copyArray[upperRight.x + dx[i], upperRight.y + dy[i]] == 3)
+                if (copyArray[upperRight.x + dx[i], upperRight.y + dy[i]] == 3 || nodes[upperRight.x + dx[i], upperRight.y + dy[i]].isWalk)
                     result.Add(new Vector2Int(upperRight.x + dx[i], upperRight.y + dy[i]));
             }
         }
