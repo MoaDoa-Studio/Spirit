@@ -85,15 +85,12 @@ public class DetectMove : MonoBehaviour
                 break;
             case Detect.CheckTile:
                 CheckTile();
-                Debug.Log("체크타일");
                 break;
             case Detect.Factory_MoveMent:
                 FactoryWork(); // 공장에서 움직임 시작
-                Debug.Log("공장");
                 break;
             case Detect.Basic_MoveMent:
                 BaseMove();
-                Debug.Log("ㅇ움직임 체크");
                 break;
             case Detect.Factory:
                 FactoryWork(); // 일하는 값

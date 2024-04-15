@@ -11,6 +11,8 @@ public class Node : MonoBehaviour
     public int rotationStack;   
     public int stack = 0;
     public int spiritElement;
+    public int rock_reserve;
+    public int wood_reserve;
     public bool isSignal = false;
     public bool isWalk = false;
     public bool isBuild = false;
