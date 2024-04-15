@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class ResourceDeployment : MonoBehaviour
 {
-    public Sprite[] RockSprite;
-    public Sprite[] WoodSprite;
+    public GameObject[] RockSprite;
+    public GameObject[] WoodSprite;
 
+    [SerializeField]
+    Tilemap tilemap;
     Node[,] nodes;
     int[] clusterRockGroup = new int[4];
     int[] clusterWoodGroup = new int[4];
@@ -68,6 +71,7 @@ public class ResourceDeployment : MonoBehaviour
     }
     public void PlaceTiles()
     {
+        nodes = TileDataManager.instance.GetNodes();
         (int, int) result = MakeRamdom();
 
         if (BinaryCheckOfThisTile(result.Item1, result.Item2))
@@ -90,39 +94,42 @@ public class ResourceDeployment : MonoBehaviour
                     foreach (Vector2Int coord in movedCoordinates)
                     {
                         {
-                            Debug.Log(coord);
+                            int calculating = HavingResource;
+                            //Debug.Log(coord);
+                            int x = coord.x;
+                            int y = coord.y;
+                            if(HavingResource >= 50)
+                            {   
+                                nodes[x, y].rock_reserve += 50;
+                                TileDataManager.instance.SetTileType(x, y,6);
+                                HavingResource -= 50;
+                                Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
+
+                            }
+                            else
+                            {
+                                int previousResource = HavingResource;
+                                HavingResource = 0;
+                                nodes[x, y].rock_reserve += previousResource;
+                                TileDataManager.instance.SetTileType(x,y,6);
+                                Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
+                            }
                         }
 
-
-                        //while (HavingResource >= 0)
-                        //{
-
-                        //    int Repeatvalues = HavingResource / 50;
-                        //    TileDataManager.instance.SetTileType(RandomX, RandomY, 6);
-                        //    //if (HavingResource >= 50)
-                        //{ HavingResource -= 50;
-                        //    nodes[RandomX, RandomY].rock_reserve += 50;
-                        //    Debug.Log($"{RandomX} + , + {RandomY}" + nodes[RandomX, RandomY].rock_reserve);
-
-                        //}
-                        //else
-                        //{
-                        //    int previousResouce = HavingResource;
-                        //    HavingResource = 0;
-                        //    nodes[RandomX, RandomY].rock_reserve += previousResouce; 
-                        //    Debug.Log($"{RandomX} + , + {RandomY}" + nodes[RandomX, RandomY].rock_reserve);
-                        //}
-
-                        //}
                     }
                 }
                 else
                     PlaceTiles();
                 // 어느타일에 설치할지 수행할 로직
             }
+            LocateRockTile();
         }
         else
             PlaceTiles();
+
+
+        // 실질적 타일 배치필요
+
     }
 
     List<Vector2Int> MoveCoordinatesDFS(Vector2Int currentPos, int remainingMoves, HashSet<Vector2Int> visited)
@@ -256,9 +263,9 @@ public class ResourceDeployment : MonoBehaviour
             return !foundObstacle;
         }
 
-        #region 자원배치
-        // 나무자원 배분
-        private void RandomlySetWoodResources()
+    #region 자원배치
+    // 나무자원 배분
+    private void RandomlySetWoodResources()
         {
             int total = 1200;
             int minPerGroup = 100;
@@ -289,37 +296,79 @@ public class ResourceDeployment : MonoBehaviour
             }
         }
 
-        // 돌 자원
-        private void RandomlySetRockResources()
+    // 돌 자원
+     private void RandomlySetRockResources()
+     {
+        int total = 1200;
+        int minPerGroup = 100;
+        int maxPerGroup = 400;
+
+        // 랜덤하게 그룹에 숫자 할당
+        int remaingTotal = total;
+        int[] samplegroups = new int[4];
+
+        for (int i = 0; i < samplegroups.Length - 1; i++)
         {
-            int total = 1200;
-            int minPerGroup = 100;
-            int maxPerGroup = 400;
+            samplegroups[i] += UnityEngine.Random.Range(minPerGroup, maxPerGroup + 1);
+            remaingTotal -= samplegroups[i];
 
-            // 랜덤하게 그룹에 숫자 할당
-            int remaingTotal = total;
-            int[] samplegroups = new int[4];
+        }
+        samplegroups[samplegroups.Length - 1] = remaingTotal;
+        if (samplegroups[samplegroups.Length - 1] >= 600)
+            RandomlySetRockResources();
+        else
+        {
+           // 결과 출력 
+           for (int i = 0; i < samplegroups.Length; i++)
+           {
+               //Debug.Log("돌Group의 갯수는 : " + samplegroups[i]);
+               clusterRockGroup = samplegroups;
+           }
 
-            for (int i = 0; i < samplegroups.Length - 1; i++)
+        }
+     }
+        #endregion
+
+
+    void LocateRockTile()
+    {
+        for(int i = 0; i < 103; i++)
+        {
+            for(int j = 0; j <103 ; j++)
             {
-                samplegroups[i] += UnityEngine.Random.Range(minPerGroup, maxPerGroup + 1);
-                remaingTotal -= samplegroups[i];
-
-            }
-            samplegroups[samplegroups.Length - 1] = remaingTotal;
-            if (samplegroups[samplegroups.Length - 1] >= 600)
-                RandomlySetRockResources();
-            else
-            {
-                // 결과 출력 
-                for (int i = 0; i < samplegroups.Length; i++)
+                if (nodes[i,j].rock_reserve > 0)
                 {
-                    //Debug.Log("돌Group의 갯수는 : " + samplegroups[i]);
-                    clusterRockGroup = samplegroups;
-                }
+                    Vector3Int tilePosition = new Vector3Int(i, j, 0);
+                    Vector3 vector3 = new Vector3 {x = tilePosition.x + 0.5f, y = tilePosition.y + 0.5f, z = tilePosition.z };
 
+                    int rock_Posses = nodes[i, j].rock_reserve;
+                    if(rock_Posses > 0  && rock_Posses < 10)
+                    {
+                        GameObject obj = Instantiate(RockSprite[0], vector3, Quaternion.identity);
+                    }
+                    else if(rock_Posses < 20)
+                    {
+                        GameObject obj = Instantiate(RockSprite[1], vector3, Quaternion.identity);
+                        
+                    }
+                    else if(rock_Posses < 30)
+                    {
+                        GameObject obj = Instantiate(RockSprite[2], vector3, Quaternion.identity);
+                       
+                    }
+                    else if (rock_Posses < 40)
+                    {
+                        GameObject obj = Instantiate(RockSprite[3], vector3, Quaternion.identity);
+                    }
+
+                    else
+                    {
+                        GameObject obj = Instantiate(RockSprite[4], vector3, Quaternion.identity);
+                    }
+                }
             }
         }
-        #endregion
     }
+
+}
 

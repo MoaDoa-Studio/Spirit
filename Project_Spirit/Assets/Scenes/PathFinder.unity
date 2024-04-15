@@ -167,8 +167,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077bda0e5459fd0498c5102783787510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RockSprite: []
-  WoodSprite: []
+  RockSprite:
+  - {fileID: 6835534066846945486, guid: 11ef1c383e874eb4a8ad313e82912c5a, type: 3}
+  - {fileID: 5716883971145630562, guid: eb2f8f7c90714ed408c914fe62786440, type: 3}
+  - {fileID: 4947955621917696878, guid: e099ccf6a4864104c9416613c12e52f9, type: 3}
+  - {fileID: 6323527270661432302, guid: d757d69c6aa4b68418a321d660493a5c, type: 3}
+  - {fileID: 483521922270551017, guid: cb44d82ab3aa67d47bc7b1375138142b, type: 3}
+  WoodSprite:
+  - {fileID: 747160063, guid: 20df27a95e4b4b0408beee55f99b9702, type: 3}
+  - {fileID: -2065009413, guid: 20df27a95e4b4b0408beee55f99b9702, type: 3}
+  - {fileID: -1145607091, guid: 20df27a95e4b4b0408beee55f99b9702, type: 3}
+  - {fileID: -1679584796, guid: 20df27a95e4b4b0408beee55f99b9702, type: 3}
+  - {fileID: 1451804117, guid: 20df27a95e4b4b0408beee55f99b9702, type: 3}
+  tilemap: {fileID: 1665831515}
 --- !u!1 &80033456
 GameObject:
   m_ObjectHideFlags: 0
@@ -52523,8 +52534,8 @@ Tilemap:
   - first: {x: 76, y: 50, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -106352,11 +106363,15 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 10609
+  - m_RefCount: 10608
     m_Data: {fileID: 11400000, guid: a6200ee59e7243246a83e01b4f2dc8c1, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: ed84657af5e8df74cb937ae8a496714a, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 10609
+  - m_RefCount: 10608
     m_Data: {fileID: 21300000, guid: 0c71488c36496a64c9a849812ae499b3, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 0d467457204169645a011ff3cdc58004, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 10609
     m_Data:

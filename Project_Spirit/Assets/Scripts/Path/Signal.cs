@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 
 public class Signal : MonoBehaviour
 {
-    public Dictionary<Vector3Int, Quaternion> tileRotations = new Dictionary<Vector3Int, Quaternion>(); // 타일의 위치와 회전 정보를 저장할 딕셔너리
+    //public Dictionary<Vector3Int, Quaternion> tileRotations = new Dictionary<Vector3Int, Quaternion>(); // 타일의 위치와 회전 정보를 저장할 딕셔너리
 
     [SerializeField]
     Sprite[] signalSprite;
