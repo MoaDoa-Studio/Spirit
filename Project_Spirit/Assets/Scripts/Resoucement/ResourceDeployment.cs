@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -11,15 +12,15 @@ public class ResourceDeployment : MonoBehaviour
 
     [SerializeField]
     Tilemap tilemap;
+    [SerializeField]
+    Transform Woodparent;
+    [SerializeField]
+    Transform Rockparent;
+
     Node[,] nodes;
     int[] clusterRockGroup = new int[4];
     int[] clusterWoodGroup = new int[4];
-    int resourceCount = 1200;
-
-    int clusterCount = 4;
-    int minResource = 100;
-    int maxResource = 600;
-
+    
     enum Direction
     {
         Up,
@@ -59,246 +60,163 @@ public class ResourceDeployment : MonoBehaviour
             for (int j = 0; j <= 2; j++)
                 TileDataManager.instance.SetTileType(i, j, 1);
         }
-
+        
     }
 
-    public (int,int) MakeRamdom()
+    public (int, int) MakeRamdom()
     {
-        int RandomX = UnityEngine.Random.Range(0, 103);
-        int RandomY = UnityEngine.Random.Range(0, 103);
-        
+        int RandomX = UnityEngine.Random.Range(10, 93);
+        int RandomY = UnityEngine.Random.Range(10, 93);
+
         return (RandomX, RandomY);
     }
-    public void PlaceTiles()
+    public void PlaceRockTiles()
     {
         nodes = TileDataManager.instance.GetNodes();
         (int, int) result = MakeRamdom();
 
-        if (BinaryCheckOfThisTile(result.Item1, result.Item2))
+        for (int i = 0; i < clusterRockGroup.Length; i++)
         {
-            for (int i = 0; i < clusterRockGroup.Length; i++)
+            int HavingResource = clusterRockGroup[i];
+            int checks = HavingResource / 50;
+            if (HavingResource % 50 != 0) checks += 1;
+            Debug.Log(checks);
+            (int, int) resultvalue = MakeRamdom();
+            Vector2Int inmethodRandom = GetChangeVector2Int(resultvalue.Item1, resultvalue.Item2);
+
+            List<Vector2Int> movedCoordinates = GetBFSPositions(inmethodRandom, checks);
+            Debug.Log("Found Path : ");
+            // 얻은 좌표들을 출력
+            foreach (Vector2Int coord in movedCoordinates)
             {
-                int HavingResource = clusterRockGroup[i];
-                int checks = HavingResource / 50;
-                if (HavingResource % 50 != 0) checks += 1;
-                Debug.Log(checks);
-                (int, int) resultvalue = MakeRamdom();
-                Vector2Int inmethodRandom = GetChangeVector2Int(resultvalue.Item1, resultvalue.Item2);
-
-                if (BinaryCheckOfThisTile(inmethodRandom.x, inmethodRandom.y))
                 {
-
-                    List<Vector2Int> movedCoordinates = MoveCoordinatesDFS(inmethodRandom, checks, new HashSet<Vector2Int>());
-                    Debug.Log("Found Path : ");
-                    // 얻은 좌표들을 출력
-                    foreach (Vector2Int coord in movedCoordinates)
+                    int calculating = HavingResource;
+                    //Debug.Log(coord);
+                    int x = coord.x;
+                    int y = coord.y;
+                    if (HavingResource >= 50)
                     {
+                        nodes[x, y].rock_reserve += 50;
+                        if (nodes[x,y].rock_reserve > 0) 
                         {
-                            int calculating = HavingResource;
-                            //Debug.Log(coord);
-                            int x = coord.x;
-                            int y = coord.y;
-                            if(HavingResource >= 50)
-                            {   
-                                nodes[x, y].rock_reserve += 50;
-                                TileDataManager.instance.SetTileType(x, y,6);
-                                HavingResource -= 50;
-                                Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
-
-                            }
-                            else
-                            {
-                                int previousResource = HavingResource;
-                                HavingResource = 0;
-                                nodes[x, y].rock_reserve += previousResource;
-                                TileDataManager.instance.SetTileType(x,y,6);
-                                Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
-                            }
+                            TileDataManager.instance.SetTileType(x, y, 6);
+                            Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
                         }
+                        HavingResource -= 50;
 
-                    }
-                }
-                else
-                    PlaceTiles();
-                // 어느타일에 설치할지 수행할 로직
-            }
-            LocateRockTile();
-        }
-        else
-            PlaceTiles();
-
-
-        // 실질적 타일 배치필요
-
-    }
-
-    List<Vector2Int> MoveCoordinatesDFS(Vector2Int currentPos, int remainingMoves, HashSet<Vector2Int> visited)
-    {
-        List<Vector2Int> movedCoords = new List<Vector2Int>();
-
-        if (remainingMoves == 1)
-        {   
-            movedCoords.Add(currentPos);
-            return movedCoords;
-        }
-        visited.Add(currentPos);
-
-        // 랜덤하게 상하좌우중 하나로 이동하며 DFS 수행
-        Direction[] directions = (Direction[])System.Enum.GetValues(typeof(Direction));
-        ShuffleArray(directions); // 방향을 랜덤하게 섞음
-        foreach (Direction dir in directions)
-        {
-            Vector2Int nextPos = Move(currentPos, dir);
-            // 방문한 적이 없는 좌표라면
-            if (!visited.Contains(nextPos))
-            {
-                if (BinaryCheckOfThisTile(nextPos.x, nextPos.y))
-                {
-                    List<Vector2Int> nextCoords = MoveCoordinatesDFS(nextPos, remainingMoves - 1, visited);
-                    if (nextCoords != null)
-                    {
-                        movedCoords.Add(currentPos);
-                        movedCoords.AddRange(nextCoords);
-                        // 단 하나의 경우의 수만 보고 싶으므로, 첫 번째 경우의 수를 찾았으면 더 이상의 탐색은 중단
-                        break;
-                    }
-                }
-            }
-        }
-
-            // DFS 종료되면 현재 위치를 다시 방문 가능 상태로 변경
-            visited.Remove(currentPos);
-        return movedCoords;
-    }
-
-    Vector2Int Move(Vector2Int _currentPos, Direction dir)
-    {
-        switch (dir)
-        {
-            case Direction.Up:
-                return new Vector2Int(_currentPos.x, _currentPos.y + 1);
-            case Direction.Down:
-                return new Vector2Int(_currentPos.x, _currentPos.y - 1);
-            case Direction.Left:
-                return new Vector2Int(_currentPos.x - 1, _currentPos.y);
-            case Direction.Right:
-                return new Vector2Int(_currentPos.x + 1, _currentPos.y);
-            default:
-                return _currentPos;
-        }
-    }
-
-    void ShuffleArray<T>(T[] array)
-    {
-        for (int i = array.Length - 1; i > 0; i--)
-        {
-            int randomIndex = Random.Range(0, i + 1);
-            T temp = array[i];
-            array[i] = array[randomIndex];
-            array[randomIndex] = temp;
-        }
-    }
-    Vector2Int GetChangeVector2Int(int a, int b)
-    {
-        return new Vector2Int(a, b);
-    }
-
-    // 100칸 이내 요람, 원소 생산건물 . 장애물이 발견되지 않으면 true 반환
-    private bool BinaryCheckOfThisTile(int x, int y)
-        {
-            bool foundObstacle = false;
-             if (x < 0 || y < 0)
-             {
-                 return false;
-             }
-            int startX = x - 10;
-            if (startX <= 0) startX = 0;
-            int startY = y - 10;
-            if (startY <= 0) startY = 0;
-            int endX = x + 10;
-            if (endX >= 103) endX = 102;
-            int endY = y + 10;
-            if (endY >= 103) endY = 102;
-
-
-            while (startX <= endX)
-            {
-                if (TileDataManager.instance.GetTileType(startX, y) == 1 || TileDataManager.instance.GetTileType(startX, y) == 2)
-                {
-                    foundObstacle = true;
-                    break;
-                }
-                else
-                {
-                    startX += 1;
-                    if (startX >= 102 || startX < 0)
-                    {
-                        foundObstacle = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!foundObstacle)
-            {
-                while (startY <= endY)
-                {
-                    if (TileDataManager.instance.GetTileType(x, startY) == 1 || TileDataManager.instance.GetTileType(x, startY) == 2)
-                    {
-                        foundObstacle = true;
-                        break;
                     }
                     else
                     {
-                        startY += 1;
-                        if (startY >= 102 || startY < 0)
+                        int previousResource = HavingResource;
+                        HavingResource = 0;
+                        nodes[x, y].rock_reserve += previousResource;
+                        if (nodes[x, y].rock_reserve > 0)
                         {
-                            foundObstacle = true;
-                            break;
+                            TileDataManager.instance.SetTileType(x, y, 6);
+                            Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
                         }
+                             
                     }
                 }
 
+                    
             }
-            return !foundObstacle;
+              
+        }
+        
+        AllocateRock_Placement();
+    }
+    
+    public void PlaceWoodTiles()
+    {
+        nodes = TileDataManager.instance.GetNodes();
+        (int, int) result = MakeRamdom();
+
+        for (int i = 0; i < clusterWoodGroup.Length; i++)
+        {
+            int HavingResource = clusterWoodGroup[i];
+            int checks = HavingResource / 50;
+            if (HavingResource % 50 != 0) checks += 1;
+            Debug.Log(checks);
+            (int, int) resultvalue = MakeRamdom();
+            Vector2Int inmethodRandom = GetChangeVector2Int(resultvalue.Item1, resultvalue.Item2);
+
+            List<Vector2Int> movedCoordinates = GetBFSPositions(inmethodRandom, checks);
+            Debug.Log("Found Path : ");
+            // 얻은 좌표들을 출력
+            foreach (Vector2Int coord in movedCoordinates)
+            {   
+                int calculating = HavingResource;
+                //Debug.Log(coord);
+                int x = coord.x;
+                int y = coord.y;
+                if (HavingResource >= 50)
+                {
+                    nodes[x, y].wood_reserve += 50;
+                    if (nodes[x, y].wood_reserve > 0)
+                    {
+                        TileDataManager.instance.SetTileType(x, y, 7);
+                        Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
+                    }
+                    HavingResource -= 50;
+
+                }
+                else
+                {
+                    int previousResource = HavingResource;
+                    HavingResource = 0;
+                    nodes[x, y].wood_reserve += previousResource;
+                    if (nodes[x, y].wood_reserve > 0)
+                    {
+                        TileDataManager.instance.SetTileType(x, y, 7);
+                        Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
+                    }
+
+                }
+                
+            }
+
         }
 
-    #region 자원배치
+        AllocateWood_Placement();
+    }
+
+    #region 랜덤 생성
     // 나무자원 배분
     private void RandomlySetWoodResources()
+    {
+        int total = 1200;
+        int minPerGroup = 100;
+        int maxPerGroup = 400;
+
+        // 랜덤하게 그룹에 숫자 할당
+        int remaingTotal = total;
+        int[] samplegroups = new int[4];
+
+        for (int i = 0; i < samplegroups.Length - 1; i++)
         {
-            int total = 1200;
-            int minPerGroup = 100;
-            int maxPerGroup = 400;
+            samplegroups[i] += UnityEngine.Random.Range(minPerGroup, maxPerGroup + 1);
+            remaingTotal -= samplegroups[i];
 
-            // 랜덤하게 그룹에 숫자 할당
-            int remaingTotal = total;
-            int[] samplegroups = new int[4];
-
-            for (int i = 0; i < samplegroups.Length - 1; i++)
-            {
-                samplegroups[i] += UnityEngine.Random.Range(minPerGroup, maxPerGroup + 1);
-                remaingTotal -= samplegroups[i];
-
-            }
-            samplegroups[samplegroups.Length - 1] = remaingTotal;
-            if (samplegroups[samplegroups.Length - 1] >= 600)
-                RandomlySetWoodResources();
-            else
-            {
-                // 결과 출력 
-                for (int i = 0; i < samplegroups.Length; i++)
-                {
-                    //Debug.Log("나무Group의 갯수는 : " + samplegroups[i]);
-                    clusterWoodGroup = samplegroups;
-                }
-
-            }
         }
+        samplegroups[samplegroups.Length - 1] = remaingTotal;
+        if (samplegroups[samplegroups.Length - 1] >= 600)
+            RandomlySetWoodResources();
+        else
+        {
+            // 결과 출력 
+            for (int i = 0; i < samplegroups.Length; i++)
+            {
+                //Debug.Log("나무Group의 갯수는 : " + samplegroups[i]);
+                clusterWoodGroup = samplegroups;
+            }
+
+        }
+    }
 
     // 돌 자원
-     private void RandomlySetRockResources()
-     {
+    private void RandomlySetRockResources()
+    {
         int total = 1200;
         int minPerGroup = 100;
         int maxPerGroup = 400;
@@ -318,57 +236,244 @@ public class ResourceDeployment : MonoBehaviour
             RandomlySetRockResources();
         else
         {
-           // 결과 출력 
-           for (int i = 0; i < samplegroups.Length; i++)
-           {
-               //Debug.Log("돌Group의 갯수는 : " + samplegroups[i]);
-               clusterRockGroup = samplegroups;
-           }
+            // 결과 출력 
+            for (int i = 0; i < samplegroups.Length; i++)
+            {
+                Debug.Log("돌Group의 갯수는 : " + samplegroups[i]);
+                clusterRockGroup = samplegroups;
+            }
 
         }
-     }
-        #endregion
-
-
-    void LocateRockTile()
+    }
+    private void AllocateWood_Placement()
     {
-        for(int i = 0; i < 103; i++)
+        for (int i = 0; i < 103; i++)
         {
-            for(int j = 0; j <103 ; j++)
+            for (int j = 0; j < 103; j++)
             {
-                if (nodes[i,j].rock_reserve > 0)
+                if (nodes[i, j].wood_reserve > 0)
                 {
                     Vector3Int tilePosition = new Vector3Int(i, j, 0);
-                    Vector3 vector3 = new Vector3 {x = tilePosition.x + 0.5f, y = tilePosition.y + 0.5f, z = tilePosition.z };
+                    Vector3 vector3 = new Vector3 { x = tilePosition.x + 0.5f, y = tilePosition.y + 0.5f, z = tilePosition.z };
 
-                    int rock_Posses = nodes[i, j].rock_reserve;
-                    if(rock_Posses > 0  && rock_Posses < 10)
+                    int rock_Posses = nodes[i, j].wood_reserve;
+                    if (rock_Posses > 0 && rock_Posses < 10)
                     {
-                        GameObject obj = Instantiate(RockSprite[0], vector3, Quaternion.identity);
+                        GameObject obj = Instantiate(WoodSprite[0], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Woodparent);
                     }
-                    else if(rock_Posses < 20)
+                    else if (rock_Posses < 20)
                     {
-                        GameObject obj = Instantiate(RockSprite[1], vector3, Quaternion.identity);
-                        
+                        GameObject obj = Instantiate(WoodSprite[1], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Woodparent);
                     }
-                    else if(rock_Posses < 30)
+                    else if (rock_Posses < 30)
                     {
-                        GameObject obj = Instantiate(RockSprite[2], vector3, Quaternion.identity);
-                       
+                        GameObject obj = Instantiate(WoodSprite[2], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Woodparent);
                     }
                     else if (rock_Posses < 40)
                     {
-                        GameObject obj = Instantiate(RockSprite[3], vector3, Quaternion.identity);
+                        GameObject obj = Instantiate(WoodSprite[3], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Woodparent);
                     }
-
                     else
                     {
-                        GameObject obj = Instantiate(RockSprite[4], vector3, Quaternion.identity);
+                        GameObject obj = Instantiate(WoodSprite[4], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Woodparent);
                     }
                 }
             }
         }
     }
 
+    private void AllocateRock_Placement()
+    {
+        for (int i = 0; i < 103; i++)
+        {
+            for (int j = 0; j < 103; j++)
+            {
+                if (nodes[i, j].rock_reserve > 0)
+                {
+                    Vector3Int tilePosition = new Vector3Int(i, j, 0);
+                    Vector3 vector3 = new Vector3 { x = tilePosition.x + 0.5f, y = tilePosition.y + 0.5f, z = tilePosition.z };
+
+                    int rock_Posses = nodes[i, j].rock_reserve;
+                    if (rock_Posses > 0 && rock_Posses < 10)
+                    {
+                        GameObject obj = Instantiate(RockSprite[0], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Rockparent);
+                    }
+                    else if (rock_Posses < 20)
+                    {
+                        GameObject obj = Instantiate(RockSprite[1], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Rockparent);
+
+                    }
+                    else if (rock_Posses < 30)
+                    {
+                        GameObject obj = Instantiate(RockSprite[2], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Rockparent);
+
+                    }
+                    else if (rock_Posses < 40)
+                    {
+                        GameObject obj = Instantiate(RockSprite[3], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Rockparent);
+                    }
+                    else
+                    {
+                        GameObject obj = Instantiate(RockSprite[4], vector3, Quaternion.identity);
+                        obj.transform.SetParent(Rockparent);
+                    }
+                }
+            }
+        }
+    }
+
+    #endregion
+    
+    #region 최적합 자원배치
+
+    // BFS 알고리즘을 사용하여 이동할 위치를 저장할 리스트
+    List<Vector2Int> visitedPositions = new List<Vector2Int>();
+
+    // BFS 알고리즘을 사용하여 이동한 위치를 반환하는 함수
+    List<Vector2Int> GetBFSPositions(Vector2Int startPosition, int moveCount)
+    {
+        visitedPositions = new List<Vector2Int>();
+        MoveCoordinateToBFS(startPosition, moveCount);
+        return visitedPositions;
+    }
+
+
+    // BFS 알고리즘 구현
+    public void MoveCoordinateToBFS(Vector2Int start, int moveCount)
+    {
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        queue.Enqueue(start);
+        visitedPositions.Add(start);
+        
+        while (queue.Count > 0 && visitedPositions.Count < moveCount)
+        {
+            Vector2Int current = queue.Dequeue();
+            bool isValidPath = false;
+
+            foreach (Direction dir in System.Enum.GetValues(typeof(Direction)))
+            {
+                Vector2Int next = GetNextPosition(current, dir);
+                if (BinaryCheckOfThisTile(next.x, next.y) && IsAdjacentToVisitedPosition(next))
+                {
+                    if (!visitedPositions.Contains(next))
+                    {
+                        visitedPositions.Add(next);
+                        queue.Enqueue(next);
+                        isValidPath = true;
+                    }
+
+                }
+            }
+
+            // 현재 위치에서 유효한 경로가 없으면 방문한 위치를 모두 비우고 다시 시작
+            if (!isValidPath)
+            {
+                visitedPositions.Clear();
+                visitedPositions.Add(start);
+                queue.Clear();
+                queue.Enqueue(start);
+                int restartX = UnityEngine.Random.Range(10, 93);
+                int restartY = UnityEngine.Random.Range(10, 93);
+
+                start = new Vector2Int(restartX, restartY);
+            }
+        }
+    }
+
+    // 다음 위치 계산.
+    Vector2Int GetNextPosition(Vector2Int current, Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                return current + Vector2Int.up;
+            case Direction.Down:
+                return current + Vector2Int.down;
+            case Direction.Left:
+                return current + Vector2Int.left;
+            case Direction.Right:
+                return current + Vector2Int.right;
+            default:
+                return current;
+        }
+    }
+
+
+    // 새로운 위치가 이미 방문한 위치에 인접한지 확인하는 함수
+    private bool IsAdjacentToVisitedPosition(Vector2Int position)
+    {
+        foreach (Vector2Int visitedPos in visitedPositions)
+        {
+            if (Mathf.Abs(position.x - visitedPos.x) <= 1 && Mathf.Abs(position.y - visitedPos.y) <= 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    #endregion
+    private bool BinaryCheckOfThisTile(int x, int y)
+    {
+        bool foundObstacle = false;
+        if (x < 0 || y < 0 || x >= 102 || y >= 102) // 맵 범위를 벗어난 경우
+        {
+            return false;
+        }
+
+        for (int i = x - 10; i <= x + 10; i++)
+        {
+            for (int j = y - 10; j <= y + 10; j++)
+            {
+                if (i < 0 || j < 0 || i >= 102 || j >= 102) // 맵 범위를 벗어난 경우
+                {
+                    continue;
+                }
+
+                if (TileDataManager.instance.GetTileType(i, j) == 1 || TileDataManager.instance.GetTileType(i, j) == 2)
+                {
+                    foundObstacle = true;
+                    break;
+                }
+            }
+            if (foundObstacle)
+            {
+                break;
+            }
+        }
+
+        for (int i = x - 4; i <= x + 4; i++)
+        {
+            for (int j = y - 4; j <= y + 4; j++)
+            {
+                if (TileDataManager.instance.GetTileType(i, j) == 6 || TileDataManager.instance.GetTileType(i, j) == 7)
+                {
+                    foundObstacle = true;
+                    break;
+                }
+            }
+            if (foundObstacle)
+                break;
+        }
+
+        
+        return !foundObstacle;
+    }
+    Vector2Int GetChangeVector2Int(int a, int b)
+    {
+        return new Vector2Int(a, b);
+    }
+
+
 }
+
+
 
