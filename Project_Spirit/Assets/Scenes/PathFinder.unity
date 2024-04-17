@@ -171,8 +171,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1665831515}
-  Woodparent: {fileID: 452558092}
-  Rockparent: {fileID: 913614388}
+  Wood_Parent: {fileID: 452558092}
+  Rock_Parent: {fileID: 913614388}
+  ResourceBuildingPrefab: {fileID: 7159466253152640370, guid: 903da2c65f0f77947a75850461a90646, type: 3}
   RockSprite:
   - {fileID: 6835534066846945486, guid: 11ef1c383e874eb4a8ad313e82912c5a, type: 3}
   - {fileID: 5716883971145630562, guid: eb2f8f7c90714ed408c914fe62786440, type: 3}

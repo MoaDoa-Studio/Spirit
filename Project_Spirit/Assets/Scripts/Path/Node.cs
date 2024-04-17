@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -20,7 +21,9 @@ public class Node : MonoBehaviour
     public bool isLoot = false;
     public Sprite nodeSprite;
     public Building building;
-    
+    public ResourceBuilding resourceBuilding;
+    public List<KeyValuePair<Vector2Int, int>> AnytypeofPariedCoordinates;
+
     // Tile 90, 180, 270µµ
     // (0.00000, 0.00000, 0.70711, 0.70711) , (0.00000, 0.00000, 1.00000, 0.00000), (0.00000, 0.00000, -0.70711, 0.70711)
     public Quaternion rotation;
@@ -33,4 +36,29 @@ public class Node : MonoBehaviour
     public float x;
     public float y;
     
+    enum NodeType
+    {
+        None = 0,
+        Building = 1,
+        Cradle = 2,
+        Road = 3,
+        Resource = 4,
+        Mark = 5,
+        Rock = 6,
+        Wood = 7,
+        Elemental_Essence = 8
+    }
+    NodeType nodeType = NodeType.None;
+    public void SetNodeType(int type)
+    {
+        nodeType = (NodeType)type;
+       
+    }
+
+    public int GetNodeType()
+    {
+        return (int)nodeType;
+    }
+
+   
 }

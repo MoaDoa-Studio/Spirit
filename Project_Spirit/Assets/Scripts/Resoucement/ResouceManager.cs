@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -11,13 +12,14 @@ public class ResouceManager : MonoBehaviour
     public List<KeyValuePair<Vector2Int, int>> rpariedCoordinates = new List<KeyValuePair<Vector2Int, int>>();
     GameObject[] RockSprite;
     GameObject[] WoodSprite;
-    [SerializeField]
-    Transform Woodparent;
-    [SerializeField]
-    Transform Rockparent;
-    public bool resourceDeployed = false;
 
+    public List<GameObject> WoodObjects;
+    public List<GameObject> RockObjects;
+
+    public bool resourceDeployed = false;
+    Node[,] nodes;
     float IncreasingTime = 1f;
+
     private void Update()
     {
         if (resourceDeployed)
@@ -39,8 +41,8 @@ public class ResouceManager : MonoBehaviour
     void IncresementRockValue()
     {
         int randomlyselectednum = UnityEngine.Random.Range(0, 4);
-        
-        List<KeyValuePair<Vector2Int, int>> selectedPairedList = RockAllpaired[randomlyselectednum];
+
+        List<KeyValuePair<Vector2Int, int>> selectedPairedList = RockObjects[randomlyselectednum].GetComponent<ResourceBuilding>().resourceBuilding;
         Vector2Int minCoord = selectedPairedList[0].Key;
         int minvalue = selectedPairedList[0].Value;
         foreach (KeyValuePair<Vector2Int, int> pair in selectedPairedList)
@@ -68,7 +70,7 @@ public class ResouceManager : MonoBehaviour
                 }
             }
             selectedPairedList.Add(updatedPair);
-            RelocateTileasRock(minCoord, updatedPair.Value);
+            RelocateTileasRock(minCoord, updatedPair.Value, RockObjects[randomlyselectednum]);
             // 타일 변경
             CalculateTotalAmountofRock(selectedPairedList);
         }
@@ -77,12 +79,16 @@ public class ResouceManager : MonoBehaviour
             Debug.Log("Over 50 resource has occured!");
             Vector2Int ValidLocation = FindNewTileisPossible(selectedPairedList);
             TileDataManager.instance.SetTileType(ValidLocation.x, ValidLocation.y, 6);
+            nodes = TileDataManager.instance.GetNodes();
+            nodes[ValidLocation.x, ValidLocation.y].resourceBuilding = RockObjects[randomlyselectednum].GetComponent<ResourceBuilding>();
+            nodes[ValidLocation.x, ValidLocation.y].resourceBuilding.UpdateFieldStatus();
+
             KeyValuePair<Vector2Int, int> newPair = new KeyValuePair<Vector2Int, int>(ValidLocation, 1);
             selectedPairedList.Add(newPair);
         }
     }
 
-    void RelocateTileasRock(Vector2Int minCoord, int _updateValue)
+    void RelocateTileasRock(Vector2Int minCoord, int _updateValue, GameObject _setparents)
     {
         Vector3 col = new Vector3(minCoord.x + 0.5f, minCoord.y + 0.5f, 0);
         Collider[] colliders = Physics.OverlapSphere(col, 0.2f);
@@ -94,31 +100,31 @@ public class ResouceManager : MonoBehaviour
         if (_updateValue > 0 && _updateValue < 10)
         {
             GameObject obj = Instantiate(RockSprite[0], col, Quaternion.identity);
-            obj.transform.SetParent(Rockparent);
+            obj.transform.SetParent(_setparents.transform);
         }
         else if (_updateValue < 20)
         {
             GameObject obj = Instantiate(RockSprite[1], col, Quaternion.identity);
-            obj.transform.SetParent(Rockparent);
+            obj.transform.SetParent(_setparents.transform);
         }
         else if (_updateValue < 30)
         {
             GameObject obj = Instantiate(RockSprite[2], col, Quaternion.identity);
-            obj.transform.SetParent(Rockparent);
+            obj.transform.SetParent(_setparents.transform);
         }
         else if (_updateValue < 40)
         {
             GameObject obj = Instantiate(RockSprite[3], col, Quaternion.identity);
-            obj.transform.SetParent(Rockparent);
+            obj.transform.SetParent(_setparents.transform);
         }
         else
         {
             GameObject obj = Instantiate(RockSprite[4], col, Quaternion.identity);
-            obj.transform.SetParent(Rockparent);
+            obj.transform.SetParent(_setparents.transform);
         }
     }
 
-    void CalculateTotalAmountofRock(List<KeyValuePair<Vector2Int, int>> selected)
+    Tuple<List<KeyValuePair<Vector2Int, int>>, int> CalculateTotalAmountofRock(List<KeyValuePair<Vector2Int, int>> selected)
     {
         int total = 0;
         foreach (KeyValuePair<Vector2Int, int> pair in selected)
@@ -126,6 +132,7 @@ public class ResouceManager : MonoBehaviour
             int value = pair.Value;
             total += value;
         }
+        return Tuple.Create(selected,total);
     }
 
     Vector2Int FindNewTileisPossible(List<KeyValuePair<Vector2Int, int>> findValue)

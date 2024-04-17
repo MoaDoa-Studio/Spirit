@@ -129,17 +129,20 @@ public class TileDataManager : MonoBehaviour
                 if (tile != null)
                 {
                     Sprite tileSprite = (tile as Tile).sprite;
+                    // 빌딩 혹은 자원 아니면
                     if (GetTileType(i, j) != 6 || GetTileType(i, j) != 7)
                     {
                         Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
                         nodes[i, j].rotation = tileRotation;
 
                     }
+                   
                     SetTileType(i, j, 3); // 일단 걸을 수 있다!로 다 해놓으셈 타일있으면 => Craftmanager
                     nodes[i, j].nodeSprite = tileSprite;
                     nodes[i, j].isWalk = true;
                     if (tileSprite == targetSprite[1] || tileSprite == targetSprite[2] || tileSprite == targetSprite[3] || tileSprite == targetSprite[4] || tileSprite == targetSprite[5] || tileSprite == targetSprite[6] || tileSprite == targetSprite[7] || tileSprite == targetSprite[8])
                     {
+                        nodes[i, j].SetNodeType(5);
                         nodes[i, j].isSignal = true;
                     }
                 }
@@ -164,6 +167,7 @@ public class TileDataManager : MonoBehaviour
                             nodes[j, k].building = buildingList[i];
                             nodes[j, k].isWalk = true;
                             nodes[j, k].isBuild = true;
+                            nodes[j, k].SetNodeType(1);
                             Debug.Log(nodes[j, k].isWalk);
                             SetTileType(j, k, 3);
                             CheckEveryTile();

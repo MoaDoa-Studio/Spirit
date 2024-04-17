@@ -11,15 +11,15 @@ public class ResourceDeployment : MonoBehaviour
     [SerializeField]
     Tilemap tilemap;
     [SerializeField]
-    Transform Woodparent;
+    Transform Wood_Parent;
     [SerializeField]
-    Transform Rockparent;
+    Transform Rock_Parent;
+    [SerializeField]
+    GameObject ResourceBuildingPrefab;
 
     Node[,] nodes;
-    List<List<KeyValuePair<Vector2Int, int>>> WoodAllpaired;
-    List<List<KeyValuePair<Vector2Int, int>>> RockAllpaired;
-    List<KeyValuePair<Vector2Int, int>> wpariedCoordinates;
-    List<KeyValuePair<Vector2Int, int>> rpariedCoordinates;
+    List<GameObject> WoodObjects;
+    List<GameObject> RockObjects;
      
     public GameObject[] RockSprite;
     public GameObject[] WoodSprite;
@@ -35,11 +35,9 @@ public class ResourceDeployment : MonoBehaviour
     }
     private void Start()
     {
-        WoodAllpaired = GetComponent<ResouceManager>().WoodAllpaired;
-        RockAllpaired = GetComponent<ResouceManager>().RockAllpaired;
-        wpariedCoordinates = GetComponent<ResouceManager>().wpariedCoordinates;
-        rpariedCoordinates = GetComponent<ResouceManager>().rpariedCoordinates;
-
+        WoodObjects = GetComponent<ResouceManager>().WoodObjects;
+        RockObjects = GetComponent<ResouceManager>().RockObjects;
+        
         SetDefaultMapResource();
         RandomlySetRockResources();
         RandomlySetWoodResources();
@@ -90,6 +88,9 @@ public class ResourceDeployment : MonoBehaviour
 
         for (int i = 0; i < clusterRockGroup.Length; i++)
         {
+            // 각 반복마다 새로운 리스트를 생성
+            List<KeyValuePair<Vector2Int, int>> rpariedCoordinates = new List<KeyValuePair<Vector2Int, int>>();
+
             int HavingResource = clusterRockGroup[i];
             int checks = HavingResource / 50;
             if (HavingResource % 50 != 0) checks += 1;
@@ -112,6 +113,8 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x,y].rock_reserve > 0) 
                     {
                         TileDataManager.instance.SetTileType(x, y, 6);
+                        nodes[x, y].SetNodeType(6);
+                        nodes[x, y].AnytypeofPariedCoordinates = rpariedCoordinates;
                        // Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
                         rpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, 50));
                     }
@@ -126,6 +129,8 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x, y].rock_reserve > 0)
                     {
                         TileDataManager.instance.SetTileType(x, y, 6);
+                        nodes[x, y].SetNodeType(6);
+                        //nodes[x, y].resourceBuilding = rpariedCoordinates;
                         //Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
                         rpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, previousResource));
                     }
@@ -133,11 +138,14 @@ public class ResourceDeployment : MonoBehaviour
                 }
            
             }
+            GameObject prefabInstance = Instantiate(ResourceBuildingPrefab);
+            prefabInstance.transform.SetParent(Rock_Parent);
+            prefabInstance.GetComponent<ResourceBuilding>().resourceBuilding = rpariedCoordinates;
 
-            RockAllpaired.Add(rpariedCoordinates);
+            RockObjects.Add(prefabInstance);
+            AllocateRock_Placement(prefabInstance);
         }
        
-        AllocateRock_Placement();
     }
     
     public void PlaceWoodTiles()
@@ -147,6 +155,9 @@ public class ResourceDeployment : MonoBehaviour
 
         for (int i = 0; i < clusterWoodGroup.Length; i++)
         {
+            // 각 반복마다 새로운 리스트를 생성
+            List<KeyValuePair<Vector2Int, int>> wpariedCoordinates = new List<KeyValuePair<Vector2Int, int>>();
+
             int HavingResource = clusterWoodGroup[i];
             int checks = HavingResource / 50;
             if (HavingResource % 50 != 0) checks += 1;
@@ -169,6 +180,8 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x, y].wood_reserve > 0)
                     {
                         TileDataManager.instance.SetTileType(x, y, 7);
+                        nodes[x,y].SetNodeType(7);
+                        nodes[x, y].AnytypeofPariedCoordinates = wpariedCoordinates;
                        // Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
                         wpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, 50));
                     }
@@ -183,6 +196,8 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x, y].wood_reserve > 0)
                     {
                         TileDataManager.instance.SetTileType(x, y, 7);
+                        nodes[x, y].SetNodeType(7);   
+                        nodes[x, y].AnytypeofPariedCoordinates = wpariedCoordinates;
                        // Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
                         wpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, previousResource));
                     }
@@ -190,10 +205,15 @@ public class ResourceDeployment : MonoBehaviour
                 }
                 
             }
-            WoodAllpaired.Add(wpariedCoordinates);
+            GameObject prefabInstance = Instantiate(ResourceBuildingPrefab);
+            prefabInstance.transform.SetParent(Wood_Parent);
+            prefabInstance.GetComponent<ResourceBuilding>().resourceBuilding = wpariedCoordinates;
+            prefabInstance.GetComponent<ResourceBuilding>().UpdateFieldStatus();
+
+            WoodObjects.Add(prefabInstance);
+            AllocateWood_Placement(prefabInstance);
         }
 
-        AllocateWood_Placement();
     }
 
     #region 랜덤 생성
@@ -260,7 +280,7 @@ public class ResourceDeployment : MonoBehaviour
 
         }
     }
-    private void AllocateWood_Placement()
+    private void AllocateWood_Placement(GameObject Woodparent)
     {
         for (int i = 0; i < 103; i++)
         {
@@ -275,34 +295,34 @@ public class ResourceDeployment : MonoBehaviour
                     if (rock_Posses > 0 && rock_Posses < 10)
                     {
                         GameObject obj = Instantiate(WoodSprite[0], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Woodparent);
+                        obj.transform.SetParent(Woodparent.transform);
                     }
                     else if (rock_Posses < 20)
                     {
                         GameObject obj = Instantiate(WoodSprite[1], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Woodparent);
+                        obj.transform.SetParent(Woodparent.transform);
                     }
                     else if (rock_Posses < 30)
                     {
                         GameObject obj = Instantiate(WoodSprite[2], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Woodparent);
+                        obj.transform.SetParent(Woodparent.transform);
                     }
                     else if (rock_Posses < 40)
                     {
                         GameObject obj = Instantiate(WoodSprite[3], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Woodparent);
+                        obj.transform.SetParent(Woodparent.transform);
                     }
                     else
                     {
                         GameObject obj = Instantiate(WoodSprite[4], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Woodparent);
+                        obj.transform.SetParent(Woodparent.transform);
                     }
                 }
             }
         }
     }
 
-    private void AllocateRock_Placement()
+    private void AllocateRock_Placement(GameObject Rockparent)
     {
         for (int i = 0; i < 103; i++)
         {
@@ -317,29 +337,29 @@ public class ResourceDeployment : MonoBehaviour
                     if (rock_Posses > 0 && rock_Posses < 10)
                     {
                         GameObject obj = Instantiate(RockSprite[0], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Rockparent);
+                        obj.transform.SetParent(Rockparent.transform);
                     }
                     else if (rock_Posses < 20)
                     {
                         GameObject obj = Instantiate(RockSprite[1], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Rockparent);
+                        obj.transform.SetParent(Rockparent.transform);
 
                     }
                     else if (rock_Posses < 30)
                     {
                         GameObject obj = Instantiate(RockSprite[2], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Rockparent);
+                        obj.transform.SetParent(Rockparent.transform);
 
                     }
                     else if (rock_Posses < 40)
                     {
                         GameObject obj = Instantiate(RockSprite[3], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Rockparent);
+                        obj.transform.SetParent(Rockparent.transform);
                     }
                     else
                     {
                         GameObject obj = Instantiate(RockSprite[4], vector3, Quaternion.identity);
-                        obj.transform.SetParent(Rockparent);
+                        obj.transform.SetParent(Rockparent.transform);
                     }
                 }
             }

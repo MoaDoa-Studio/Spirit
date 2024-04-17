@@ -122,6 +122,11 @@ public class DetectMove : MonoBehaviour
             {
                 detection = Detect.Factory_MoveMent;
             }
+            // 자원일때 처리해야할 로직 추가 필요.
+            if(nodes[(int)CurposX, (int)CurposY].GetNodeType() == 6 || nodes[(int)CurposX, (int)CurposY].GetNodeType() == 7)
+            {
+                detection = Detect.Loot;
+            }
             else
             {
                 // 노드 정령원소 확인.
