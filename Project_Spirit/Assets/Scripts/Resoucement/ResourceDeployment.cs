@@ -7,8 +7,6 @@ using UnityEngine.Tilemaps;
 
 public class ResourceDeployment : MonoBehaviour
 {
-    public GameObject[] RockSprite;
-    public GameObject[] WoodSprite;
 
     [SerializeField]
     Tilemap tilemap;
@@ -18,6 +16,13 @@ public class ResourceDeployment : MonoBehaviour
     Transform Rockparent;
 
     Node[,] nodes;
+    List<List<KeyValuePair<Vector2Int, int>>> WoodAllpaired;
+    List<List<KeyValuePair<Vector2Int, int>>> RockAllpaired;
+    List<KeyValuePair<Vector2Int, int>> wpariedCoordinates;
+    List<KeyValuePair<Vector2Int, int>> rpariedCoordinates;
+     
+    public GameObject[] RockSprite;
+    public GameObject[] WoodSprite;
     int[] clusterRockGroup = new int[4];
     int[] clusterWoodGroup = new int[4];
     
@@ -30,11 +35,19 @@ public class ResourceDeployment : MonoBehaviour
     }
     private void Start()
     {
+        WoodAllpaired = GetComponent<ResouceManager>().WoodAllpaired;
+        RockAllpaired = GetComponent<ResouceManager>().RockAllpaired;
+        wpariedCoordinates = GetComponent<ResouceManager>().wpariedCoordinates;
+        rpariedCoordinates = GetComponent<ResouceManager>().rpariedCoordinates;
+
         SetDefaultMapResource();
         RandomlySetRockResources();
         RandomlySetWoodResources();
-
+        PlaceRockTiles();
+        PlaceWoodTiles();
+        GetComponent<ResouceManager>().resourceDeployed = true;
     }
+
     private void SetDefaultMapResource()
     {
         for (int i = 49; i <= 53; i++)
@@ -62,7 +75,7 @@ public class ResourceDeployment : MonoBehaviour
         }
         
     }
-
+     
     public (int, int) MakeRamdom()
     {
         int RandomX = UnityEngine.Random.Range(10, 93);
@@ -80,50 +93,50 @@ public class ResourceDeployment : MonoBehaviour
             int HavingResource = clusterRockGroup[i];
             int checks = HavingResource / 50;
             if (HavingResource % 50 != 0) checks += 1;
-            Debug.Log(checks);
+            //Debug.Log(checks);
             (int, int) resultvalue = MakeRamdom();
             Vector2Int inmethodRandom = GetChangeVector2Int(resultvalue.Item1, resultvalue.Item2);
 
             List<Vector2Int> movedCoordinates = GetBFSPositions(inmethodRandom, checks);
-            Debug.Log("Found Path : ");
+            //Debug.Log("Found Path : ");
             // 얻은 좌표들을 출력
             foreach (Vector2Int coord in movedCoordinates)
             {
+                int calculating = HavingResource;
+                //Debug.Log(coord);
+                int x = coord.x;
+                int y = coord.y;
+                if (HavingResource >= 50)
                 {
-                    int calculating = HavingResource;
-                    //Debug.Log(coord);
-                    int x = coord.x;
-                    int y = coord.y;
-                    if (HavingResource >= 50)
+                    nodes[x, y].rock_reserve += 50;
+                    if (nodes[x,y].rock_reserve > 0) 
                     {
-                        nodes[x, y].rock_reserve += 50;
-                        if (nodes[x,y].rock_reserve > 0) 
-                        {
-                            TileDataManager.instance.SetTileType(x, y, 6);
-                            Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
-                        }
-                        HavingResource -= 50;
+                        TileDataManager.instance.SetTileType(x, y, 6);
+                       // Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
+                        rpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, 50));
+                    }
+                    HavingResource -= 50;
 
-                    }
-                    else
-                    {
-                        int previousResource = HavingResource;
-                        HavingResource = 0;
-                        nodes[x, y].rock_reserve += previousResource;
-                        if (nodes[x, y].rock_reserve > 0)
-                        {
-                            TileDataManager.instance.SetTileType(x, y, 6);
-                            Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
-                        }
-                             
-                    }
                 }
-
-                    
+                else
+                {
+                    int previousResource = HavingResource;
+                    HavingResource = 0;
+                    nodes[x, y].rock_reserve += previousResource;
+                    if (nodes[x, y].rock_reserve > 0)
+                    {
+                        TileDataManager.instance.SetTileType(x, y, 6);
+                        //Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
+                        rpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, previousResource));
+                    }
+                             
+                }
+           
             }
-              
+
+            RockAllpaired.Add(rpariedCoordinates);
         }
-        
+       
         AllocateRock_Placement();
     }
     
@@ -137,12 +150,12 @@ public class ResourceDeployment : MonoBehaviour
             int HavingResource = clusterWoodGroup[i];
             int checks = HavingResource / 50;
             if (HavingResource % 50 != 0) checks += 1;
-            Debug.Log(checks);
+            //Debug.Log(checks);
             (int, int) resultvalue = MakeRamdom();
             Vector2Int inmethodRandom = GetChangeVector2Int(resultvalue.Item1, resultvalue.Item2);
 
             List<Vector2Int> movedCoordinates = GetBFSPositions(inmethodRandom, checks);
-            Debug.Log("Found Path : ");
+            //Debug.Log("Found Path : ");
             // 얻은 좌표들을 출력
             foreach (Vector2Int coord in movedCoordinates)
             {   
@@ -156,7 +169,8 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x, y].wood_reserve > 0)
                     {
                         TileDataManager.instance.SetTileType(x, y, 7);
-                        Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
+                       // Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
+                        wpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, 50));
                     }
                     HavingResource -= 50;
 
@@ -169,13 +183,14 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x, y].wood_reserve > 0)
                     {
                         TileDataManager.instance.SetTileType(x, y, 7);
-                        Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
+                       // Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
+                        wpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, previousResource));
                     }
 
                 }
                 
             }
-
+            WoodAllpaired.Add(wpariedCoordinates);
         }
 
         AllocateWood_Placement();
@@ -239,7 +254,7 @@ public class ResourceDeployment : MonoBehaviour
             // 결과 출력 
             for (int i = 0; i < samplegroups.Length; i++)
             {
-                Debug.Log("돌Group의 갯수는 : " + samplegroups[i]);
+                //Debug.Log("돌Group의 갯수는 : " + samplegroups[i]);
                 clusterRockGroup = samplegroups;
             }
 
@@ -333,7 +348,7 @@ public class ResourceDeployment : MonoBehaviour
 
     #endregion
     
-    #region 최적합 자원배치
+    #region 최적 자원배치.
 
     // BFS 알고리즘을 사용하여 이동할 위치를 저장할 리스트
     List<Vector2Int> visitedPositions = new List<Vector2Int>();
@@ -345,7 +360,6 @@ public class ResourceDeployment : MonoBehaviour
         MoveCoordinateToBFS(startPosition, moveCount);
         return visitedPositions;
     }
-
 
     // BFS 알고리즘 구현
     public void MoveCoordinateToBFS(Vector2Int start, int moveCount)
@@ -420,7 +434,6 @@ public class ResourceDeployment : MonoBehaviour
         }
         return false;
     }
-    #endregion
     private bool BinaryCheckOfThisTile(int x, int y)
     {
         bool foundObstacle = false;
@@ -472,6 +485,7 @@ public class ResourceDeployment : MonoBehaviour
         return new Vector2Int(a, b);
     }
 
+    #endregion
 
 }
 

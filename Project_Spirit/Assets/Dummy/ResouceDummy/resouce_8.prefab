@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7713109771522722907}
   - component: {fileID: 505606101919264912}
+  - component: {fileID: 1993773444418804085}
   m_Layer: 0
   m_Name: resouce_8
   m_TagString: Untagged
@@ -84,3 +85,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &1993773444418804085
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15012641334000344}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1615385, y: 0.97692305, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
