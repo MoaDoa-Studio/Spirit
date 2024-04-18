@@ -41,7 +41,7 @@ public class DetectMove : MonoBehaviour
     int spiritID;
     int signType;
     bool isFactory = false;
-   
+    bool isLoot = false;
     enum Dir
     {
         Up = 0,
@@ -96,6 +96,7 @@ public class DetectMove : MonoBehaviour
                 FactoryWork(); // 일하는 값
                 break;
             case Detect.Loot:
+                LootWork();
                 break;
             case Detect.Academy:
                 break;
@@ -116,6 +117,7 @@ public class DetectMove : MonoBehaviour
     {   
         nodes = TileDataManager.instance.GetNodes();
         if (isFactory) return;
+        if (isLoot) return;
         if (nodes[(int)CurposX, (int)CurposY].isWalk)
         {
             if(nodes[(int)CurposX, (int)CurposY].isBuild)
@@ -151,7 +153,7 @@ public class DetectMove : MonoBehaviour
         }
     }
 
-
+    #region 기본 움직임
     private void BaseMove()
     {
         nodes = TileDataManager.instance.GetNodes();    // 매우 매우 중요!! 코드 간결화
@@ -215,10 +217,25 @@ public class DetectMove : MonoBehaviour
             Debug.Log("아무것도 안들어갔음!");
        
     }
-
-    private void StopMove()
+    private void Move(int _curposx, int _curposy)
     {
+        if(detection != Detect.Move) { return; }
+        Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
+        Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
+
+        if(Vector2.Distance(targetVector, transform.position) <= 0.01f)
+        {
+            transform.position = targetVector;
+            detection = Detect.None;
+            return;
+        }
+        else
+        {
+            Vector2 movement = direction.normalized * moveSpeed * Time.smoothDeltaTime;
+            transform.Translate(movement);
+        }
     }
+    #endregion
     private void MarkCheck(int _signType)
     {
         if (_signType == 7)
@@ -252,7 +269,25 @@ public class DetectMove : MonoBehaviour
         }
     }
 
-    private void GetFactoryPoint()
+    #region 공장 움직임
+    private void FactoryWork()
+    {
+        StartCoroutine(Buildpattern());
+        detection = Detect.None;
+        return;
+    }
+    IEnumerator Buildpattern()
+    {
+        FindFactoryPoint();
+        spriteRenderer.enabled = false;
+        yield return new WaitForSeconds(7f);
+
+        isFactory = false;
+        spriteRenderer.enabled = true;
+        detection = Detect.None;
+        
+    }
+    private void FindFactoryPoint()
     {
         if (!isFactory)
         {
@@ -283,33 +318,116 @@ public class DetectMove : MonoBehaviour
         }
         
     }
-    private void FactoryWork()
+    private void RedirectionafterFactory(float _curposX, float _curposY)
     {
-        StartCoroutine(Buildpattern());
+        int[] FactorydirX = { 0, 0, 1, -1 };
+        int[] FactorydirY = { 1, -1, 0, 0 };
+
+        for(int i = 0; i < 4; i++)
+        {
+            if (nodes[(int)_curposX + FactorydirX[i], (int)_curposY + FactorydirY[i]].isBuild)
+            {
+                if (i == 0)
+                {
+                    _dir = (int)Dir.Down;
+                }
+                else if (i == 1)
+                {
+                    _dir = (int)Dir.Up;
+                }
+                else if (i == 2)
+                {
+                    _dir = (int)Dir.Left;
+                }
+                else
+                    _dir = (int)Dir.Right;
+            }
+        }
+    }
+    #endregion
+
+    #region 자원 움직임
+    void LootWork()
+    {
+        StartCoroutine(LootPattern());
         detection = Detect.None;
         return;
     }
 
-
-    private void Move(int _curposx, int _curposy)
+    IEnumerator LootPattern()
     {
-        if(detection != Detect.Move) { return; }
-        Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
-        Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
+        FindLootPoint();
+        spriteRenderer.enabled = false;
+        yield return new WaitForSeconds(7f);
 
-        if(Vector2.Distance(targetVector, transform.position) <= 0.01f)
+        isLoot = false;
+        spriteRenderer.enabled = true;
+        detection = Detect.None;
+    }
+
+    void FindLootPoint()
+    {
+        if(!isLoot)
         {
-            transform.position = targetVector;
-            detection = Detect.None;
-            return;
+            Debug.Log("나 자원 일함!!");
+            Vector2 sP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item1;
+            Vector2 nP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item2;
+            Vector2 transformPosition = new Vector2(transform.position.x, transform.position.y);
+            Vector2 target = Vector2.zero;
+            float distanceToA = Vector2.Distance(transformPosition, sP);
+            float distanceToB = Vector2.Distance(transformPosition, nP);
+            if (distanceToA < distanceToB)
+            {
+                isLoot = true;
+                target = nP;
+                CurposX = target.x; CurposY = target.y;
+                RedirectionafterFactory(CurposX, CurposY);
+            }
+            else
+            {
+                isLoot = true;
+                target = sP;
+                CurposX = target.x; CurposY = target.y;
+                RedirectionafterLoot(CurposX, CurposY);
+            }
+
+            transform.position = new Vector2(target.x + 0.5f, target.y + 0.5f);
+
         }
-        else
+    
+    }
+    void RedirectionafterLoot(float _curposX, float _curposY)
+    {
+        int[] FactorydirX = { 0, 0, 1, -1 };
+        int[] FactorydirY = { 1, -1, 0, 0 };
+
+        for (int i = 0; i < 4; i++)
         {
-            Vector2 movement = direction.normalized * moveSpeed * Time.smoothDeltaTime;
-            transform.Translate(movement);
+            if (nodes[(int)_curposX + FactorydirX[i], (int)_curposY + FactorydirY[i]].GetNodeType() == 6 || nodes[(int)_curposX + FactorydirX[i], (int)_curposY + FactorydirY[i]].GetNodeType() == 7)
+            {
+                if (i == 0)
+                {
+                    _dir = (int)Dir.Down;
+                }
+                else if (i == 1)
+                {
+                    _dir = (int)Dir.Up;
+                }
+                else if (i == 2)
+                {
+                    _dir = (int)Dir.Left;
+                }
+                else
+                    _dir = (int)Dir.Right;
+            }
         }
     }
 
+    #endregion
+
+    private void StopMove()
+    {
+    }
 
     static int ExtractNumber(string input)
     {
@@ -337,43 +455,6 @@ public class DetectMove : MonoBehaviour
         Debug.Log("detection의 상태는 " + detection);
     }
 
-    IEnumerator Buildpattern()
-    {
-        GetFactoryPoint();
-        spriteRenderer.enabled = false;
-        yield return new WaitForSeconds(7f);
 
-        isFactory = false;
-        spriteRenderer.enabled = true;
-        detection = Detect.None;
-        
-    }
-
-    private void RedirectionafterFactory(float _curposX, float _curposY)
-    {
-        int[] FactorydirX = { 0, 0, 1, -1 };
-        int[] FactorydirY = { 1, -1, 0, 0 };
-
-        for(int i = 0; i < 4; i++)
-        {
-            if (nodes[(int)_curposX + FactorydirX[i], (int)_curposY + FactorydirY[i]].isBuild)
-            {
-                if (i == 0)
-                {
-                    _dir = (int)Dir.Down;
-                }
-                else if (i == 1)
-                {
-                    _dir = (int)Dir.Up;
-                }
-                else if (i == 2)
-                {
-                    _dir = (int)Dir.Left;
-                }
-                else
-                    _dir = (int)Dir.Right;
-            }
-        }
-    }
 
 }

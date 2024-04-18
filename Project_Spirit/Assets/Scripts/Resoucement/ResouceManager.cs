@@ -13,9 +13,11 @@ public class ResouceManager : MonoBehaviour
     GameObject[] RockSprite;
     GameObject[] WoodSprite;
 
+    [HideInInspector]
     public List<GameObject> WoodObjects;
+    [HideInInspector]
     public List<GameObject> RockObjects;
-
+    [HideInInspector]
     public bool resourceDeployed = false;
     Node[,] nodes;
     float IncreasingTime = 1f;
@@ -29,7 +31,7 @@ public class ResouceManager : MonoBehaviour
             {
                 IncresementRockValue();
                 IncreasingTime = 0.1f;
-                Debug.Log("시간됨");
+               
             }
         }
     }
@@ -58,7 +60,7 @@ public class ResouceManager : MonoBehaviour
 
         if (minvalue < 50)
         {
-            Debug.Log("is 50개 아님");
+            //Debug.Log("is 50개 아님");
             // 수정된 값 할당
             KeyValuePair<Vector2Int, int> updatedPair = new KeyValuePair<Vector2Int, int>(minCoord, minvalue + 1);
             for (int i = 0; i < selectedPairedList.Count; i++)
@@ -71,17 +73,19 @@ public class ResouceManager : MonoBehaviour
             }
             selectedPairedList.Add(updatedPair);
             RelocateTileasRock(minCoord, updatedPair.Value, RockObjects[randomlyselectednum]);
-            // 타일 변경
-            CalculateTotalAmountofRock(selectedPairedList);
+           
+           
         }
         else if (minvalue == 50)
         {
-            Debug.Log("Over 50 resource has occured!");
+           // Debug.Log("Over 50 resource has occured!");
             Vector2Int ValidLocation = FindNewTileisPossible(selectedPairedList);
             TileDataManager.instance.SetTileType(ValidLocation.x, ValidLocation.y, 6);
             nodes = TileDataManager.instance.GetNodes();
             nodes[ValidLocation.x, ValidLocation.y].resourceBuilding = RockObjects[randomlyselectednum].GetComponent<ResourceBuilding>();
-            nodes[ValidLocation.x, ValidLocation.y].resourceBuilding.UpdateFieldStatus();
+            nodes[ValidLocation.x, ValidLocation.y].resourceBuilding.UpdateFieldStatus(1);
+            nodes[ValidLocation.x, ValidLocation.y].SetNodeType(6);
+            
 
             KeyValuePair<Vector2Int, int> newPair = new KeyValuePair<Vector2Int, int>(ValidLocation, 1);
             selectedPairedList.Add(newPair);
@@ -124,17 +128,7 @@ public class ResouceManager : MonoBehaviour
         }
     }
 
-    Tuple<List<KeyValuePair<Vector2Int, int>>, int> CalculateTotalAmountofRock(List<KeyValuePair<Vector2Int, int>> selected)
-    {
-        int total = 0;
-        foreach (KeyValuePair<Vector2Int, int> pair in selected)
-        {
-            int value = pair.Value;
-            total += value;
-        }
-        return Tuple.Create(selected,total);
-    }
-
+    
     Vector2Int FindNewTileisPossible(List<KeyValuePair<Vector2Int, int>> findValue)
     {
         Vector2Int newLocation = Vector2Int.zero;
@@ -192,7 +186,7 @@ public class ResouceManager : MonoBehaviour
                     if (ValidLocationisNearbyPath(newLocation))
                     {
                         newLocation = implicitPair;
-                        Debug.Log("새로 찾은 Location : " + newLocation);
+                        //Debug.Log("새로 찾은 Location : " + newLocation);
                         return newLocation;
                     }
                     else

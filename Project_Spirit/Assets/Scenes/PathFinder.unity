@@ -198,8 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99fe3a2ac3581b942bce37d1509e45e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Woodparent: {fileID: 452558092}
-  Rockparent: {fileID: 913614388}
+  WoodObjects: []
+  RockObjects: []
   resourceDeployed: 0
 --- !u!1 &80033456
 GameObject:
@@ -108156,7 +108156,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.59, y: 5.94, z: -10}
+  m_LocalPosition: {x: 30.08, y: 31, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

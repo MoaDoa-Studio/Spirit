@@ -20,8 +20,10 @@ public class ResourceDeployment : MonoBehaviour
     Node[,] nodes;
     List<GameObject> WoodObjects;
     List<GameObject> RockObjects;
-     
+
+    [HideInInspector]
     public GameObject[] RockSprite;
+    [HideInInspector]
     public GameObject[] WoodSprite;
     int[] clusterRockGroup = new int[4];
     int[] clusterWoodGroup = new int[4];
@@ -94,12 +96,12 @@ public class ResourceDeployment : MonoBehaviour
             int HavingResource = clusterRockGroup[i];
             int checks = HavingResource / 50;
             if (HavingResource % 50 != 0) checks += 1;
-            //Debug.Log(checks);
+           
             (int, int) resultvalue = MakeRamdom();
             Vector2Int inmethodRandom = GetChangeVector2Int(resultvalue.Item1, resultvalue.Item2);
 
             List<Vector2Int> movedCoordinates = GetBFSPositions(inmethodRandom, checks);
-            //Debug.Log("Found Path : ");
+           
             // 얻은 좌표들을 출력
             foreach (Vector2Int coord in movedCoordinates)
             {
@@ -114,8 +116,7 @@ public class ResourceDeployment : MonoBehaviour
                     {
                         TileDataManager.instance.SetTileType(x, y, 6);
                         nodes[x, y].SetNodeType(6);
-                        nodes[x, y].AnytypeofPariedCoordinates = rpariedCoordinates;
-                       // Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
+                       
                         rpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, 50));
                     }
                     HavingResource -= 50;
@@ -130,8 +131,7 @@ public class ResourceDeployment : MonoBehaviour
                     {
                         TileDataManager.instance.SetTileType(x, y, 6);
                         nodes[x, y].SetNodeType(6);
-                        //nodes[x, y].resourceBuilding = rpariedCoordinates;
-                        //Debug.Log(coord + " :" + nodes[x, y].rock_reserve);
+                        
                         rpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, previousResource));
                     }
                              
@@ -141,6 +141,8 @@ public class ResourceDeployment : MonoBehaviour
             GameObject prefabInstance = Instantiate(ResourceBuildingPrefab);
             prefabInstance.transform.SetParent(Rock_Parent);
             prefabInstance.GetComponent<ResourceBuilding>().resourceBuilding = rpariedCoordinates;
+            prefabInstance.GetComponent<ResourceBuilding>().UpdateFieldStatus(1);
+            
 
             RockObjects.Add(prefabInstance);
             AllocateRock_Placement(prefabInstance);
@@ -161,17 +163,17 @@ public class ResourceDeployment : MonoBehaviour
             int HavingResource = clusterWoodGroup[i];
             int checks = HavingResource / 50;
             if (HavingResource % 50 != 0) checks += 1;
-            //Debug.Log(checks);
+            
             (int, int) resultvalue = MakeRamdom();
             Vector2Int inmethodRandom = GetChangeVector2Int(resultvalue.Item1, resultvalue.Item2);
 
             List<Vector2Int> movedCoordinates = GetBFSPositions(inmethodRandom, checks);
-            //Debug.Log("Found Path : ");
+            
             // 얻은 좌표들을 출력
             foreach (Vector2Int coord in movedCoordinates)
             {   
                 int calculating = HavingResource;
-                //Debug.Log(coord);
+                
                 int x = coord.x;
                 int y = coord.y;
                 if (HavingResource >= 50)
@@ -181,8 +183,7 @@ public class ResourceDeployment : MonoBehaviour
                     {
                         TileDataManager.instance.SetTileType(x, y, 7);
                         nodes[x,y].SetNodeType(7);
-                        nodes[x, y].AnytypeofPariedCoordinates = wpariedCoordinates;
-                       // Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
+                       
                         wpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, 50));
                     }
                     HavingResource -= 50;
@@ -197,8 +198,7 @@ public class ResourceDeployment : MonoBehaviour
                     {
                         TileDataManager.instance.SetTileType(x, y, 7);
                         nodes[x, y].SetNodeType(7);   
-                        nodes[x, y].AnytypeofPariedCoordinates = wpariedCoordinates;
-                       // Debug.Log(coord + " :" + nodes[x, y].wood_reserve);
+                        
                         wpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, previousResource));
                     }
 
@@ -208,7 +208,7 @@ public class ResourceDeployment : MonoBehaviour
             GameObject prefabInstance = Instantiate(ResourceBuildingPrefab);
             prefabInstance.transform.SetParent(Wood_Parent);
             prefabInstance.GetComponent<ResourceBuilding>().resourceBuilding = wpariedCoordinates;
-            prefabInstance.GetComponent<ResourceBuilding>().UpdateFieldStatus();
+            prefabInstance.GetComponent<ResourceBuilding>().UpdateFieldStatus(2);
 
             WoodObjects.Add(prefabInstance);
             AllocateWood_Placement(prefabInstance);
