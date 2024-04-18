@@ -288,8 +288,15 @@ public class ResourceDeployment : MonoBehaviour
             {
                 if (nodes[i, j].wood_reserve > 0)
                 {
+
                     Vector3Int tilePosition = new Vector3Int(i, j, 0);
                     Vector3 vector3 = new Vector3 { x = tilePosition.x + 0.5f, y = tilePosition.y + 0.5f, z = tilePosition.z };
+
+                    Collider[] colliders = Physics.OverlapSphere(vector3, 0.2f);
+                    if (colliders != null && colliders.Length > 0)
+                    {
+                        continue;
+                    }
 
                     int rock_Posses = nodes[i, j].wood_reserve;
                     if (rock_Posses > 0 && rock_Posses < 10)
@@ -333,6 +340,12 @@ public class ResourceDeployment : MonoBehaviour
                     Vector3Int tilePosition = new Vector3Int(i, j, 0);
                     Vector3 vector3 = new Vector3 { x = tilePosition.x + 0.5f, y = tilePosition.y + 0.5f, z = tilePosition.z };
 
+                    Collider[] colliders = Physics.OverlapSphere(vector3, 0.2f);
+                    if (colliders != null && colliders.Length > 0)
+                    {
+                        continue;
+                    }
+
                     int rock_Posses = nodes[i, j].rock_reserve;
                     if (rock_Posses > 0 && rock_Posses < 10)
                     {
@@ -361,6 +374,7 @@ public class ResourceDeployment : MonoBehaviour
                         GameObject obj = Instantiate(RockSprite[4], vector3, Quaternion.identity);
                         obj.transform.SetParent(Rockparent.transform);
                     }
+                    
                 }
             }
         }
