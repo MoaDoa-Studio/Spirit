@@ -12,6 +12,7 @@ public partial class CraftManager : MonoBehaviour
     public GameObject craftGrid; // 건축 모드 시 격자 표시.
     public GameObject craftMenuUI; // 하단 빌딩 선택 UI
     public Transform buildingParent; // 생성될 빌딩의 부모 오브젝트.
+    public Transform signParent; // 생성될 사인의 부모 오브젝트.
     public BuildingDatabaseSO database;
 
     [Header("타일 맵")]
@@ -21,9 +22,11 @@ public partial class CraftManager : MonoBehaviour
 
     private GameObject mouseIndicator;
     private Tile selectedRoad;
+    private Tile selectedSign;
     Node[,] nodes;
     private int[,] copyArray = new int[103, 103];
-    private List<Vector3Int> roadBufferList = new List<Vector3Int>();    
+    private List<Vector3Int> roadBufferList = new List<Vector3Int>();
+    private Vector3Int signBuffer = new Vector3Int();
     public bool IsPointerOverUI()
     => EventSystem.current.IsPointerOverGameObject();
 
@@ -35,6 +38,7 @@ public partial class CraftManager : MonoBehaviour
         Default,
         PlaceBuilding,
         PlaceRoad,
+        PlaceSign,
         DeleteBuilding,
         DeleteRoad,
     }
@@ -44,8 +48,7 @@ public partial class CraftManager : MonoBehaviour
     {
         craftMode = CraftMode.None;
         mouseIndicator = null; 
-        deleteStart = Vector3Int.back;
-        
+        deleteStart = Vector3Int.back;        
     }
 
     void ChangeCraftMode(CraftMode mode)
@@ -64,27 +67,29 @@ public partial class CraftManager : MonoBehaviour
             case CraftMode.DeleteBuilding:                
             case CraftMode.PlaceRoad:
             case CraftMode.DeleteRoad:
+            case CraftMode.PlaceSign:
                 craftMenuUI.SetActive(false);
                 break;                
         }
     }
     public void Update()
     {
+        Vector3Int mousePos = grid.WorldToCell(ProcessingMousePosition());
         switch (craftMode)
         {
             case CraftMode.PlaceBuilding:                
-                mouseIndicator.transform.position = grid.WorldToCell(ProcessingMousePosition());                
+                mouseIndicator.transform.position = mousePos;
                 if (Input.GetKeyDown(KeyCode.Mouse0))                 
                     PlaceBuilding();
                 if (Input.GetKeyDown(KeyCode.Q))
-                    RotateBuilding(false);
+                    RotateObject(true);
                 if (Input.GetKeyDown(KeyCode.E))
-                    RotateBuilding(true);                
+                    RotateObject(false);
                 break;
 
             case CraftMode.PlaceRoad:                
                 if (Input.GetKey(KeyCode.Mouse0))                
-                    PlaceRoadTileBuffer(grid.WorldToCell(ProcessingMousePosition()));
+                    PlaceRoadTileBuffer(mousePos);
                 if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     if (roadBufferList.Count == 0)                    
@@ -92,10 +97,26 @@ public partial class CraftManager : MonoBehaviour
                     PlaceRoadTile();
                 }
                 break;
-
+            
+            case CraftMode.PlaceSign:                
+                mouseIndicator.transform.position = mousePos;
+                if (signBuffer != mousePos)
+                {
+                    signBuffer = mousePos;
+                    ResetGridTile();
+                    PlaceSignTileBuffer(signBuffer);
+                }
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                    PlaceSignTile(mousePos);
+                if (Input.GetKeyDown(KeyCode.Q))
+                    RotateObject(true);
+                if (Input.GetKeyDown(KeyCode.E))
+                    RotateObject(false);
+                break;
+            
             case CraftMode.DeleteBuilding:
-                if (Input.GetKeyDown(KeyCode.Mouse0))                
-                    deleteStart = grid.WorldToCell(ProcessingMousePosition());                
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                    deleteStart = mousePos;
                 if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     if (deleteStart == Vector3Int.back)
@@ -103,16 +124,17 @@ public partial class CraftManager : MonoBehaviour
                     DeleteBuilding();
                 }
                 break;
+            
             case CraftMode.DeleteRoad:
-                if (Input.GetKeyDown(KeyCode.Mouse0))                
-                    deleteStart = grid.WorldToCell(ProcessingMousePosition());                
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                    deleteStart = mousePos;
                 if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     if (deleteStart == Vector3Int.back)
                         return;
                     DeleteRoad();
                 }
-                break;
+                break;            
         }        
     }
     // Craft 모드 진입.
@@ -194,7 +216,6 @@ partial class CraftManager
         
         mouseIndicator = null;
         ChangeCraftMode(CraftMode.Default);
-    
     }
 
     bool isBuildingOvelapBuilding(Vector2Int upperRight, Vector2Int bottomLeft)
@@ -213,7 +234,7 @@ partial class CraftManager
         return false;
     }   
     
-    public void RotateBuilding(bool isRight)
+    public void RotateObject(bool isRight)
     {
         var angles = mouseIndicator.transform.GetChild(0).rotation.eulerAngles;
         angles.z += isRight == true ? 90 : -90;
@@ -223,8 +244,7 @@ partial class CraftManager
         else if (angles.z < 0)
             angles.z += 360;
         mouseIndicator.transform.GetChild(0).rotation = Quaternion.Euler(angles);
-
-        // 하위 스프라이트 리사이징.
+        
         float x = 0, y = 0;
         if (angles.z % 180 == 0)
         {
@@ -238,6 +258,7 @@ partial class CraftManager
         }
         Vector2 mouseIndicatorPos = new Vector2(-(x / 2 - 1), -(y / 2 - 1));
         mouseIndicator.transform.GetChild(0).localPosition = mouseIndicatorPos;
+        mouseIndicator.transform.GetChild(0).rotation = Quaternion.Euler(angles);                       
     }
     #endregion
 
@@ -294,13 +315,13 @@ partial class CraftManager
 
         // Todo. 선택한 건물 버튼 외 다른 버튼 흑백 처리 로직도 들어가야 함.
     }
-    bool isRoadOverlapRoad(Vector3Int pos)
+    bool isOverlapRoad(Vector3Int pos)
     {
         if (TileDataManager.instance.GetTileType(pos.x, pos.y) == 3)
             return true;
         return false;
     }
-    bool isRoadOvelapBuilding(Vector3Int pos)
+    bool isOvelapBuilding(Vector3Int pos)
     {
         if (TileDataManager.instance.GetTileType(pos.x, pos.y) == 1)
             return true;
@@ -324,9 +345,9 @@ partial class CraftManager
         // 배치 가능한 타일인지 체크.
         if (!roadBufferList.Contains(pos))
         {
-            if (isRoadOverlapRoad(pos))
+            if (isOverlapRoad(pos))
                 gridTilemap.SetTile(pos, orangeTile);
-            else if (isRoadOvelapBuilding(pos))
+            else if (isOvelapBuilding(pos))
                 gridTilemap.SetTile(pos, redTile);
             else
                 gridTilemap.SetTile(pos, greenTile);
@@ -384,7 +405,7 @@ partial class CraftManager
         deleteBottomLeft.x = deleteStart.x < deleteEnd.x ? deleteStart.x : deleteEnd.x;
         deleteBottomLeft.y = deleteStart.y < deleteEnd.y ? deleteStart.y : deleteEnd.y;
 
-        TileDataManager.instance.ChangeTileTypeByRange(deleteUpperRight, deleteBottomLeft, 3, 0); // 타일 타입 초기화.        
+        TileDataManager.instance.ChangeTileTypeByRange(deleteUpperRight, deleteBottomLeft, 3, 0); // 타일 타입이 3인 경우에만 초기화.
         // 타일 맵 초기화.
         for (int i = deleteBottomLeft.y; i <= deleteUpperRight.y; i++)
         {
@@ -401,6 +422,80 @@ partial class CraftManager
 }
 
 partial class CraftManager
+{
+    #region 표식 배치 관련
+    public void OnClickSignSelectButton(GameObject sign)
+    {
+        mouseIndicator = Instantiate(sign, signParent);
+        ChangeCraftMode(CraftMode.PlaceSign);
+    }
+
+    public int GetNumberOfNearbyRoad(Vector3Int pos)
+    {
+        int result = 0;
+        int[] dx = { 0, 0, -1, 1 };
+        int[] dy = { 1, -1, 0, 0 };
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (TileDataManager.instance.GetTileType(pos.x + dx[i], pos.y + dy[i]) == 3)
+                result++;
+        }
+        return result;
+    }
+
+    public bool CanPlaceSignTile(Vector3Int pos)
+    {
+        if (!isOverlapRoad(pos))
+        {
+            Debug.Log("길이 아닙니다.");
+            return false;
+        }
+        string TileName = mouseIndicator.name.Split("(")[0];
+        Debug.Log(TileName);
+        switch (TileName)
+        {
+            case "Sign_0":
+            case "Sign_7":
+                break;
+            default:
+                if (GetNumberOfNearbyRoad(pos) < 3)
+                {
+                    Debug.Log("주변의 길 개수가 3개 미만입니다.");
+                    return false;
+                }
+                break;
+        }
+        return true;
+    }
+    public void PlaceSignTileBuffer(Vector3Int pos)
+    {
+        if (CanPlaceSignTile(pos))
+            gridTilemap.SetTile(pos, greenTile);
+        else
+            gridTilemap.SetTile(pos, redTile);
+    }
+    public void PlaceSignTile(Vector3Int pos)
+    {
+        if (CanPlaceSignTile(pos))
+        {            
+            gameTilemap.SetTile(pos, selectedSign);
+            TileDataManager.instance.SetTileType(pos.x, pos.y, 5);
+        }
+        else        
+            Destroy(mouseIndicator.gameObject);
+        
+        mouseIndicator = null;
+        ResetGridTile();
+        ChangeCraftMode(CraftMode.Default);
+    }
+    #endregion
+
+    #region 표식 삭제 관련    
+    #endregion
+}
+
+partial class CraftManager
 {    
     void UpdateFieldStatus()
     {
@@ -408,7 +503,7 @@ partial class CraftManager
         foreach (Building building in BuildingDataManager.instance.GetBuildingList())
         {
             Tuple<Vector2Int, Vector2Int> buildingPos = building.GetBuildingPos();
-            Tuple<Vector2Int, Vector2Int> TwoRoads = isTwoRoadsAttackedBuilding(buildingPos.Item1, buildingPos.Item2);            
+            Tuple<Vector2Int, Vector2Int> TwoRoads = isTwoRoadsAttackedBuilding(buildingPos.Item1, buildingPos.Item2);
             building.SetConnectedRoad(TwoRoads);
             TileDataManager.instance.CheckBuildings();
         }
