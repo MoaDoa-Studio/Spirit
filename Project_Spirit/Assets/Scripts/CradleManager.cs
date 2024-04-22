@@ -189,27 +189,28 @@ public class CradleManager : MonoBehaviour
     // 원소별 성장 속도 게이지 표시
     public void SetElementSliderSize()
     {
-        float totalElementAverage = GetTotalElementAverage();       
-        float offset = 100f;
+        float totalElementAverage = GetTotalElementAverage();
+        float offset = 2f; // 전체 슬라이더의 길이에 따라 바뀌는 값. 전체 슬라이더 길이 / 2 / 100 값이 들어감.
         for (int i = 0; i < 4; i++)
         {
             RectTransform result = elementSlider[i].transform.GetChild(0).GetComponent<RectTransform>();
-            float val = (elementAverage[i] - totalElementAverage) / totalElementAverage * offset;
 
-            float x_pos = val;
-            float width = 0f;
-            if (val > offset)
+            float ratio; // 게이지에서 차지할 비율.
+            float x_pos;
+            float width;
+            if (elementAverage[i] - totalElementAverage > 0)
             {
-                x_pos = offset;
-                width = offset * 2;
+                ratio = Mathf.Log((elementAverage[i] - totalElementAverage) / totalElementAverage * 100) * 10;
+                x_pos = ratio;                
             }
-            else if (val < offset * (-1))
+            else if (elementAverage[i] - totalElementAverage < 0)
             {
-                x_pos = offset * (-1);
-                width = offset * (-2);
+                ratio = Mathf.Log((totalElementAverage - elementAverage[i]) / totalElementAverage * 100) * 10;
+                x_pos = -ratio;
             }
-            else
-                width = val > 0 ? val * 2 : val * (-2);
+            else                            
+                x_pos = 0;           
+            width = x_pos > 0 ? x_pos * offset : x_pos * offset * (-1);
 
             result.sizeDelta = new Vector2(width, result.rect.height);
             result.anchoredPosition = new Vector2(x_pos, 0);
