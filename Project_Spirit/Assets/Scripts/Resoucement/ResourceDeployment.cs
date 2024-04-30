@@ -115,6 +115,7 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x,y].rock_reserve > 0) 
                     {
                         TileDataManager.instance.SetTileType(x, y, 6);
+                        TileDataManager.instance.nodes[x,y].isWalk = true;
                         nodes[x, y].SetNodeType(6);
                        
                         rpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, 50));
@@ -130,6 +131,7 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x, y].rock_reserve > 0)
                     {
                         TileDataManager.instance.SetTileType(x, y, 6);
+                        TileDataManager.instance.nodes[x, y].isWalk = true;
                         nodes[x, y].SetNodeType(6);
                         
                         rpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, previousResource));
@@ -182,6 +184,7 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x, y].wood_reserve > 0)
                     {
                         TileDataManager.instance.SetTileType(x, y, 7);
+                        TileDataManager.instance.nodes[x,y].isWalk = true;
                         nodes[x,y].SetNodeType(7);
                        
                         wpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, 50));
@@ -197,6 +200,7 @@ public class ResourceDeployment : MonoBehaviour
                     if (nodes[x, y].wood_reserve > 0)
                     {
                         TileDataManager.instance.SetTileType(x, y, 7);
+                        TileDataManager.instance.nodes[x,y].isWalk = true;
                         nodes[x, y].SetNodeType(7);   
                         
                         wpariedCoordinates.Add(new KeyValuePair<Vector2Int, int>(coord, previousResource));
@@ -382,6 +386,7 @@ public class ResourceDeployment : MonoBehaviour
 
     #endregion
     
+
     #region 최적 자원배치.
 
     // BFS 알고리즘을 사용하여 이동할 위치를 저장할 리스트

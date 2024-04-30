@@ -369,6 +369,8 @@ public class DetectMove : MonoBehaviour
     {
         if(!isLoot)
         {
+            nodes[(int)CurposX, (int)CurposY].resourceBuilding.DecreaseLeastColony();
+
             Debug.Log("나 자원 일함!!");
             Vector2 sP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item1;
             Vector2 nP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item2;
