@@ -36,6 +36,8 @@ public class DetectMove : MonoBehaviour
     int[] rightY = { 0, 1, 0, -1 };
 
     public float moveSpeed = 1f;
+    public int LootAmount = 15;
+    public float TimeforWorking = 5f;
     public int spiritElement;
     int _dir = (int)Dir.Up;
     int spiritID;
@@ -280,7 +282,7 @@ public class DetectMove : MonoBehaviour
     {
         FindFactoryPoint();
         spriteRenderer.enabled = false;
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(TimeforWorking);
 
         isFactory = false;
         spriteRenderer.enabled = true;
@@ -358,7 +360,7 @@ public class DetectMove : MonoBehaviour
     {
         FindLootPoint();
         spriteRenderer.enabled = false;
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(TimeforWorking);
 
         isLoot = false;
         spriteRenderer.enabled = true;
@@ -369,9 +371,9 @@ public class DetectMove : MonoBehaviour
     {
         if(!isLoot)
         {
-            nodes[(int)CurposX, (int)CurposY].resourceBuilding.DecreaseLeastColony();
+            nodes[(int)CurposX, (int)CurposY].resourceBuilding.GetDecreasement(LootAmount);
 
-            Debug.Log("나 자원 일함!!");
+            //Debug.Log("나 자원 일함!!");
             Vector2 sP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item1;
             Vector2 nP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item2;
             Vector2 transformPosition = new Vector2(transform.position.x, transform.position.y);
