@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -17,33 +13,38 @@ public class TileDataManager : MonoBehaviour
     public Vector2Int position;
     public Vector2Int bottomLeft, topRight, startPos, targetPos;
     List<Building> buildingList;
-    
+
     public int sizeX, sizeY;
 
     enum TileType
     {
         None = 0,
-        Building = 1, 
-        Cradle = 2, 
+        Building = 1,
+        Cradle = 2,
         Road = 3,
         Resource = 4,
         Mark = 5,
+        Rock = 6,
+        Wood = 7,
+        Elemental_Essence = 8
     }
-    
+
     private void Awake()
     {
         if (instance == null)
+        {
             instance = this;
+            sizeX = topRight.x - bottomLeft.x + 1;
+            sizeY = topRight.y - bottomLeft.y + 1;
+            InstantiateTile();
+
+        }
         else
             Destroy(this);
     }
 
     private void Start()
     {
-        sizeX = topRight.x - bottomLeft.x + 1;
-        sizeY = topRight.y - bottomLeft.y + 1;
-
-        InstantiateTile();
         CheckEveryTile();
     }
 
@@ -84,7 +85,7 @@ public class TileDataManager : MonoBehaviour
                 if (tileArray[j, i] == prevType)
                     tileArray[j, i] = type;
             }
-        }        
+        }
     }
     public int GetTileType(int x, int y)
     {
@@ -115,7 +116,7 @@ public class TileDataManager : MonoBehaviour
         }
 
     }
-
+    #region 정령 타일 초기화
     private void CheckEveryTile()
     {
         for (int i = 0; i < sizeX; i++)
@@ -126,38 +127,52 @@ public class TileDataManager : MonoBehaviour
                 TileBase tile = tilemap.GetTile(tilePosition);
 
                 if (tile != null)
-                {                    
+                {
                     Sprite tileSprite = (tile as Tile).sprite;
-                    Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
-                    SetTileType(i,j,3); // 일단 걸을 수 있다!로 다 해놓으셈 타일있으면 => Craftmanager
+                    // 빌딩 혹은 자원 아니면
+                    if (GetTileType(i, j) != 6 || GetTileType(i, j) != 7)
+                    {
+                        Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
+                        nodes[i, j].rotation = tileRotation;
+                        SetTileType(i, j, 3); // 일단 걸을 수 있다!로 다 해놓으셈 타일있으면 => Craftmanager
+
+                    }
+                    else
+                        SetTileType(i, j, 4);
+                   
                     nodes[i, j].nodeSprite = tileSprite;
-                    nodes[i, j].rotation = tileRotation;
                     nodes[i, j].isWalk = true;
+                    
                     if (tileSprite == targetSprite[1] || tileSprite == targetSprite[2] || tileSprite == targetSprite[3] || tileSprite == targetSprite[4] || tileSprite == targetSprite[5] || tileSprite == targetSprite[6] || tileSprite == targetSprite[7] || tileSprite == targetSprite[8])
                     {
+                        nodes[i, j].SetNodeType(5);
                         nodes[i, j].isSignal = true;
                     }
                 }
             }
         }
     }
-
+    #endregion
+    #region 빌딩 - 정령타일 동기화
     public void CheckBuildings()
     {
-        buildingList = BuildingDataManager.instance.GetBuildingList(); 
-        if(buildingList != null)
+        buildingList = BuildingDataManager.instance.GetBuildingList();
+        if (buildingList != null)
         {
-            for(int i = 0; i < buildingList.Count; i++)
+            for (int i = 0; i < buildingList.Count; i++)
             {
                 if (buildingList[i].GetConnectedRoad() != null)
-                {   for(int j = buildingList[i].upperRight.x; j >= buildingList[i].bottomLeft.x; j--)
-                    {   for(int k = buildingList[i].upperRight.y; k >= buildingList[i].bottomLeft.y; k--)
+                {
+                    for (int j = buildingList[i].upperRight.x; j >= buildingList[i].bottomLeft.x; j--)
+                    {
+                        for (int k = buildingList[i].upperRight.y; k >= buildingList[i].bottomLeft.y; k--)
                         {
                             nodes[j, k].building = buildingList[i];
                             nodes[j, k].isWalk = true;
                             nodes[j, k].isBuild = true;
+                            nodes[j, k].SetNodeType(1);
                             Debug.Log(nodes[j, k].isWalk);
-                            SetTileType(j, k,3);
+                            SetTileType(j, k, 3);
                             CheckEveryTile();
                         }
                     }
@@ -165,30 +180,5 @@ public class TileDataManager : MonoBehaviour
             }
         }
     }
-
+    #endregion
 }
-  /*  static bool IsPositive(int[] array)
-    {
-        int left = 0;
-        int right = array.Length - 1;
-
-        if(right < 0)
-            return false;
-
-        while(left <= right)
-        {
-            int mid = (right - left ) / 2;
-
-            if (array[mid] > 0)
-            {
-                left = mid + 1;
-            }
-            else
-            {
-                right = mid - 1;
-            }
-        }
-        return left == array.Length;
-    }    
-}
-  */
