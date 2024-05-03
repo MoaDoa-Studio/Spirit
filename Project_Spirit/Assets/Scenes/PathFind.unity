@@ -110364,7 +110364,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -95.9, y: 0}
+  m_AnchoredPosition: {x: -95.8999, y: 0}
   m_SizeDelta: {x: 197.7, y: 57.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1667891606
@@ -111305,7 +111305,7 @@ MonoBehaviour:
   grid: {fileID: 1741788278}
   craftGrid: {fileID: 1147976849}
   craftMenuUI: {fileID: 792347608}
-  buildingParent: {fileID: 5073716371521491819}
+  buildingParent: {fileID: 7375720502442407807}
   database: {fileID: 0}
   gameTilemap: {fileID: 1665831515}
   gridTilemap: {fileID: 0}
@@ -112065,8 +112065,6 @@ MonoBehaviour:
   topRight: {x: 19, y: 19}
   startPos: {x: 0, y: 0}
   targetPos: {x: 10, y: 10}
-  x: 0
-  y: 0
   sizeX: 0
   sizeY: 0
 --- !u!222 &5139864941121444960

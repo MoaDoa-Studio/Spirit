@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 
 public class Signal : MonoBehaviour
 {
-    public Dictionary<Vector3Int, Quaternion> tileRotations = new Dictionary<Vector3Int, Quaternion>(); // 타일의 위치와 회전 정보를 저장할 딕셔너리
+    //public Dictionary<Vector3Int, Quaternion> tileRotations = new Dictionary<Vector3Int, Quaternion>(); // 타일의 위치와 회전 정보를 저장할 딕셔너리
 
     [SerializeField]
     Sprite[] signalSprite;
@@ -56,7 +56,7 @@ public class Signal : MonoBehaviour
     }
     SignalType signalType;
     
-    public void Setdirerction(int _dir)
+    public void SetDirectionOfSpirit(int _dir)
     {
         switch(signalType)
         {
@@ -101,7 +101,7 @@ public class Signal : MonoBehaviour
         signalType = (SignalType)number + 1;    // Type + 1 값으로 enum 선언.
         dir = CheckRotation(rot);
         spiritDir = _dir;
-        Setdirerction(dir);
+        SetDirectionOfSpirit(dir);
     }
     #endregion
     #region 표식방향 인지
