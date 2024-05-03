@@ -4,18 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Timeline;
+using UnityEngine.UI;
 
 public class ResourceBuilding : MonoBehaviour
 {
     public int Capacity = 4;
     public int Resource_reserves;
-   
+    public int yOffset = 2;
     public List<KeyValuePair<Vector2Int, int>> resourceBuilding;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
+    [HideInInspector]
     public GameObject[] RockObject;
+    [HideInInspector]
     public GameObject[] WoodObject;
-    List<KeyValuePair<Vector2Int, int>> removedBuilding;
-    
+    List<GameObject> gameObjectList = new List<GameObject>(4);
+    public GameObject cursorTransform;
     enum ResourceType
     {
         None = 0,
@@ -63,8 +67,17 @@ public class ResourceBuilding : MonoBehaviour
 
         }
         Resource_reserves = total;
-        if (Resource_reserves == 0)
+        if (Resource_reserves <= 0)
+        {
             resourceType = ResourceType.None;
+            foreach(KeyValuePair<Vector2Int, int> pair in resourceBuilding)
+            {
+                ResetTileType(pair.Key.x, pair.Key.y, 0);
+               
+            }
+            gameObjectList.Clear();
+            Destroy(this.gameObject);
+        }
     }
 
 
@@ -94,13 +107,11 @@ public class ResourceBuilding : MonoBehaviour
        
     }
 
-
-
-    void SetTileType(int x, int y, int typeNum)
+    void ResetTileType(int x, int y, int typeNum)
     {
         TileDataManager.instance.SetTileType(x, y, typeNum);
         TileDataManager.instance.nodes[x, y].SetNodeType(typeNum);
-        TileDataManager.instance.nodes[x, y].isWalk = true;
+        TileDataManager.instance.nodes[x, y].isWalk = false;
     }
     GameObject[] TileType()
     {
@@ -207,6 +218,36 @@ public class ResourceBuilding : MonoBehaviour
 
     #endregion
 
+    public bool CheckForCapacity()
+    {
+        if(gameObjectList.Count < 4)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
 
+    public void AddWorkingSprit(GameObject _gameObject)
+    {
+        gameObjectList.Add(_gameObject);
+    }
+    public void DeleteWorkingSprit(GameObject _gameObject)
+    {
+        gameObjectList.Remove(_gameObject);
+    }
+
+    private void OnMouseEnter()
+    {
+        Vector3 mousePosition;
+        mousePosition = Input.mousePosition;
+        cursorTransform.SetActive(true);
+        cursorTransform.GetComponentInChildren<Text>().text = Resource_reserves.ToString();
+        cursorTransform.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y + yOffset, mousePosition.z));
+    }
+    private void OnMouseExit()
+    { 
+        cursorTransform.SetActive(false);
+    }
 }
 

@@ -44,6 +44,7 @@ public class DetectMove : MonoBehaviour
     int signType;
     bool isFactory = false;
     bool isLoot = false;
+    bool isPause = false;
     enum Dir
     {
         Up = 0,
@@ -119,42 +120,78 @@ public class DetectMove : MonoBehaviour
     {   
         nodes = TileDataManager.instance.GetNodes();
         if (isFactory) return;
-        if (isLoot) return;
+        if (isLoot)
+        {
+            SuddenlyLootorFactoryDisapper();
+            return;
+        }
+        if (isPause) return;
         if (nodes[(int)CurposX, (int)CurposY].isWalk)
         {
             if(nodes[(int)CurposX, (int)CurposY].isBuild)
             {
                 detection = Detect.Factory_MoveMent;
             }
-            // 자원일때 처리해야할 로직 추가 필요.
+           
             if(nodes[(int)CurposX, (int)CurposY].GetNodeType() == 6 || nodes[(int)CurposX, (int)CurposY].GetNodeType() == 7)
             {
                 detection = Detect.Loot;
             }
             else
             {
-                // 노드 정령원소 확인.
                 nodes[(int)CurposX, (int)CurposY].spiritElement = spiritElement;  
                 string signName = nodes[(int)CurposX, (int)CurposY].nodeSprite.name;
-                // Sign type 판별.
+                // Sign 판별.
                 signType = ExtractNumber(signName);  
             
                 if (nodes[(int)CurposX, (int)CurposY].isSignal)
-                {
-                    detection = Detect.Mark_Check;
-                }
+                {   detection = Detect.Mark_Check; }
             
                 else
-                {
-                    detection = Detect.Basic_MoveMent;
-                }
+                {   detection = Detect.Basic_MoveMent;}
 
             }
-
 
         }
     }
 
+    private void MarkCheck(int _signType)
+    {
+        if (_signType == 7)
+        {
+            if (!isPause)
+            {
+            float stopDuration = float.Parse(stopduration.text);
+            isPause = true;
+            StartCoroutine(StopSign(stopDuration));
+            detection = Detect.Basic_MoveMent;
+            }
+            
+        }
+        else
+            signal.SetSignType(_signType, nodes[(int)CurposX, (int)CurposY].rotation, _dir, (int)CurposX, (int)CurposY); // signal 에 sign 타입을 지정하고 dir 방향을 받음
+                                                                                          
+        
+        if (_dir == signal.dir)
+        {
+            CurposX += signal.pair.Item1;
+            CurposY += signal.pair.Item2;
+
+            // 표지방향으로 정령방향 전환.
+            _dir = signal.spiritDir;
+
+            // 타일 체크후 걸을 수 없다면..
+            if (!nodes[(int)CurposX, (int)CurposY].isWalk)
+            { detection = Detect.None;}
+            else
+            {// 다음 칸이 공장 혹은 자원 채집하는 곳이라면..
+                detection = Detect.Move;}
+        }
+        else
+        {
+            detection = Detect.Basic_MoveMent;
+        }
+    }
     #region 기본 움직임
     private void BaseMove()
     {
@@ -174,7 +211,8 @@ public class DetectMove : MonoBehaviour
             {
                 // 가야할 타일에 같은 정령이 있다면.
                 if (nodes[(int)leftx, (int)lefty].spiritElement == spiritElement) return;
-                
+                FactoryOrLootisFull((int)leftx, (int)lefty);
+
                 nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
                 // 왼쪽 방향으로 90도 회전 
                 _dir = (_dir + 1) % 4;
@@ -191,7 +229,8 @@ public class DetectMove : MonoBehaviour
             if (nodes[(int)frontx, (int)fronty].isWalk)
             {
                 if (nodes[(int)frontx, (int)fronty].spiritElement == spiritElement) return;
-               
+                FactoryOrLootisFull((int)frontx, (int)fronty);
+
                 nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
                 CurposX += frontX[_dir];  
                 CurposY += frontY[_dir] ;
@@ -205,7 +244,8 @@ public class DetectMove : MonoBehaviour
             if (nodes[(int)rightx, (int)righty].isWalk)
             {
                 if (nodes[(int)rightx, (int)righty].spiritElement == spiritElement) return;
-                
+                FactoryOrLootisFull((int)rightx, (int)righty);
+
                 nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
                 _dir = (_dir - 1 + 4) % 4;
 
@@ -238,38 +278,6 @@ public class DetectMove : MonoBehaviour
         }
     }
     #endregion
-    private void MarkCheck(int _signType)
-    {
-        if (_signType == 7)
-        {  
-            float stopDuration = float.Parse(stopduration.text);
-            StartCoroutine(StopSign(stopDuration));
-             return;
-        }
-        else
-            signal.SetSignType(_signType, nodes[(int)CurposX, (int)CurposY].rotation, _dir, (int)CurposX, (int)CurposY); // signal 에 sign 타입을 지정하고 dir 방향을 받음
-                                                                                          
-        
-        if (_dir == signal.dir)
-        {
-            CurposX += signal.pair.Item1;
-            CurposY += signal.pair.Item2;
-
-            // 표지방향으로 정령의 방향을 꺽어줌.
-            _dir = signal.spiritDir;
-
-            // 타일 체크후 걸을 수 없다면..
-            if (!nodes[(int)CurposX, (int)CurposY].isWalk)
-            { detection = Detect.None;}
-            else
-            {// 다음 칸이 공장 혹은 자원 채집하는 곳이라면..
-                detection = Detect.Move;}
-        }
-        else
-        {
-            detection = Detect.Basic_MoveMent;
-        }
-    }
 
     #region 공장 움직임
     private void FactoryWork()
@@ -362,6 +370,7 @@ public class DetectMove : MonoBehaviour
         spriteRenderer.enabled = false;
         yield return new WaitForSeconds(TimeforWorking);
 
+        nodes[(int)CurposX, (int)CurposY].resourceBuilding.DeleteWorkingSprit(this.gameObject);
         isLoot = false;
         spriteRenderer.enabled = true;
         detection = Detect.None;
@@ -371,6 +380,7 @@ public class DetectMove : MonoBehaviour
     {
         if(!isLoot)
         {
+            nodes[(int)CurposX, (int)CurposY].resourceBuilding.AddWorkingSprit(this.gameObject);
             nodes[(int)CurposX, (int)CurposY].resourceBuilding.GetDecreasement(LootAmount);
 
             //Debug.Log("나 자원 일함!!");
@@ -429,10 +439,6 @@ public class DetectMove : MonoBehaviour
 
     #endregion
 
-    private void StopMove()
-    {
-    }
-
     static int ExtractNumber(string input)
     {
         // 정규표현식을 사용하여 숫자만 추출
@@ -450,15 +456,40 @@ public class DetectMove : MonoBehaviour
         }
     }
 
-
+    private void StopMove()
+    {
+    }
     IEnumerator StopSign(float _time)
     {
         yield return new WaitForSeconds(_time);
-        Debug.Log("정지신호 호출");
+        isPause = false;
         detection = Detect.Basic_MoveMent;
-        Debug.Log("detection의 상태는 " + detection);
     }
 
+    void FactoryOrLootisFull(int x, int y)
+    {
+        if (TileDataManager.instance.GetTileType(x,y) == 1)
+        {
+            //nodes[(int)CurposX, (int)CurposY].building.connectedRoads.Item1
+        }
+        if (TileDataManager.instance.GetTileType(x,y) == 6 || TileDataManager.instance.GetTileType(x, y) == 7)
+        {
+            if (!nodes[(int)CurposX, (int)CurposY].resourceBuilding.CheckForCapacity())
+            {
+                detection = Detect.None;
+                return;
+            }
+           
+        }
+    }
 
-
+    void SuddenlyLootorFactoryDisapper()
+    {
+        if (nodes[(int)CurposX, (int)CurposY].resourceBuilding == null)
+        {
+            isLoot = false;
+            spriteRenderer.enabled = true;
+            detection = Detect.None;
+        }
+    }
 }
