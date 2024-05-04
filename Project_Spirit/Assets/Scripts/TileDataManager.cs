@@ -171,7 +171,6 @@ public class TileDataManager : MonoBehaviour
                             nodes[j, k].isWalk = true;
                             nodes[j, k].isBuild = true;
                             nodes[j, k].SetNodeType(1);
-                            Debug.Log(nodes[j, k].isWalk);
                             SetTileType(j, k, 3);
                             CheckEveryTile();
                         }

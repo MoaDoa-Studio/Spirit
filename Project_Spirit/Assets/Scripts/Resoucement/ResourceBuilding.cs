@@ -18,7 +18,7 @@ public class ResourceBuilding : MonoBehaviour
     public GameObject[] RockObject;
     [HideInInspector]
     public GameObject[] WoodObject;
-    List<GameObject> gameObjectList = new List<GameObject>(4);
+    List<GameObject> gameObjectList;
     public GameObject cursorTransform;
     enum ResourceType
     {
@@ -40,6 +40,10 @@ public class ResourceBuilding : MonoBehaviour
         return (int)resourceType;
     }
 
+    private void Start()
+    {
+        gameObjectList = new List<GameObject>(4);
+    }
     private void Update()
     {
         if (resourceBuilding != null)
@@ -70,10 +74,10 @@ public class ResourceBuilding : MonoBehaviour
         if (Resource_reserves <= 0)
         {
             resourceType = ResourceType.None;
-            foreach(KeyValuePair<Vector2Int, int> pair in resourceBuilding)
+            foreach (KeyValuePair<Vector2Int, int> pair in resourceBuilding)
             {
                 ResetTileType(pair.Key.x, pair.Key.y, 0);
-               
+
             }
             gameObjectList.Clear();
             Destroy(this.gameObject);
@@ -89,22 +93,22 @@ public class ResourceBuilding : MonoBehaviour
         Debug.Log(Resource_reserves);
     }
     void DecreaseLeastColony(int num)
-    {  
+    {
         int minValue = resourceBuilding[0].Value;
         Vector2Int minCoord = resourceBuilding[0].Key;
 
         int randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
         if (resourceBuilding[randomIndex].Value < 0)
         {
-            randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count); 
+            randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
         }
         Vector2Int randPos = resourceBuilding[randomIndex].Key;
         int posses = resourceBuilding[randomIndex].Value;
         KeyValuePair<Vector2Int, int> updatedPair = new KeyValuePair<Vector2Int, int>(randPos, posses - num);
         resourceBuilding.RemoveAt(randomIndex);
         resourceBuilding.Add(updatedPair);
-        RelocateTile(minCoord,updatedPair.Value, TileType());
-       
+        RelocateTile(minCoord, updatedPair.Value, TileType());
+
     }
 
     void ResetTileType(int x, int y, int typeNum)
@@ -220,7 +224,7 @@ public class ResourceBuilding : MonoBehaviour
 
     public bool CheckForCapacity()
     {
-        if(gameObjectList.Count < 4)
+        if (gameObjectList.Count <= 0 && gameObjectList.Count < 4)
         {
             return true;
         }
