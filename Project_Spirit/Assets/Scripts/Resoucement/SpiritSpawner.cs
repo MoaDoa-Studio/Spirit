@@ -11,6 +11,8 @@ public class SpiritSpawner : MonoBehaviour
     Slider[] allSliders;
     [SerializeField]
     GameObject[] allPrefabs;
+    [SerializeField]
+    GameObject SpawnUI;
     GameObject Spiritprefab;
     
     public bool Fire;
@@ -19,16 +21,20 @@ public class SpiritSpawner : MonoBehaviour
     public bool Air;
 
     int[,] Area = new int[103,103];
-    int numberOfExecutions = 0;
-    float[] Spawn = new float[] { 2f, 1.5f, 1f };
+    float[] Spawn = new float[] { 2f, 1.5f, 1f };   // 24, 18, 12
     float SpawnDuration = 0f;
     
-    float realTimer = 0f;
     float gameTimer = 0f;
-    public float realTimeToGameTimeRatio = 720f;
+    float realTimeToGameTimeRatio = 720f;
     string SpawnerName;
+    int spLv = 1;
+    int spwLv = 2;
+
     Vector2 bottomLeft;
     Vector2 topRight;
+    [HideInInspector]
+    public Slider slider;
+    Text textComp;
 
     enum Dir
     {
@@ -42,26 +48,34 @@ public class SpiritSpawner : MonoBehaviour
     {
         SetSpawnerType();
         SpawnDuration = Spawn[0];
-        foreach(Slider slider in allSliders)
-        {
-            slider.onValueChanged.AddListener(delegate { OnSliderValueChanged(slider.value); });
-        }
+        
     }
 
     private void Update()
     {
-        realTimer += Time.deltaTime;
+       // float spawnTime = slider.value * 1440f;
         // 현실 1초 => 12분 계산
         gameTimer += Time.deltaTime * realTimeToGameTimeRatio;
-       
-        if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration)
+
+        if (slider != null)
         {
-            SpawnSpirit();
+            float spawnTime = slider.value * 1440f;
+            if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime)
+            {
+                SpawnSpirit();
            
-            gameTimer = 0f;
+                gameTimer = 0f;
+            }
         }
-        
-       
+        else
+        {
+            if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration)
+            {
+                SpawnSpirit();
+
+                gameTimer = 0f;
+            }
+        }
         
     }
     void SpawnSpirit()
@@ -88,13 +102,6 @@ public class SpiritSpawner : MonoBehaviour
         }
     }
 
-    void OnSliderValueChanged(float value)
-    {
-        foreach (Slider slider in allSliders)
-        {
-            slider.value = value;
-        }
-    }
     #region 정령 생산소 세팅
     void SetSpawnerType()
     {
@@ -266,4 +273,34 @@ public class SpiritSpawner : MonoBehaviour
         }
             return resultDir;
     }
+
+    private void OnMouseDown()
+    {
+        SpawnUI.SetActive(true);
+        
+        SpawnUI.GetComponent<SpawnerUI>().controllingSpawn = this.gameObject;
+        SpawnUI.GetComponent<SpawnerUI>().ReceiveSpiritSpawnInfo(SetUIInfo());
+
+    }
+
+    SpiritSpawnInfo SetUIInfo()
+    {
+        // SpiritSpawnInfo 인스턴스 생성 및 정보 채우기
+        SpiritSpawnInfo spawnInfo = new SpiritSpawnInfo();
+        spawnInfo.SpawnerName = SpawnerName;
+        spawnInfo.spawnDuration = SpawnDuration;
+        spawnInfo.SpiritLv = spLv;
+        spawnInfo.SpwnLv = spwLv;
+
+        return spawnInfo;
+    }
+    
+}
+
+public class SpiritSpawnInfo
+{
+    public float spawnDuration;
+    public string SpawnerName;
+    public int SpwnLv;
+    public int SpiritLv;
 }

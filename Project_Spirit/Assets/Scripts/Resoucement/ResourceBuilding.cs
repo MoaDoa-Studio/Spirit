@@ -65,6 +65,7 @@ public class ResourceBuilding : MonoBehaviour
         }
     }
 
+    #region 자원 총량 계산.
     void CalculateTotalamountOfResoucre()
     {
         int total = 0;
@@ -87,8 +88,16 @@ public class ResourceBuilding : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+    void ResetTileType(int x, int y, int typeNum)
+    {
+        TileDataManager.instance.SetTileType(x, y, typeNum);
+        TileDataManager.instance.nodes[x, y].SetNodeType(typeNum);
+        TileDataManager.instance.nodes[x, y].isWalk = false;
+    }
 
+    #endregion
 
+    #region 정령 자원 소모 로직.
     public void GetDecreasement(int num)
     {
         DecreaseLeastColony(num);
@@ -115,12 +124,6 @@ public class ResourceBuilding : MonoBehaviour
 
     }
     // 타일 재동기화
-    void ResetTileType(int x, int y, int typeNum)
-    {
-        TileDataManager.instance.SetTileType(x, y, typeNum);
-        TileDataManager.instance.nodes[x, y].SetNodeType(typeNum);
-        TileDataManager.instance.nodes[x, y].isWalk = false;
-    }
     GameObject[] TileType()
     {
         if (resourceType == ResourceType.Rock)
@@ -163,6 +166,8 @@ public class ResourceBuilding : MonoBehaviour
             obj.transform.SetParent(transform);
         }
     }
+
+    #endregion
 
     #region 자원 - 길 연결
 
