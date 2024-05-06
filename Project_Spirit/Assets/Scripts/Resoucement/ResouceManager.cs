@@ -19,6 +19,8 @@ public class ResouceManager : MonoBehaviour
     public List<GameObject> RockObjects;
     [HideInInspector]
     public bool resourceDeployed = false;
+    // 자원 표시 UI
+    public GameObject resourceShowbox;
     Node[,] nodes;
     float IncreasingTime = 1f;
 
@@ -41,6 +43,8 @@ public class ResouceManager : MonoBehaviour
         RockSprite = GetComponent<ResourceDeployment>().RockSprite;
         WoodSprite = GetComponent<ResourceDeployment>().WoodSprite;
     }
+
+    #region 돌 / 나무 자원 증률 타일 동기화 및 변환 
     void IncresementRock()
     {
         int randomlyselectednum = UnityEngine.Random.Range(0, 4);
@@ -215,7 +219,7 @@ public class ResouceManager : MonoBehaviour
             obj.transform.SetParent(_setparents.transform);
         }
     }
-
+    #endregion
 
     Vector2Int FindNewTileisPossible(List<KeyValuePair<Vector2Int, int>> findValue)
     {
@@ -296,6 +300,7 @@ public class ResouceManager : MonoBehaviour
         return newLocation;
     }
 
+    // 자원 증가 가능여부 위치 파악
     bool ValidLocationisNearbyPath(Vector2Int _validLocation)
     {
         Vector2Int checkingValid = _validLocation;

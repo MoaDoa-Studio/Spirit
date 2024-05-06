@@ -19,7 +19,7 @@ public class ResourceBuilding : MonoBehaviour
     [HideInInspector]
     public GameObject[] WoodObject;
     List<GameObject> gameObjectList;
-    public GameObject cursorTransform;
+    GameObject uiObject;
     enum ResourceType
     {
         None = 0,
@@ -43,6 +43,8 @@ public class ResourceBuilding : MonoBehaviour
     private void Start()
     {
         gameObjectList = new List<GameObject>(4);
+        uiObject = GameObject.Find("[ResourceManager]");
+
     }
     private void Update()
     {
@@ -57,6 +59,8 @@ public class ResourceBuilding : MonoBehaviour
             }
             Tuple<Vector2Int, Vector2Int> TwoRoads = isTwoRoadAttachedResource();
             if (TwoRoads != null) SetConnectedRoad(TwoRoads);
+            CalculateTotalamountOfResoucre();
+
 
         }
     }
@@ -110,7 +114,7 @@ public class ResourceBuilding : MonoBehaviour
         RelocateTile(minCoord, updatedPair.Value, TileType());
 
     }
-
+    // 타일 재동기화
     void ResetTileType(int x, int y, int typeNum)
     {
         TileDataManager.instance.SetTileType(x, y, typeNum);
@@ -241,17 +245,6 @@ public class ResourceBuilding : MonoBehaviour
         gameObjectList.Remove(_gameObject);
     }
 
-    private void OnMouseEnter()
-    {
-        Vector3 mousePosition;
-        mousePosition = Input.mousePosition;
-        cursorTransform.SetActive(true);
-        cursorTransform.GetComponentInChildren<Text>().text = Resource_reserves.ToString();
-        cursorTransform.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y + yOffset, mousePosition.z));
-    }
-    private void OnMouseExit()
-    { 
-        cursorTransform.SetActive(false);
-    }
+
 }
 

@@ -22,9 +22,9 @@ public class DetectMove : MonoBehaviour
     Node[,] nodes;  // TileDataManager instance.
     Signal signal = new Signal();
     SpriteRenderer spriteRenderer;
-    
-    public float CurposX = 2;
-    public float CurposY = 1;
+
+    public float CurposX;
+    public float CurposY; 
     // 바라보는 방향 기준 좌표 변화.  
     int[] frontX = { 0, -1, 0, 1 };  // Up , Left, Down, Right
     int[] frontY = { 1, 0, -1, 0 };
@@ -35,11 +35,12 @@ public class DetectMove : MonoBehaviour
     int[] rightX = { 1, 0, -1, 0 };  
     int[] rightY = { 0, 1, 0, -1 };
 
+    [Header ("정령 세팅")]
     public float moveSpeed = 1f;
     public int LootAmount = 15;
     public float TimeforWorking = 5f;
     public int spiritElement;
-    int _dir = (int)Dir.Up;
+    public int _dir;
     int spiritID;
     int signType;
     int tempx, tempy;
@@ -47,8 +48,7 @@ public class DetectMove : MonoBehaviour
     bool isFactory = false;
     bool isLoot = false;
     bool isPause = false;
-    bool isFullBuilding = false;
-
+    
     CapsuleCollider capsuleCollider;
 
     enum Dir
