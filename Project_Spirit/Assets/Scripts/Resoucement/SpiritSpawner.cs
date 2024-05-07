@@ -48,7 +48,7 @@ public class SpiritSpawner : MonoBehaviour
     {
         SetSpawnerType();
         SpawnDuration = Spawn[0];
-        
+        SpawnUI.GetComponent<SpawnerUI>().ReceiveSpiritSpawnInfo(SetUIInfo());
     }
 
     private void Update()
@@ -279,6 +279,7 @@ public class SpiritSpawner : MonoBehaviour
         SpawnUI.SetActive(true);
         
         SpawnUI.GetComponent<SpawnerUI>().controllingSpawn = this.gameObject;
+        // UI 최초 데이터 sync.
         SpawnUI.GetComponent<SpawnerUI>().ReceiveSpiritSpawnInfo(SetUIInfo());
 
     }
@@ -291,7 +292,7 @@ public class SpiritSpawner : MonoBehaviour
         spawnInfo.spawnDuration = SpawnDuration;
         spawnInfo.SpiritLv = spLv;
         spawnInfo.SpwnLv = spwLv;
-
+        spawnInfo.slider = slider;
         return spawnInfo;
     }
     
@@ -303,4 +304,5 @@ public class SpiritSpawnInfo
     public string SpawnerName;
     public int SpwnLv;
     public int SpiritLv;
+    public Slider slider;
 }

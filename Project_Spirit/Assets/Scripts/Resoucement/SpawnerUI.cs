@@ -20,6 +20,8 @@ public class SpawnerUI : MonoBehaviour
     GameObject SpawnLv;
     [SerializeField]
     GameObject SpiritLv;
+    [SerializeField]
+    GameObject otherSlider;
 
     [HideInInspector]
     public Slider slider;
@@ -27,9 +29,10 @@ public class SpawnerUI : MonoBehaviour
     public InputField textcoom;
     public GameObject controllingSpawn;
     private List<SpiritSpawnInfo> spawnInfoList = new List<SpiritSpawnInfo>();
-    
+    List<GameObject> spawnManage = new List<GameObject>();
     private void Start()
     {
+        AddListOfSpawner();
         slider = GetComponentInChildren<Slider>();
         slider.onValueChanged.AddListener(updateText);
         foreach (Slider slider in allSliders)
@@ -70,21 +73,59 @@ public class SpawnerUI : MonoBehaviour
     #endregion
 
     #region UI 세팅
+    void AddListOfSpawner()
+    {
+        spawnManage.Add(Sprit1);
+        spawnManage.Add(Sprit2);
+        spawnManage.Add(Sprit3);
+    }
     public void ReceiveSpiritSpawnInfo(SpiritSpawnInfo spawnInfo)
     {
         spawnInfoList.RemoveAll(item => item.SpawnerName == spawnInfo.SpawnerName);
         spawnInfoList.Add(spawnInfo);
-        ApplyInfo(spawnInfo);
-        Debug.Log(spawnInfo.SpawnerName);
+        ApplyNowSpawnInfo(spawnInfo);
+        ApplyOtherSpawnInfo(spawnInfo);
+        
     }
-
-    void ApplyInfo(SpiritSpawnInfo spawnInfo)
+    // 클릭한 정령 생산소 정보 입력.
+    void ApplyNowSpawnInfo(SpiritSpawnInfo spawnInfo)
     {
         Spawner_Name.GetComponent<Text>().text = spawnInfo.SpawnerName;
         SpawnLv.GetComponentInChildren<Text>().text = spawnInfo.SpwnLv.ToString() + "단계";
         SpiritLv.GetComponentInChildren<Text>().text = spawnInfo.SpiritLv.ToString() + "단계";
 
-        // 타 정령 스폰시간 세팅
+
+    }
+
+    // 타 정령 생산소 스폰시간 세팅
+    void ApplyOtherSpawnInfo(SpiritSpawnInfo newspawnInfo)
+    {
+        List<SpiritSpawnInfo> list = new List<SpiritSpawnInfo>();
+
+        foreach (var item in spawnInfoList)
+        {
+            Debug.Log(spawnInfoList.Count);
+            if (item.SpawnerName != newspawnInfo.SpawnerName)
+            {
+                list.Add(item);
+            }
+
+        }
+
+       for(int i = 0; i < spawnManage.Count; i++)
+       {
+            spawnManage[i].GetComponent<Text>().text = list[i].SpawnerName + "의 정령";
+           
+       }
+    }
+
+
+  
+    void OnClick(SpiritSpawnInfo spawnInfo)
+    {
+        // 배치 시킬 UI 생성 이후 setactive 호출
+        otherSlider.SetActive(true);
+        otherSlider.GetComponentInChildren<Slider>().value = spawnInfo.slider.value;
     }
     #endregion
 
