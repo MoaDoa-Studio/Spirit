@@ -19,6 +19,8 @@ public class SpiritSpawner : MonoBehaviour
     public bool Water;
     public bool Ground;
     public bool Air;
+    public string SpawnerName;
+    public float sliderValue = 0;
 
     int[,] Area = new int[103,103];
     float[] Spawn = new float[] { 2f, 1.5f, 1f };   // 24, 18, 12
@@ -26,14 +28,12 @@ public class SpiritSpawner : MonoBehaviour
     
     float gameTimer = 0f;
     float realTimeToGameTimeRatio = 720f;
-    string SpawnerName;
     int spLv = 1;
     int spwLv = 2;
 
     Vector2 bottomLeft;
     Vector2 topRight;
     [HideInInspector]
-    public Slider slider;
     Text textComp;
 
     enum Dir
@@ -48,34 +48,23 @@ public class SpiritSpawner : MonoBehaviour
     {
         SetSpawnerType();
         SpawnDuration = Spawn[0];
-        SpawnUI.GetComponent<SpawnerUI>().ReceiveSpiritSpawnInfo(SetUIInfo());
+        SpawnUI.GetComponent<SpawnerUI>().ReceiveDefaultSpiritSpawnInfo(SetUIInfo());
     }
 
     private void Update()
     {
        // float spawnTime = slider.value * 1440f;
-        // 현실 1초 => 12분 계산
+        // 현실 1초 => 12분 계산 24분 => 
         gameTimer += Time.deltaTime * realTimeToGameTimeRatio;
 
-        if (slider != null)
+        float spawnTime = sliderValue * 720f;
+        if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime)
         {
-            float spawnTime = slider.value * 1440f;
-            if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime)
-            {
-                SpawnSpirit();
+            SpawnSpirit();
            
-                gameTimer = 0f;
-            }
+            gameTimer = 0f;
         }
-        else
-        {
-            if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration)
-            {
-                SpawnSpirit();
-
-                gameTimer = 0f;
-            }
-        }
+       
         
     }
     void SpawnSpirit()
@@ -277,10 +266,9 @@ public class SpiritSpawner : MonoBehaviour
     private void OnMouseDown()
     {
         SpawnUI.SetActive(true);
-        
-        SpawnUI.GetComponent<SpawnerUI>().controllingSpawn = this.gameObject;
+       
         // UI 최초 데이터 sync.
-        SpawnUI.GetComponent<SpawnerUI>().ReceiveSpiritSpawnInfo(SetUIInfo());
+        SpawnUI.GetComponent<SpawnerUI>().ReceiveSpiritSpawnInfo(SetUIInfo(), this.gameObject);
 
     }
 
@@ -292,7 +280,7 @@ public class SpiritSpawner : MonoBehaviour
         spawnInfo.spawnDuration = SpawnDuration;
         spawnInfo.SpiritLv = spLv;
         spawnInfo.SpwnLv = spwLv;
-        spawnInfo.slider = slider;
+        
         return spawnInfo;
     }
     
@@ -304,5 +292,15 @@ public class SpiritSpawnInfo
     public string SpawnerName;
     public int SpwnLv;
     public int SpiritLv;
-    public Slider slider;
+    public float sliderValue;
+
+    public void UpdateFrom(SpiritSpawnInfo other)
+    {
+        this.spawnDuration = other.spawnDuration;
+        this.SpawnerName = other.SpawnerName;
+        this.SpwnLv = other.SpwnLv;
+        this.SpiritLv = other.SpiritLv;
+        this.sliderValue = other.sliderValue;
+        // slider는 참조형이므로 직접 값을 복사할 필요 없음
+    }
 }

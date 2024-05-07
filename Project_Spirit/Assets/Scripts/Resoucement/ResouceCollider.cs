@@ -16,7 +16,7 @@ public class ResouceCollider : MonoBehaviour
     {
         Vector3 mousePosition;
         mousePosition = Input.mousePosition;
-        Debug.Log(uiObject.name);
+       // Debug.Log(uiObject.name);
 
         uiObject.GetComponent<ResouceManager>().resourceShowbox.SetActive(true);
         uiObject.GetComponent<ResouceManager>().resourceShowbox.GetComponentInChildren<Text>().text = ParentObject.GetComponent<ResourceBuilding>().Resource_reserves.ToString();
