@@ -15,14 +15,16 @@ public class CradleManager : MonoBehaviour
     [SerializeField]
     private GameObject[] elementSlider;
     [SerializeField]
-    private GameObject cradleSlider;
+    private GameObject cradleGage;
     
     [Header("스프라이트")]
     [SerializeField]
     private Sprite[] cradleSprite;
     [SerializeField]
     private Sprite[] cradleGrowthRateSprite;
-    
+    [SerializeField]
+    private Sprite[] cradleGageSprite;
+
     // 원소 관련 변수.
     Queue<Tuple<int, DateTime>>[] elementQueue = { 
         new Queue<Tuple<int, DateTime>>(), 
@@ -30,23 +32,22 @@ public class CradleManager : MonoBehaviour
         new Queue<Tuple<int, DateTime>>(), 
         new Queue<Tuple<int, DateTime>>() 
     };
-    public float[] elementAverage = { 0, 0, 0, 0 };
-    public int[] elementSum = { 0, 0, 0, 0 };
+    private float[] elementAverage = { 0, 0, 0, 0 };
+    private int[] elementSum = { 0, 0, 0, 0 };
     TimeSpan span = TimeSpan.FromSeconds(10);
 
     // 요람 관련 변수.
-    private int cradleLevel = 0;
-    private int cradleGrowth = 0;
-    private int cradleGrowthState = 0;
-    private int[] cradleGrowthValue = { 50, 25, 10, -40 };
-    private float cradleGrowthTime = 0f;
-    private float cradleGrowthCooldown = 10f;
-
+    private int Level = 0;
+    private int GrowthPoint = 0;
+    private int GrowthState = 0;
+    private int[] GrowthValue = { 50, 25, 10, -40 };
+    private float GrowthTime = 0f;
+    private float GrowthCooldown = 10f;
+    
     // For Debug.
     [SerializeField]
     private GameObject DebuggingBtn;
-    [SerializeField]
-    private TextMeshProUGUI[] DebuggingText;
+    
     void Start()
     {
         // For Debug.
@@ -67,56 +68,51 @@ public class CradleManager : MonoBehaviour
         RemoveExpiredElement();
         CalculateElementAverage();
         AddCradleGrowth();
-
-        UpdateCradleUI();        
-    
-        // For Debug.
-        SetDebuggingText();
-        //
+        UpdateCradleUI();
     }
 
     // 4원소 성장 게이지 관리 변수.
     // 정령왕 성장 게이지 변수.            
     void AddCradleGrowth()
     {
-        cradleGrowthTime += Time.deltaTime;
-        if (cradleGrowthTime > cradleGrowthCooldown)
+        GrowthTime += Time.deltaTime;
+        if (GrowthTime > GrowthCooldown)
         {
-            cradleGrowth += cradleGrowthValue[cradleGrowthState];
+            GrowthPoint += GrowthValue[GrowthState];
 
-            if (cradleGrowth > 100)
+            if (GrowthPoint > 100)
                 ToNextCradle();
-            else if (cradleGrowth < 100)
+            else if (GrowthPoint < 100)
             {
                 // 게임 오버.
             }            
             
             SetCradleGrowthSlider();
-            cradleGrowthTime = 0f;
+            GrowthTime = 0f;
         }
     }
 
     void SetCradleGrowthSlider()
     {
-        if (cradleGrowth < 0)
-        {
-            cradleSlider.GetComponent<Slider>().value = cradleGrowth * (-1);
-            cradleSlider.transform.Find("Fill Area/Fill").GetComponent<Image>().color = Color.red;
+        if (GrowthPoint < 0)
+        {            
+            cradleGage.GetComponent<Image>().fillAmount = GrowthPoint * 0.01f * (-1f);
+            cradleGage.GetComponent<Image>().sprite = cradleGageSprite[1];
         }
         else
-        {
-            cradleSlider.GetComponent<Slider>().value = cradleGrowth;
-            cradleSlider.transform.Find("Fill Area/Fill").GetComponent<Image>().color = Color.green;
+        {            
+            cradleGage.GetComponent<Image>().fillAmount = GrowthPoint * 0.01f;
+            cradleGage.GetComponent<Image>().sprite = cradleGageSprite[0];
         }
     }
 
     // 정령왕 레벨업 함수.
     public void ToNextCradle()
     {
-        cradleLevel++;
-        cradleGrowth = 0;
-        if (cradleLevel < 8)
-            cradle.GetComponent<Image>().sprite = cradleSprite[cradleLevel];
+        Level++;
+        GrowthPoint = 0;
+        if (Level < 8)
+            cradle.transform.Find("CradleImage").GetComponent<Image>().sprite = cradleSprite[Level];
         else
         {
             // 게임 클리어 판정.
@@ -190,27 +186,24 @@ public class CradleManager : MonoBehaviour
     public void SetElementSliderSize()
     {
         float totalElementAverage = GetTotalElementAverage();
-        float offset = 2f; // 전체 슬라이더의 길이에 따라 바뀌는 값. 전체 슬라이더 길이 / 2 / 100 값이 들어감.
+        float offset = 1.3f; // 전체 슬라이더의 길이에 따라 바뀌는 값. 전체 슬라이더 길이 / 2 / 100 값이 들어감.
+
         for (int i = 0; i < 4; i++)
         {
             RectTransform result = elementSlider[i].transform.GetChild(0).GetComponent<RectTransform>();
 
-            float ratio; // 게이지에서 차지할 비율.
-            float x_pos;
-            float width;
+            float ratio = 0f; // 게이지에서 차지할 비율.
+            float x_pos = 0f;
+            float width = 0f;            
+
+            ratio = Mathf.Log(Mathf.Abs(elementAverage[i] - totalElementAverage) / totalElementAverage * 1000) * 10;
+            width = ratio * offset;
             if (elementAverage[i] - totalElementAverage > 0)
-            {
-                ratio = Mathf.Log((elementAverage[i] - totalElementAverage) / totalElementAverage * 100) * 10;
-                x_pos = ratio;                
-            }
+                x_pos = width / 2;
             else if (elementAverage[i] - totalElementAverage < 0)
-            {
-                ratio = Mathf.Log((totalElementAverage - elementAverage[i]) / totalElementAverage * 100) * 10;
-                x_pos = -ratio;
-            }
-            else                            
-                x_pos = 0;           
-            width = x_pos > 0 ? x_pos * offset : x_pos * offset * (-1);
+                x_pos = -width / 2;
+            else
+                x_pos = 0;
 
             result.sizeDelta = new Vector2(width, result.rect.height);
             result.anchoredPosition = new Vector2(x_pos, 0);
@@ -251,22 +244,22 @@ public class CradleManager : MonoBehaviour
     {
         if (val <= 4)
         {
-            cradleGrowthState = 0;
+            GrowthState = 0;
             cradleGrowthRate.GetComponent<Image>().sprite = cradleGrowthRateSprite[0];
         }
         else if (val <= 6)
         {
-            cradleGrowthState = 1;
+            GrowthState = 1;
             cradleGrowthRate.GetComponent<Image>().sprite = cradleGrowthRateSprite[1];
         }
         else if (val <= 8)
         {
-            cradleGrowthState = 2;
+            GrowthState = 2;
             cradleGrowthRate.GetComponent<Image>().sprite = cradleGrowthRateSprite[2];
         }
         else
         {
-            cradleGrowthState = 3;
+            GrowthState = 3;
             cradleGrowthRate.GetComponent<Image>().sprite = cradleGrowthRateSprite[3];
         }
     }
@@ -282,18 +275,6 @@ public class CradleManager : MonoBehaviour
         if (count == 0)
             return 0;
         return sum / count;
-    }
-    // 원소 조화, 부조화 판정 함수.
-
-    // 게임 오버 함수.    
-
-    // For Debug.
-    void SetDebuggingText()
-    {
-        DebuggingText[0].text = "Total : " + GetTotalElementAverage().ToString();
-        DebuggingText[1].text = "Fire : " + elementAverage[0].ToString();
-        DebuggingText[2].text = "Water : " + elementAverage[1].ToString();
-        DebuggingText[3].text = "Ground : " + elementAverage[2].ToString();
-        DebuggingText[4].text = "Air : " + elementAverage[3].ToString();
-    }
+    }    
+    // 게임 오버 함수.
 }
