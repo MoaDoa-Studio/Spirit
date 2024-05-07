@@ -11,13 +11,13 @@ public partial class CraftManager : MonoBehaviour
     public Grid grid; // 그리드.    
     public GameObject craftGrid; // 건축 모드 시 격자 표시.
     public GameObject craftMenuUI; // 하단 빌딩 선택 UI
-    public Transform buildingParent; // 생성될 빌딩의 부모 오브젝트.
-    public Transform signParent; // 생성될 사인의 부모 오브젝트.
+    public Transform BuildingSlot; // 생성될 빌딩의 부모 오브젝트.
+    public Transform SignSlot; // 생성될 사인의 부모 오브젝트.
     public BuildingDatabaseSO database;
 
     [Header("타일 맵")]
-    public Tilemap gameTilemap;
-    public Tilemap gridTilemap;
+    public Tilemap GameTilemap;
+    public Tilemap GridTilemap;
     public Tile defaultTile, greenTile, orangeTile, redTile;
 
     private GameObject mouseIndicator;
@@ -61,7 +61,7 @@ public partial class CraftManager : MonoBehaviour
             case CraftMode.Default:
                 craftGrid.SetActive(true);
                 craftMenuUI.SetActive(true);
-                UpdateFieldStatus(); // 필드 갱신. 건물 도로 등등.                
+                UpdateFieldStatus(); // 필드 갱신. 건물 도로 등등.
                 break;
             case CraftMode.PlaceBuilding:
             case CraftMode.DeleteBuilding:                
@@ -79,6 +79,7 @@ public partial class CraftManager : MonoBehaviour
         {
             case CraftMode.PlaceBuilding:                
                 mouseIndicator.transform.position = mousePos;
+                PlaceBuildingBuffer();
                 if (Input.GetKeyDown(KeyCode.Mouse0))                 
                     PlaceBuilding();
                 if (Input.GetKeyDown(KeyCode.Q))
@@ -143,6 +144,15 @@ public partial class CraftManager : MonoBehaviour
         craftGrid.SetActive(true);
         craftMenuUI.SetActive(true);
     }
+    public void ExitCraftMode()
+    {
+        craftMode = CraftMode.None;
+        mouseIndicator = null;
+        deleteStart = Vector3Int.back;
+        
+        craftGrid.SetActive(false);
+        craftMenuUI.SetActive(false);        
+    }
     public void EnterDeleteBuildingMode()
     {
         ChangeCraftMode(CraftMode.DeleteBuilding);
@@ -164,7 +174,7 @@ public partial class CraftManager : MonoBehaviour
         {
             for(int j = 0; j < 103; j++)
             {
-                gridTilemap.SetTile(new Vector3Int(i, j, 0), defaultTile);
+                GridTilemap.SetTile(new Vector3Int(i, j, 0), defaultTile);
             }
         }
     }
@@ -175,11 +185,41 @@ partial class CraftManager
     #region 건물 배치 관련
     public void OnClickBuildingSelectButton(GameObject building)
     {
-        mouseIndicator = Instantiate(building, buildingParent);        
+        mouseIndicator = Instantiate(building, BuildingSlot);        
         ChangeCraftMode(CraftMode.PlaceBuilding);
         // 선택한 건물 버튼 외 다른 버튼 흑백 처리 로직도 들어가야 함.        
     }
-      
+    public void PlaceBuildingBuffer()
+    {
+        ResetGridTile();
+
+        Vector2Int upperRight = new Vector2Int(Mathf.RoundToInt(mouseIndicator.transform.position.x), Mathf.RoundToInt(mouseIndicator.transform.position.y));
+        var angles = mouseIndicator.transform.GetChild(0).rotation.eulerAngles;
+        int x = 0, y = 0;
+        if (angles.z % 180 == 0)
+        {
+            x = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.x;
+            y = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.y;
+        }
+        else
+        {
+            x = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.y;
+            y = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.x;
+        }
+        Vector2Int bottomLeft = new Vector2Int(upperRight.x - x + 1, upperRight.y - y + 1);
+
+        for (int i = upperRight.y; i >= bottomLeft.y; i--)
+        {
+            for (int j = upperRight.x; j >= bottomLeft.x; j--)
+            {
+                if (TileDataManager.instance.GetTileType(j, i) == 1)                
+                    GridTilemap.SetTile(new Vector3Int(j, i, 0), redTile);
+                else
+                    GridTilemap.SetTile(new Vector3Int(j, i, 0), greenTile);                
+            }
+        }        
+    }
+
     public void PlaceBuilding()
     {
         Vector2Int upperRight = new Vector2Int(Mathf.RoundToInt(mouseIndicator.transform.position.x), Mathf.RoundToInt(mouseIndicator.transform.position.y));
@@ -211,11 +251,13 @@ partial class CraftManager
                 TileDataManager.instance.SetTileType(j, i, 1);
             }
         }
+        ResetGridTile();
         mouseIndicator.GetComponent<Building>().SetBuildingPos(upperRight, bottomLeft);
         BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());        
         
-        mouseIndicator = null;
+        mouseIndicator = null;        
         ChangeCraftMode(CraftMode.Default);
+        
     }
 
     bool isBuildingOvelapBuilding(Vector2Int upperRight, Vector2Int bottomLeft)
@@ -232,8 +274,7 @@ partial class CraftManager
             }
         }
         return false;
-    }   
-    
+    }
     public void RotateObject(bool isRight)
     {
         var angles = mouseIndicator.transform.GetChild(0).rotation.eulerAngles;
@@ -303,7 +344,6 @@ partial class CraftManager
     }
     #endregion
 }
-
 partial class CraftManager
 {
     #region 길 배치 관련
@@ -346,13 +386,13 @@ partial class CraftManager
         if (!roadBufferList.Contains(pos))
         {
             if (isOverlapRoad(pos))
-                gridTilemap.SetTile(pos, orangeTile);
+                GridTilemap.SetTile(pos, orangeTile);
             else if (isOvelapBuilding(pos))
-                gridTilemap.SetTile(pos, redTile);
+                GridTilemap.SetTile(pos, redTile);
             else
-                gridTilemap.SetTile(pos, greenTile);
+                GridTilemap.SetTile(pos, greenTile);
 
-            gameTilemap.SetTile(pos, selectedRoad);
+            GameTilemap.SetTile(pos, selectedRoad);
             if (TileDataManager.instance.isRange(pos.x, pos.y))
             {
                 copyArray[pos.x, pos.y] = 3;
@@ -367,7 +407,7 @@ partial class CraftManager
             if ((prevRoad.x != pos.x) && (prevRoad.y != pos.y))
             {
                 Vector3Int complementaryPos = new Vector3Int(prevRoad.x, pos.y, 0);
-                gameTilemap.SetTile(complementaryPos, selectedRoad);
+                GameTilemap.SetTile(complementaryPos, selectedRoad);
                 if (TileDataManager.instance.isRange(complementaryPos.x, complementaryPos.y))
                 {
                     copyArray[complementaryPos.x, complementaryPos.y] = 3;
@@ -385,7 +425,7 @@ partial class CraftManager
             foreach (Vector3Int roadBuffer in roadBufferList)
             {
                 if (TileDataManager.instance.GetTileType(roadBuffer.x, roadBuffer.y) != 3)                    
-                    gameTilemap.SetTile(roadBuffer, null);
+                    GameTilemap.SetTile(roadBuffer, null);
             }
         }
         ResetGridTile();
@@ -411,7 +451,7 @@ partial class CraftManager
         {
             for (int j = deleteBottomLeft.x; j <= deleteUpperRight.x; j++)
             {
-                gameTilemap.SetTile(new Vector3Int(j, i, 0), null);
+                GameTilemap.SetTile(new Vector3Int(j, i, 0), null);
             }
         }
 
@@ -426,7 +466,7 @@ partial class CraftManager
     #region 표식 배치 관련
     public void OnClickSignSelectButton(GameObject sign)
     {
-        mouseIndicator = Instantiate(sign, signParent);
+        mouseIndicator = Instantiate(sign, SignSlot);
         ChangeCraftMode(CraftMode.PlaceSign);
     }
 
@@ -471,15 +511,15 @@ partial class CraftManager
     public void PlaceSignTileBuffer(Vector3Int pos)
     {
         if (CanPlaceSignTile(pos))
-            gridTilemap.SetTile(pos, greenTile);
+            GridTilemap.SetTile(pos, greenTile);
         else
-            gridTilemap.SetTile(pos, redTile);
+            GridTilemap.SetTile(pos, redTile);
     }
     public void PlaceSignTile(Vector3Int pos)
     {
         if (CanPlaceSignTile(pos))
         {            
-            gameTilemap.SetTile(pos, selectedSign);
+            GameTilemap.SetTile(pos, selectedSign);
             TileDataManager.instance.SetTileType(pos.x, pos.y, 5);
         }
         else        
@@ -491,7 +531,7 @@ partial class CraftManager
     }
     #endregion
 
-    #region 표식 삭제 관련    
+    #region 표식 삭제 관련
     #endregion
 }
 
