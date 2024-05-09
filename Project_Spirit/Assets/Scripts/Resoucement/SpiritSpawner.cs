@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class SpiritSpawner : MonoBehaviour
 {
     [SerializeField]
-    Slider[] allSliders;
-    [SerializeField]
     GameObject[] allPrefabs;
     [SerializeField]
     GameObject SpawnUI;
@@ -19,8 +17,11 @@ public class SpiritSpawner : MonoBehaviour
     public bool Water;
     public bool Ground;
     public bool Air;
+    
     public string SpawnerName;
+    [HideInInspector]
     public float sliderValue = 0;
+    public int elementNum =0;
 
     int[,] Area = new int[103,103];
     float[] Spawn = new float[] { 2f, 1.5f, 1f };   // 24, 18, 12
@@ -73,6 +74,7 @@ public class SpiritSpawner : MonoBehaviour
         
         if( OneRoad.HasValue)
         {
+            Debug.Log("한길잇음");
             Vector2Int road = OneRoad.Value;
             int row = road.x;
             int col = road.y;
@@ -94,10 +96,10 @@ public class SpiritSpawner : MonoBehaviour
     #region 정령 생산소 세팅
     void SetSpawnerType()
     {
-        if(Fire) { SpawnerName = "Fire"; }
-        if (Water) { SpawnerName = "Water"; }
-        if(Ground) { SpawnerName = "Ground"; }
-        if(Air){ SpawnerName = "Air"; };
+        if(Fire) { SpawnerName = "불"; }
+        if (Water) { SpawnerName = "물"; }
+        if(Ground) { SpawnerName = "흙"; }
+        if(Air){ SpawnerName = "공기"; };
         SetRangeOfBuilding(SpawnerName);
     }
 
@@ -105,16 +107,16 @@ public class SpiritSpawner : MonoBehaviour
     {
         switch(name)
         {
-            case "Fire":
+            case "불":
                 SetFireMap();
                 break;
-            case "Water":
+            case "물":
                 SetWaterMAp();
                 break;
-            case "Ground":
+            case "흙":
                 SetGroundMap();
                 break;
-            case "Air":
+            case "공기":
                 SetAirMap();
                 break;
         }
@@ -129,6 +131,7 @@ public class SpiritSpawner : MonoBehaviour
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[3];
+                elementNum = 3;
                 //Debug.Log("공기영역");
             }
         }
@@ -146,6 +149,7 @@ public class SpiritSpawner : MonoBehaviour
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[1];
                 //Debug.Log("물영역");
+                elementNum = 1;
             }
         }
         bottomLeft = new Vector2(50, 0);
@@ -162,6 +166,7 @@ public class SpiritSpawner : MonoBehaviour
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[2];
                 //Debug.Log("땅영역");
+                elementNum = 2;
             }
         }
         bottomLeft = new Vector2(97, 50);
@@ -178,6 +183,7 @@ public class SpiritSpawner : MonoBehaviour
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[0];
                 //Debug.Log("불영역");
+                elementNum = 0;
             }
         }
         bottomLeft = new Vector2(49, 99);
@@ -280,6 +286,7 @@ public class SpiritSpawner : MonoBehaviour
         spawnInfo.spawnDuration = SpawnDuration;
         spawnInfo.SpiritLv = spLv;
         spawnInfo.SpwnLv = spwLv;
+        spawnInfo.elementNum = elementNum;
         
         return spawnInfo;
     }
@@ -292,6 +299,7 @@ public class SpiritSpawnInfo
     public string SpawnerName;
     public int SpwnLv;
     public int SpiritLv;
+    public int elementNum;
     public float sliderValue;
 
     public void UpdateFrom(SpiritSpawnInfo other)
@@ -301,6 +309,7 @@ public class SpiritSpawnInfo
         this.SpwnLv = other.SpwnLv;
         this.SpiritLv = other.SpiritLv;
         this.sliderValue = other.sliderValue;
+        this.elementNum = other.elementNum;
         // slider는 참조형이므로 직접 값을 복사할 필요 없음
     }
 }

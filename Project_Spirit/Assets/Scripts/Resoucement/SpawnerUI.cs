@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SpawnerUI : MonoBehaviour
 {
@@ -12,12 +13,6 @@ public class SpawnerUI : MonoBehaviour
     Slider[] allSliders;
     [SerializeField]
     GameObject Spawner_Name;
-    [SerializeField]
-    GameObject Sprit1;
-    [SerializeField]
-    GameObject Sprit2;
-    [SerializeField]
-    GameObject Sprit3;
     [SerializeField]
     GameObject SpawnLv;
     [SerializeField]
@@ -28,20 +23,22 @@ public class SpawnerUI : MonoBehaviour
     GameObject[] spirit123;
     [SerializeField]
     Transform parentSliderPos;
-
+    [SerializeField]
+    GameObject[] showSlider;
+    [SerializeField]
+    GameObject MainSlider;
    
-    [HideInInspector]
     public Button[] buttons;
-    [HideInInspector]
+    
     public Slider slider;
-    [HideInInspector]
-    public InputField textcoom;
-    [HideInInspector]
+    
+    public TMP_InputField textcoom;
+    
     public GameObject[] Spawner;
-    [HideInInspector]
+    
     public Sprite[] HandleSprite;
-    [HideInInspector]
-    public GameObject MainSpawner;
+    
+    GameObject MainSpawner;
 
     private List<SpiritSpawnInfo> spawnInfoList = new List<SpiritSpawnInfo>();
     private List<SpiritSpawnInfo> notspawnInfoList = new List<SpiritSpawnInfo>();
@@ -144,10 +141,10 @@ public class SpawnerUI : MonoBehaviour
     // 클릭한 정령 생산소 정보 입력.
     void ApplyNowSpawnInfo(SpiritSpawnInfo spawnInfo)
     {
-        Spawner_Name.GetComponent<Text>().text = spawnInfo.SpawnerName;
-        SpawnLv.GetComponentInChildren<Text>().text = spawnInfo.SpwnLv.ToString() + "단계";
-        SpiritLv.GetComponentInChildren<Text>().text = spawnInfo.SpiritLv.ToString() + "단계";
-
+        Spawner_Name.GetComponent<TextMeshProUGUI>().text = spawnInfo.SpawnerName + "의 생산소";
+        SpawnLv.GetComponentInChildren<TextMeshProUGUI>().text = spawnInfo.SpwnLv.ToString() + "단계";
+        SpiritLv.GetComponentInChildren<TextMeshProUGUI>().text = spawnInfo.SpiritLv.ToString() + "단계";
+        ChangeHandleImageInChildren(MainSlider.transform, spawnInfo.elementNum);
     }
 
     // 타 정령 생산소 스폰시간 세팅
@@ -165,7 +162,7 @@ public class SpawnerUI : MonoBehaviour
         }
         for(int i = 0; i < 3; i++)
         {
-            spirit123[i].GetComponent<Text>().text = notspawnInfoList[i].SpawnerName + "의 정령";
+            spirit123[i].GetComponent<TextMeshProUGUI>().text = notspawnInfoList[i].SpawnerName + "의 정령";
 
         }
         
@@ -203,15 +200,20 @@ public class SpawnerUI : MonoBehaviour
         {
             int selected = Output(notspawnInfoList[num].SpawnerName);
 
-            GameObject temperalObj = Instantiate(otherSlider, parentSliderPos);
-            Slider[] tempsliders = temperalObj.GetComponentsInChildren<Slider>();
+            showSlider[selected].SetActive(true);
+            Slider[] tempsliders = showSlider[selected].GetComponentsInChildren<Slider>();
             foreach(Slider slider in tempsliders)
             {
                 slider.value = Spawner[selected].GetComponent<SpiritSpawner>().sliderValue;
 
             }
             // 생성된 오브젝트의 하위 오브젝트들을 모두 가져옵니다.
-            ChangeHandleImageInChildren(temperalObj.transform, selected);
+            ChangeHandleImageInChildren(showSlider[selected].transform, selected);
+        }
+        else
+        {
+            int selected = Output(notspawnInfoList[num].SpawnerName);
+            showSlider[selected].SetActive(false);
         }
 
     }
@@ -224,18 +226,22 @@ public class SpawnerUI : MonoBehaviour
         if (isSlider2Active)
         {
             int selected = Output(notspawnInfoList[num].SpawnerName);
-
-            GameObject temperalObj = Instantiate(otherSlider, parentSliderPos);
-            Slider[] tempsliders = temperalObj.GetComponentsInChildren<Slider>();
+            showSlider[selected].SetActive(true);
+            Slider[] tempsliders = showSlider[selected].GetComponentsInChildren<Slider>();
+            
             foreach (Slider slider in tempsliders)
             {
                 slider.value = Spawner[selected].GetComponent<SpiritSpawner>().sliderValue;
 
             }
             // 생성된 오브젝트의 하위 오브젝트들을 모두 가져옵니다.
-            ChangeHandleImageInChildren(temperalObj.transform, selected);
+            ChangeHandleImageInChildren(showSlider[selected].transform, selected);
         }
-
+        else
+        {
+            int selected = Output(notspawnInfoList[num].SpawnerName);
+            showSlider[selected].SetActive(false);
+        }
     }
 
     private void ClickSpawner3(int num)
@@ -245,22 +251,25 @@ public class SpawnerUI : MonoBehaviour
        // otherSlider.SetActive(isSlider3Active);
         if (isSlider3Active)
         {
-
             int selected = Output(notspawnInfoList[num].SpawnerName);
-
-            GameObject temperalObj = Instantiate(otherSlider, parentSliderPos);
-            Slider[] tempsliders = temperalObj.GetComponentsInChildren<Slider>();
+            showSlider[selected].SetActive(true);
+            Slider[] tempsliders = showSlider[selected].GetComponentsInChildren<Slider>();
+          
             foreach (Slider slider in tempsliders)
             {
                 slider.value = Spawner[selected].GetComponent<SpiritSpawner>().sliderValue;
             }
 
             // 생성된 오브젝트의 하위 오브젝트들을 모두 가져옵니다.
-            ChangeHandleImageInChildren(temperalObj.transform, selected);
+            ChangeHandleImageInChildren(showSlider[selected].transform, selected);
 
 
         }
-        // 안보이게 토글로 꺼야함
+        else
+        {
+            int selected = Output(notspawnInfoList[num].SpawnerName);
+            showSlider[selected].SetActive(false);
+        }
 
     }
     void ChangeHandleImageInChildren(Transform parent, int selected)
