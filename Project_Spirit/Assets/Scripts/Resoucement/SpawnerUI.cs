@@ -37,6 +37,7 @@ public class SpawnerUI : MonoBehaviour
     public GameObject[] Spawner;
     
     public Sprite[] HandleSprite;
+    public Sprite[] HandleSubSprite;
     
     GameObject MainSpawner;
 
@@ -45,6 +46,7 @@ public class SpawnerUI : MonoBehaviour
     bool isSlider1Active = false;
     bool isSlider2Active = false;
     bool isSlider3Active = false;
+    bool isSliderAllActive = false;
     
     List<GameObject> spawnManage = new List<GameObject>(); // 정령 생산 전체 리스트
     Canvas canvas;
@@ -123,10 +125,7 @@ public class SpawnerUI : MonoBehaviour
         SpiritSpawnInfo existingSpawnInfo = spawnInfoList.Find(item => item.SpawnerName == newSpawnInfo.SpawnerName);
         if (existingSpawnInfo != null)
         { 
-          
             existingSpawnInfo.UpdateFrom(newSpawnInfo);
-            
-            Debug.Log(existingSpawnInfo.SpawnerName);
         }
         
         else
@@ -144,7 +143,7 @@ public class SpawnerUI : MonoBehaviour
         Spawner_Name.GetComponent<TextMeshProUGUI>().text = spawnInfo.SpawnerName + "의 생산소";
         SpawnLv.GetComponentInChildren<TextMeshProUGUI>().text = spawnInfo.SpwnLv.ToString() + "단계";
         SpiritLv.GetComponentInChildren<TextMeshProUGUI>().text = spawnInfo.SpiritLv.ToString() + "단계";
-        ChangeHandleImageInChildren(MainSlider.transform, spawnInfo.elementNum);
+        ChangeMainHandleImageInChildren(MainSlider.transform, spawnInfo.elementNum);
     }
 
     // 타 정령 생산소 스폰시간 세팅
@@ -175,8 +174,6 @@ public class SpawnerUI : MonoBehaviour
     
     void OnButtonClick(Button clickedButton)
     {
-        Debug.Log(clickedButton.name + " 버튼이 클릭되었습니다.");
-
         switch(clickedButton.name)
         {
             case "0":
@@ -191,6 +188,42 @@ public class SpawnerUI : MonoBehaviour
         }
     }
 
+    public void ClickAll()
+    {
+        isSliderAllActive = !isSliderAllActive;
+        if(isSliderAllActive)
+        {
+            isSlider1Active = true;
+            isSlider2Active = true;
+            isSlider3Active = true;
+            for (int i = 0; i < notspawnInfoList.Count; i++)
+            {
+                int selected = Output(notspawnInfoList[i].SpawnerName);
+
+                showSlider[selected].SetActive(true);
+                Slider[] tempsliders = showSlider[selected].GetComponentsInChildren<Slider>();
+                foreach (Slider slider in tempsliders)
+                {
+                    slider.value = Spawner[selected].GetComponent<SpiritSpawner>().sliderValue;
+
+                }
+                // 생성된 오브젝트의 하위 오브젝트들을 모두 가져옵니다.
+                ChangeHandleImageInChildren(showSlider[selected].transform, selected);
+            }
+        }
+        else
+        {
+            isSlider1Active = false;
+            isSlider2Active = false;
+            isSlider3Active = false;
+
+            for(int i = 0; i < showSlider.Length; i++)
+            {
+                showSlider[i].SetActive(false);
+            }
+        }
+
+    }
     private void ClickSpawner1(int num) 
     {
         isSlider1Active = !isSlider1Active;
@@ -262,7 +295,7 @@ public class SpawnerUI : MonoBehaviour
 
             // 생성된 오브젝트의 하위 오브젝트들을 모두 가져옵니다.
             ChangeHandleImageInChildren(showSlider[selected].transform, selected);
-
+            // 버튼 모양 바뀌는 거 추가
 
         }
         else
@@ -272,6 +305,25 @@ public class SpawnerUI : MonoBehaviour
         }
 
     }
+    void ChangeMainHandleImageInChildren(Transform parent, int selected)
+    {
+        foreach (Transform child in parent)
+        {
+            // 하위 오브젝트의 이름이 "Handle"이면 이미지를 변경합니다.
+            if (child.name == "Handle")
+            {
+                Image handleImage = child.GetComponent<Image>();
+                if (handleImage != null)
+                {
+                    handleImage.sprite = HandleSubSprite[selected];
+                }
+            }
+
+            // 하위 오브젝트가 또 다른 하위 오브젝트를 가지고 있는지 재귀적으로 탐색합니다.
+            ChangeMainHandleImageInChildren(child, selected);
+        }
+    }
+
     void ChangeHandleImageInChildren(Transform parent, int selected)
     {
         foreach (Transform child in parent)
@@ -282,7 +334,7 @@ public class SpawnerUI : MonoBehaviour
                 Image handleImage = child.GetComponent<Image>();
                 if (handleImage != null)
                 {
-                    handleImage.sprite = HandleSprite[selected];
+                    handleImage.sprite = HandleSubSprite[selected];
                 }
             }
 

@@ -153,11 +153,13 @@ public class DetectMove : MonoBehaviour
             else
             {
                 nodes[(int)CurposX, (int)CurposY].spiritElement = spiritElement;  
-                if(!nodes[(int)CurposX, (int)CurposY].nodeSprite)
+               // if(!nodes[(int)CurposX, (int)CurposY].nodeSprite)
                 {
-                     string signName = nodes[(int)CurposX, (int)CurposY].nodeSprite.name;
+                    //Debug.Log(nodes[(int)CurposX, (int)CurposY].nodeSprite.name);
+                    //string signName = nodes[(int)CurposX, (int)CurposY].nodeSprite.name;
                     // Sign ÆÇº°.
-                    signType = ExtractNumber(signName);  
+                    //signType = ExtractNumber(signName);  
+               //
                 }
                 if (nodes[(int)CurposX, (int)CurposY].isSignal)
                 {   detection = Detect.Mark_Check; }
@@ -315,7 +317,7 @@ public class DetectMove : MonoBehaviour
         Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
         Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
 
-        if(Vector2.Distance(targetVector, transform.position) <= 0.01f)
+        if(Vector2.Distance(targetVector, transform.position) <= 0.05f)
         {
             transform.position = targetVector;
             detection = Detect.None;

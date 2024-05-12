@@ -30,7 +30,7 @@ public class SpiritSpawner : MonoBehaviour
     float gameTimer = 0f;
     float realTimeToGameTimeRatio = 720f;
     int spLv = 1;
-    int spwLv = 2;
+    int spwLv = 1;
 
     Vector2 bottomLeft;
     Vector2 topRight;
@@ -74,15 +74,14 @@ public class SpiritSpawner : MonoBehaviour
         
         if( OneRoad.HasValue)
         {
-            Debug.Log("«—±Ê¿’¿Ω");
             Vector2Int road = OneRoad.Value;
             int row = road.x;
             int col = road.y;
             
             Vector3 newPosition = new Vector3(row, col, 0);
             GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y + 0.5f, 0), Quaternion.identity);
-            SpiritObject.GetComponent<DetectMove>().CurposX = row;
-            SpiritObject.GetComponent<DetectMove>().CurposY = col;
+            SpiritObject.GetComponent<DetectMove>().CurposX = row + 0.5f;
+            SpiritObject.GetComponent<DetectMove>().CurposY = col + 0.5f;
             SpiritObject.GetComponent<DetectMove>()._dir = Redirection(row, col);
             
             
@@ -215,6 +214,7 @@ public class SpiritSpawner : MonoBehaviour
                             {
                                 Vector2Int newvec = new Vector2Int(newX,newY);
                                 resultList.Add(newvec);
+                                
                             }
                         }
                     }

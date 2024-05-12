@@ -45,7 +45,12 @@ public class Building : MonoBehaviour
 
     public bool CheckForCapacity()
     {
-        return gameObjectList.Count < 4;
+        if (gameObjectList.Count >= 0 && gameObjectList.Count < 4)
+        {
+            return true;
+        }
+        else
+            return false;
     }
 
     public void AddWorkingSprit(GameObject _gameObject)

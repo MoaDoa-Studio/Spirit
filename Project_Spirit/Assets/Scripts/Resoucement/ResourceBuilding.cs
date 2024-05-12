@@ -107,11 +107,21 @@ public class ResourceBuilding : MonoBehaviour
     }
     void DecreaseLeastColony(int num)
     {
+        if(Resource_reserves %  (10*resourceBuilding.Count) == 0)
+        {
+            int tempResourceamount = Resource_reserves / resourceBuilding.Count;
+
+           
+            foreach (KeyValuePair<Vector2Int, int> pair in resourceBuilding)
+            {  
+                RelocateTile(pair.Key, tempResourceamount, TileType());
+            }
+        }
         int minValue = resourceBuilding[0].Value;
         Vector2Int minCoord = resourceBuilding[0].Key;
 
         int randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
-        if (resourceBuilding[randomIndex].Value < 0)
+        if (resourceBuilding[randomIndex].Value <= 0)
         {
             randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
         }
@@ -120,7 +130,7 @@ public class ResourceBuilding : MonoBehaviour
         KeyValuePair<Vector2Int, int> updatedPair = new KeyValuePair<Vector2Int, int>(randPos, posses - num);
         resourceBuilding.RemoveAt(randomIndex);
         resourceBuilding.Add(updatedPair);
-        RelocateTile(minCoord, updatedPair.Value, TileType());
+        
 
     }
     // 타일 재동기화
@@ -233,7 +243,7 @@ public class ResourceBuilding : MonoBehaviour
 
     public bool CheckForCapacity()
     {
-        if (gameObjectList.Count <= 0 && gameObjectList.Count < 4)
+        if (gameObjectList.Count >= 0 && gameObjectList.Count < 4)
         {
             return true;
         }
