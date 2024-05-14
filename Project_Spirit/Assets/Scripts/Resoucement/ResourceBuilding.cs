@@ -14,12 +14,12 @@ public class ResourceBuilding : MonoBehaviour
     public int yOffset = 2;
     public List<KeyValuePair<Vector2Int, int>> resourceBuilding;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
-    [HideInInspector]
+    
     public GameObject[] RockObject;
-    [HideInInspector]
+    
     public GameObject[] WoodObject;
     List<GameObject> gameObjectList;
-    GameObject uiObject;
+    
     enum ResourceType
     {
         None = 0,
@@ -43,8 +43,7 @@ public class ResourceBuilding : MonoBehaviour
     private void Start()
     {
         gameObjectList = new List<GameObject>(4);
-        uiObject = GameObject.Find("[ResourceManager]");
-
+       
     }
     private void Update()
     {
