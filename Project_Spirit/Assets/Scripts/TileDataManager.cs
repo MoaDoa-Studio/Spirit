@@ -134,11 +134,11 @@ public class TileDataManager : MonoBehaviour
                     {
                         Quaternion tileRotation = tilemap.GetTransformMatrix(tilePosition).rotation;
                         nodes[i, j].rotation = tileRotation;
-                        SetTileType(i, j, 3); // 일단 걸을 수 있다!로 다 해놓으셈 타일있으면 => Craftmanager
+                        //SetTileType(i, j, 3); // 일단 걸을 수 있다!로 다 해놓으셈 타일있으면 => Craftmanager
 
                     }
                     else
-                        SetTileType(i, j, 4);
+                        //SetTileType(i, j, 4);
                    
                     nodes[i, j].nodeSprite = tileSprite;
                     nodes[i, j].isWalk = true;
@@ -171,7 +171,6 @@ public class TileDataManager : MonoBehaviour
                             nodes[j, k].isWalk = true;
                             nodes[j, k].isBuild = true;
                             nodes[j, k].SetNodeType(1);
-                            Debug.Log(nodes[j, k].isWalk);
                             SetTileType(j, k, 3);
                             CheckEveryTile();
                         }

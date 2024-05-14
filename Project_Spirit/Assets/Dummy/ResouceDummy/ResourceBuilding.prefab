@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6997421412664451582}
   - component: {fileID: 5959321840418381898}
+  - component: {fileID: -5396127638294503170}
+  - component: {fileID: 5742493048846845482}
   m_Layer: 0
   m_Name: ResourceBuilding
   m_TagString: Untagged
@@ -46,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Capacity: 0
   Resource_reserves: 0
+  yOffset: 2
   RockObject:
   - {fileID: 6835534066846945486, guid: 11ef1c383e874eb4a8ad313e82912c5a, type: 3}
   - {fileID: 5716883971145630562, guid: eb2f8f7c90714ed408c914fe62786440, type: 3}
@@ -58,3 +61,46 @@ MonoBehaviour:
   - {fileID: 2607283086403096481, guid: 40123e652dc191541a775fa887f6b595, type: 3}
   - {fileID: 3681450896262950039, guid: 55727ad26a7768f4abc7d9a89e5c3eb1, type: 3}
   - {fileID: 15012641334000344, guid: 9dd534317d28889449f672616a04e50a, type: 3}
+--- !u!65 &-5396127638294503170
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7159466253152640370}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!64 &5742493048846845482
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7159466253152640370}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
