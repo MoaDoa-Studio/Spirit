@@ -18,8 +18,8 @@ public class ResourceBuilding : MonoBehaviour
     public GameObject[] RockObject;
     [HideInInspector]
     public GameObject[] WoodObject;
-    List<GameObject> gameObjectList = new List<GameObject>(4);
-    public GameObject cursorTransform;
+    List<GameObject> gameObjectList;
+    GameObject uiObject;
     enum ResourceType
     {
         None = 0,
@@ -40,6 +40,12 @@ public class ResourceBuilding : MonoBehaviour
         return (int)resourceType;
     }
 
+    private void Start()
+    {
+        gameObjectList = new List<GameObject>(4);
+        uiObject = GameObject.Find("[ResourceManager]");
+
+    }
     private void Update()
     {
         if (resourceBuilding != null)
@@ -53,10 +59,13 @@ public class ResourceBuilding : MonoBehaviour
             }
             Tuple<Vector2Int, Vector2Int> TwoRoads = isTwoRoadAttachedResource();
             if (TwoRoads != null) SetConnectedRoad(TwoRoads);
+            CalculateTotalamountOfResoucre();
+
 
         }
     }
 
+    #region 자원 총량 계산.
     void CalculateTotalamountOfResoucre()
     {
         int total = 0;
@@ -70,17 +79,25 @@ public class ResourceBuilding : MonoBehaviour
         if (Resource_reserves <= 0)
         {
             resourceType = ResourceType.None;
-            foreach(KeyValuePair<Vector2Int, int> pair in resourceBuilding)
+            foreach (KeyValuePair<Vector2Int, int> pair in resourceBuilding)
             {
                 ResetTileType(pair.Key.x, pair.Key.y, 0);
-               
+
             }
             gameObjectList.Clear();
             Destroy(this.gameObject);
         }
     }
+    void ResetTileType(int x, int y, int typeNum)
+    {
+        TileDataManager.instance.SetTileType(x, y, typeNum);
+        TileDataManager.instance.nodes[x, y].SetNodeType(typeNum);
+        TileDataManager.instance.nodes[x, y].isWalk = false;
+    }
 
+    #endregion
 
+    #region 정령 자원 소모 로직.
     public void GetDecreasement(int num)
     {
         DecreaseLeastColony(num);
@@ -89,30 +106,34 @@ public class ResourceBuilding : MonoBehaviour
         Debug.Log(Resource_reserves);
     }
     void DecreaseLeastColony(int num)
-    {  
+    {
+        if(Resource_reserves %  (10*resourceBuilding.Count) == 0)
+        {
+            int tempResourceamount = Resource_reserves / resourceBuilding.Count;
+
+           
+            foreach (KeyValuePair<Vector2Int, int> pair in resourceBuilding)
+            {  
+                RelocateTile(pair.Key, tempResourceamount, TileType());
+            }
+        }
         int minValue = resourceBuilding[0].Value;
         Vector2Int minCoord = resourceBuilding[0].Key;
 
         int randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
-        if (resourceBuilding[randomIndex].Value < 0)
+        if (resourceBuilding[randomIndex].Value <= 0)
         {
-            randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count); 
+            randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
         }
         Vector2Int randPos = resourceBuilding[randomIndex].Key;
         int posses = resourceBuilding[randomIndex].Value;
         KeyValuePair<Vector2Int, int> updatedPair = new KeyValuePair<Vector2Int, int>(randPos, posses - num);
         resourceBuilding.RemoveAt(randomIndex);
         resourceBuilding.Add(updatedPair);
-        RelocateTile(minCoord,updatedPair.Value, TileType());
-       
-    }
+        
 
-    void ResetTileType(int x, int y, int typeNum)
-    {
-        TileDataManager.instance.SetTileType(x, y, typeNum);
-        TileDataManager.instance.nodes[x, y].SetNodeType(typeNum);
-        TileDataManager.instance.nodes[x, y].isWalk = false;
     }
+    // 타일 재동기화
     GameObject[] TileType()
     {
         if (resourceType == ResourceType.Rock)
@@ -155,6 +176,8 @@ public class ResourceBuilding : MonoBehaviour
             obj.transform.SetParent(transform);
         }
     }
+
+    #endregion
 
     #region 자원 - 길 연결
 
@@ -220,7 +243,7 @@ public class ResourceBuilding : MonoBehaviour
 
     public bool CheckForCapacity()
     {
-        if(gameObjectList.Count < 4)
+        if (gameObjectList.Count >= 0 && gameObjectList.Count < 4)
         {
             return true;
         }
@@ -237,17 +260,6 @@ public class ResourceBuilding : MonoBehaviour
         gameObjectList.Remove(_gameObject);
     }
 
-    private void OnMouseEnter()
-    {
-        Vector3 mousePosition;
-        mousePosition = Input.mousePosition;
-        cursorTransform.SetActive(true);
-        cursorTransform.GetComponentInChildren<Text>().text = Resource_reserves.ToString();
-        cursorTransform.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y + yOffset, mousePosition.z));
-    }
-    private void OnMouseExit()
-    { 
-        cursorTransform.SetActive(false);
-    }
+
 }
 
