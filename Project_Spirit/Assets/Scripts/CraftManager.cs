@@ -32,6 +32,7 @@ public partial class CraftManager : MonoBehaviour
 
     // For Debug. 
     private Vector3Int deleteStart;
+    public GameObject d;
     enum CraftMode
     {
         None,
@@ -136,7 +137,14 @@ public partial class CraftManager : MonoBehaviour
                     DeleteRoad();
                 }
                 break;            
-        }        
+        }
+
+        // For Debug.
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            ExitCraftMode();            
+            d.SetActive(true);
+        }
     }
     // Craft 모드 진입.
     public void EnterCraftMode()
@@ -170,13 +178,9 @@ public partial class CraftManager : MonoBehaviour
     }    
     public void ResetGridTile()
     {        
-        for(int i = 0; i < 103; i++)
-        {
-            for(int j = 0; j < 103; j++)
-            {
-                GridTilemap.SetTile(new Vector3Int(i, j, 0), defaultTile);
-            }
-        }
+        for(int i = 0; i < 103; i++)        
+            for(int j = 0; j < 103; j++)            
+                GridTilemap.SetTile(new Vector3Int(i, j, 0), defaultTile);            
     }
 }
 
@@ -221,8 +225,7 @@ partial class CraftManager
     }
 
     public void PlaceBuilding()
-    {
-        Vector2Int upperRight = new Vector2Int(Mathf.RoundToInt(mouseIndicator.transform.position.x), Mathf.RoundToInt(mouseIndicator.transform.position.y));
+    {        
         var angles = mouseIndicator.transform.GetChild(0).rotation.eulerAngles;
         int x = 0, y = 0;
         if (angles.z % 180 == 0)
@@ -234,8 +237,11 @@ partial class CraftManager
         {
             x = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.y;
             y = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.x;
-        }        
+        }
+        
+        Vector2Int upperRight = new Vector2Int(Mathf.RoundToInt(mouseIndicator.transform.position.x), Mathf.RoundToInt(mouseIndicator.transform.position.y));
         Vector2Int bottomLeft = new Vector2Int(upperRight.x - x + 1, upperRight.y - y + 1);
+        ResetGridTile();
 
         if (isBuildingOvelapBuilding(upperRight, bottomLeft))
         {            
@@ -244,20 +250,15 @@ partial class CraftManager
             return;
         }
 
-        for (int i = upperRight.y; i >= bottomLeft.y; i--)
-        {
-            for (int j = upperRight.x; j >= bottomLeft.x; j--)
-            {                                
+        for (int i = upperRight.y; i >= bottomLeft.y; i--)        
+            for (int j = upperRight.x; j >= bottomLeft.x; j--)            
                 TileDataManager.instance.SetTileType(j, i, 1);
-            }
-        }
-        ResetGridTile();
+        
         mouseIndicator.GetComponent<Building>().SetBuildingPos(upperRight, bottomLeft);
         BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());        
         
         mouseIndicator = null;        
-        ChangeCraftMode(CraftMode.Default);
-        
+        ChangeCraftMode(CraftMode.Default);        
     }
 
     bool isBuildingOvelapBuilding(Vector2Int upperRight, Vector2Int bottomLeft)
@@ -447,13 +448,9 @@ partial class CraftManager
 
         TileDataManager.instance.ChangeTileTypeByRange(deleteUpperRight, deleteBottomLeft, 3, 0); // 타일 타입이 3인 경우에만 초기화.
         // 타일 맵 초기화.
-        for (int i = deleteBottomLeft.y; i <= deleteUpperRight.y; i++)
-        {
-            for (int j = deleteBottomLeft.x; j <= deleteUpperRight.x; j++)
-            {
-                GameTilemap.SetTile(new Vector3Int(j, i, 0), null);
-            }
-        }
+        for (int i = deleteBottomLeft.y; i <= deleteUpperRight.y; i++)        
+            for (int j = deleteBottomLeft.x; j <= deleteUpperRight.x; j++)            
+                GameTilemap.SetTile(new Vector3Int(j, i, 0), null);         
 
         deleteStart = Vector3Int.back;
         ChangeCraftMode(CraftMode.Default);
