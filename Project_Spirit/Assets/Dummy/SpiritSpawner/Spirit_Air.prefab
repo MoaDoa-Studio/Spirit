@@ -187,8 +187,8 @@ MonoBehaviour:
   CurposX: 0
   CurposY: 0
   moveSpeed: 1
-  LootAmount: 15
-  TimeforWorking: 5
+  LootAmount: 2
+  TimeforWorking: 10
   spiritElement: 0
   _dir: 0
 --- !u!114 &1547893462773229685

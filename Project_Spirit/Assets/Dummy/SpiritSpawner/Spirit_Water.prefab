@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7259451152678741345, guid: 4f560a353fe11f34689f443fca3e7711, type: 3}
+      propertyPath: TimeforWorking
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7719333552058448018, guid: 4f560a353fe11f34689f443fca3e7711, type: 3}
       propertyPath: initialSkinName
       value: Water_Lv1

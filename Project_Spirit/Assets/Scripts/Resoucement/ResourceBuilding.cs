@@ -8,18 +8,19 @@ using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 public class ResourceBuilding : MonoBehaviour
-{
-    public int Capacity = 4;
+{   
     public int Resource_reserves;
     public int yOffset = 2;
     public List<KeyValuePair<Vector2Int, int>> resourceBuilding;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
     
     public GameObject[] RockObject;
-    
     public GameObject[] WoodObject;
+    
+    [SerializeField]
     List<GameObject> gameObjectList;
     
+    int decreasedamount = 0;
     enum ResourceType
     {
         None = 0,
@@ -59,9 +60,9 @@ public class ResourceBuilding : MonoBehaviour
             Tuple<Vector2Int, Vector2Int> TwoRoads = isTwoRoadAttachedResource();
             if (TwoRoads != null) SetConnectedRoad(TwoRoads);
             CalculateTotalamountOfResoucre();
-
-
+           
         }
+        gameObjectList.RemoveAll(item => item == null);
     }
 
     #region 자원 총량 계산.
@@ -105,21 +106,22 @@ public class ResourceBuilding : MonoBehaviour
         Debug.Log(Resource_reserves);
     }
     void DecreaseLeastColony(int num)
-    {
-        if(Resource_reserves %  (10*resourceBuilding.Count) == 0)
+    {   
+        Debug.Log(Resource_reserves);
+        decreasedamount += num;
+        if (decreasedamount % resourceBuilding.Count == 0)
         {
             int tempResourceamount = Resource_reserves / resourceBuilding.Count;
 
-           
             foreach (KeyValuePair<Vector2Int, int> pair in resourceBuilding)
             {  
                 RelocateTile(pair.Key, tempResourceamount, TileType());
             }
+            decreasedamount = 0;
         }
-        int minValue = resourceBuilding[0].Value;
-        Vector2Int minCoord = resourceBuilding[0].Key;
-
+        
         int randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
+        // 차감하는 값이 0일때, 타일 계산 재할당.
         if (resourceBuilding[randomIndex].Value <= 0)
         {
             randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
@@ -242,6 +244,7 @@ public class ResourceBuilding : MonoBehaviour
 
     public bool CheckForCapacity()
     {
+        if(connectedRoads == null) return false;
         if (gameObjectList.Count >= 0 && gameObjectList.Count < 4)
         {
             return true;
@@ -252,7 +255,10 @@ public class ResourceBuilding : MonoBehaviour
 
     public void AddWorkingSprit(GameObject _gameObject)
     {
-        gameObjectList.Add(_gameObject);
+        if(!gameObjectList.Contains(_gameObject)) 
+        {
+         gameObjectList.Add(_gameObject);
+        }
     }
     public void DeleteWorkingSprit(GameObject _gameObject)
     {

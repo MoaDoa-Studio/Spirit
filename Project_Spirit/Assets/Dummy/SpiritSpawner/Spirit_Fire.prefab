@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6304335386131918961, guid: 0401cd3d80a29b84db490515a2541d8d, type: 3}
+      propertyPath: TimeforWorking
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6405010417836666242, guid: 0401cd3d80a29b84db490515a2541d8d, type: 3}
       propertyPath: initialSkinName
       value: Fire_Lv1

@@ -636,11 +636,4 @@ IEnumerator StopSign(float _time)
         }
     }
 
-    private string enter_Gender()
-    {
-        if (spiritID == 2 || spiritID == 4)
-        { return "enter_fm"; }
-        else
-            return "enter_m";
-    }
 }

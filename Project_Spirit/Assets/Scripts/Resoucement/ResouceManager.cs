@@ -22,18 +22,20 @@ public class ResouceManager : MonoBehaviour
     // 자원 표시 UI
     public GameObject resourceShowbox;
     Node[,] nodes;
-    float IncreasingTime = 1f;
+    [SerializeField]
+    float IncreasingTime = 5f;
+    float naturalTime = 5f;
 
     private void Update()
     {
         if (resourceDeployed)
         {
-            IncreasingTime -= Time.deltaTime;
-            if (IncreasingTime <= 0)
+            naturalTime -= Time.deltaTime;
+            if (naturalTime <= 0)
             {
                 IncresementRock();
                 IncresementWood();
-                IncreasingTime = 1f;
+                naturalTime = IncreasingTime;
                
             }
         }

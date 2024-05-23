@@ -21,6 +21,7 @@ public class SpiritSpawner : MonoBehaviour
     public string SpawnerName;
     [HideInInspector]
     public float sliderValue = 0;
+    [HideInInspector]
     public int elementNum =0;
 
     int[,] Area = new int[103,103];
@@ -31,12 +32,12 @@ public class SpiritSpawner : MonoBehaviour
     float realTimeToGameTimeRatio = 720f;
     int spLv = 1;
     int spwLv = 1;
-
+   
     Vector2 bottomLeft;
     Vector2 topRight;
     [HideInInspector]
     Text textComp;
-
+    Node[,] nodes; 
     enum Dir
     {
         Up = 0,
@@ -47,6 +48,7 @@ public class SpiritSpawner : MonoBehaviour
 
     private void Start()
     {
+        nodes = TileDataManager.instance.GetNodes();
         SetSpawnerType();
         SpawnDuration = Spawn[0];
         SpawnUI.GetComponent<SpawnerUI>().ReceiveDefaultSpiritSpawnInfo(SetUIInfo());
@@ -78,10 +80,11 @@ public class SpiritSpawner : MonoBehaviour
             int row = road.x;
             int col = road.y;
             
+            if (nodes[row, col].spiritElement == elementNum) return;    // 대기열이 꽉 찻을떄 반환.
             Vector3 newPosition = new Vector3(row, col, 0);
-            GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y, 0), Quaternion.identity);
+            GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y+ 0.5f, 0), Quaternion.identity);
             SpiritObject.GetComponent<DetectMove>().CurposX = row + 0.5f;
-            SpiritObject.GetComponent<DetectMove>().CurposY = col;
+            SpiritObject.GetComponent<DetectMove>().CurposY = col + 0.5f;
             SpiritObject.GetComponent<DetectMove>()._dir = Redirection(row, col);
             
             
@@ -123,9 +126,9 @@ public class SpiritSpawner : MonoBehaviour
 
     void SetAirMap()
     {
-        for(int i = 0; i < 6; i++)
+        for(int i = 50; i < 56; i++)
         {
-            for(int j = 50; j < 54; j++)
+            for(int j = 0; j < 4; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
@@ -134,15 +137,15 @@ public class SpiritSpawner : MonoBehaviour
                 //Debug.Log("공기영역");
             }
         }
-        bottomLeft = new Vector2(0, 50);
-        topRight = new Vector2(6, 54);
+        bottomLeft = new Vector2(50, 0);
+        topRight = new Vector2(56, 4);
     }
 
     void SetWaterMAp()
     {
         for (int i = 50; i < 56; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j =99; j < 103; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
@@ -151,15 +154,15 @@ public class SpiritSpawner : MonoBehaviour
                 elementNum = 1;
             }
         }
-        bottomLeft = new Vector2(50, 0);
-        topRight = new Vector2(56, 4);
+        bottomLeft = new Vector2(50, 99);
+        topRight = new Vector2(56, 103);
     }
 
     void SetGroundMap()
     {
-        for (int i = 97; i <= 102; i++)
+        for (int i = 99; i < 103; i++)
         {
-            for (int j = 50; j < 54; j++)
+            for (int j = 49; j < 55; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
@@ -168,15 +171,15 @@ public class SpiritSpawner : MonoBehaviour
                 elementNum = 2;
             }
         }
-        bottomLeft = new Vector2(97, 50);
-        topRight = new Vector2(102, 54);
+        bottomLeft = new Vector2(99, 49);
+        topRight = new Vector2(103, 55);
     }
 
     void SetFireMap()
     {
-        for (int i = 49; i < 55; i++)
+        for (int i = 0; i < 4; i++)
         {
-            for (int j = 99; j <= 102; j++)
+            for (int j = 49; j < 55; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
@@ -185,8 +188,8 @@ public class SpiritSpawner : MonoBehaviour
                 elementNum = 0;
             }
         }
-        bottomLeft = new Vector2(49, 99);
-        topRight = new Vector2(55, 102);
+        bottomLeft = new Vector2(0, 49);
+        topRight = new Vector2(4, 55);
     }
     #endregion
 
