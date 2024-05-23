@@ -208,7 +208,7 @@ public class SpawnerUI : MonoBehaviour
 
                 }
                 // 생성된 오브젝트의 하위 오브젝트들을 모두 가져옵니다.
-                ChangeHandleImageInChildren(showSlider[selected].transform, selected);
+                ChangeSubHandleImageInChildren(showSlider[selected].transform, selected);
             }
         }
         else
@@ -241,7 +241,7 @@ public class SpawnerUI : MonoBehaviour
 
             }
             // 생성된 오브젝트의 하위 오브젝트들을 모두 가져옵니다.
-            ChangeHandleImageInChildren(showSlider[selected].transform, selected);
+            ChangeSubHandleImageInChildren(showSlider[selected].transform, selected);
         }
         else
         {
@@ -268,7 +268,7 @@ public class SpawnerUI : MonoBehaviour
 
             }
             // 생성된 오브젝트의 하위 오브젝트들을 모두 가져옵니다.
-            ChangeHandleImageInChildren(showSlider[selected].transform, selected);
+            ChangeSubHandleImageInChildren(showSlider[selected].transform, selected);
         }
         else
         {
@@ -294,7 +294,7 @@ public class SpawnerUI : MonoBehaviour
             }
 
             // 생성된 오브젝트의 하위 오브젝트들을 모두 가져옵니다.
-            ChangeHandleImageInChildren(showSlider[selected].transform, selected);
+            ChangeSubHandleImageInChildren(showSlider[selected].transform, selected);
             // 버튼 모양 바뀌는 거 추가
 
         }
@@ -315,7 +315,7 @@ public class SpawnerUI : MonoBehaviour
                 Image handleImage = child.GetComponent<Image>();
                 if (handleImage != null)
                 {
-                    handleImage.sprite = HandleSubSprite[selected];
+                    handleImage.sprite = HandleSprite[selected];
                 }
             }
 
@@ -324,7 +324,7 @@ public class SpawnerUI : MonoBehaviour
         }
     }
 
-    void ChangeHandleImageInChildren(Transform parent, int selected)
+    void ChangeSubHandleImageInChildren(Transform parent, int selected)
     {
         foreach (Transform child in parent)
         {
@@ -339,7 +339,7 @@ public class SpawnerUI : MonoBehaviour
             }
 
             // 하위 오브젝트가 또 다른 하위 오브젝트를 가지고 있는지 재귀적으로 탐색합니다.
-            ChangeHandleImageInChildren(child, selected);
+            ChangeSubHandleImageInChildren(child, selected);
         }
     }
 

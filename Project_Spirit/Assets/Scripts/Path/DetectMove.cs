@@ -10,18 +10,15 @@ using UnityEngine.UI;
 
 public class DetectMove : MonoBehaviour
 {
-    [SerializeField]
-    Button button;
-    [SerializeField]
-    Sprite[] sprites;
+    [Header("정령 위치 세팅")]
     [SerializeField]
     Text stopduration;
     [SerializeField]
-    Vector2Int bottomLeft, topRight, startPos, targetPos;
+    Vector2Int bottomLeft, topRight;
     
     Node[,] nodes;  // TileDataManager instance.
     Signal signal = new Signal();
-    SpriteRenderer spriteRenderer;
+    MeshRenderer meshRenderer;
 
     public float CurposX;
     public float CurposY; 
@@ -35,7 +32,7 @@ public class DetectMove : MonoBehaviour
     int[] rightX = { 1, 0, -1, 0 };  
     int[] rightY = { 0, 1, 0, -1 };
 
-    [Header ("정령 세팅")]
+    [Header ("정령 동적 세팅")]
     public float moveSpeed = 1f;
     public int LootAmount = 15;
     public float TimeforWorking = 5f;
@@ -50,7 +47,7 @@ public class DetectMove : MonoBehaviour
     bool isPause = false;
     
     CapsuleCollider capsuleCollider;
-
+    SpiritAnim spiritAni;
     enum Dir
     {
         Up = 0,
@@ -59,7 +56,7 @@ public class DetectMove : MonoBehaviour
         Right = 3
     }
 
-    enum Detect
+    public enum Detect
     {
         None,
         CheckTile,
@@ -71,21 +68,24 @@ public class DetectMove : MonoBehaviour
         Loot,
         Academy,
         Mark_Check,
-        FactoryOrLootMove
+        FactoryOrLootOut,
+        FactoryOrLootEnter
     }
     Detect detection = Detect.None;
 
+    public Detect GetDetection()
+    {
+        return detection;
+    }
     private void Start()
     {
         nodes = TileDataManager.instance.GetNodes();
         signal = GameObject.Find("[SignalManager]").GetComponent<Signal>();
         spiritID = GetComponent<Spirit>().SpiritID;
         spiritElement = GetComponent<Spirit>().SpiritElement;
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        int startX = (int)startPos.x - (int)bottomLeft.x;
-        int startY = (int)startPos.y - (int)bottomLeft.y;
+        spiritAni = GetComponent<SpiritAnim>();
+        meshRenderer = GetComponent<MeshRenderer>();
         capsuleCollider = this.GetComponent<CapsuleCollider>();
-
 
     }
     private void Update()
@@ -121,9 +121,13 @@ public class DetectMove : MonoBehaviour
             case Detect.Stop:
                 StopMove();
                 break;
-            case Detect.FactoryOrLootMove:
+            case Detect.FactoryOrLootOut:
                 LootOrFactoryAnimationMove(saveX, saveY);   // 나온 후의 움직임
                 break;
+            case Detect.FactoryOrLootEnter:
+                FactoryOrLootEnter((int)CurposX, (int)CurposY);
+                break;
+
         }
     }
 
@@ -131,11 +135,15 @@ public class DetectMove : MonoBehaviour
     private void CheckTile()
     {   
         nodes = TileDataManager.instance.GetNodes();
-        
-        if (isFactory) return;
+
+        if (isFactory)
+        {
+            SuddenlyFactoryDisapper();
+            return;
+        }
         if (isLoot)
         {
-            SuddenlyLootorFactoryDisapper();
+            SuddenlyLootDisapper();
             return;
         }
         if (isPause) return;
@@ -314,10 +322,39 @@ public class DetectMove : MonoBehaviour
     private void Move(int _curposx, int _curposy)
     {
         if(detection != Detect.Move) { return; }
+
+        // 건물 진입 애니메이션 작동하게 해야함
+        if (nodes[_curposx, _curposy].building != null || nodes[_curposx, _curposy].resourceBuilding != null)
+        {   // ** 날짜 및 시간 구현에 speed 값 조정처리 필요
+            Debug.Log("건물 진입 전 상태");
+            detection = Detect.FactoryOrLootEnter;
+            return;
+        }
+
+        // 정령 움직임 구현
         Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
         Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
 
         if(Vector2.Distance(targetVector, transform.position) <= 0.05f)
+        {
+            transform.position = targetVector;
+            detection = Detect.None;
+            return;
+        }
+        else
+        {
+            Vector2 movement = direction.normalized * moveSpeed * Time.smoothDeltaTime;
+            transform.Translate(movement);
+        }
+    }
+
+    private void FactoryOrLootEnter(int _curposx, int _curposy)
+    {
+        // 정령 움직임 구현
+        Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
+        Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
+
+        if (Vector2.Distance(targetVector, transform.position) <= 0.05f)
         {
             transform.position = targetVector;
             detection = Detect.None;
@@ -345,8 +382,8 @@ public class DetectMove : MonoBehaviour
         yield return new WaitForSeconds(TimeforWorking);
 
         nodes[(int)CurposX, (int)CurposY].building.DeleteWorkingSprit(this.gameObject);
-        spriteRenderer.enabled = true;
-        detection = Detect.FactoryOrLootMove;
+        meshRenderer.enabled = true;
+        detection = Detect.FactoryOrLootOut;
 
     }
     private void FindFactoryPoint()
@@ -380,7 +417,7 @@ public class DetectMove : MonoBehaviour
             capsuleCollider.enabled = false;
             transform.position = new Vector2(tempx + 0.5f, tempy + 0.5f);
             
-            spriteRenderer.enabled = false;
+            meshRenderer.enabled = false;
             saveX = (int)CurposX; saveY = (int)CurposY;
             CurposX = tempx; CurposY = tempy;
         }
@@ -439,8 +476,8 @@ public class DetectMove : MonoBehaviour
         yield return new WaitForSeconds(TimeforWorking);
 
         nodes[(int)CurposX, (int)CurposY].resourceBuilding.DeleteWorkingSprit(this.gameObject);
-        spriteRenderer.enabled = true;
-        detection = Detect.FactoryOrLootMove;
+        meshRenderer.enabled = true;
+        detection = Detect.FactoryOrLootOut;
     }
 
     void FindLootPoint()
@@ -475,13 +512,15 @@ public class DetectMove : MonoBehaviour
             capsuleCollider.enabled = false;
             transform.position = new Vector2(tempx + 0.5f, tempy + 0.5f);
             
-            spriteRenderer.enabled = false;
+            meshRenderer.enabled = false;
             saveX = (int)CurposX; saveY = (int)CurposY;
             CurposX = tempx; CurposY = tempy;
            
         }
     
     }
+    
+    // 공장 및 자원 사용 이후 위치값 수정
     void RedirectionafterLoot(float _curposX, float _curposY)
     {
         int[] FactorydirX = { 0, 0, 1, -1 };
@@ -522,7 +561,7 @@ public class DetectMove : MonoBehaviour
 
     #endregion
 
-    // 나올때 애니메이션
+    //  공장 혹은 자원 나올때 실행하는 애니메이션.
     void LootOrFactoryAnimationMove(int _curposx, int _curposy)
     {
         Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
@@ -544,6 +583,8 @@ public class DetectMove : MonoBehaviour
             transform.Translate(movement);
         }
     }
+
+    // 표지판 판정 기준
     static int ExtractNumber(string input)
     {
         // 정규표현식을 사용하여 숫자만 추출
@@ -573,14 +614,33 @@ IEnumerator StopSign(float _time)
 
   
     // 자원 혹은 공장이 파괴되었을때.
-    void SuddenlyLootorFactoryDisapper()
+    private void SuddenlyFactoryDisapper()
+    {
+        if (nodes[(int)CurposX, (int)CurposY].building == null)
+        {
+            isFactory = false;
+            meshRenderer.enabled = true;
+            CurposX = saveX; CurposY = saveY;
+            detection = Detect.None;
+        }
+    }
+
+    private void SuddenlyLootDisapper()
     {
         if (nodes[(int)CurposX, (int)CurposY].resourceBuilding == null)
         {
             isLoot = false;
-            spriteRenderer.enabled = true;
+            meshRenderer.enabled = true;
             CurposX = saveX; CurposY = saveY;
             detection = Detect.None;
         }
+    }
+
+    private string enter_Gender()
+    {
+        if (spiritID == 2 || spiritID == 4)
+        { return "enter_fm"; }
+        else
+            return "enter_m";
     }
 }

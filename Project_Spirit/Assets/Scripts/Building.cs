@@ -56,7 +56,6 @@ public class Building : MonoBehaviour
     public void AddWorkingSprit(GameObject _gameObject)
     {
         gameObjectList.Add(_gameObject);
-        Debug.Log(gameObjectList.Count + " °¹¼ö");
     }
     public void DeleteWorkingSprit(GameObject _gameObject)
     {
