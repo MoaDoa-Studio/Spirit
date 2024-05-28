@@ -143,6 +143,19 @@ public class SpawnerUI : MonoBehaviour
         Spawner_Name.GetComponent<TextMeshProUGUI>().text = spawnInfo.SpawnerName + "의 생산소";
         SpawnLv.GetComponentInChildren<TextMeshProUGUI>().text = spawnInfo.SpwnLv.ToString() + "단계";
         SpiritLv.GetComponentInChildren<TextMeshProUGUI>().text = spawnInfo.SpiritLv.ToString() + "단계";
+        TextMeshProUGUI[] textComponets = SpiritLv.GetComponentsInChildren<TextMeshProUGUI>();
+        foreach(TextMeshProUGUI textComponet in textComponets)
+        {
+            if(textComponet.gameObject.name == "ElementTxt")
+            {
+                textComponet.text = spawnInfo.SpiritLv.ToString() + "단계";
+            }
+            if(textComponet.gameObject.name == "InfoTxt")
+            {   
+                // 데이터 테이블 받아서 구현해야함
+                textComponet.text = spawnInfo.SpiritLv.ToString();
+            }
+        }
         ChangeMainHandleImageInChildren(MainSlider.transform, spawnInfo.elementNum);
     }
 
@@ -168,10 +181,10 @@ public class SpawnerUI : MonoBehaviour
     }
 
 
-  
+
     #endregion
 
-    
+    #region click 함수
     void OnButtonClick(Button clickedButton)
     {
         switch(clickedButton.name)
@@ -305,6 +318,9 @@ public class SpawnerUI : MonoBehaviour
         }
 
     }
+
+    #endregion
+
     void ChangeMainHandleImageInChildren(Transform parent, int selected)
     {
         foreach (Transform child in parent)
@@ -359,7 +375,11 @@ public class SpawnerUI : MonoBehaviour
         return num;
     }
 
-   
+   public void UpgradeSpirit()
+   {
+        MainSpawner.GetComponent<SpiritSpawner>().spLv += 1; 
+        MainSpawner.GetComponent<SpiritSpawner>().UpgradeByUIButton();
+   }
 
     // UI 버튼별 상호작용 case문 작성 예시
     public void CloseTab()

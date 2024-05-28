@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using TMPro;
@@ -48,6 +49,7 @@ public class DetectMove : MonoBehaviour
     
     CapsuleCollider capsuleCollider;
     SpiritAnim spiritAni;
+  
     enum Dir
     {
         Up = 0,
@@ -78,7 +80,7 @@ public class DetectMove : MonoBehaviour
         return detection;
     }
     private void Start()
-    {
+    {  
         nodes = TileDataManager.instance.GetNodes();
         signal = GameObject.Find("[SignalManager]").GetComponent<Signal>();
         spiritID = GetComponent<Spirit>().SpiritID;
@@ -635,5 +637,6 @@ IEnumerator StopSign(float _time)
             detection = Detect.None;
         }
     }
+
 
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -19,7 +20,7 @@ public class ResourceBuilding : MonoBehaviour
     
     [SerializeField]
     List<GameObject> gameObjectList;
-    
+    ResouceManager resourceManager;
     int decreasedamount = 0;
     enum ResourceType
     {
@@ -44,6 +45,7 @@ public class ResourceBuilding : MonoBehaviour
     private void Start()
     {
         gameObjectList = new List<GameObject>(4);
+        InitializeResourceManger(); // => 자원 정보 초기화
        
     }
     private void Update()
@@ -100,9 +102,9 @@ public class ResourceBuilding : MonoBehaviour
     #region 정령 자원 소모 로직.
     public void GetDecreasement(int num)
     {
-        DecreaseLeastColony(num);
-        // 자원 수량 동기화
-        CalculateTotalamountOfResoucre();
+        DecreaseLeastColony(num);           // 자원 타일 초기화
+        CalculateTotalamountOfResoucre();   // 자원 총 수량 계산
+        Addamount(num);                     // ResouceManager 값 더하기
         Debug.Log(Resource_reserves);
     }
     void DecreaseLeastColony(int num)
@@ -265,6 +267,33 @@ public class ResourceBuilding : MonoBehaviour
         gameObjectList.Remove(_gameObject);
     }
 
+    private void InitializeResourceManger()
+    {
+        // GameManager 오브젝트 찾기
+        GameObject gameManager = GameObject.Find("GameManager");
+
+        if (gameManager != null)
+        {
+            Transform resourceManagerTransform = gameManager.transform.Find("[ResourceManager]");
+
+            if (resourceManagerTransform != null)
+            {
+                resourceManager = resourceManagerTransform.GetComponent<ResouceManager>();
+
+            }
+        }
+    }
+
+    public void Addamount(int num)
+    {
+        if (resourceType == ResourceType.Rock)
+        {
+            resourceManager.AddRock(num);
+        }
+        else
+            resourceManager.AddTimer(num);
+               
+    }
 
 }
 
