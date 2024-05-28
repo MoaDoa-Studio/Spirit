@@ -18,6 +18,7 @@ public class TimeManager : MonoBehaviour
     DateTime DefaultDate;
     DateTime CurrentDate;
     DateTime calc;
+    int currentWeather;
     int temporature;    
     TimeSpan span = TimeSpan.FromSeconds(10);
     private void Start()
@@ -28,6 +29,7 @@ public class TimeManager : MonoBehaviour
 
         // For Debug.
         temporature = 26;
+        currentWeather = 0;
     }
 
     private void Update()
@@ -96,5 +98,10 @@ public class TimeManager : MonoBehaviour
     public DateTime GetCurrentDate()
     {
         return CurrentDate;
+    }
+
+    public int GetWeather()
+    {
+        return currentWeather;
     }
 }
