@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 using TMPro;
 public class CradleManager : MonoBehaviour
 {
@@ -57,22 +56,22 @@ public class CradleManager : MonoBehaviour
         UpdateCradleUI();
 
         // For Debug.        
-        if (Input.GetKey(KeyCode.A))
-            AddElement("Fire", 10);
-        if (Input.GetKey(KeyCode.S))
-            AddElement("Water", 10);
-        if (Input.GetKey(KeyCode.D))
-            AddElement("Ground", 10);
-        if (Input.GetKey(KeyCode.F))
-            AddElement("Air", 10);
-        if (Input.GetKey(KeyCode.Z))
-            AddElement("Fire", 30);
-        if (Input.GetKey(KeyCode.X))
-            AddElement("Water", 20);
-        if (Input.GetKey(KeyCode.C))
-            AddElement("Ground", 15);
-        if (Input.GetKey(KeyCode.V))
-            AddElement("Air", 40);
+        //if (Input.GetKey(KeyCode.A))
+        //    AddElement("Fire", 10);
+        //if (Input.GetKey(KeyCode.S))
+        //    AddElement("Water", 10);
+        //if (Input.GetKey(KeyCode.D))
+        //    AddElement("Ground", 10);
+        //if (Input.GetKey(KeyCode.F))
+        //    AddElement("Air", 10);
+        //if (Input.GetKey(KeyCode.Z))
+        //    AddElement("Fire", 30);
+        //if (Input.GetKey(KeyCode.X))
+        //    AddElement("Water", 20);
+        //if (Input.GetKey(KeyCode.C))
+        //    AddElement("Ground", 15);
+        //if (Input.GetKey(KeyCode.V))
+        //    AddElement("Air", 40);
 
     }
 
