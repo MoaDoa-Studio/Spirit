@@ -17,6 +17,10 @@ public class Building : MonoBehaviour
         connectedRoads = null;
         gameObjectList = new List<GameObject>();
     }
+    private void Update()
+    {
+        gameObjectList.RemoveAll(item => item == null);
+    }
     public Tuple<Vector2Int, Vector2Int> GetBuildingPos()
     {
         return new Tuple<Vector2Int, Vector2Int>(upperRight, bottomLeft);
@@ -44,7 +48,7 @@ public class Building : MonoBehaviour
     }
 
     public bool CheckForCapacity()
-    {
+    {   if (connectedRoads == null) return false;
         if (gameObjectList.Count >= 0 && gameObjectList.Count < 4)
         {
             return true;
@@ -56,7 +60,6 @@ public class Building : MonoBehaviour
     public void AddWorkingSprit(GameObject _gameObject)
     {
         gameObjectList.Add(_gameObject);
-        Debug.Log(gameObjectList.Count + " °¹¼ö");
     }
     public void DeleteWorkingSprit(GameObject _gameObject)
     {

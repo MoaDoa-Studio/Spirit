@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +11,9 @@ public class ResouceManager : MonoBehaviour
     public List<List<KeyValuePair<Vector2Int, int>>> RockAllpaired = new List<List<KeyValuePair<Vector2Int, int>>>();
     public List<KeyValuePair<Vector2Int, int>> wpariedCoordinates = new List<KeyValuePair<Vector2Int, int>>();
     public List<KeyValuePair<Vector2Int, int>> rpariedCoordinates = new List<KeyValuePair<Vector2Int, int>>();
+    [HideInInspector]
     GameObject[] RockSprite;
+    [HideInInspector]
     GameObject[] WoodSprite;
 
     [HideInInspector]
@@ -19,21 +22,35 @@ public class ResouceManager : MonoBehaviour
     public List<GameObject> RockObjects;
     [HideInInspector]
     public bool resourceDeployed = false;
-    // 자원 표시 UI
+    [HideInInspector]
     public GameObject resourceShowbox;
-    Node[,] nodes;
-    float IncreasingTime = 1f;
 
+    public float Element_reserves { get; set; }
+    public float Timber_reserves { get; set; }
+    public float Rock_reserves { get; set; }
+    
+    Node[,] nodes;
+    float IncreasingTime = 5f;
+    float naturalTime = 5f;
+
+    // 자원 표시 UI
+    
+    public GameObject TimberTxt_UI;
+    
+    public GameObject RockTxt_UI;
+    [HideInInspector]
+    public GameObject ElementTxt_UI;
     private void Update()
     {
+        ShowTotalResource();
         if (resourceDeployed)
         {
-            IncreasingTime -= Time.deltaTime;
-            if (IncreasingTime <= 0)
+            naturalTime -= Time.deltaTime;
+            if (naturalTime <= 0)
             {
                 IncresementRock();
                 IncresementWood();
-                IncreasingTime = 1f;
+                naturalTime = IncreasingTime;
                
             }
         }
@@ -333,4 +350,22 @@ public class ResouceManager : MonoBehaviour
         return true;
     }
 
+
+    // UI 초기화
+    private void ShowTotalResource()
+    {
+
+        ElementTxt_UI.GetComponent<TextMeshProUGUI>().text = Element_reserves.ToString();
+        TimberTxt_UI.GetComponent<TextMeshProUGUI>().text = Timber_reserves.ToString();
+        RockTxt_UI.GetComponent<TextMeshProUGUI>().text = Rock_reserves.ToString();
+    }
+
+    public void AddTimer(float num)
+    {
+        Timber_reserves += num;
+    }
+    public void AddRock(float num)
+    {
+        Rock_reserves += num;
+    }
 }

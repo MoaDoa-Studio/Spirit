@@ -2,24 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 public class ResourceBuilding : MonoBehaviour
-{
-    public int Capacity = 4;
+{   
     public int Resource_reserves;
     public int yOffset = 2;
     public List<KeyValuePair<Vector2Int, int>> resourceBuilding;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
-    [HideInInspector]
+    
     public GameObject[] RockObject;
-    [HideInInspector]
     public GameObject[] WoodObject;
+    
+    [SerializeField]
     List<GameObject> gameObjectList;
-    GameObject uiObject;
+    ResouceManager resourceManager;
+    int decreasedamount = 0;
     enum ResourceType
     {
         None = 0,
@@ -43,8 +45,8 @@ public class ResourceBuilding : MonoBehaviour
     private void Start()
     {
         gameObjectList = new List<GameObject>(4);
-        uiObject = GameObject.Find("[ResourceManager]");
-
+        InitializeResourceManger(); // => 자원 정보 초기화
+       
     }
     private void Update()
     {
@@ -60,9 +62,9 @@ public class ResourceBuilding : MonoBehaviour
             Tuple<Vector2Int, Vector2Int> TwoRoads = isTwoRoadAttachedResource();
             if (TwoRoads != null) SetConnectedRoad(TwoRoads);
             CalculateTotalamountOfResoucre();
-
-
+           
         }
+        gameObjectList.RemoveAll(item => item == null);
     }
 
     #region 자원 총량 계산.
@@ -100,27 +102,28 @@ public class ResourceBuilding : MonoBehaviour
     #region 정령 자원 소모 로직.
     public void GetDecreasement(int num)
     {
-        DecreaseLeastColony(num);
-        // 자원 수량 동기화
-        CalculateTotalamountOfResoucre();
+        DecreaseLeastColony(num);           // 자원 타일 초기화
+        CalculateTotalamountOfResoucre();   // 자원 총 수량 계산
+        Addamount(num);                     // ResouceManager 값 더하기
         Debug.Log(Resource_reserves);
     }
     void DecreaseLeastColony(int num)
-    {
-        if(Resource_reserves %  (10*resourceBuilding.Count) == 0)
+    {   
+        Debug.Log(Resource_reserves);
+        decreasedamount += num;
+        if (decreasedamount % resourceBuilding.Count == 0)
         {
             int tempResourceamount = Resource_reserves / resourceBuilding.Count;
 
-           
             foreach (KeyValuePair<Vector2Int, int> pair in resourceBuilding)
             {  
                 RelocateTile(pair.Key, tempResourceamount, TileType());
             }
+            decreasedamount = 0;
         }
-        int minValue = resourceBuilding[0].Value;
-        Vector2Int minCoord = resourceBuilding[0].Key;
-
+        
         int randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
+        // 차감하는 값이 0일때, 타일 계산 재할당.
         if (resourceBuilding[randomIndex].Value <= 0)
         {
             randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
@@ -243,6 +246,7 @@ public class ResourceBuilding : MonoBehaviour
 
     public bool CheckForCapacity()
     {
+        if(connectedRoads == null) return false;
         if (gameObjectList.Count >= 0 && gameObjectList.Count < 4)
         {
             return true;
@@ -253,13 +257,43 @@ public class ResourceBuilding : MonoBehaviour
 
     public void AddWorkingSprit(GameObject _gameObject)
     {
-        gameObjectList.Add(_gameObject);
+        if(!gameObjectList.Contains(_gameObject)) 
+        {
+         gameObjectList.Add(_gameObject);
+        }
     }
     public void DeleteWorkingSprit(GameObject _gameObject)
     {
         gameObjectList.Remove(_gameObject);
     }
 
+    private void InitializeResourceManger()
+    {
+        // GameManager 오브젝트 찾기
+        GameObject gameManager = GameObject.Find("GameManager");
+
+        if (gameManager != null)
+        {
+            Transform resourceManagerTransform = gameManager.transform.Find("[ResourceManager]");
+
+            if (resourceManagerTransform != null)
+            {
+                resourceManager = resourceManagerTransform.GetComponent<ResouceManager>();
+
+            }
+        }
+    }
+
+    public void Addamount(int num)
+    {
+        if (resourceType == ResourceType.Rock)
+        {
+            resourceManager.AddRock(num);
+        }
+        else
+            resourceManager.AddTimer(num);
+               
+    }
 
 }
 
