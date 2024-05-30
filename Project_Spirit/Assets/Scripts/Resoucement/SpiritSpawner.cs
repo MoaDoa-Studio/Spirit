@@ -136,7 +136,7 @@ public class SpiritSpawner : MonoBehaviour
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[3];
-                elementNum = 3;
+                elementNum = 4;
                 SetGamePrefabForSpawner();
                 //Debug.Log("공기영역");
             }
@@ -155,7 +155,7 @@ public class SpiritSpawner : MonoBehaviour
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[1];
                 //Debug.Log("물영역");
-                elementNum = 1;
+                elementNum = 2;
                 SetGamePrefabForSpawner();
             }
         }
@@ -173,7 +173,7 @@ public class SpiritSpawner : MonoBehaviour
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[2];
                 //Debug.Log("땅영역");
-                elementNum = 2;
+                elementNum = 3;
                 SetGamePrefabForSpawner();
             }
         }
@@ -191,7 +191,7 @@ public class SpiritSpawner : MonoBehaviour
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[0];
                 //Debug.Log("불영역");
-                elementNum = 0;
+                elementNum = 1;
                 SetGamePrefabForSpawner();
             }
         }

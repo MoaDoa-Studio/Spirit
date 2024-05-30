@@ -54,11 +54,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1547893462773229685, guid: 0401cd3d80a29b84db490515a2541d8d, type: 3}
       propertyPath: SpiritID
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1547893462773229685, guid: 0401cd3d80a29b84db490515a2541d8d, type: 3}
       propertyPath: SpiritElement
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5784416843909364695, guid: 0401cd3d80a29b84db490515a2541d8d, type: 3}
       propertyPath: m_Mesh

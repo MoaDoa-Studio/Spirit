@@ -247,7 +247,7 @@ public class DetectMove : MonoBehaviour
                 }
                 else if (nodes[(int)leftx, (int)lefty].resourceBuilding != null)
                 {
-                    if (!nodes[(int)leftx, (int)lefty].resourceBuilding.CheckForCapacity())
+                    if (!nodes[(int)leftx, (int)lefty].resourceBuilding.CheckForCapacity() || !nodes[(int)leftx, (int)lefty].resourceBuilding.CanUse)
                      return;
                     
                    
@@ -278,7 +278,7 @@ public class DetectMove : MonoBehaviour
                 }
                 else if (nodes[(int)frontx, (int)fronty].resourceBuilding != null)
                 {
-                    if (!nodes[(int)frontx, (int)fronty].resourceBuilding.CheckForCapacity())
+                    if (!nodes[(int)frontx, (int)fronty].resourceBuilding.CheckForCapacity() || !nodes[(int)frontx, (int)fronty].resourceBuilding.CanUse)
                         return;
                 }
 
@@ -303,7 +303,7 @@ public class DetectMove : MonoBehaviour
                 }
                 else if (nodes[(int)rightx, (int)righty].resourceBuilding != null)
                 {
-                    if (!nodes[(int)rightx, (int)righty].resourceBuilding.CheckForCapacity())
+                    if (!nodes[(int)rightx, (int)righty].resourceBuilding.CheckForCapacity() || !nodes[(int)rightx, (int)righty].resourceBuilding.CanUse)
                         return;
 
                 }
@@ -328,7 +328,7 @@ public class DetectMove : MonoBehaviour
         // 건물 진입 애니메이션 작동하게 해야함
         if (nodes[_curposx, _curposy].building != null || nodes[_curposx, _curposy].resourceBuilding != null)
         {   // ** 날짜 및 시간 구현에 speed 값 조정처리 필요
-            Debug.Log("건물 진입 전 상태");
+          //  Debug.Log("건물 진입 전 상태");
             detection = Detect.FactoryOrLootEnter;
             return;
         }
@@ -352,6 +352,7 @@ public class DetectMove : MonoBehaviour
 
     private void FactoryOrLootEnter(int _curposx, int _curposy)
     {
+       // Debug.Log("건물 진입점에서 대기중");
         // 정령 움직임 구현
         Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
         Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
@@ -488,6 +489,9 @@ public class DetectMove : MonoBehaviour
         {
             nodes[(int)CurposX, (int)CurposY].resourceBuilding.AddWorkingSprit(this.gameObject);
             nodes[(int)CurposX, (int)CurposY].resourceBuilding.GetDecreasement(LootAmount);
+
+            // null 값일떄는 Loot를 취소시키고 마지막 save 위치로 이동시켜야함
+            if(!nodes[(int)CurposX, (int)CurposY].resourceBuilding.CanUse) return;
 
             Vector2 sP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item1;
             Vector2 nP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item2;

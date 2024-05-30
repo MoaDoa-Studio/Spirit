@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2790128517283151205, guid: 4f560a353fe11f34689f443fca3e7711, type: 3}
       propertyPath: SpiritID
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2790128517283151205, guid: 4f560a353fe11f34689f443fca3e7711, type: 3}
       propertyPath: SpiritElement
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4002668604676125346, guid: 4f560a353fe11f34689f443fca3e7711, type: 3}
       propertyPath: m_LocalPosition.x

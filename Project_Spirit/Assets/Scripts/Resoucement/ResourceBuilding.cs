@@ -17,7 +17,9 @@ public class ResourceBuilding : MonoBehaviour
     
     public GameObject[] RockObject;
     public GameObject[] WoodObject;
-    
+
+    [SerializeField]
+    public bool CanUse = false;
     [SerializeField]
     List<GameObject> gameObjectList;
     ResouceManager resourceManager;
@@ -109,7 +111,7 @@ public class ResourceBuilding : MonoBehaviour
     }
     void DecreaseLeastColony(int num)
     {   
-        Debug.Log(Resource_reserves);
+       // Debug.Log(Resource_reserves);
         decreasedamount += num;
         if (decreasedamount % resourceBuilding.Count == 0)
         {
@@ -237,9 +239,15 @@ public class ResourceBuilding : MonoBehaviour
         }
 
         if (result.Count == 2)
+        {
+            CanUse =true;
             return new Tuple<Vector2Int, Vector2Int>(result[0], result[1]);
+        }
         else
+        {
+            CanUse=false;
             return null;
+        }
     }
 
     #endregion
