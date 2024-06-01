@@ -363,7 +363,7 @@ public class SpiritSpawner : MonoBehaviour
             if (obj.name == prefab.name)
             {
                 // 이미 추가된 프리팹이 있는 경우
-                Debug.LogWarning("Prefab '" + prefab.name + "' is already added to the list.");
+                //Debug.LogWarning("Prefab '" + prefab.name + "' is already added to the list.");
                 return true;
             }
         }

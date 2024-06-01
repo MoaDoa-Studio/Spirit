@@ -15,25 +15,25 @@ public class BuildData : ScriptableObject
     public float essenceRequirement = 0;
     public int UniqueProperties = 0;
     public int StructureEffect = 0;
+
     public float WorkingTime = 0;
     public int Capacity = 0;
     public float HcostOfUse = 0;
 
-    //길의 것을 만들어야하는데 언제 이것을 불러일으키냐의 문제이다.
+    
     public GameObject prefab;
 
-    //길의 테마타입
-    public pathType pathtype;
 
-    //길에 대한 설명
-    public string pathdescription;
+}
 
-    //길의 타입 정하기
-    public enum pathType
-    {
-        BabyRoom,
-        OnTable,
-        PlayGround
-
-    }
+public class StructUniqueData : ScriptableObject
+{
+    public int UniqueProperties;
+    public float WorkingTime;
+    public int Capacity;
+    public float HCostOfUse;
+    public float CostUseWood;
+    public float CostOfStone;
+    public int DemandingWork;
+    public int StructureCondition;
 }

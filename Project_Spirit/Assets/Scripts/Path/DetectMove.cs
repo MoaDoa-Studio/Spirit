@@ -18,7 +18,7 @@ public class DetectMove : MonoBehaviour
     Vector2Int bottomLeft, topRight;
     
     Node[,] nodes;  // TileDataManager instance.
-    Signal signal = new Signal();
+    Signal signal;
     MeshRenderer meshRenderer;
 
     public float CurposX;
