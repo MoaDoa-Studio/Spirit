@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<text>
+		<StructureID>1001</StructureID>
+		<StructureName>허름한 돌 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>201</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1002</StructureID>
+		<StructureName>평범한 돌 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>202</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1003</StructureID>
+		<StructureName>최고급 돌 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>203</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1004</StructureID>
+		<StructureName>허름한 나무 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>204</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1005</StructureID>
+		<StructureName>평범한 나무 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>205</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1006</StructureID>
+		<StructureName>최고급 나무 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>206</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1007</StructureID>
+		<StructureName>연구소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>350</StoneRequirement>
+		<WoodRequirement>350</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(8, 6)</StructureSize>
+		<UniqueProperties>102</UniqueProperties>
+		<StructureEffect>207</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1008</StructureID>
+		<StructureName>기술자 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>350</StoneRequirement>
+		<WoodRequirement>150</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>103</UniqueProperties>
+		<StructureEffect>208</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1009</StructureID>
+		<StructureName>학자 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>350</StoneRequirement>
+		<WoodRequirement>150</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>103</UniqueProperties>
+		<StructureEffect>209</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1010</StructureID>
+		<StructureName>기사 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>400</StoneRequirement>
+		<WoodRequirement>200</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>104</UniqueProperties>
+		<StructureEffect>210</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1011</StructureID>
+		<StructureName>전사 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>400</StoneRequirement>
+		<WoodRequirement>200</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>104</UniqueProperties>
+		<StructureEffect>211</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1012</StructureID>
+		<StructureName>귀족 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>450</StoneRequirement>
+		<WoodRequirement>300</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>105</UniqueProperties>
+		<StructureEffect>212</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1013</StructureID>
+		<StructureName>치유사 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>450</StoneRequirement>
+		<WoodRequirement>300</WoodRequirement>
+		<EssenceRequirement>1</EssenceRequirement>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>106</UniqueProperties>
+		<StructureEffect>213</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1014</StructureID>
+		<StructureName>허름한 돌 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>150</StoneRequirement>
+		<WoodRequirement>50</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>214</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1015</StructureID>
+		<StructureName>평범한 돌 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>250</StoneRequirement>
+		<WoodRequirement>100</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>215</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1016</StructureID>
+		<StructureName>번듯한 돌 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>350</StoneRequirement>
+		<WoodRequirement>150</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>216</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1017</StructureID>
+		<StructureName>허름한 나무 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>50</StoneRequirement>
+		<WoodRequirement>150</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>217</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1018</StructureID>
+		<StructureName>평범한 나무 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>100</StoneRequirement>
+		<WoodRequirement>250</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>218</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1019</StructureID>
+		<StructureName>번듯한 나무 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>150</StoneRequirement>
+		<WoodRequirement>350</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>219</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1020</StructureID>
+		<StructureName>소박한 마법의 동상</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>200</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(1, 1)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>220</StructureEffect>
+	</text>
+	<text>
+		<StructureID>1021</StructureID>
+		<StructureName>고급스런 마법의 동상</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>200</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureSize>(3, 3)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>221</StructureEffect>
+	</text>
+</Root>

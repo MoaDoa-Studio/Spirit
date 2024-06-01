@@ -11,6 +11,25 @@ public class Building : MonoBehaviour
     public Vector2Int bottomLeft;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
     List<GameObject> gameObjectList;
+
+    // 공장 운영 상태를 나타냄
+    public enum BuildOperator
+    {
+        None,
+        Construct,
+        Done
+    }
+
+    public enum BuildState
+    {
+        Rest,
+        isWork
+    }
+    [SerializeField]
+    BuildOperator buildOperator = BuildOperator.None;
+    [SerializeField]
+    BuildState buildState = BuildState.Rest;
+    
     public int MaxPlayer = 4;
     private void Start()
     {
@@ -20,7 +39,39 @@ public class Building : MonoBehaviour
     private void Update()
     {
         gameObjectList.RemoveAll(item => item == null);
+        BuildOperation();
+        BuildStater();
     }
+
+    void BuildOperation()
+    {
+        switch(buildOperator)
+        {
+            case BuildOperator.None:
+
+            break;
+
+            case BuildOperator.Construct:
+
+            break;
+
+            case BuildOperator.Done:
+            
+            break;
+        }
+    }
+
+    void BuildStater()
+    {
+        switch(buildState)
+        {
+            case BuildState.Rest:
+                break;
+            case BuildState.isWork:
+                break;
+        }
+    }
+
     public Tuple<Vector2Int, Vector2Int> GetBuildingPos()
     {
         return new Tuple<Vector2Int, Vector2Int>(upperRight, bottomLeft);
