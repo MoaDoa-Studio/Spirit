@@ -241,7 +241,7 @@ public class DetectMove : MonoBehaviour
 
                 if (nodes[(int)leftx, (int)lefty].building != null)
                 {
-                    if (!nodes[(int)leftx, (int)lefty].building.CheckForCapacity())
+                    if (!nodes[(int)leftx, (int)lefty].building.AskPermissionOfUse(this.gameObject))
                         return;
                    
                 }
@@ -272,7 +272,7 @@ public class DetectMove : MonoBehaviour
                 if (nodes[(int)frontx, (int)fronty].building != null)
                 {
 
-                    if (!nodes[(int)frontx, (int)fronty].building.CheckForCapacity())
+                    if (!nodes[(int)frontx, (int)fronty].building.AskPermissionOfUse(this.gameObject))
                         return;
 
                 }
@@ -297,7 +297,8 @@ public class DetectMove : MonoBehaviour
                 if (nodes[(int)rightx, (int)righty].spiritElement == spiritElement) return;
                 if (nodes[(int)rightx, (int)righty].building != null)
                 {
-                    if (!nodes[(int)rightx, (int)righty].building.CheckForCapacity())
+                    if (!nodes[(int)rightx, (int)righty].building.AskPermissionOfUse(this.gameObject))
+
                         return;
 
                 }
@@ -393,7 +394,7 @@ public class DetectMove : MonoBehaviour
     {
         if (!isFactory)
         {
-            nodes[(int)CurposX, (int)CurposY].building.AddWorkingSprit(this.gameObject);
+            // nodes[(int)CurposX, (int)CurposY].building.AddWorkingSprit(this.gameObject);
 
             Vector2 sP = nodes[(int)CurposX, (int)CurposY].building.connectedRoads.Item1;
             Vector2 nP = nodes[(int)CurposX, (int)CurposY].building.connectedRoads.Item2;

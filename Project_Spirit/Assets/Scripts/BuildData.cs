@@ -16,14 +16,6 @@ public class BuildData : ScriptableObject
     public int UniqueProperties = 0;
     public int StructureEffect = 0;
 
-    public float WorkingTime = 0;
-    public int Capacity = 0;
-    public float HcostOfUse = 0;
-
-    
-    public GameObject prefab;
-
-
 }
 
 public class StructUniqueData : ScriptableObject
