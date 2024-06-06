@@ -199,7 +199,8 @@ MonoBehaviour:
   sliderUI: {fileID: 4246451379944622015}
   upperRight: {x: 0, y: 0}
   bottomLeft: {x: 0, y: 0}
-  structureID: 0
+  gameObjectList: []
+  structureID: 1001
   structureName: New Item
   KindOfStructure: 0
   stoneRequirement: 0
@@ -214,6 +215,7 @@ MonoBehaviour:
   CostOfStone: 0
   DemandingWork: 0
   StructureCondition: 0
+  constructionAmount: 0
   buildOperator: 0
   buildState: 0
   MaxPlayer: 4

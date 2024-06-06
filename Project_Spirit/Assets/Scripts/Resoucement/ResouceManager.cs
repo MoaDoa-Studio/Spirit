@@ -28,7 +28,11 @@ public class ResouceManager : MonoBehaviour
     public float Element_reserves { get; set; }
     public float Timber_reserves { get; set; }
     public float Rock_reserves { get; set; }
+    public float Essence_reserves { get; set; }
     
+    public float Max_Timber_reserves { get; set; }
+    public float Max_Rock_reserves { get; set; }
+
     Node[,] nodes;
     float IncreasingTime = 5f;
     float naturalTime = 5f;

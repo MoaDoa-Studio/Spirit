@@ -24,16 +24,20 @@ public class BuildingDataManager : MonoBehaviour
     private void Awake()
     {
         if (instance == null)
+        {
             instance = this;
+            LoadBuildData(StructTableName);
+            LoadStructUniqueData(StructUniqueTableName);
+        }
+
         else
             Destroy(this);
     }
 
     private void Start()
     {
-        LoadBuildData(StructTableName);
-        LoadStructUniqueData(StructUniqueTableName);
     }
+
     public void AddBuilding(Building building)
     {
         BuildingList.Add(building);

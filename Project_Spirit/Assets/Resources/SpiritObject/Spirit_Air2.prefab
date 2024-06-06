@@ -203,11 +203,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1402bb9579c8d547ae4b24b34dee44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpiritID: 4
+  SpiritID: 1
   SpiritJob: 0
   SpiritElement: 4
   SDefaultLife: 100
   SpiritSpeed: 0
+  Work_Efficienty: 0
 --- !u!54 &1335733344473628080
 Rigidbody:
   m_ObjectHideFlags: 0
