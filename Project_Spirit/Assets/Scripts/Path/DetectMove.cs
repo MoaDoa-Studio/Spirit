@@ -18,8 +18,9 @@ public class DetectMove : MonoBehaviour
     Vector2Int bottomLeft, topRight;
     
     Node[,] nodes;  // TileDataManager instance.
-    Signal signal = new Signal();
+    Signal signal;
     MeshRenderer meshRenderer;
+    Building TempBuilding;
 
     public float CurposX;
     public float CurposY; 
@@ -49,7 +50,9 @@ public class DetectMove : MonoBehaviour
     
     CapsuleCollider capsuleCollider;
     SpiritAnim spiritAni;
-  
+    // 정령 텔포 이동전 좌표.
+    Vector2 accessPoint;
+
     enum Dir
     {
         Up = 0,
@@ -57,7 +60,7 @@ public class DetectMove : MonoBehaviour
         Down = 2,
         Right = 3
     }
-
+   
     public enum Detect
     {
         None,
@@ -73,6 +76,7 @@ public class DetectMove : MonoBehaviour
         FactoryOrLootOut,
         FactoryOrLootEnter
     }
+    [SerializeField]
     Detect detection = Detect.None;
 
     public Detect GetDetection()
@@ -241,17 +245,19 @@ public class DetectMove : MonoBehaviour
 
                 if (nodes[(int)leftx, (int)lefty].building != null)
                 {
-                    if (!nodes[(int)leftx, (int)lefty].building.CheckForCapacity())
+                    if (nodes[(int)leftx, (int)lefty].building.AskPermissionOfUse(this.gameObject) == false)
                         return;
                    
                 }
                 else if (nodes[(int)leftx, (int)lefty].resourceBuilding != null)
                 {
-                    if (!nodes[(int)leftx, (int)lefty].resourceBuilding.CheckForCapacity())
+                    if (!nodes[(int)leftx, (int)lefty].resourceBuilding.CheckForCapacity() || !nodes[(int)leftx, (int)lefty].resourceBuilding.CanUse)
                      return;
                     
                    
                 }
+                // 좌표 이동전
+                accessPoint = new Vector2(CurposX, CurposY);
 
                 nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
                 // 왼쪽 방향으로 90도 회전 
@@ -271,16 +277,17 @@ public class DetectMove : MonoBehaviour
                 if (nodes[(int)frontx, (int)fronty].spiritElement == spiritElement) return;
                 if (nodes[(int)frontx, (int)fronty].building != null)
                 {
-
-                    if (!nodes[(int)frontx, (int)fronty].building.CheckForCapacity())
+                    if (nodes[(int)frontx, (int)fronty].building.AskPermissionOfUse(this.gameObject) == false)
                         return;
 
                 }
                 else if (nodes[(int)frontx, (int)fronty].resourceBuilding != null)
                 {
-                    if (!nodes[(int)frontx, (int)fronty].resourceBuilding.CheckForCapacity())
+                    if (!nodes[(int)frontx, (int)fronty].resourceBuilding.CheckForCapacity() || !nodes[(int)frontx, (int)fronty].resourceBuilding.CanUse)
                         return;
                 }
+                // 좌표 이동전
+                accessPoint = new Vector2(CurposX, CurposY);
 
                 nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
                 CurposX += frontX[_dir];  
@@ -297,17 +304,18 @@ public class DetectMove : MonoBehaviour
                 if (nodes[(int)rightx, (int)righty].spiritElement == spiritElement) return;
                 if (nodes[(int)rightx, (int)righty].building != null)
                 {
-                    if (!nodes[(int)rightx, (int)righty].building.CheckForCapacity())
+                    if (nodes[(int)rightx, (int)righty].building.AskPermissionOfUse(this.gameObject) == false)
                         return;
 
                 }
                 else if (nodes[(int)rightx, (int)righty].resourceBuilding != null)
                 {
-                    if (!nodes[(int)rightx, (int)righty].resourceBuilding.CheckForCapacity())
+                    if (!nodes[(int)rightx, (int)righty].resourceBuilding.CheckForCapacity() || !nodes[(int)rightx, (int)righty].resourceBuilding.CanUse)
                         return;
 
                 }
-
+                // 좌표 이동전
+                accessPoint = new Vector2(CurposX, CurposY);
                 nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
                 _dir = (_dir - 1 + 4) % 4;
 
@@ -328,7 +336,7 @@ public class DetectMove : MonoBehaviour
         // 건물 진입 애니메이션 작동하게 해야함
         if (nodes[_curposx, _curposy].building != null || nodes[_curposx, _curposy].resourceBuilding != null)
         {   // ** 날짜 및 시간 구현에 speed 값 조정처리 필요
-            Debug.Log("건물 진입 전 상태");
+          //  Debug.Log("건물 진입 전 상태");
             detection = Detect.FactoryOrLootEnter;
             return;
         }
@@ -352,6 +360,7 @@ public class DetectMove : MonoBehaviour
 
     private void FactoryOrLootEnter(int _curposx, int _curposy)
     {
+       // Debug.Log("건물 진입점에서 대기중");
         // 정령 움직임 구현
         Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
         Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
@@ -374,7 +383,7 @@ public class DetectMove : MonoBehaviour
     private void FactoryWork()
     {
         StartCoroutine(Buildpattern());
-        detection = Detect.None;
+       
         return;
     }
     IEnumerator Buildpattern()
@@ -383,23 +392,27 @@ public class DetectMove : MonoBehaviour
        
         yield return new WaitForSeconds(TimeforWorking);
 
-        nodes[(int)CurposX, (int)CurposY].building.DeleteWorkingSprit(this.gameObject);
+        TempBuilding.GetComponent<Building>().DeleteWorkingSprit(this.gameObject);
         meshRenderer.enabled = true;
         detection = Detect.FactoryOrLootOut;
-
+        
     }
     private void FindFactoryPoint()
     {
         if (!isFactory)
         {
-            nodes[(int)CurposX, (int)CurposY].building.AddWorkingSprit(this.gameObject);
-
+            TempBuilding = nodes[(int)CurposX, (int)CurposY].building;
+            // 정령이 치러야할 댓가
+            // 노동 시간, 체력, 이용 비용 
+             nodes[(int)CurposX, (int)CurposY].building.BuildingExpense(this.gameObject);
+             nodes[(int)CurposX, (int)CurposY].building.AddWorkingSprit(this.gameObject);
+            
             Vector2 sP = nodes[(int)CurposX, (int)CurposY].building.connectedRoads.Item1;
             Vector2 nP = nodes[(int)CurposX, (int)CurposY].building.connectedRoads.Item2;
             Vector2 transformPosition = new Vector2(transform.position.x, transform.position.y);
             Vector2 target = Vector2.zero;
-            float distanceToA = Vector2.Distance(transformPosition, sP);
-            float distanceToB = Vector2.Distance(transformPosition, nP);
+            float distanceToA = Vector2.Distance(accessPoint, sP);
+            float distanceToB = Vector2.Distance(accessPoint, nP);
             if (distanceToA < distanceToB)
             {
                 isFactory = true;
@@ -478,6 +491,7 @@ public class DetectMove : MonoBehaviour
         yield return new WaitForSeconds(TimeforWorking);
 
         nodes[(int)CurposX, (int)CurposY].resourceBuilding.DeleteWorkingSprit(this.gameObject);
+        
         meshRenderer.enabled = true;
         detection = Detect.FactoryOrLootOut;
     }
@@ -488,6 +502,9 @@ public class DetectMove : MonoBehaviour
         {
             nodes[(int)CurposX, (int)CurposY].resourceBuilding.AddWorkingSprit(this.gameObject);
             nodes[(int)CurposX, (int)CurposY].resourceBuilding.GetDecreasement(LootAmount);
+
+            // null 값일떄는 Loot를 취소시키고 마지막 save 위치로 이동시켜야함
+            if(!nodes[(int)CurposX, (int)CurposY].resourceBuilding.CanUse) return;
 
             Vector2 sP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item1;
             Vector2 nP = nodes[(int)CurposX, (int)CurposY].resourceBuilding.connectedRoads.Item2;
@@ -569,7 +586,7 @@ public class DetectMove : MonoBehaviour
         Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
         Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
 
-        if (Vector2.Distance(targetVector, transform.position) <= 0.01f)
+        if (Vector2.Distance(targetVector, transform.position) <= 0.05f)
         {
             transform.position = targetVector;
             CurposX = _curposx; CurposY = _curposy;

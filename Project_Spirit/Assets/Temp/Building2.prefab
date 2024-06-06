@@ -119,8 +119,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8019ebd06a1c3a4db4511569e9c0d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BuildID: 1001
+  sliderUI: {fileID: 0}
   upperRight: {x: 0, y: 0}
   bottomLeft: {x: 0, y: 0}
+  gameObjectList: []
+  structureID: 0
+  structureName: New Item
+  KindOfStructure: 0
+  stoneRequirement: 0
+  woodRequirement: 0
+  essenceRequirement: 0
+  UniqueProperties: 0
+  StructureEffect: 0
+  WorkingTime: 0
+  Capacity: 0
+  HCostOfUse: 0
+  CostUseWood: 0
+  CostOfStone: 0
+  DemandingWork: 0
+  StructureCondition: 0
+  constructionAmount: 0
+  buildOperator: 0
+  buildState: 0
   MaxPlayer: 4
 --- !u!1 &5160217588954854116
 GameObject:
