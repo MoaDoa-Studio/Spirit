@@ -9,11 +9,17 @@ public class Spirit : MonoBehaviour
     public int SpiritElement;
     public float SDefaultLife;
     public float SpiritSpeed;
+    public float Work_Efficienty;
     string SpiritName;
 
     private void Start()
     {
         SDefaultLife = 100f;
+    }
+
+    public void TakeBuildingExpense()
+    {
+
     }
 
     #region 정령충돌 감지

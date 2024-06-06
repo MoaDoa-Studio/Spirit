@@ -136,7 +136,7 @@ public class SpiritSpawner : MonoBehaviour
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[3];
-                elementNum = 3;
+                elementNum = 4;
                 SetGamePrefabForSpawner();
                 //Debug.Log("공기영역");
             }
@@ -155,7 +155,7 @@ public class SpiritSpawner : MonoBehaviour
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[1];
                 //Debug.Log("물영역");
-                elementNum = 1;
+                elementNum = 2;
                 SetGamePrefabForSpawner();
             }
         }
@@ -165,38 +165,38 @@ public class SpiritSpawner : MonoBehaviour
 
     void SetGroundMap()
     {
-        for (int i = 99; i < 103; i++)
+        for (int i = 97; i < 103; i++)
         {
-            for (int j = 49; j < 55; j++)
+            for (int j = 49; j < 53; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[2];
                 //Debug.Log("땅영역");
-                elementNum = 2;
+                elementNum = 3;
                 SetGamePrefabForSpawner();
             }
         }
-        bottomLeft = new Vector2(99, 49);
-        topRight = new Vector2(103, 55);
+        bottomLeft = new Vector2(97, 49);
+        topRight = new Vector2(103, 53);
     }
 
     void SetFireMap()
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 6; i++)
         {
-            for (int j = 49; j < 55; j++)
+            for (int j = 49; j < 53; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
                 Spiritprefab = allPrefabs[0];
                 //Debug.Log("불영역");
-                elementNum = 0;
+                elementNum = 1;
                 SetGamePrefabForSpawner();
             }
         }
         bottomLeft = new Vector2(0, 49);
-        topRight = new Vector2(4, 55);
+        topRight = new Vector2(6, 53);
     }
     #endregion
 
@@ -363,7 +363,7 @@ public class SpiritSpawner : MonoBehaviour
             if (obj.name == prefab.name)
             {
                 // 이미 추가된 프리팹이 있는 경우
-                Debug.LogWarning("Prefab '" + prefab.name + "' is already added to the list.");
+                //Debug.LogWarning("Prefab '" + prefab.name + "' is already added to the list.");
                 return true;
             }
         }

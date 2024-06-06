@@ -331,7 +331,7 @@ public class SpawnerUI : MonoBehaviour
                 Image handleImage = child.GetComponent<Image>();
                 if (handleImage != null)
                 {
-                    handleImage.sprite = HandleSprite[selected];
+                    handleImage.sprite = HandleSprite[selected - 1];
                 }
             }
 

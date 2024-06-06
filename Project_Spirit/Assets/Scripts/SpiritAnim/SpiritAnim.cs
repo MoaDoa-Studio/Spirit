@@ -161,6 +161,7 @@ public class SpiritAnim : MonoBehaviour
                 break;
             case DetectMove.Detect.FactoryOrLootOut:
                 stateName = exit_Gender();
+                oneshot = true;
                 break;
             case DetectMove.Detect.FactoryOrLootEnter:
                 stateName = enter_Gender();
