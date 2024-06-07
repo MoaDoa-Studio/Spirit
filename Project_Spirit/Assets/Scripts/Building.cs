@@ -14,9 +14,9 @@ public class Building : MonoBehaviour
     GameObject sliderUI;
     [SerializeField]
     public int GameObjectCount;
-    [HideInInspector]
+    
     public Vector2Int upperRight;
-    [HideInInspector]
+   
     public Vector2Int bottomLeft;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
     // 정령 담는 리스트
@@ -112,6 +112,7 @@ public class Building : MonoBehaviour
             case BuildOperator.Construct:
 
                 // 건축 진행중 슬라이더 표시
+                if(UniqueProperties != 107)
                 ShowBuildSlideBarToUI();
 
                 if (constructionAmount > 10)
@@ -121,7 +122,9 @@ public class Building : MonoBehaviour
                 }
                 break;
             case BuildOperator.Done:
+                if(UniqueProperties != 107)
                 sliderUI.SetActive(false);
+
                 break;
         }
     }
@@ -491,8 +494,18 @@ public class Building : MonoBehaviour
             {
                 gameManager.GetComponentInChildren<ResouceManager>().Max_Timber_reserves += 500;
             }
+            // 소박한 마법의 동상
+            else if(StructureEffect == 220)
+            {
 
+            }
+            // 고급스런 마법의 동상
+            else if(StructureEffect == 221)
+            {
+
+            }
         }
+
     }
 
     private void OnDisable()
