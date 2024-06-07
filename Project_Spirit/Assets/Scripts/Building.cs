@@ -52,7 +52,9 @@ public class Building : MonoBehaviour
     private float constructionAmount = 0;
 
     // 자원 한개를 생산하는데 필요한 갯수의 합
+    [SerializeField]
     private float EarnWoodResourceAmount = 0;
+    [SerializeField]
     private float EarnRockResourceAmount = 0;
     // 공장 운영 상태를 나타냄
     public enum BuildOperator
@@ -110,16 +112,16 @@ public class Building : MonoBehaviour
             case BuildOperator.Construct:
 
                 // 건축 진행중 슬라이더 표시
-                //ShowBuildSlideBarToUI();
+                ShowBuildSlideBarToUI();
 
-                if (constructionAmount > 3)
+                if (constructionAmount > 10)
                 {
                     buildOperator = BuildOperator.Done; 
                     break;
                 }
                 break;
             case BuildOperator.Done:
-                //sliderUI.SetActive(false);
+                sliderUI.SetActive(false);
                 break;
         }
     }
@@ -295,6 +297,83 @@ public class Building : MonoBehaviour
         gameObjectList.Add(gameObject);
         constructionAmount++;
 
+        if (buildOperator == BuildOperator.Done)
+        {
+            if (UniqueProperties == 101)
+            {
+                // 돌 생산소
+                if (structureID == 1001)
+                {
+                    // 기술자가 돌 생산소를 이용할 시  / 돌 한개를 만드는데 필요한 기술자 수 만큼 나무 증가
+                    EarnRockResourceAmount += 0.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 0.5f;
+                }
+                else if (structureID == 1002)
+                {
+                    EarnRockResourceAmount += 1f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1f;
+                }
+                else if (structureID == 1003)
+                {
+                    EarnRockResourceAmount += 1.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1.5f;
+                }
+                // 나무 생산소
+                else if (structureID >= 1004) 
+                {
+                    EarnWoodResourceAmount += 0.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 0.5f;
+                }
+                else if (structureID >= 1005) 
+                {
+                    EarnWoodResourceAmount += 1f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1f;
+                }
+                else if (structureID >= 1004)
+                {
+                    EarnWoodResourceAmount += 1.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1.5f;
+                }
+                    // 연구소
+                else if (structureID == 1007)
+                {
+
+                }
+                // 기술자 훈련소
+                else if (structureID == 1008)
+                {
+
+                }
+                // 학자 훈련소
+                else if (structureID == 1009)
+                {
+
+                }
+                // 기사 훈련소
+                else if (structureID == 1010)
+                {
+
+                }
+                // 전사 훈련소
+                else if (structureID == 1011)
+                {
+
+                }
+                // 귀족 훈련소
+                else if (structureID == 1012)
+                {
+
+                }
+                // 치유사 훈련소
+                else if (structureID == 1013)
+                {
+
+                }
+                    
+                
+
+            } 
+        } 
     }
     public void DeleteWorkingSprit(GameObject _gameObject)
     {

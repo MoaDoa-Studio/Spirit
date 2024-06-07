@@ -32,7 +32,7 @@ public class SpiritAnim : MonoBehaviour
     DetectMove.Detect previousState; //이전 상태
 
     private List<Skin> _skins = new List<Skin>();
-    int spiritID;
+    int spiritelement;
 
     [System.Serializable]
     public class StateNameToAnimationReference
@@ -74,7 +74,7 @@ public class SpiritAnim : MonoBehaviour
 
     private void Start()
     {
-        spiritID = GetComponent<Spirit>().SpiritID;
+        spiritelement = GetComponent<Spirit>().SpiritElement;
         currentState = GetComponent<DetectMove>().GetDetection();
         
         // 애니메이션 이벤트 저장.
@@ -161,7 +161,7 @@ public class SpiritAnim : MonoBehaviour
                 break;
             case DetectMove.Detect.FactoryOrLootOut:
                 stateName = exit_Gender();
-                oneshot = true;
+               
                 break;
             case DetectMove.Detect.FactoryOrLootEnter:
                 stateName = enter_Gender();
@@ -271,14 +271,14 @@ public class SpiritAnim : MonoBehaviour
 
     private string enter_Gender()
     {
-        if (spiritID == 2 || spiritID == 4)
+        if (spiritelement == 1 || spiritelement == 4)
         { return "enter_fm"; }
         else
             return "enter_m";
     }
     private string exit_Gender()
     {
-        if (spiritID == 2 || spiritID == 4)
+        if (spiritelement== 1 || spiritelement == 4)
         { return "exit_fm"; }
         else
             return "exit_m";
