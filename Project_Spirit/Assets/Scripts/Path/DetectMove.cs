@@ -349,7 +349,7 @@ public class DetectMove : MonoBehaviour
         if (nodes[_curposx, _curposy].building != null || nodes[_curposx, _curposy].resourceBuilding != null)
         {   // ** 날짜 및 시간 구현에 speed 값 조정처리 필요
             //  Debug.Log("건물 진입 전 상태");
-            Debug.Log("다시 재진입함.");
+           // Debug.Log("다시 재진입함.");
             detection = Detect.FactoryOrLootEnter;
             return;
         }

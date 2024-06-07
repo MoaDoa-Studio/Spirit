@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,9 +15,14 @@ public class Building : MonoBehaviour
     GameObject sliderUI;
     [SerializeField]
     public int GameObjectCount;
-    
+    [SerializeField]
+    private float cellsize = 1f;
+    [SerializeField]
+    private GameObject cellPrefab;
+
+    [HideInInspector]   
     public Vector2Int upperRight;
-   
+    [HideInInspector]   
     public Vector2Int bottomLeft;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
     // 정령 담는 리스트
@@ -98,6 +104,9 @@ public class Building : MonoBehaviour
         gameObjectList.RemoveAll(item => item == null);
         BuildOperation();
         BuildStater();
+
+        // 단발성 건물 효과
+
     }
 
     void BuildOperation()
@@ -508,6 +517,7 @@ public class Building : MonoBehaviour
 
     }
 
+    // 비활성화 될때 상태 특성
     private void OnDisable()
     {
         DeactivateCondition();
@@ -541,7 +551,33 @@ public class Building : MonoBehaviour
             {
                 gameManager.GetComponentInChildren<ResouceManager>().Max_Timber_reserves -= 500;
             }
+            // 소박한 마법의 동상
+            else if(StructureEffect == 220)
+            {
+                GenerateHealGrid(bottomLeft, 7, 7, cellsize);
+            }
+            // 고급스런 마법의 동상
+            else if(StructureEffect == 221)
+            {
+                GenerateHealGrid(bottomLeft, 9, 9, cellsize);
+            }
+        }
+    }
 
+    // 소박 => 60분 쿨 / 고급 => 25분 쿨
+    void GenerateHealGrid(Vector2 center, int rows, int cols, float cellsize)
+    {
+        int halfRow = rows / 2;
+        int halfCol = cols / 2;
+
+        for(int i = -halfRow; i <= halfCol; i++)
+        {
+            for(int j = -halfCol; i <= halfCol; j++)
+            {
+                // 외곽 셀 생성
+                Vector2 position = new Vector2(center.x + j * cellsize , center.y + i * cellsize);
+                Instantiate(cellPrefab, position, quaternion.identity);
+            }
         }
     }
 
