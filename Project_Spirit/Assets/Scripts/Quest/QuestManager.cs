@@ -3,42 +3,62 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 public class QuestManager : MonoBehaviour
-{   
+{
+    public static QuestManager instance = null;
+
     public GameObject QuestPrefab;
-    public Transform QuestUI_Transform;
-    public List<GameObject> QuestList;
-    // 퀘스트 창 생성 (기능 부여는 eventHandler로 해보자)
+    public Transform QuestUI_Transform;        
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this);
+    }
+
     public void InstantiateQuest(string name, string explain, string progress)
     {
         GameObject clone = Instantiate(QuestPrefab, QuestUI_Transform);
-        clone.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = name;
-        clone.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = explain;
-        clone.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = progress;        
-        QuestList.Add(clone);        
-        clone = null;
-    }
+        Quest quest = clone.GetComponent<Quest>();
+        quest.SetQuest(0, name, explain, progress, 0, 10, 30, 10);                        
 
-    public void ExpandQuest()
+        UpdateQuestUI();
+    }        
+       
+    public void UpdateQuestUI()
     {
-
+        float y_pos = 0;
+        for (int i = 0; i < QuestUI_Transform.childCount; i++)
+        {
+            RectTransform childRect = QuestUI_Transform.GetChild(i).GetComponent<RectTransform>();
+            float offset = childRect.sizeDelta.y / 2;
+            y_pos -= offset;
+            childRect.anchoredPosition = new Vector2(0, y_pos);
+            y_pos -= offset;
+        }
     }
-    public void ClearQuest(int idx)
-    {        
-        // 보상 지급 로직
 
-        //
-        Destroy(QuestList[idx]);
-        QuestList.RemoveAt(idx);
+
+    // For Debug.
+    public void TempInstantiateQuest()
+    {
+        GameObject clone = Instantiate(QuestPrefab, QuestUI_Transform);
+        Quest quest = clone.GetComponent<Quest>();
+        quest.SetQuest(0, "Quest1", "Quest1 Body", "Quest1 ConditionText", 0, 10, 10, 10);
+        
+        clone = null;
+
+        UpdateQuestUI();
     }
-
     // For Debug
     public void GainItem(int targetNum, int count)
     {
         // targetNum의 아이템을 count개 획득했다.        
-        Stack<int> clearIndex = new Stack<int>(); 
-        for(int i = 0; i < QuestList.Count; i++)
+        Stack<int> clearIndex = new Stack<int>();
+        for (int i = 0; i < QuestUI_Transform.childCount; i++)
         {
-            Quest quest = QuestList[i].GetComponent<Quest>();
+            Quest quest = QuestUI_Transform.GetChild(i).GetComponent<Quest>();
             if (quest.ConditionTarget == targetNum)
             {
                 quest.CurrentConditionAchieve += count;
@@ -49,20 +69,25 @@ public class QuestManager : MonoBehaviour
 
         while (clearIndex.Count != 0)
         {
-            ClearQuest(clearIndex.Pop());
+            int index = clearIndex.Pop();            
+            QuestUI_Transform.transform.GetChild(index).GetComponent<Quest>().ClearQuest();
         }
         UpdateQuestUI();
     }
-    
-    public void UpdateQuestUI()
-    {        
+
+    public void GainTree(int count)
+    {
+        GainItem(0, count);
     }
 
-    Quest quest1 = new Quest(0, "Quest1 Name", "Quest1 Body", "Quest1 ConditionText", 0, 10, 60, 10);    
-    Quest quest2 = new Quest(0, "Quest2 Name", "Quest2 Body", "Quest2 ConditionText", 0, 10, 60, 10);
+    // For Debug
     public void Start()
     {
-        quest1.SetCondition(0, 0, 5f);
-        quest2.SetCondition(1, 1, 10f);
-    }    
+        InstantiateQuest("Quest2", "Quest2 Body", "Quest2 Tree 10");
+    }
+
+    public void Update()
+    {
+        UpdateQuestUI();
+    }
 }
