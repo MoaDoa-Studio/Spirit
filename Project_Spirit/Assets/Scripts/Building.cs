@@ -14,18 +14,19 @@ public class Building : MonoBehaviour
     [SerializeField]
     GameObject sliderUI;
     [SerializeField]
+    GameObject PreviewParent;
+    [SerializeField]
     public int GameObjectCount;
     [SerializeField]
     private float cellsize = 1f;
     [SerializeField]
     private GameObject cellPrefab;
 
-    [HideInInspector]   
+    [HideInInspector] 
     public Vector2Int upperRight;
-    [HideInInspector]   
     public Vector2Int bottomLeft;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
-    // Á¤·É ´ã´Â ¸®½ºÆ®
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
     
     public List<GameObject> gameObjectList;
     BuildingDataManager buildingDataManager;
@@ -37,7 +38,7 @@ public class Building : MonoBehaviour
     GameObject gameManager;
     Slider buildBar;
 
-    [Header("ºôµù ¼Ó¼º")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½Ó¼ï¿½")]
     public float structureID;
     public string structureName = "New Item";
     public int KindOfStructure = 0;
@@ -57,12 +58,12 @@ public class Building : MonoBehaviour
     [SerializeField]
     private float constructionAmount = 0;
 
-    // ÀÚ¿ø ÇÑ°³¸¦ »ý»êÇÏ´Âµ¥ ÇÊ¿äÇÑ °¹¼öÀÇ ÇÕ
+    // ï¿½Ú¿ï¿½ ï¿½Ñ°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´Âµï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     [SerializeField]
     private float EarnWoodResourceAmount = 0;
     [SerializeField]
     private float EarnRockResourceAmount = 0;
-    // °øÀå ¿î¿µ »óÅÂ¸¦ ³ªÅ¸³¿
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½î¿µ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½
     public enum BuildOperator
     {
         None,
@@ -86,7 +87,7 @@ public class Building : MonoBehaviour
         connectedRoads = null;
         gameObjectList = new List<GameObject>();
         gameManager = GameObject.Find("GameManager");
-        // ºôµù µ¥ÀÌÅÍ ÃÊ±âÈ­.
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­.
         buildDataList = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().buildDataList;
         structUniqueDataList = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().structUniqueDataList;
         buildData = FindDataFromBuildData(buildDataList, BuildID);
@@ -105,22 +106,22 @@ public class Building : MonoBehaviour
         BuildOperation();
         BuildStater();
 
-        // ´Ü¹ß¼º °Ç¹° È¿°ú
+        // ï¿½Ü¹ß¼ï¿½ ï¿½Ç¹ï¿½ È¿ï¿½ï¿½
 
     }
 
     void BuildOperation()
     {
         switch (buildOperator)
-        {   // °ÇÃà Áþ±â Àü »óÅÂ
+        {   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             case BuildOperator.None:
                 if (constructionAmount > 0)
                 { buildOperator = BuildOperator.Construct; }
                 break;
-            // °ÇÃà ÁøÇà ´Ü°è
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ü°ï¿½
             case BuildOperator.Construct:
 
-                // °ÇÃà ÁøÇàÁß ½½¶óÀÌ´õ Ç¥½Ã
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ Ç¥ï¿½ï¿½
                 if(UniqueProperties != 107)
                 ShowBuildSlideBarToUI();
 
@@ -152,18 +153,18 @@ public class Building : MonoBehaviour
                     buildState = BuildState.Rest;
                     break;
                 }
-                // °ÇÃà Áö¾îÁö±â Àü °ø»ç¸¦ ÁøÇàÇÏ´Â »óÅÂ.
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ç¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½.
                 if (buildOperator == BuildOperator.Construct)
                 {
-                    // °ÇÃà¹° ¾Ö´Ï¸ÞÀÌ¼Ç
+                    // ï¿½ï¿½ï¿½à¹° ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
                 }
 
-                // °ÇÃàÀÌ Áö¾îÁ³°í, ÇØ´ç °Ç¹°À» »ç¿ëÇÏ´Â »óÅÂ.
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ø´ï¿½ ï¿½Ç¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½.
                 if (buildOperator == BuildOperator.Done)
                 {
                   
 
-                        // °ÇÃà¹° ¾Ö´Ï¸ÞÀÌ¼Ç º¸¿©ÁÖ±â
+                        // ï¿½ï¿½ï¿½à¹° ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
                     
                 }
 
@@ -172,11 +173,11 @@ public class Building : MonoBehaviour
     }
     public bool AskPermissionOfUse(GameObject _gameObject)
     {
-        // Á¤·É Á¢±Ù»ç¿ë Á¦¾î ¸Þ¼­µå.
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½.
         if(!RestrictAccessToBuilding())
         {  return false; }
 
-        // °ø»çÁß¿£ »ç¿ëÁ¢±Ù Á¦ÇÑ Á¤·ÉÀÌ Á¸ÀçÇÏÁö ¾ÊÀ½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if(buildOperator != BuildOperator.Done)
         {
             if(CheckForAccesibleBeforeBuilt(_gameObject))
@@ -203,20 +204,20 @@ public class Building : MonoBehaviour
     }
     public bool CheckForAccesibleWhenBuilt(GameObject _gameObject)
     {   
-        // ±æÀÌ µÎ°³ ÀÏ¶§¸¸ »ç¿ë°¡´ÉÇÏ°Ô..
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Î°ï¿½ ï¿½Ï¶ï¿½ï¿½ï¿½ ï¿½ï¿½ë°¡ï¿½ï¿½ï¿½Ï°ï¿½..
         if (connectedRoads == null) return false;
         if(_gameObject.GetComponent<Spirit>().SpiritID != StructureCondition) return false;
 
         if (gameObjectList.Count >= 0 && gameObjectList.Count <= Capacity)
         {
             //_gameObject.GetComponent<DetectMove>().TimeforWorking = WorkingTime;
-            // »ý»ê¼Ò¸¦ »ç¿ëÇÑ´Ù¸é...!
+            // ï¿½ï¿½ï¿½ï¿½Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½...!
             if(UniqueProperties == 101)
             {
-                // µ¹ »ý»ê¼Ò
+                // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
                 if(structureID >= 1001 && structureID  < 1004)
                 {
-                    // ±â¼úÀÚ°¡ µ¹ »ý»ê¼Ò¸¦ ÀÌ¿ëÇÒ ½Ã  / µ¹ ÇÑ°³¸¦ ¸¸µå´Âµ¥ ÇÊ¿äÇÑ ±â¼úÀÚ ¼ö ¸¸Å­ ³ª¹« Áõ°¡
+                    // ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò¸ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½  / ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Âµï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     EarnRockResourceAmount +=_gameObject.GetComponent<Spirit>().Work_Efficienty;
                     if (EarnRockResourceAmount > 5)
                     {
@@ -225,7 +226,7 @@ public class Building : MonoBehaviour
 
                     }
                 }
-                // ³ª¹« »ý»ê¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
                 else if(structureID >= 1004 && structureID < 1007)
                 {
                     EarnWoodResourceAmount +=_gameObject.GetComponent<Spirit>().Work_Efficienty;
@@ -235,37 +236,37 @@ public class Building : MonoBehaviour
                         EarnWoodResourceAmount = 0;
                     }
                 }
-                // ¿¬±¸¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 else if(structureID == 1007)
                 {
 
                 }
-                // ±â¼úÀÚ ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if(structureID == 1008)
                 {
 
                 }
-                // ÇÐÀÚ ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1009)
                 {
 
                 }
-                // ±â»ç ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1010)
                 {
 
                 }
-                // Àü»ç ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1011)
                 {
 
                 }
-                // ±ÍÁ· ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1012)
                 {
 
                 }
-                // Ä¡À¯»ç ÈÆ·Ã¼Ò
+                // Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1013)
                 {
 
@@ -292,7 +293,7 @@ public class Building : MonoBehaviour
     {
         if (connectedRoads == null)
         {
-            Debug.Log("µµ·Î°¡ 2°³°¡ ¾Æ´Õ´Ï´Ù.");
+            Debug.Log("ï¿½ï¿½ï¿½Î°ï¿½ 2ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½.");
             return null;
         }
         return connectedRoads;
@@ -313,10 +314,10 @@ public class Building : MonoBehaviour
         {
             if (UniqueProperties == 101)
             {
-                // µ¹ »ý»ê¼Ò
+                // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
                 if (structureID == 1001)
                 {
-                    // ±â¼úÀÚ°¡ µ¹ »ý»ê¼Ò¸¦ ÀÌ¿ëÇÒ ½Ã  / µ¹ ÇÑ°³¸¦ ¸¸µå´Âµ¥ ÇÊ¿äÇÑ ±â¼úÀÚ ¼ö ¸¸Å­ ³ª¹« Áõ°¡
+                    // ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò¸ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½  / ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Âµï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     EarnRockResourceAmount += 0.5f;
                     gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 0.5f;
                 }
@@ -330,7 +331,7 @@ public class Building : MonoBehaviour
                     EarnRockResourceAmount += 1.5f;
                     gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1.5f;
                 }
-                // ³ª¹« »ý»ê¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
                 else if (structureID >= 1004) 
                 {
                     EarnWoodResourceAmount += 0.5f;
@@ -346,37 +347,37 @@ public class Building : MonoBehaviour
                     EarnWoodResourceAmount += 1.5f;
                     gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1.5f;
                 }
-                    // ¿¬±¸¼Ò
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 else if (structureID == 1007)
                 {
 
                 }
-                // ±â¼úÀÚ ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1008)
                 {
 
                 }
-                // ÇÐÀÚ ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1009)
                 {
 
                 }
-                // ±â»ç ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1010)
                 {
 
                 }
-                // Àü»ç ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1011)
                 {
 
                 }
-                // ±ÍÁ· ÈÆ·Ã¼Ò
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1012)
                 {
 
                 }
-                // Ä¡À¯»ç ÈÆ·Ã¼Ò
+                // Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·Ã¼ï¿½
                 else if (structureID == 1013)
                 {
 
@@ -393,7 +394,7 @@ public class Building : MonoBehaviour
        
     }
 
-    // °ÇÃà¹° µ¥ÀÌÅÍ Å×ÀÌºí µ¿±âÈ­ => ºôµù
+    // ï¿½ï¿½ï¿½à¹° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½È­ => ï¿½ï¿½ï¿½ï¿½
     private BuildData FindDataFromBuildData(List<BuildData> buildDataList, int _buildID)
     {
         foreach(BuildData buildData in buildDataList)
@@ -406,7 +407,7 @@ public class Building : MonoBehaviour
         return null;
     }
 
-    // °ÇÃà¹° °íÀ¯ ¼Ó¼º Å×ÀÌºí µ¿±âÈ­ => ºôµù
+    // ï¿½ï¿½ï¿½à¹° ï¿½ï¿½ï¿½ï¿½ ï¿½Ó¼ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½È­ => ï¿½ï¿½ï¿½ï¿½
     private StructUniqueData FindDataFromStructUnique(List<StructUniqueData> structUniqueData, int _buildID)
     {
         foreach(StructUniqueData uniqueData in structUniqueData)
@@ -448,7 +449,7 @@ public class Building : MonoBehaviour
     {
         if(UniqueProperties == 107)
         {
-            //Debug.Log("ÀÌ¿ëÇÏÁö ¸øÇÕ´Ï´Ù");
+            //Debug.Log("ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Õ´Ï´ï¿½");
         return false;
         }
         
@@ -459,13 +460,13 @@ public class Building : MonoBehaviour
 
     public void BuildingExpense(GameObject _targetObject)
     {
-        // Á¤·É Ã¼·Â °¨¼Ò Àû¿ë
+        // ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         _targetObject.GetComponent<Spirit>().SDefaultLife -= HCostOfUse;
         gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves -= CostOfStone;
         gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves -= CostUseWood;
         gameManager.GetComponentInChildren<ResouceManager>().Essence_reserves -= essenceRequirement;
         
-        // Ãß°¡ÀûÀ¸·Î µ·ÀÌ ºÎÁ·ÇßÀ»‹š¿¡´Â °Ç¹°À» ÀÌ¿ëÇÏÁö ¸øÇÏ°Ô ÇØ¾ßÇÔ
+        // ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¹ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ø¾ï¿½ï¿½ï¿½
     }
 
     private void OnEnable()
@@ -473,10 +474,10 @@ public class Building : MonoBehaviour
         isActivateCondition();
     }
 
-    // ¼³Ä¡ÇßÀ»¶§ È¿°ú¸¦ ºÎ¿©ÇØ¾ßÇÏ´Â °Ç¹°ÀÏ¶§ ÇØ´ç Æ¯¼º ¹ßÇö
+    // ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½Î¿ï¿½ï¿½Ø¾ï¿½ï¿½Ï´ï¿½ ï¿½Ç¹ï¿½ï¿½Ï¶ï¿½ ï¿½Ø´ï¿½ Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     void isActivateCondition()
     {
-        // °ÇÃà È¿°ú°¡ Àû¿ëµÇ´Â UniqueProperties 107°¡ ¹ßÇöµÊ
+        // ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ UniqueProperties 107ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if(UniqueProperties == 107)
         {
             if(StructureEffect == 214)
@@ -503,28 +504,28 @@ public class Building : MonoBehaviour
             {
                 gameManager.GetComponentInChildren<ResouceManager>().Max_Timber_reserves += 500;
             }
-            // ¼Ò¹ÚÇÑ ¸¶¹ýÀÇ µ¿»ó
+            // ï¿½Ò¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             else if(StructureEffect == 220)
             {
-
+               // GenerateHealGrid(bottomLeft, 7, 7, cellsize);
             }
-            // °í±Þ½º·± ¸¶¹ýÀÇ µ¿»ó
+            // ï¿½ï¿½ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             else if(StructureEffect == 221)
             {
-
+                    
             }
         }
 
     }
 
-    // ºñÈ°¼ºÈ­ µÉ¶§ »óÅÂ Æ¯¼º
+    // ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½É¶ï¿½ ï¿½ï¿½ï¿½ï¿½ Æ¯ï¿½ï¿½
     private void OnDisable()
     {
         DeactivateCondition();
     }
     void DeactivateCondition()
     {
-        // °ÇÃà È¿°ú°¡ Àû¿ëµÇ´Â UniqueProperties 107°¡ ¹ßÇöµÊ
+        // ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ UniqueProperties 107ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (UniqueProperties == 107)
         {
             if (StructureEffect == 214)
@@ -551,20 +552,20 @@ public class Building : MonoBehaviour
             {
                 gameManager.GetComponentInChildren<ResouceManager>().Max_Timber_reserves -= 500;
             }
-            // ¼Ò¹ÚÇÑ ¸¶¹ýÀÇ µ¿»ó
+            // ï¿½Ò¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             else if(StructureEffect == 220)
             {
-                GenerateHealGrid(bottomLeft, 7, 7, cellsize);
+                //GenerateHealGrid(bottomLeft, 7, 7, cellsize);
             }
-            // °í±Þ½º·± ¸¶¹ýÀÇ µ¿»ó
+            // ï¿½ï¿½ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             else if(StructureEffect == 221)
             {
-                GenerateHealGrid(bottomLeft, 9, 9, cellsize);
+               // GenerateHealGrid(bottomLeft, 9, 9, cellsize);
             }
         }
     }
 
-    // ¼Ò¹Ú => 60ºÐ Äð / °í±Þ => 25ºÐ Äð
+    // ï¿½Ò¹ï¿½ => 60ï¿½ï¿½ ï¿½ï¿½ / ï¿½ï¿½ï¿½ï¿½ => 25ï¿½ï¿½ ï¿½ï¿½
     void GenerateHealGrid(Vector2 center, int rows, int cols, float cellsize)
     {
         int halfRow = rows / 2;
@@ -574,12 +575,26 @@ public class Building : MonoBehaviour
         {
             for(int j = -halfCol; i <= halfCol; j++)
             {
-                // ¿Ü°û ¼¿ »ý¼º
+                // ï¿½Ü°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 Vector2 position = new Vector2(center.x + j * cellsize , center.y + i * cellsize);
                 Instantiate(cellPrefab, position, quaternion.identity);
             }
         }
     }
 
- 
+    private void OnMouseButtonDown()
+    {
+        if(PreviewParent != null)
+        {
+            PreviewParent.SetActive(true);
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        if (PreviewParent != null)
+        {
+            PreviewParent.SetActive(false);
+        }
+    }
 }
