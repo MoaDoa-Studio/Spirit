@@ -4,6 +4,7 @@ using UnityEngine;
 using Spine.Unity;
 using Spine;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 public class SpiritAnim : MonoBehaviour
 {
@@ -28,10 +29,12 @@ public class SpiritAnim : MonoBehaviour
     public List<AnimationTransition> transitions = new List<AnimationTransition>();
     public int animationspeed;
 
-    
+
     EventData eventData;    // => 이벤트 데이터 클래스
     DetectMove.Detect currentState; // 현재 상태
     DetectMove.Detect previousState; //이전 상태
+    int previousDirection;
+    int currentDirection;
 
     private List<Skin> _skins = new List<Skin>();
     int spiritelement;
@@ -78,7 +81,7 @@ public class SpiritAnim : MonoBehaviour
     {
         spiritelement = GetComponent<Spirit>().SpiritElement;
         currentState = GetComponent<DetectMove>().GetDetection();
-        
+
         // 애니메이션 이벤트 저장.
         eventData = skeletonAnimation.Skeleton.Data.FindEvent(disappeareventName);
         skeletonAnimation.AnimationState.Event += HandleAnimationStateEvent;
@@ -87,7 +90,7 @@ public class SpiritAnim : MonoBehaviour
         //animationState.SetAnimation(0, "disappear", true);
         //skeletonAnimation.skeleton.SetSkin("Fire_Lv1");     // Set my skin.
         //skeletonAnimation.Skeleton.SetSlotsToSetupPose();   // Make sure to refresh it.
-                                                            // skeletonAnimation.AnimationState.Apply(skeletonAnimation.Skeleton); // Make sure the attachments from your currently playing animation are applied.
+        // skeletonAnimation.AnimationState.Apply(skeletonAnimation.Skeleton); // Make sure the attachments from your currently playing animation are applied.
         foreach (Skin skin in _skeleton.Data.Skins)
         {
             _skins.Add(skin);
@@ -98,7 +101,21 @@ public class SpiritAnim : MonoBehaviour
     private void Update()
     {
         currentState = GetComponent<DetectMove>().GetDetection();
+        currentDirection = GetComponent<DetectMove>().GetDirection();
+        HandleSkeletonDataAsset();
         HandleAnimation();
+    }
+
+    private void HandleSkeletonDataAsset()
+    {
+        bool directionChanged = previousDirection != currentDirection;
+        previousDirection = currentDirection;
+
+        if (directionChanged)
+        {
+            ChangeSkeletonAsset();
+            skeletonAnimation.Initialize(true);
+        }
     }
 
     private void HandleAnimation()
@@ -106,7 +123,7 @@ public class SpiritAnim : MonoBehaviour
         bool stateChanged = previousState != currentState;
         previousState = currentState;
 
-        if(stateChanged)
+        if (stateChanged)
         {
             HandleStateChanged();
         }
@@ -116,57 +133,229 @@ public class SpiritAnim : MonoBehaviour
     private void HandleAnimationStateEvent(TrackEntry trackentry, Spine.Event e)
     {
         bool eventMatch = (e.Data == eventData);
-        if(eventMatch)
+        if (eventMatch)
         {
             // 실행 시킬 메서드
         }
     }
-   
+
+    private void ChangeSkeletonAsset()
+    {
+        switch (currentDirection)
+        {
+            // 위로 갔을때
+            case 0:
+                skeletonAnimation.skeletonDataAsset = skeletonDataAssets[2];
+                transform.localScale = new Vector2(1f, 1f);
+                break;
+            // 좌 이동
+            case 1:
+                skeletonAnimation.skeletonDataAsset = skeletonDataAssets[1];
+                transform.localScale = new Vector2(-1f, 1f);
+               
+                break;
+            // 아래로 갔을때
+            case 2:
+                skeletonAnimation.skeletonDataAsset = skeletonDataAssets[0];
+                transform.localScale = new Vector2(1f, 1f);
+               
+                break;
+            // 우 이동
+            case 3:
+                skeletonAnimation.skeletonDataAsset = skeletonDataAssets[1];
+                transform.localScale = new Vector2(1f, 1f);
+                
+                break;
+        }
+    }
+
     private void HandleStateChanged()
     {
         string stateName = null;
         bool oneshot = false;
         int track = 0;
         animationspeed = 1;
-    
-        switch(currentState)
+
+        switch (currentState)
         {
             case DetectMove.Detect.None:
-                stateName = "Front_idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.CheckTile:
-                stateName = "Front_idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Factory_MoveMent:
-                stateName = "Front_idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Basic_MoveMent:
-                stateName = "Front_idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Factory:
-                stateName = "Front_idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Loot:
-                stateName = "Front_idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Academy:
-                stateName = "Front_idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Move:
-                stateName = "Front_walk";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_walk";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                    {
+                        stateName = "Side_walk";
+                    }
+                    else
+                        stateName = "Side_walk_Soil";
+                }
+                else
+                {
+                    stateName = "Front_walk";
+                }
                 break;
             case DetectMove.Detect.Mark_Check:
-                stateName = "Front_idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Stop:
-                stateName = "Front_idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.FactoryOrLootOut:
-                stateName = Front_exit_Gender();
-               
+                stateName = exit_Gender();
+
                 break;
             case DetectMove.Detect.FactoryOrLootEnter:
-                stateName = Front_enter_Gender();
+                stateName = enter_Gender();
                 break;
         }
         PlayAnimationForState(stateName, track, oneshot, animationspeed);
@@ -183,14 +372,14 @@ public class SpiritAnim : MonoBehaviour
     {
         // 애니메이션 처리
         var animationclip = GetAnimationForState(stateName);
-        if(animationclip == null) { return; }
-        if(oneshot)
+        if (animationclip == null) { return; }
+        if (oneshot)
         {
-           PlayOneShot(animationclip, trackIndex, speed);
+            PlayOneShot(animationclip, trackIndex, speed);
         }
         else
         {
-           PlayNewAnimation(animationclip, trackIndex, speed);
+            PlayNewAnimation(animationclip, trackIndex, speed);
         }
     }
 
@@ -271,21 +460,80 @@ public class SpiritAnim : MonoBehaviour
         return Animator.StringToHash(s);
     }
 
-    private string Front_enter_Gender()
+    private string enter_Gender()
     {
-        if (spiritelement == 1 || spiritelement == 4)
-        { return "Front_enter_fm"; }
+        if (currentDirection == 0)
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            {
+                return "Back_enter_fm";
+            }
+            else
+            {
+                return "Back_enter_m";
+            }
+        }
+        else if (currentDirection == 1 || currentDirection == 3) 
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            {
+                return "Side_enter_fm";
+            }
+            else
+            {
+                return "Side_enter_m";
+            }
+            
+        }
         else
-            return "Front_enter_m";
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            { return "Front_enter_fm"; }
+            else
+                return "Front_enter_m";
+
+        }
     }
-    private string Front_exit_Gender()
+    private string exit_Gender()
     {
-        if (spiritelement== 1 || spiritelement == 4)
-        { return "Front_exit_fm"; }
+        if (currentDirection == 0)
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            {
+                return "Back_exit_fm";
+            }
+            else
+            {
+                return "Back_exit_m";
+            }
+        }
+        else if (currentDirection == 1 || currentDirection == 3)
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            {
+                return "Side_exit_fm";
+            }
+            else if(spiritelement == 3)
+            {
+                return "Side_exit_Soil";
+            }
+            else
+            {
+                return "Side_exit_Water";
+            }
+
+        }
         else
-            return "Front_exit_m";
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            { return "Front_exit_fm"; }
+            else
+                return "Front_xit_m";
+
+        }
     }
 
+    
 }
 
 

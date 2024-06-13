@@ -307,8 +307,11 @@ public class Building : MonoBehaviour
 
     public void AddWorkingSprit(GameObject gameObject)
     {
-        gameObjectList.Add(gameObject);
-        constructionAmount++;
+        if (!gameObjectList.Contains(gameObject))
+        {
+            gameObjectList.Add(gameObject);
+            constructionAmount++;
+        }
 
         if (buildOperator == BuildOperator.Done)
         {

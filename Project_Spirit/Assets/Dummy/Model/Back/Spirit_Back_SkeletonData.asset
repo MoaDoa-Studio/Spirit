@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: Spirit_Back_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 23642ccc7fe02a84f87409bb6ca65684, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 75521d43c76b4b242a872b380cd94972, type: 3}
   isUpgradingBlendModeMaterials: 0

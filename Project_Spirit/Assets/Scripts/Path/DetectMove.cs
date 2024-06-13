@@ -35,7 +35,7 @@ public class DetectMove : MonoBehaviour
     [Header ("정령 동적 세팅")]
     public float moveSpeed = 1f;
     public int LootAmount = 15;
-    public float TimeforWorking = 5f;
+    public float TimeforWorking = 3f;
     public int spiritElement;
     public int _dir;
     int spiritID;
@@ -83,6 +83,11 @@ public class DetectMove : MonoBehaviour
     public Detect GetDetection()
     {
         return detection;
+    }
+
+    public int GetDirection()
+    {
+        return _dir;
     }
     private void Start()
     {  
