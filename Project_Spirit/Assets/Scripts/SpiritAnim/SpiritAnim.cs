@@ -11,6 +11,8 @@ public class SpiritAnim : MonoBehaviour
     Spine.AnimationState animationState;
     Spine.Skeleton _skeleton;
 
+    [SerializeField]
+    SkeletonDataAsset[] skeletonDataAssets;
     // Setting Attachments
     [SpineSlot]
     public string slotProperty = "slotName";
@@ -130,41 +132,41 @@ public class SpiritAnim : MonoBehaviour
         switch(currentState)
         {
             case DetectMove.Detect.None:
-                stateName = "idle";
+                stateName = "Front_idle";
                 break;
             case DetectMove.Detect.CheckTile:
-                stateName = "idle";
+                stateName = "Front_idle";
                 break;
             case DetectMove.Detect.Factory_MoveMent:
-                stateName = "idle";
+                stateName = "Front_idle";
                 break;
             case DetectMove.Detect.Basic_MoveMent:
-                stateName = "idle";
+                stateName = "Front_idle";
                 break;
             case DetectMove.Detect.Factory:
-                stateName = "idle";
+                stateName = "Front_idle";
                 break;
             case DetectMove.Detect.Loot:
-                stateName = "idle";
+                stateName = "Front_idle";
                 break;
             case DetectMove.Detect.Academy:
-                stateName = "idle";
+                stateName = "Front_idle";
                 break;
             case DetectMove.Detect.Move:
-                stateName = "walk";
+                stateName = "Front_walk";
                 break;
             case DetectMove.Detect.Mark_Check:
-                stateName = "idle";
+                stateName = "Front_idle";
                 break;
             case DetectMove.Detect.Stop:
-                stateName = "idle";
+                stateName = "Front_idle";
                 break;
             case DetectMove.Detect.FactoryOrLootOut:
-                stateName = exit_Gender();
+                stateName = Front_exit_Gender();
                
                 break;
             case DetectMove.Detect.FactoryOrLootEnter:
-                stateName = enter_Gender();
+                stateName = Front_enter_Gender();
                 break;
         }
         PlayAnimationForState(stateName, track, oneshot, animationspeed);
@@ -269,19 +271,19 @@ public class SpiritAnim : MonoBehaviour
         return Animator.StringToHash(s);
     }
 
-    private string enter_Gender()
+    private string Front_enter_Gender()
     {
         if (spiritelement == 1 || spiritelement == 4)
-        { return "enter_fm"; }
+        { return "Front_enter_fm"; }
         else
-            return "enter_m";
+            return "Front_enter_m";
     }
-    private string exit_Gender()
+    private string Front_exit_Gender()
     {
         if (spiritelement== 1 || spiritelement == 4)
-        { return "exit_fm"; }
+        { return "Front_exit_fm"; }
         else
-            return "exit_m";
+            return "Front_exit_m";
     }
 
 }
