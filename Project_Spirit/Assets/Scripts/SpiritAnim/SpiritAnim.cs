@@ -20,7 +20,7 @@ public class SpiritAnim : MonoBehaviour
     [SpineAttachment]
     public string attachmentProperty = "attachmentName";
     [SpineAnimation]
-    public string IdleAnimaitonName;
+    // public string IdleAnimaitonName;
     [Header("SpineEvent")]
     [SpineEvent(dataField = "skeletonAnimation")]
     public string disappeareventName;
@@ -533,6 +533,16 @@ public class SpiritAnim : MonoBehaviour
         }
     }
 
+    // 특정 슬롯에 스킨 설정하는 메서드.
+    private void SetAttachmentSlot(string slotName, string attachmentName)
+    {
+        Slot slot = _skeleton.FindSlot(slotName);
+        if(slot != null)
+        {
+            //Attachment attachment = _skeleton.setAttachment(slotName, attachmentName);
+            //slot.Attachment = attachment;
+        }
+    }
     
 }
 

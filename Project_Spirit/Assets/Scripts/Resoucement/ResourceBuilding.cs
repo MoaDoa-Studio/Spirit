@@ -23,6 +23,7 @@ public class ResourceBuilding : MonoBehaviour
     [SerializeField]
     List<GameObject> gameObjectList;
     ResouceManager resourceManager;
+    
     int decreasedamount = 0;
     enum ResourceType
     {
