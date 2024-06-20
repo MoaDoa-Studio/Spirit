@@ -14,151 +14,134 @@ public class ResearchManager : MonoBehaviour
     [SerializeField]
     private GameObject Blurry;
     [SerializeField]
-    private GameObject TaskDetail;
+    private GameObject StudyDetail;
     [SerializeField]
-    private GameObject TaskComplete;
+    private GameObject StudyComplete;
     [SerializeField]
     private GameObject StepButton;
     [SerializeField]
-    private GameObject BuildingTree;    
+    private GameObject BuildingTree;
 
-    [Header("스크립트")]
-    [SerializeField]
-    private TaskData taskData;
-    
-    private GameObject currentClickObj;
-    private Task currentTask;
+    private GameObject currentClickedObj;
+    private Study currentStudy;
     private int currentWork;
     private bool inProgress;
 
     private void Start()
     {
         inProgress = false;
-        currentClickObj = null;
-        currentTask = null;        
+        currentStudy = null;
     }
     
     public void ShowResearchUI()
     {
         if (inProgress)
-        {
-            UpdateTaskDetailInfo();
-        }
-
+            UpdateStudyDetail();
         Research_UI.SetActive(true);
     }
 
-    public void OnClickEachTask(string TaskID)
+    Study GetTask(int StudyID)
     {
-        if (inProgress) return;
+        if (!DatabaseManager.instance.Studies.ContainsKey(StudyID))
+            return null;
+        return DatabaseManager.instance.Studies[StudyID];
+    }    
 
-        Task _task = taskData.GetTask(TaskID);
-        if (_task == null || _task.isComplete) return;
-
-        currentClickObj = EventSystem.current.currentSelectedGameObject;
-        SetTaskDetailInfo(_task);
-    }
-
-    void SetTaskDetailInfo(Task _task)
+    void OnClickStudyButton(int StudyID)
     {
-        TextMeshProUGUI TaskDetailName = TaskDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        Button StartBtn = TaskDetail.transform.GetChild(4).GetComponent<Button>();
-        Slider progressSlider = TaskDetail.transform.GetChild(5).GetComponent<Slider>();
-
-        TaskDetailName.text = _task.name;                
-        StartBtn.gameObject.SetActive(true);
-        StartBtn.onClick.RemoveAllListeners();
-        StartBtn.onClick.AddListener(() => OnClickResearchStartButton(_task));
-        progressSlider.gameObject.SetActive(false);
-
-        //if (_task.WoodRequire < (현재 나무) || _task.StoneRequire < (현재 돌))
-        // StartBtn.interactable = false;
-
-        TaskDetail.SetActive(true);
-    }
-
-    void UpdateTaskDetailInfo()
-    {
-        TextMeshProUGUI TaskDetailName = TaskDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        Button StartBtn = TaskDetail.transform.GetChild(4).GetComponent<Button>();
-        Slider progressSlider = TaskDetail.transform.GetChild(5).GetComponent<Slider>();
+        Study _study = GetTask(StudyID);
+        if (_study == null || _study.isComplete)
+            return;
         
-        TaskDetailName.text = currentTask.name;
-        progressSlider.gameObject.SetActive(true);
-        progressSlider.value = (float)currentWork / currentTask.WorkRequire;
-        StartBtn.gameObject.SetActive(false);
+        currentClickedObj = EventSystem.current.currentSelectedGameObject;
+        SetStudyDetail(_study);
+    }
+    void SetStudyDetail(Study _study)
+    {        
+        TextMeshProUGUI Detail_StudyName = StudyDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        Button Detail_StartButton = StudyDetail.transform.GetChild(4).GetComponent<Button>();
+        Slider Detail_ProgressSlider = StudyDetail.transform.GetChild(5).GetComponent<Slider>();
 
-        TaskDetail.SetActive(true);
+        Detail_StudyName.text = _study.StudyName;        
+        Detail_StartButton.gameObject.SetActive(true);
+        Detail_StartButton.onClick.RemoveAllListeners();
+        Detail_StartButton.onClick.AddListener(() => OnClickResearchStartButton(_study));
+        Detail_ProgressSlider.gameObject.SetActive(false);
+
+
+        //if (_study.WoodRequire < (현재 나무) || _study.StoneRequire < (현재 돌))
+        // StartBtn.interactable = false;       
+        StudyDetail.SetActive(true);
+    }
+
+    void UpdateStudyDetail()
+    {
+        if (currentStudy == null)
+            return;
+
+        TextMeshProUGUI Detail_StudyName = StudyDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        Button Detail_StartButton = StudyDetail.transform.GetChild(4).GetComponent<Button>();
+        Slider Detail_ProgressSlider = StudyDetail.transform.GetChild(5).GetComponent<Slider>();
+
+        Detail_StudyName.text = currentStudy.StudyName;
+        Detail_ProgressSlider.gameObject.SetActive(true);
+        Detail_ProgressSlider.value = (float)currentWork / currentStudy.WorkRequirement;
+        Detail_StartButton.gameObject.SetActive(false);
+
+        StudyDetail.SetActive(true);
     }
     
-    public void OnClickResearchStartButton(Task _task)
+    public void OnClickResearchStartButton(Study _study)
     {
         inProgress = true;
-        currentTask = _task;
+        currentStudy = _study;
         currentWork = 0;
-        currentClickObj.transform.Find("InProgressMark").gameObject.SetActive(true);        
+        currentClickedObj.transform.Find("InProgressMark").gameObject.SetActive(true);        
 
-        UpdateTaskDetailInfo();
+        UpdateStudyDetail();
     }
 
-    public void CompleteTask()
+    public void CompleteStudy()
     {
-        currentTask.isComplete = true;        
+        currentStudy.isComplete = true;        
 
         ShowTaskComplete();
-        UpdateTaskLock();
+        UpdateStudyLock();
 
-        currentClickObj.GetComponent<Button>().interactable = false;
-        currentClickObj.transform.Find("InProgressMark").gameObject.SetActive(false);
+        currentClickedObj.GetComponent<Button>().interactable = false;
+        currentClickedObj.transform.Find("InProgressMark").gameObject.SetActive(false);
 
-        currentTask = null;
-        currentClickObj = null;
+        currentStudy = null;
+        currentClickedObj = null;
         inProgress = false;        
     }
 
     public void ShowTaskComplete()
     {        
-        TaskComplete.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentTask.name;        
+        StudyComplete.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentStudy.name;        
 
-        TaskComplete.SetActive(true);
-        TaskDetail.SetActive(false);
+        StudyComplete.SetActive(true);
+        StudyDetail.SetActive(false);
     }
     
     #region For Debug
-    void UpdateTaskLock()
+    void UpdateStudyLock()
     {
-        if (taskData.Tasks["B1"].isComplete)        
-            Blurry.transform.GetChild(0).gameObject.SetActive(false);        
-        if (taskData.Tasks["B2"].isComplete)        
-            Blurry.transform.GetChild(1).gameObject.SetActive(false);        
-        if (taskData.Tasks["B3"].isComplete)        
-            Blurry.transform.GetChild(2).gameObject.SetActive(false);        
-        if (taskData.Tasks["B4"].isComplete)        
-            Blurry.transform.GetChild(3).gameObject.SetActive(false);        
-
-        if (taskData.Tasks["B11"].isComplete &&
-            !taskData.Tasks["B2"].isComplete)
-            StepButton.transform.GetChild(1).GetComponent<Button>().interactable = true;
-        if (taskData.Tasks["B21"].isComplete && taskData.Tasks["B22"].isComplete &&
-            !taskData.Tasks["B3"].isComplete)        
-            StepButton.transform.GetChild(2).GetComponent<Button>().interactable = true;
-        if (taskData.Tasks["B31"].isComplete &&
-            !taskData.Tasks["B4"].isComplete)
-            StepButton.transform.GetChild(3).GetComponent<Button>().interactable = true;
+        Dictionary<int, Study> Studies = DatabaseManager.instance.Studies;
     }
     
     // 정령이 연구소에서 일할 때 호출 될 함수 로직.
     public void OnClickWork()
     {
-        if (currentTask == null)
+        if (currentStudy == null)
             return;
 
         currentWork += 2;
-        UpdateTaskDetailInfo();
-        if (currentWork >= currentTask.WorkRequire)
+        UpdateStudyDetail();
+        if (currentWork >= currentStudy.WorkRequirement)
         {
             currentWork = 0;            
-            CompleteTask();            
+            CompleteStudy();            
         }
     }
     #endregion
