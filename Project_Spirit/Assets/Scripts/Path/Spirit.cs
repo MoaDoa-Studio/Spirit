@@ -39,6 +39,11 @@ public class Spirit : MonoBehaviour
     {
         return SpiritID; 
     }
+    public void SetSpiritID(int _SpiritID)
+    {
+        Debug.Log(SpiritID);
+        SpiritID = _SpiritID;
+    }
     #region 정령충돌 감지
     private void OnTriggerEnter(Collider collision)
     {

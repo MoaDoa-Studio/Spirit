@@ -356,21 +356,21 @@ public class Building : MonoBehaviour
             // 기술자 훈련소
             if(structureID == 1008)
             {
-                gameObject.GetComponent<Spirit>().SpiritID = 1;
+                gameObject.GetComponent<Spirit>().SetSpiritID(1);
                 // 잔여 체력을 감소
                 gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
             }
             // 학자 훈련소
             else if (structureID == 1009)
             {
-                gameObject.GetComponent<Spirit>().SpiritID = 2;
+                gameObject.GetComponent<Spirit>().SetSpiritID(2);
                 // 잔여 체력을 감소
                 gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
             }
             // 기사 훈련소
             else if (structureID == 1010)
             {
-                gameObject.GetComponent<Spirit>().SpiritID = 4;
+                gameObject.GetComponent<Spirit>().SetSpiritID(4);
                 // 잔여 체력을 감소
                 gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
             }
@@ -378,14 +378,14 @@ public class Building : MonoBehaviour
             else if (structureID == 1011)
             {
                 // 장사는 아직 구현이 안되어 있음.
-                gameObject.GetComponent<Spirit>().SpiritID = 3;
+                gameObject.GetComponent<Spirit>().SetSpiritID(3);
                 // 잔여 체력을 감소
                 gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
             }
             // 귀족 훈련소
             else if (structureID == 1012)
             {
-                gameObject.GetComponent<Spirit>().SpiritID = 5;
+                gameObject.GetComponent<Spirit>().SetSpiritID(5);
                 // 잔여 체력을 증가시킴
                 gameObject.GetComponent<Spirit>().TakeAdvantageOfBuilding();
                 
@@ -393,7 +393,7 @@ public class Building : MonoBehaviour
             // 치유 훈련소
             else if (structureID == 1013)
             {
-                gameObject.GetComponent<Spirit>().SpiritID = 6;
+                gameObject.GetComponent<Spirit>().SetSpiritID(6);
                 // 잔여체력을 감소
                 gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
             }
