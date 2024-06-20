@@ -19,6 +19,7 @@ public class DetectMove : MonoBehaviour
     Signal signal;
     MeshRenderer meshRenderer;
     Building TempBuilding;
+    ResourceBuilding TempResoucebuilding;
 
     public float CurposX;
     public float CurposY; 
@@ -38,7 +39,7 @@ public class DetectMove : MonoBehaviour
     public float TimeforWorking = 3f;
     public int spiritElement;
     public int _dir;
-    int spiritID;
+    public int spiritID;
     int signType;
     int tempx, tempy;
     [SerializeField]
@@ -88,6 +89,11 @@ public class DetectMove : MonoBehaviour
     public int GetDirection()
     {
         return _dir;
+    }
+
+    public int GetSpiritID()
+    {
+        return spiritID;
     }
     private void Start()
     {  
@@ -268,7 +274,7 @@ public class DetectMove : MonoBehaviour
                 }
                 else if (nodes[(int)leftx, (int)lefty].resourceBuilding != null)
                 {
-                    if (!nodes[(int)leftx, (int)lefty].resourceBuilding.CheckForCapacity() || !nodes[(int)leftx, (int)lefty].resourceBuilding.CanUse)
+                    if (!nodes[(int)leftx, (int)lefty].resourceBuilding.CheckForCapacity())
                      return;
                     
                    
@@ -300,7 +306,7 @@ public class DetectMove : MonoBehaviour
                 }
                 else if (nodes[(int)frontx, (int)fronty].resourceBuilding != null)
                 {
-                    if (!nodes[(int)frontx, (int)fronty].resourceBuilding.CheckForCapacity() || !nodes[(int)frontx, (int)fronty].resourceBuilding.CanUse)
+                    if (!nodes[(int)frontx, (int)fronty].resourceBuilding.CheckForCapacity())
                         return;
                 }
                 // 좌표 이동전
@@ -327,8 +333,7 @@ public class DetectMove : MonoBehaviour
                 }
                 else if (nodes[(int)rightx, (int)righty].resourceBuilding != null)
                 {
-                    if (!nodes[(int)rightx, (int)righty].resourceBuilding.CheckForCapacity() || !nodes[(int)rightx, (int)righty].resourceBuilding.CanUse)
-                        return;
+                    if (!nodes[(int)rightx, (int)righty].resourceBuilding.CheckForCapacity()) return;
 
                 }
                 // 좌표 이동전
@@ -507,19 +512,19 @@ public class DetectMove : MonoBehaviour
        
         yield return new WaitForSeconds(TimeforWorking);
 
-        nodes[(int)CurposX, (int)CurposY].resourceBuilding.DeleteWorkingSprit(this.gameObject);
+        TempResoucebuilding.GetComponent<ResourceBuilding>().DeleteWorkingSprit(this.gameObject);
         
         meshRenderer.enabled = true;
         detection = Detect.FactoryOrLootOut;
     }
 
-
     void FindLootPoint()
     {
         if(!isLoot)
         {
-            nodes[(int)CurposX, (int)CurposY].resourceBuilding.AddWorkingSprit(this.gameObject);
-            nodes[(int)CurposX, (int)CurposY].resourceBuilding.GetDecreasement(LootAmount);
+            TempResoucebuilding = nodes[(int)CurposX, (int)CurposY].resourceBuilding;
+            TempResoucebuilding.AddWorkingSprit(this.gameObject);
+            TempResoucebuilding.GetDecreasement(LootAmount);
 
             // null 값일떄는 Loot를 취소시키고 마지막 save 위치로 이동시켜야함
             if(!nodes[(int)CurposX, (int)CurposY].resourceBuilding.CanUse) return;
@@ -645,7 +650,7 @@ public class DetectMove : MonoBehaviour
     private void StopMove()
     {
     }
-IEnumerator StopSign(float _time)
+    IEnumerator StopSign(float _time)
    {
         yield return new WaitForSeconds(_time);
         isPause = false;

@@ -26,8 +26,8 @@ MonoBehaviour:
   blendModeMaterialMultiply: {fileID: 0}
   blendModeMaterialScreen: {fileID: 0}
   blendModeMaterialAdditive: {fileID: 0}
-  atlasTxtImportWarning: 1
-  textureImporterWarning: 1
+  atlasTxtImportWarning: 0
+  textureImporterWarning: 0
   componentMaterialWarning: 1
   skeletonDataAssetNoFileError: 1
   autoReloadSceneSkeletons: 1

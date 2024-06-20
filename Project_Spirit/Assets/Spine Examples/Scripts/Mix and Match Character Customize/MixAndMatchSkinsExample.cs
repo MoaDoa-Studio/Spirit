@@ -47,6 +47,9 @@ namespace Spine.Unity.Examples {
 		[SpineSkin] public string[] noseSkins = { "nose/short", "nose/long" };
 		public int activeNoseIndex = 0;
 
+
+
+		 
 		// equipment skins
 		public enum ItemType {
 			Cloth,

@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 8d48633561f428c499eb278e393d11e4, type: 2}
-  initialSkinName: Air_Lv1
+  initialSkinName: Fire_Lv1
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
@@ -127,7 +127,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: idle
+  _animationName: Front_walk
   loop: 1
   timeScale: 1
 --- !u!114 &223681143378521360
@@ -142,13 +142,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6210758930e746a4e814da6c415f4977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentSlotName: 
+  currentAttachmentName: 
+  baseSkin: Air_Lv1
+  capSlot:
+  - Cap
+  - Cap_fedora
+  - Cap_fedora_2
+  - Cap_Graduation
+  - Cap_Graduation_2
+  activecapslotIndex: 0
+  capAttachment:
+  - Cap_clerical
+  - Cap_knight
+  - Cap_safety
+  - Cap_Viking
+  - Cap_fedora_2
+  - Cap_Graduation
+  - Cap_Graduation_2
+  activeCapattachmentIndex: 0
   skeletonDataAssets:
   - {fileID: 11400000, guid: 8d48633561f428c499eb278e393d11e4, type: 2}
   - {fileID: 11400000, guid: d31dbfe3f8f8a79429f1acc54e23e03c, type: 2}
   - {fileID: 11400000, guid: df200e99fcaa0f24b984a7c9e176add9, type: 2}
-  slotProperty: 
-  attachmentProperty: 
-  IdleAnimaitonName: Front_walk
+  slotProperty: Cap
+  attachmentProperty: Cap_knight
   disappeareventName: 
   statesAndAnimations:
   - stateName: Front_idle
@@ -236,6 +254,7 @@ MonoBehaviour:
   TimeforWorking: 10
   spiritElement: 0
   _dir: 0
+  spiritID: 0
   saveX: 0
   saveY: 0
   isFactory: 0
@@ -253,9 +272,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1402bb9579c8d547ae4b24b34dee44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpiritID: 1
+  SpiritID: 0
   SpiritJob: 0
-  SpiritElement: 4
+  SpiritElement: 1
   SDefaultLife: 100
   SpiritSpeed: 0
   Work_Efficienty: 0

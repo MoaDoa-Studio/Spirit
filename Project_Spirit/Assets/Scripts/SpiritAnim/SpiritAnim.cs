@@ -5,12 +5,28 @@ using Spine.Unity;
 using Spine;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Net.Mail;
+using Unity.VisualScripting;
 
 public class SpiritAnim : MonoBehaviour
 {
     SkeletonAnimation skeletonAnimation;
     Spine.AnimationState animationState;
     Spine.Skeleton _skeleton;
+
+    // 현재 슬롯과 첨부 파일 정보를 인스펙터에서 확인하기 위해 공개
+    [SerializeField]
+    private string currentSlotName;
+    [SerializeField]
+    private string currentAttachmentName;
+
+    // character skins
+    [SpineSkin] public string baseSkin = "skin-base";
+    [SpineSlot] public string[] capSlot = { };
+    public int activecapslotIndex = 0;
+    [SpineAttachment] public string[] capAttachment = { };
+    public int activeCapattachmentIndex = 0;
+    
 
     [SerializeField]
     SkeletonDataAsset[] skeletonDataAssets;
@@ -29,15 +45,20 @@ public class SpiritAnim : MonoBehaviour
     public List<AnimationTransition> transitions = new List<AnimationTransition>();
     public int animationspeed;
 
+    [SpineSkin]
+    public Skin characterSkin;
 
     EventData eventData;    // => 이벤트 데이터 클래스
     DetectMove.Detect currentState; // 현재 상태
     DetectMove.Detect previousState; //이전 상태
     int previousDirection;
     int currentDirection;
+    int previousSpiritID;
+    int currentSpiritID;
 
     private List<Skin> _skins = new List<Skin>();
     int spiritelement;
+    int spiritID;
 
     [System.Serializable]
     public class StateNameToAnimationReference
@@ -77,6 +98,30 @@ public class SpiritAnim : MonoBehaviour
 
     }
 
+    void SetInitialize()
+    {
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        animationState = skeletonAnimation.AnimationState;
+        _skeleton = skeletonAnimation.Skeleton;
+
+        // SkeletonAnimation 초기화.
+        foreach (var entry in statesAndAnimations)
+        {
+            entry.animation.Initialize();
+        }
+
+        foreach (var entry in transitions)
+        {
+            entry.from.Initialize();
+            entry.to.Initialize();
+            entry.transition.Initialize();
+        }
+
+        // 방향 바뀔떄마다 정령 직업 체크 후 적용.
+        ChangeSpiritJob();
+
+    }
+
     private void Start()
     {
         spiritelement = GetComponent<Spirit>().SpiritElement;
@@ -95,15 +140,17 @@ public class SpiritAnim : MonoBehaviour
         {
             _skins.Add(skin);
         }
-
+      
     }
 
     private void Update()
     {
         currentState = GetComponent<DetectMove>().GetDetection();
         currentDirection = GetComponent<DetectMove>().GetDirection();
+        currentSpiritID = GetComponent<DetectMove>().GetSpiritID();
         HandleSkeletonDataAsset();
         HandleAnimation();
+        HandleSetAttachment();
     }
 
     private void HandleSkeletonDataAsset()
@@ -115,6 +162,7 @@ public class SpiritAnim : MonoBehaviour
         {
             ChangeSkeletonAsset();
             skeletonAnimation.Initialize(true);
+            SetInitialize();
         }
     }
 
@@ -129,6 +177,17 @@ public class SpiritAnim : MonoBehaviour
         }
     }
 
+    private void HandleSetAttachment()
+    {
+        bool SpiritIDChanged = previousSpiritID != currentSpiritID;
+        previousSpiritID = currentSpiritID;
+        if(SpiritIDChanged)
+        {
+            ChangeSpiritJob();
+        }
+
+
+    }
     // 이벤트 발생 delegate 호출.
     private void HandleAnimationStateEvent(TrackEntry trackentry, Spine.Event e)
     {
@@ -136,6 +195,144 @@ public class SpiritAnim : MonoBehaviour
         if (eventMatch)
         {
             // 실행 시킬 메서드
+        }
+    }
+
+    private void ChangeSpiritJob()
+    {
+        switch(currentSpiritID)
+        {
+            case 0:
+                //SetAttachmentSlot("",)
+                break;
+            case 1:
+                if(currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap", "Cap_safety");
+                    UpdateSideCharacterSkin("Cap_safety");
+                    UpdateCombinedSkin();
+
+                }
+                else if(currentDirection == 1 ||  currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap", "Cap_safety");
+                    UpdateSideCharacterSkin("Cap_safety");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap", "Cap_safety");
+                    UpdateForwardCharacterSkin(2);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 2:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap_Graduation", "Cap_Graduation");
+                    UpdateSideCharacterSkin("Cap_Graduation");
+                    UpdateCombinedSkin();
+
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if(spiritelement == 1 || spiritelement == 4)
+                    SetAttachmentSlot("Cap_graduation_fm1", "Cap_graduation_1");
+                    else 
+                    SetAttachmentSlot("Cap_graduation_m1", "Cap_graduation_1");
+
+                    UpdateSideCharacterSkin("Cap_graduation_1");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap_Graduation", "Cap_Graduation");
+                    UpdateForwardCharacterSkin(6);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 3:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap", "Cap_Viking");
+                    UpdateSideCharacterSkin("Cap_Viking");
+                    UpdateCombinedSkin();
+                   
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap", "Cap_viking");
+                    UpdateSideCharacterSkin("Cap_viking");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap", "Cap_Viking");
+                    UpdateForwardCharacterSkin(3);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 4:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap", "Cap_knight");
+                    UpdateSideCharacterSkin("Cap_knight");
+                    UpdateCombinedSkin();
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap", "Cap_Knight");
+                    UpdateSideCharacterSkin("Cap_Knight");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap", "Cap_knight");
+                    UpdateForwardCharacterSkin(1);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 5:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap_fedora_2", "Cap_fedora_2");
+                    UpdateSideCharacterSkin("Cap_fedora_2");
+                    UpdateCombinedSkin();
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap_Fedora_2", "Cap_Fedora_2");
+                    UpdateSideCharacterSkin("Cap_Fedora_2");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap_fedora_2", "Cap_fedora_2");
+                    UpdateForwardCharacterSkin(4);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 6:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap", "Cap_clerical");
+                    UpdateSideCharacterSkin("Cap_clerical");
+                    UpdateCombinedSkin();
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap", "Cap_clerical");
+                    UpdateSideCharacterSkin("Cap_clerical");
+                    UpdateCombinedSkin();
+                     
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap", "Cap_clerical");
+                    UpdateForwardCharacterSkin(0);
+                    UpdateCombinedSkin();
+                }
+                break;
         }
     }
 
@@ -453,6 +650,7 @@ public class SpiritAnim : MonoBehaviour
     public Spine.Animation GetAnimationForState(int shortNameHash)
     {
         var animClip = statesAndAnimations.Find(entry => StringToHash(entry.stateName) == shortNameHash);
+        
         return (animClip == null) ? null : animClip.animation;
     }
     private int StringToHash(string s)
@@ -534,16 +732,96 @@ public class SpiritAnim : MonoBehaviour
     }
 
     // 특정 슬롯에 스킨 설정하는 메서드.
-    private void SetAttachmentSlot(string slotName, string attachmentName)
+    private void SetAttachmentSlot(string slot, string attachment)
     {
-        Slot slot = _skeleton.FindSlot(slotName);
-        if(slot != null)
+        if (currentDirection == 2)
         {
-            //Attachment attachment = _skeleton.setAttachment(slotName, attachmentName);
-            //slot.Attachment = attachment;
+            _skeleton.SetAttachment("Cap_Graduation_2", null);
+            _skeleton.SetAttachment("Cap_Graduation", null);
+            _skeleton.SetAttachment("Cap_fedora_2", null);
+            _skeleton.SetAttachment("Cap", null);
+
+        }
+        else if (currentDirection == 3 || currentDirection == 1)
+        {
+            _skeleton.SetAttachment("Cap", null);
+            _skeleton.SetAttachment("Cap_safety", null);
+            _skeleton.SetAttachment("Cap_Knight", null);
+            _skeleton.SetAttachment("Cap_graduation_fm2", null);
+            _skeleton.SetAttachment("Cap_graduation_fm1", null);
+            _skeleton.SetAttachment("Cap_graduation_m2", null);
+            _skeleton.SetAttachment("Cap_graduation_m1", null);
+            _skeleton.SetAttachment("Cap_Fedora_2", null);
+            _skeleton.SetAttachment("Cap_clerical", null);
+
+        }
+        else
+        {
+            _skeleton.SetAttachment("Cap", null);
+            _skeleton.SetAttachment("Cap_fedora_2", null);
+            _skeleton.SetAttachment("Cap_Graduation", null);
+
+        }
+      
+
+        _skeleton.SetAttachment(slot, attachment);
+
+        // 현재 슬롯과 첨부 파일 정보를 업데이트
+        currentSlotName = slot;
+        currentAttachmentName = attachment;
+    }
+    private void OnValidate()
+    {
+        // 인스펙터에서 값이 변경될 때마다 자동으로 업데이트
+        if (_skeleton != null)
+        {
+            SetAttachmentSlot(currentSlotName, currentAttachmentName);
         }
     }
-    
+
+    void UpdateForwardCharacterSkin(int num)
+    {
+        SkeletonData skeletonData = _skeleton.Data;
+
+        _skeleton.SetBonesToSetupPose();
+
+        if (characterSkin == null)
+        {
+            characterSkin = new Skin(baseSkin);
+        }
+        //characterSkin.AddSkin(skeletonData.FindSkin(baseSkin));
+
+        characterSkin.AddSkin(skeletonData.FindSkin(capAttachment[num]));
+    }
+
+    void UpdateSideCharacterSkin(string skinName)
+    {
+        SkeletonData skeletonData = _skeleton.Data;
+
+        _skeleton.SetBonesToSetupPose();
+
+        if (characterSkin == null)
+        {
+            characterSkin = new Skin(baseSkin);
+        }
+        //characterSkin.AddSkin(skeletonData.FindSkin(baseSkin));
+
+       // characterSkin.AddSkin(_skeleton.Data.FindSkin(skinName));
+
+        Skin attachmentSkin = skeletonData.FindSkin(skinName);
+        characterSkin.AddSkin(attachmentSkin);
+    }
+
+    void UpdateCombinedSkin()
+    {
+        Skeleton skeleton = skeletonAnimation.Skeleton;
+        Skin resultCombinedSkin = new Skin("character-combined");
+
+        resultCombinedSkin.AddSkin(characterSkin);
+        
+        skeleton.SetSkin(resultCombinedSkin);
+        skeleton.SetSlotsToSetupPose();
+    }
 }
 
 
