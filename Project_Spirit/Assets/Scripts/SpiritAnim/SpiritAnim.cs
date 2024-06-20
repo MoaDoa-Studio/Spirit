@@ -51,7 +51,7 @@ public class SpiritAnim : MonoBehaviour
     EventData eventData;    // => 이벤트 데이터 클래스
     DetectMove.Detect currentState; // 현재 상태
     DetectMove.Detect previousState; //이전 상태
-    int previousDirection;
+    int previousDirection = -1;
     int currentDirection;
     int previousSpiritID;
     int currentSpiritID;
@@ -126,7 +126,7 @@ public class SpiritAnim : MonoBehaviour
     {
         spiritelement = GetComponent<Spirit>().SpiritElement;
         currentState = GetComponent<DetectMove>().GetDetection();
-
+        currentDirection = GetComponent<DetectMove>().GetDirection();
         // 애니메이션 이벤트 저장.
         eventData = skeletonAnimation.Skeleton.Data.FindEvent(disappeareventName);
         skeletonAnimation.AnimationState.Event += HandleAnimationStateEvent;
@@ -147,7 +147,7 @@ public class SpiritAnim : MonoBehaviour
     {
         currentState = GetComponent<DetectMove>().GetDetection();
         currentDirection = GetComponent<DetectMove>().GetDirection();
-        currentSpiritID = GetComponent<DetectMove>().GetSpiritID();
+        currentSpiritID = GetComponent<Spirit>().GetSpiritID();
         HandleSkeletonDataAsset();
         HandleAnimation();
         HandleSetAttachment();

@@ -254,7 +254,7 @@ MonoBehaviour:
   LootAmount: 2
   TimeforWorking: 10
   spiritElement: 0
-  _dir: 0
+  _dir: -1
   spiritID: 0
   saveX: 0
   saveY: 0

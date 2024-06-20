@@ -194,7 +194,7 @@ public class Building : MonoBehaviour
     public bool CheckForAccesibleBeforeBuilt(GameObject _gameObject)
     {
         if(connectedRoads == null) return false;
-
+        if (_gameObject.GetComponent<Spirit>().SpiritID == 5) return false;
         if (gameObjectList.Count >= 0 && gameObjectList.Count <= Capacity)
         {
             return true;
@@ -206,6 +206,8 @@ public class Building : MonoBehaviour
     {   
         // ���� �ΰ� �϶��� ��밡���ϰ�..
         if (connectedRoads == null) return false;
+        if (_gameObject.GetComponent<Spirit>().SpiritID == 5) return false;
+
         if(_gameObject.GetComponent<Spirit>().SpiritID != StructureCondition) return false;
 
         if (gameObjectList.Count >= 0 && gameObjectList.Count <= Capacity)
@@ -335,63 +337,75 @@ public class Building : MonoBehaviour
                     gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1.5f;
                 }
                 // ���� �����
-                else if (structureID >= 1004) 
+                else if (structureID == 1004)
                 {
                     EarnWoodResourceAmount += 0.5f;
                     gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 0.5f;
                 }
-                else if (structureID >= 1005) 
+                else if (structureID == 1005)
                 {
                     EarnWoodResourceAmount += 1f;
                     gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1f;
                 }
-                else if (structureID >= 1004)
+                else if (structureID == 1006)
                 {
                     EarnWoodResourceAmount += 1.5f;
                     gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1.5f;
                 }
-                    // ������
-                else if (structureID == 1007)
-                {
-
-                }
-                // ����� �Ʒü�
-                else if (structureID == 1008)
-                {
-
-                }
-                // ���� �Ʒü�
-                else if (structureID == 1009)
-                {
-
-                }
-                // ��� �Ʒü�
-                else if (structureID == 1010)
-                {
-
-                }
-                // ���� �Ʒü�
-                else if (structureID == 1011)
-                {
-
-                }
-                // ���� �Ʒü�
-                else if (structureID == 1012)
-                {
-
-                }
-                // ġ���� �Ʒü�
-                else if (structureID == 1013)
-                {
-
-                }
+            }
+            // 기술자 훈련소
+            if(structureID == 1008)
+            {
+                gameObject.GetComponent<Spirit>().SpiritID = 1;
+                // 잔여 체력을 감소
+                gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
+            }
+            // 학자 훈련소
+            else if (structureID == 1009)
+            {
+                gameObject.GetComponent<Spirit>().SpiritID = 2;
+                // 잔여 체력을 감소
+                gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
+            }
+            // 기사 훈련소
+            else if (structureID == 1010)
+            {
+                gameObject.GetComponent<Spirit>().SpiritID = 4;
+                // 잔여 체력을 감소
+                gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
+            }
+            // 장사 훈련소
+            else if (structureID == 1011)
+            {
+                // 장사는 아직 구현이 안되어 있음.
+                gameObject.GetComponent<Spirit>().SpiritID = 3;
+                // 잔여 체력을 감소
+                gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
+            }
+            // 귀족 훈련소
+            else if (structureID == 1012)
+            {
+                gameObject.GetComponent<Spirit>().SpiritID = 5;
+                // 잔여 체력을 증가시킴
+                gameObject.GetComponent<Spirit>().TakeAdvantageOfBuilding();
+                
+            }
+            // 치유 훈련소
+            else if (structureID == 1013)
+            {
+                gameObject.GetComponent<Spirit>().SpiritID = 6;
+                // 잔여체력을 감소
+                gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
+            }
+           
                     
                 
 
             } 
+
         } 
-    }
-    public void DeleteWorkingSprit(GameObject _gameObject)
+    
+    public void DeleteWorkingSprit(GameObject _gameObject) 
     {
         gameObjectList.Remove(_gameObject);
        
@@ -464,7 +478,10 @@ public class Building : MonoBehaviour
     public void BuildingExpense(GameObject _targetObject)
     {
         // ���� ü�� ���� ����
-        _targetObject.GetComponent<Spirit>().SDefaultLife -= HCostOfUse;
+        if(_targetObject.GetComponent<Spirit>().SpiritID != 3)
+        {
+            _targetObject.GetComponent<Spirit>().SDefaultLife -= HCostOfUse;
+        }
         gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves -= CostOfStone;
         gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves -= CostUseWood;
         gameManager.GetComponentInChildren<ResouceManager>().Essence_reserves -= essenceRequirement;

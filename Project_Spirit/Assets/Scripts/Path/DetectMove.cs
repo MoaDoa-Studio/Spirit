@@ -108,6 +108,8 @@ public class DetectMove : MonoBehaviour
     }
     private void Update()
     {  
+        spiritID = GetComponent<Spirit>().GetSpiritID();
+
         switch (detection)
         {
             case Detect.None:
@@ -371,6 +373,10 @@ public class DetectMove : MonoBehaviour
         if(Vector2.Distance(targetVector, transform.position) <= 0.05f)
         {
             transform.position = targetVector;
+
+            // 다음 칸에 도착할 시 정령 체력 감소
+            if(spiritID != 3)
+            { GetComponent<Spirit>().HP -= 1; }
             detection = Detect.None;
             return;
         }

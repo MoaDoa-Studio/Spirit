@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 8d48633561f428c499eb278e393d11e4, type: 2}
-  initialSkinName: Fire_Lv1
+  initialSkinName: Air_Lv1
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
@@ -253,7 +253,7 @@ MonoBehaviour:
   LootAmount: 2
   TimeforWorking: 10
   spiritElement: 0
-  _dir: 0
+  _dir: 5
   spiritID: 0
   saveX: 0
   saveY: 0
@@ -274,8 +274,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpiritID: 0
   SpiritJob: 0
-  SpiritElement: 1
+  SpiritElement: 4
   SDefaultLife: 100
+  HP: 0
   SpiritSpeed: 0
   Work_Efficienty: 0
 --- !u!54 &-6057536512762663111
