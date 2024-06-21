@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 308f79d0511094b48ad9b01658d0adeb, type: 2}
+  - {fileID: 2100000, guid: 280e3b62b11cabb4a961d543ab5edaf4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: ce610807d3fc59c4b83ccca50c8106dc, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 8d48633561f428c499eb278e393d11e4, type: 2}
   initialSkinName: Air_Lv3
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
@@ -127,7 +127,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: idle
+  _animationName: Front_walk
   loop: 1
   timeScale: 1
 --- !u!114 &6052314413622529075
@@ -142,31 +142,97 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6210758930e746a4e814da6c415f4977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotProperty: 
-  attachmentProperty: 
-  IdleAnimaitonName: idle
+  currentSlotName: 
+  currentAttachmentName: 
+  baseSkin: Air_Lv3
+  capSlot:
+  - Cap
+  - Cap_fedora
+  - Cap_fedora_2
+  - Cap_Graduation
+  - Cap_Graduation_2
+  activecapslotIndex: 0
+  capAttachment:
+  - Cap_clerical
+  - Cap_knight
+  - Cap_safety
+  - Cap_Viking
+  - Cap_fedora_2
+  - Cap_Graduation
+  - Cap_Graduation_2
+  activeCapattachmentIndex: 0
+  skeletonDataAssets:
+  - {fileID: 11400000, guid: 8d48633561f428c499eb278e393d11e4, type: 2}
+  - {fileID: 11400000, guid: d31dbfe3f8f8a79429f1acc54e23e03c, type: 2}
+  - {fileID: 11400000, guid: df200e99fcaa0f24b984a7c9e176add9, type: 2}
+  slotProperty: Cap
+  attachmentProperty: Cap_knight
   disappeareventName: 
   statesAndAnimations:
-  - stateName: idle
-    animation: {fileID: 11400000, guid: ff1e78bc6a194c9478e9f7fd7650c009, type: 2}
-  - stateName: walk
-    animation: {fileID: 11400000, guid: ef21499ccd4f25b409b81cb4e85e4428, type: 2}
-  - stateName: crash
-    animation: {fileID: 11400000, guid: 241fd4c2a9fc0d04a8eabe3976afb015, type: 2}
-  - stateName: crash_Air
-    animation: {fileID: 11400000, guid: 718453fca8ac9304a9a9bcdfa083c36a, type: 2}
-  - stateName: crash_water
-    animation: {fileID: 11400000, guid: d1eafd757d6b70d40a8fbd5d1f5be0f9, type: 2}
-  - stateName: disappear
-    animation: {fileID: 11400000, guid: a9b6042450cc3b944bfc523f5616e50a, type: 2}
-  - stateName: enter_fm
-    animation: {fileID: 11400000, guid: 67357629b82f9234690ddd8b330c970c, type: 2}
-  - stateName: enter_m
-    animation: {fileID: 11400000, guid: b58a03d12da8f6a41953ff42f66f0f6d, type: 2}
-  - stateName: exit_fm
-    animation: {fileID: 11400000, guid: e48bfa97987e3244eaad2758c64519ad, type: 2}
-  - stateName: exit_m
-    animation: {fileID: 11400000, guid: c244865309a1ef240b0c12e1e320cda4, type: 2}
+  - stateName: Front_idle
+    animation: {fileID: 11400000, guid: 2c4d6841210a1ab42a72d9a40607978f, type: 2}
+  - stateName: Front_walk
+    animation: {fileID: 11400000, guid: a19870e66aabfdd488cb51458050ac05, type: 2}
+  - stateName: Front_crash
+    animation: {fileID: 11400000, guid: 3d849b95d1446664181374b495339b6c, type: 2}
+  - stateName: Front_crash_Air
+    animation: {fileID: 11400000, guid: 489f3571ff68e9a459b8b03b9c51f114, type: 2}
+  - stateName: Front_crash_water
+    animation: {fileID: 11400000, guid: 1037254da5733b14d91052dc5281cd79, type: 2}
+  - stateName: Front_disappear
+    animation: {fileID: 11400000, guid: 6209e0bd2f44fdd42a07df4a3cd306a6, type: 2}
+  - stateName: Front_enter_fm
+    animation: {fileID: 11400000, guid: 2decb98d8f639f64b99d13dba5843ff6, type: 2}
+  - stateName: Front_enter_m
+    animation: {fileID: 11400000, guid: 4eab36df41ff91c4aa2317dab0928ce5, type: 2}
+  - stateName: Front_exit_fm
+    animation: {fileID: 11400000, guid: 4fa507fc567c35545861e2eeca28b179, type: 2}
+  - stateName: Front_exit_m
+    animation: {fileID: 11400000, guid: 4eab36df41ff91c4aa2317dab0928ce5, type: 2}
+  - stateName: Back_crash_Air
+    animation: {fileID: 11400000, guid: 86d15b42aa148d447a075949a7bf781f, type: 2}
+  - stateName: Back_crash_Water
+    animation: {fileID: 11400000, guid: 6178f135d72851e47b22460d26c73fc2, type: 2}
+  - stateName: Back_crush
+    animation: {fileID: 11400000, guid: 37b0ef752aa1005438130e4bb745a652, type: 2}
+  - stateName: Back_enter_fm
+    animation: {fileID: 11400000, guid: de9b30db219d7164792c6535b5c91ae9, type: 2}
+  - stateName: Back_enter_m
+    animation: {fileID: 11400000, guid: 22d47f6d3ee9dfe4b9a8a5bd11d9a3d2, type: 2}
+  - stateName: Back_exit_fm
+    animation: {fileID: 11400000, guid: 4240273236b8b0b46a692bb591d481f3, type: 2}
+  - stateName: Back_exit_m
+    animation: {fileID: 11400000, guid: 4eab36df41ff91c4aa2317dab0928ce5, type: 2}
+  - stateName: Back_walk
+    animation: {fileID: 11400000, guid: e3bc489b17a156a4aa6da90877164ed6, type: 2}
+  - stateName: Side_crash_Air
+    animation: {fileID: 11400000, guid: 855a29ec5beed37488f4f1fc4bed463a, type: 2}
+  - stateName: Side_crash_Fire
+    animation: {fileID: 11400000, guid: 5c23717a4a9770c4bbdaaa77eb609c27, type: 2}
+  - stateName: Side_crash_Soil
+    animation: {fileID: 11400000, guid: 6d414991cad8e0149aa0f12c2f780929, type: 2}
+  - stateName: Side_crash_Water
+    animation: {fileID: 11400000, guid: c71a3e0aa1aa8c64dacf5a467d30127a, type: 2}
+  - stateName: Side_enter_fm
+    animation: {fileID: 11400000, guid: 51e11a2319e2211438fb623c02f0925a, type: 2}
+  - stateName: Side_enter_m
+    animation: {fileID: 11400000, guid: 9a7d9abe097884e4ea2a1c77ad481383, type: 2}
+  - stateName: Side_exit_fm
+    animation: {fileID: 11400000, guid: 8e0e83a17c3c61541933c265986092e9, type: 2}
+  - stateName: Side_exit_Soil
+    animation: {fileID: 11400000, guid: 97a0cdff70bc7a54793e5f4052895987, type: 2}
+  - stateName: Side_exit_Water
+    animation: {fileID: 11400000, guid: 201a1a2c160da2847a7473cac2e9d388, type: 2}
+  - stateName: Side_idle
+    animation: {fileID: 11400000, guid: cc643a8dbb24ecb4698089d26b7c6e5a, type: 2}
+  - stateName: Side_idle_Soil
+    animation: {fileID: 11400000, guid: b307a9660a23f2040adb8aa8ca775d6c, type: 2}
+  - stateName: Side_walk
+    animation: {fileID: 11400000, guid: d5e48c5bfa1671446ac39f6df2e92887, type: 2}
+  - stateName: Side_walk_Soil
+    animation: {fileID: 11400000, guid: 7c1d2e560f92f644888676036a38201d, type: 2}
+  - stateName: Back_idle
+    animation: {fileID: 11400000, guid: d634916ca8b0aa245a1cbe4bfec682a5, type: 2}
   transitions: []
   animationspeed: 0
 --- !u!114 &1427054803262919743
@@ -181,16 +247,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa10e8820f9e1ff4abd807d9725d3798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopduration: {fileID: 0}
-  bottomLeft: {x: 0, y: 0}
-  topRight: {x: 20, y: 20}
   CurposX: 0
   CurposY: 0
   moveSpeed: 1
   LootAmount: 2
   TimeforWorking: 10
   spiritElement: 0
-  _dir: 0
+  _dir: 5
+  spiritID: 0
+  saveX: 0
+  saveY: 0
+  isFactory: 0
+  isLoot: 0
+  detection: 0
 --- !u!114 &9026266059518260647
 MonoBehaviour:
   m_ObjectHideFlags: 0
