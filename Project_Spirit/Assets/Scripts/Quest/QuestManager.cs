@@ -20,12 +20,12 @@ public class QuestManager : MonoBehaviour
     public void InstantiateQuest(string name, string explain, string progress)
     {
         GameObject clone = Instantiate(QuestPrefab, QuestUI_Transform);
-        Quest quest = clone.GetComponent<Quest>();
+        QuestPrefab quest = clone.GetComponent<QuestPrefab>();
         quest.SetQuest(0, name, explain, progress, 0, 10, 30, 10);                        
 
         UpdateQuestUI();
     }        
-       
+    
     public void UpdateQuestUI()
     {
         float y_pos = 0;
@@ -44,7 +44,7 @@ public class QuestManager : MonoBehaviour
     public void TempInstantiateQuest()
     {
         GameObject clone = Instantiate(QuestPrefab, QuestUI_Transform);
-        Quest quest = clone.GetComponent<Quest>();
+        QuestPrefab quest = clone.GetComponent<QuestPrefab>();
         quest.SetQuest(0, "Quest1", "Quest1 Body", "Quest1 ConditionText", 0, 10, 10, 10);
         
         clone = null;
@@ -58,7 +58,7 @@ public class QuestManager : MonoBehaviour
         Stack<int> clearIndex = new Stack<int>();
         for (int i = 0; i < QuestUI_Transform.childCount; i++)
         {
-            Quest quest = QuestUI_Transform.GetChild(i).GetComponent<Quest>();
+            QuestPrefab quest = QuestUI_Transform.GetChild(i).GetComponent<QuestPrefab>();
             if (quest.ConditionTarget == targetNum)
             {
                 quest.CurrentConditionAchieve += count;
@@ -70,21 +70,12 @@ public class QuestManager : MonoBehaviour
         while (clearIndex.Count != 0)
         {
             int index = clearIndex.Pop();            
-            QuestUI_Transform.transform.GetChild(index).GetComponent<Quest>().ClearQuest();
+            QuestUI_Transform.transform.GetChild(index).GetComponent<QuestPrefab>().ClearQuest();
         }
         UpdateQuestUI();
-    }
+    }    
 
-    public void GainTree(int count)
-    {
-        GainItem(0, count);
-    }
-
-    // For Debug
-    public void Start()
-    {
-        InstantiateQuest("Quest2", "Quest2 Body", "Quest2 Tree 10");
-    }
+    // For Debug    
 
     public void Update()
     {
