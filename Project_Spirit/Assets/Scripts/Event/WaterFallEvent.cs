@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class WaterFallEvent : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private GameObject RainDropEventUI;
+  
+    public void RainDropEventTrigger()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        RainDropEventUI.SetActive(true);
     }
 }

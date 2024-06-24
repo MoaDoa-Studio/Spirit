@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BookEvent : MonoBehaviour
 {
     [SerializeField]
     private GameObject bookPrefab;
+   
+    Node[,] nodes;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,16 +24,45 @@ public class BookEvent : MonoBehaviour
 
     public void BookEventTrigger()
     {
-        // 1. 검은색 레이어가 깔린다.
-        // 2. 카메라 시점이 떨어진 책을 중심으로 함
-        // 3. 카메라 줌 아웃 효과 11 => 14로 변경
-        // 4. 떨어진 곳의 타일이 흙 타일로 바뀜
-        // 5. 일시정지 상태
-        // 6. 0.6초 이후에 검은색 레이어 위로 책이 등장
-        // 7. 연출을 보여준다.
-        // 8. esc 눌러 뒤로 나갈 수 있게 함
-        // 9. 연구소 퀘스트 창이 뜨게 함
-        
+        nodes = TileDataManager.instance.GetNodes();
+
+        int x = UnityEngine.Random.Range(1, 103);
+        int y = UnityEngine.Random.Range(1, 103);
+        if (TileDataManager.instance.GetTileType(x, y) == 3)
+        {
+            bool validLocation = true;
+
+           for(int i = 0; i < 5; i++)
+            {
+                for(int j = 0; j < 5; j++)
+                {
+                    if (TileDataManager.instance.GetTileType(x + i, y + j) == 1)
+                    {
+                        validLocation = false;
+                        break;
+                    }
+                   
+                }
+                if(!validLocation)
+                {
+                    Debug.Log("책이 소환할 수 없는 위치입니다.");
+                    BookEventTrigger();
+                }
+            }
+            
+           if(validLocation)
+           {
+               Instantiate(bookPrefab, new Vector3(x + 0.5f, y + 0.5f, 0), Quaternion.identity);
+                return;
+           }
+        }
+        else
+        {
+            BookEventTrigger();
+        }    
+
+
+
     }
 
 }
