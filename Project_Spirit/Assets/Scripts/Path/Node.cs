@@ -6,7 +6,7 @@ using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Node : MonoBehaviour
+public class Node
 {
     public int nodeValue;   
     public int rotationStack;   
@@ -16,7 +16,7 @@ public class Node : MonoBehaviour
     public int wood_reserve;
     public bool isSignal = false;
     public bool isWalk = false;
-    public bool isBuild = false;
+    public bool isBuild = false; 
     public bool isFactory = false;
     public bool isLoot = false;
     public Sprite nodeSprite;
