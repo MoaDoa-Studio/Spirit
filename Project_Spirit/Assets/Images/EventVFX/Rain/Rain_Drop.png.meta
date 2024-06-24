@@ -126,12 +126,12 @@ TextureImporter:
       name: Rain_Drop_0
       rect:
         serializedVersion: 2
-        x: 205
-        y: 10125
-        width: 2048
-        height: 1666
+        x: 299
+        y: 10570
+        width: 1938
+        height: 1094
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,12 +147,12 @@ TextureImporter:
       name: Rain_Drop_1
       rect:
         serializedVersion: 2
-        x: 2253
-        y: 10125
-        width: 2048
-        height: 1666
+        x: 2339
+        y: 10570
+        width: 1934
+        height: 1094
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,12 +168,12 @@ TextureImporter:
       name: Rain_Drop_2
       rect:
         serializedVersion: 2
-        x: 4301
-        y: 10125
-        width: 2048
-        height: 1666
+        x: 4372
+        y: 10570
+        width: 1937
+        height: 1094
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,12 +189,12 @@ TextureImporter:
       name: Rain_Drop_3
       rect:
         serializedVersion: 2
-        x: 6349
-        y: 10125
-        width: 2048
-        height: 1666
+        x: 6411
+        y: 10570
+        width: 1938
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -210,12 +210,12 @@ TextureImporter:
       name: Rain_Drop_4
       rect:
         serializedVersion: 2
-        x: 8397
-        y: 10125
-        width: 2048
-        height: 1666
+        x: 8450
+        y: 10570
+        width: 1938
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,12 +231,12 @@ TextureImporter:
       name: Rain_Drop_5
       rect:
         serializedVersion: 2
-        x: 10445
-        y: 10125
-        width: 2048
-        height: 1666
+        x: 10486
+        y: 10570
+        width: 1938
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -252,12 +252,12 @@ TextureImporter:
       name: Rain_Drop_6
       rect:
         serializedVersion: 2
-        x: 12493
-        y: 10125
-        width: 2048
-        height: 1666
+        x: 12522
+        y: 10570
+        width: 1938
+        height: 1099
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -273,12 +273,12 @@ TextureImporter:
       name: Rain_Drop_7
       rect:
         serializedVersion: 2
-        x: 205
-        y: 8459
-        width: 2048
-        height: 1666
+        x: 299
+        y: 8891
+        width: 1938
+        height: 1101
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -294,12 +294,12 @@ TextureImporter:
       name: Rain_Drop_8
       rect:
         serializedVersion: 2
-        x: 2253
-        y: 8459
-        width: 2048
-        height: 1666
+        x: 2335
+        y: 8892
+        width: 1940
+        height: 1100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -315,12 +315,12 @@ TextureImporter:
       name: Rain_Drop_9
       rect:
         serializedVersion: 2
-        x: 4301
-        y: 8459
-        width: 2048
-        height: 1666
+        x: 4371
+        y: 8891
+        width: 1942
+        height: 1100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -336,12 +336,12 @@ TextureImporter:
       name: Rain_Drop_10
       rect:
         serializedVersion: 2
-        x: 6349
-        y: 8459
-        width: 2048
-        height: 1666
+        x: 6410
+        y: 8891
+        width: 1939
+        height: 1100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -357,12 +357,12 @@ TextureImporter:
       name: Rain_Drop_11
       rect:
         serializedVersion: 2
-        x: 8397
-        y: 8459
-        width: 2048
-        height: 1666
+        x: 8450
+        y: 8891
+        width: 1938
+        height: 1100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -378,12 +378,12 @@ TextureImporter:
       name: Rain_Drop_12
       rect:
         serializedVersion: 2
-        x: 10445
-        y: 8459
-        width: 2048
-        height: 1666
+        x: 10483
+        y: 8891
+        width: 1941
+        height: 1098
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -399,12 +399,12 @@ TextureImporter:
       name: Rain_Drop_13
       rect:
         serializedVersion: 2
-        x: 12493
-        y: 8459
-        width: 2048
-        height: 1666
+        x: 12522
+        y: 8891
+        width: 1938
+        height: 1098
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -420,12 +420,12 @@ TextureImporter:
       name: Rain_Drop_14
       rect:
         serializedVersion: 2
-        x: 205
-        y: 6793
-        width: 2048
-        height: 1666
+        x: 299
+        y: 7214
+        width: 1938
+        height: 1098
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -441,12 +441,12 @@ TextureImporter:
       name: Rain_Drop_15
       rect:
         serializedVersion: 2
-        x: 2253
-        y: 6793
-        width: 2048
-        height: 1666
+        x: 2339
+        y: 7213
+        width: 1937
+        height: 1100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -462,12 +462,12 @@ TextureImporter:
       name: Rain_Drop_16
       rect:
         serializedVersion: 2
-        x: 4301
-        y: 6793
-        width: 2048
-        height: 1666
+        x: 4373
+        y: 7214
+        width: 1936
+        height: 1099
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -483,12 +483,12 @@ TextureImporter:
       name: Rain_Drop_17
       rect:
         serializedVersion: 2
-        x: 6349
-        y: 6793
-        width: 2048
-        height: 1666
+        x: 6411
+        y: 7214
+        width: 1938
+        height: 1099
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -504,12 +504,12 @@ TextureImporter:
       name: Rain_Drop_18
       rect:
         serializedVersion: 2
-        x: 8397
-        y: 6793
-        width: 2048
-        height: 1666
+        x: 8450
+        y: 7214
+        width: 1938
+        height: 1099
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -525,12 +525,12 @@ TextureImporter:
       name: Rain_Drop_19
       rect:
         serializedVersion: 2
-        x: 10445
-        y: 6793
-        width: 2048
-        height: 1666
+        x: 10486
+        y: 7214
+        width: 1940
+        height: 1099
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -546,12 +546,12 @@ TextureImporter:
       name: Rain_Drop_20
       rect:
         serializedVersion: 2
-        x: 12493
-        y: 6793
-        width: 2048
-        height: 1666
+        x: 12522
+        y: 7214
+        width: 1938
+        height: 1099
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -567,12 +567,12 @@ TextureImporter:
       name: Rain_Drop_21
       rect:
         serializedVersion: 2
-        x: 205
-        y: 5127
-        width: 2048
-        height: 1666
+        x: 299
+        y: 5539
+        width: 1938
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -588,12 +588,12 @@ TextureImporter:
       name: Rain_Drop_22
       rect:
         serializedVersion: 2
-        x: 2253
-        y: 5127
-        width: 2048
-        height: 1666
+        x: 2339
+        y: 5539
+        width: 1936
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -609,12 +609,12 @@ TextureImporter:
       name: Rain_Drop_23
       rect:
         serializedVersion: 2
-        x: 4301
-        y: 5127
-        width: 2048
-        height: 1666
+        x: 4371
+        y: 5539
+        width: 1942
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -630,12 +630,12 @@ TextureImporter:
       name: Rain_Drop_24
       rect:
         serializedVersion: 2
-        x: 6349
-        y: 5127
-        width: 2048
-        height: 1666
+        x: 6411
+        y: 5539
+        width: 1938
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -651,12 +651,12 @@ TextureImporter:
       name: Rain_Drop_25
       rect:
         serializedVersion: 2
-        x: 8397
-        y: 5127
-        width: 2048
-        height: 1666
+        x: 8450
+        y: 5539
+        width: 1938
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -672,12 +672,12 @@ TextureImporter:
       name: Rain_Drop_26
       rect:
         serializedVersion: 2
-        x: 10445
-        y: 5127
-        width: 2048
-        height: 1666
+        x: 10486
+        y: 5539
+        width: 1940
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -693,12 +693,12 @@ TextureImporter:
       name: Rain_Drop_27
       rect:
         serializedVersion: 2
-        x: 12493
-        y: 5127
-        width: 2048
-        height: 1666
+        x: 12522
+        y: 5539
+        width: 1938
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -714,12 +714,12 @@ TextureImporter:
       name: Rain_Drop_28
       rect:
         serializedVersion: 2
-        x: 205
-        y: 3461
-        width: 2048
-        height: 1666
+        x: 299
+        y: 3860
+        width: 1938
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -735,12 +735,12 @@ TextureImporter:
       name: Rain_Drop_29
       rect:
         serializedVersion: 2
-        x: 2253
-        y: 3461
-        width: 2048
-        height: 1666
+        x: 2335
+        y: 3860
+        width: 1941
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -756,12 +756,12 @@ TextureImporter:
       name: Rain_Drop_30
       rect:
         serializedVersion: 2
-        x: 4301
-        y: 3461
-        width: 2048
-        height: 1666
+        x: 4371
+        y: 3860
+        width: 1942
+        height: 1094
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -777,12 +777,12 @@ TextureImporter:
       name: Rain_Drop_31
       rect:
         serializedVersion: 2
-        x: 6349
-        y: 3461
-        width: 2048
-        height: 1666
+        x: 6411
+        y: 3860
+        width: 1938
+        height: 1094
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -798,12 +798,12 @@ TextureImporter:
       name: Rain_Drop_32
       rect:
         serializedVersion: 2
-        x: 8397
-        y: 3461
-        width: 2048
-        height: 1666
+        x: 8450
+        y: 3860
+        width: 1938
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -819,12 +819,12 @@ TextureImporter:
       name: Rain_Drop_33
       rect:
         serializedVersion: 2
-        x: 10445
-        y: 3461
-        width: 2048
-        height: 1666
+        x: 10486
+        y: 3860
+        width: 1940
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -840,12 +840,12 @@ TextureImporter:
       name: Rain_Drop_34
       rect:
         serializedVersion: 2
-        x: 12493
-        y: 3461
-        width: 2048
-        height: 1666
+        x: 12523
+        y: 3860
+        width: 1937
+        height: 1095
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -861,12 +861,12 @@ TextureImporter:
       name: Rain_Drop_35
       rect:
         serializedVersion: 2
-        x: 205
-        y: 1795
-        width: 2048
-        height: 1666
+        x: 300
+        y: 2181
+        width: 1937
+        height: 1098
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -882,12 +882,12 @@ TextureImporter:
       name: Rain_Drop_36
       rect:
         serializedVersion: 2
-        x: 2253
-        y: 1795
-        width: 2048
-        height: 1666
+        x: 2339
+        y: 2180
+        width: 1937
+        height: 1099
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -903,12 +903,12 @@ TextureImporter:
       name: Rain_Drop_37
       rect:
         serializedVersion: 2
-        x: 4301
-        y: 1795
-        width: 2048
-        height: 1666
+        x: 4373
+        y: 2181
+        width: 1940
+        height: 1100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -924,12 +924,12 @@ TextureImporter:
       name: Rain_Drop_38
       rect:
         serializedVersion: 2
-        x: 6349
-        y: 1795
-        width: 2048
-        height: 1666
+        x: 6411
+        y: 2181
+        width: 1938
+        height: 1098
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -945,12 +945,12 @@ TextureImporter:
       name: Rain_Drop_39
       rect:
         serializedVersion: 2
-        x: 8397
-        y: 1795
-        width: 2048
-        height: 1666
+        x: 8450
+        y: 2181
+        width: 1938
+        height: 1098
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -966,12 +966,12 @@ TextureImporter:
       name: Rain_Drop_40
       rect:
         serializedVersion: 2
-        x: 10445
-        y: 1795
-        width: 2048
-        height: 1666
+        x: 10486
+        y: 2181
+        width: 1940
+        height: 1098
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -987,12 +987,12 @@ TextureImporter:
       name: Rain_Drop_41
       rect:
         serializedVersion: 2
-        x: 12493
-        y: 1795
-        width: 2048
-        height: 1666
+        x: 12522
+        y: 2181
+        width: 1938
+        height: 1098
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1008,12 +1008,12 @@ TextureImporter:
       name: Rain_Drop_42
       rect:
         serializedVersion: 2
-        x: 205
-        y: 129
-        width: 2048
-        height: 1666
+        x: 299
+        y: 502
+        width: 1938
+        height: 1101
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1029,12 +1029,12 @@ TextureImporter:
       name: Rain_Drop_43
       rect:
         serializedVersion: 2
-        x: 2253
-        y: 129
-        width: 2048
-        height: 1666
+        x: 2335
+        y: 502
+        width: 1941
+        height: 1101
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1050,12 +1050,12 @@ TextureImporter:
       name: Rain_Drop_44
       rect:
         serializedVersion: 2
-        x: 4301
-        y: 129
-        width: 2048
-        height: 1666
+        x: 4371
+        y: 502
+        width: 1942
+        height: 1100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1071,12 +1071,12 @@ TextureImporter:
       name: Rain_Drop_45
       rect:
         serializedVersion: 2
-        x: 6349
-        y: 129
-        width: 2048
-        height: 1666
+        x: 6410
+        y: 502
+        width: 1939
+        height: 1100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1092,12 +1092,12 @@ TextureImporter:
       name: Rain_Drop_46
       rect:
         serializedVersion: 2
-        x: 8397
-        y: 129
-        width: 2048
-        height: 1666
+        x: 8450
+        y: 502
+        width: 1938
+        height: 1100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
