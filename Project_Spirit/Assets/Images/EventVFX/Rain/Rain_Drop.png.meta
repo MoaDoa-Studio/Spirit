@@ -1,0 +1,1174 @@
+fileFormatVersion: 2
+guid: 39ec1b0750da84d4fac5eb323c780c9d
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Rain_Drop_0
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 10125
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a9af05c3875f834c81615525c9812da
+      internalID: -1655933649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_1
+      rect:
+        serializedVersion: 2
+        x: 2253
+        y: 10125
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7ba30927a4d7134f99c81eccc3c5bea
+      internalID: 1989351014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_2
+      rect:
+        serializedVersion: 2
+        x: 4301
+        y: 10125
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75774c18216a8014a85512bf8a87e18c
+      internalID: -320389173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_3
+      rect:
+        serializedVersion: 2
+        x: 6349
+        y: 10125
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ba2264228a526048a1550ee51f6e75d
+      internalID: -281566356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_4
+      rect:
+        serializedVersion: 2
+        x: 8397
+        y: 10125
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a57000abab99d5a4cbc05ea839fd8646
+      internalID: -1280643145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_5
+      rect:
+        serializedVersion: 2
+        x: 10445
+        y: 10125
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d54b3d50542a6c4e85980ded45e3b6f
+      internalID: 407268732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_6
+      rect:
+        serializedVersion: 2
+        x: 12493
+        y: 10125
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c07facb0a5579d041bd2e570047108dd
+      internalID: 465211763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_7
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 8459
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cbbc15daaa97ba4086e5bdda5bb92ce
+      internalID: 2068634041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_8
+      rect:
+        serializedVersion: 2
+        x: 2253
+        y: 8459
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70bc542b4d756c141ae5550b29a9e66b
+      internalID: 512774120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_9
+      rect:
+        serializedVersion: 2
+        x: 4301
+        y: 8459
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04bd5ea4c28c0c84eb215c2cbe15e13b
+      internalID: -529057231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_10
+      rect:
+        serializedVersion: 2
+        x: 6349
+        y: 8459
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ab910ab1e294614e91837bb42efd4e5
+      internalID: 840953363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_11
+      rect:
+        serializedVersion: 2
+        x: 8397
+        y: 8459
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97a1c8822a5f4a048af6a61caaa393fe
+      internalID: -1591696899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_12
+      rect:
+        serializedVersion: 2
+        x: 10445
+        y: 8459
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6eb470588de2194eadec50ee80aee2a
+      internalID: 441720863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_13
+      rect:
+        serializedVersion: 2
+        x: 12493
+        y: 8459
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a57a9e7fef4c84b4eb9b898ba3583d86
+      internalID: 55706080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_14
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 6793
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64304c33cb8aff144bb6de5f565463fe
+      internalID: 746823235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_15
+      rect:
+        serializedVersion: 2
+        x: 2253
+        y: 6793
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97ac16a3f48872f48bad76d3ebcd3aac
+      internalID: -1477065684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_16
+      rect:
+        serializedVersion: 2
+        x: 4301
+        y: 6793
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 393ddc0f61337e949bb3f3c7dda63bb2
+      internalID: -371872103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_17
+      rect:
+        serializedVersion: 2
+        x: 6349
+        y: 6793
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4519e02465b63d44cbac46af19082d7d
+      internalID: -737708337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_18
+      rect:
+        serializedVersion: 2
+        x: 8397
+        y: 6793
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e980f4a121394454998a2911d36540ab
+      internalID: 221829700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_19
+      rect:
+        serializedVersion: 2
+        x: 10445
+        y: 6793
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 928daf7e663de2745819e9e0168b10eb
+      internalID: -1058389941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_20
+      rect:
+        serializedVersion: 2
+        x: 12493
+        y: 6793
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec23154b3b16298488801a58ed477ad7
+      internalID: -343474645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_21
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 5127
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 212845c35c3ec184494326f3ef25afea
+      internalID: 1738109045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_22
+      rect:
+        serializedVersion: 2
+        x: 2253
+        y: 5127
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8683c4b2d327b14aa0caadfb42a800d
+      internalID: -1836855705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_23
+      rect:
+        serializedVersion: 2
+        x: 4301
+        y: 5127
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5763780beeb6fc442ac6c7bbe69fd869
+      internalID: 1343577235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_24
+      rect:
+        serializedVersion: 2
+        x: 6349
+        y: 5127
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10c8ecc038e9cc244821e1951467a9cd
+      internalID: -1965435445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_25
+      rect:
+        serializedVersion: 2
+        x: 8397
+        y: 5127
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e885c966978d4794aad08bf961fa8c5e
+      internalID: -453103229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_26
+      rect:
+        serializedVersion: 2
+        x: 10445
+        y: 5127
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b22d553e50642342a8d43a41c77cdb7
+      internalID: -255708773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_27
+      rect:
+        serializedVersion: 2
+        x: 12493
+        y: 5127
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 672f0943399ef59439e2600275ef2149
+      internalID: -742424443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_28
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 3461
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f53963eabae17c4f80b1f58da60101a
+      internalID: -1447342568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_29
+      rect:
+        serializedVersion: 2
+        x: 2253
+        y: 3461
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46ac6ba864be6554382f832596313344
+      internalID: 18094716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_30
+      rect:
+        serializedVersion: 2
+        x: 4301
+        y: 3461
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4840572459533404fb12529ef539b75a
+      internalID: 1622437941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_31
+      rect:
+        serializedVersion: 2
+        x: 6349
+        y: 3461
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 970acd171b343874eb1306bc5c895089
+      internalID: -180988233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_32
+      rect:
+        serializedVersion: 2
+        x: 8397
+        y: 3461
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a72fb274fe4a1bd47b001a03b11cfbbe
+      internalID: -1904619603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_33
+      rect:
+        serializedVersion: 2
+        x: 10445
+        y: 3461
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbf7a7e8fec2d7e4c881d79bbd297bfd
+      internalID: -388477295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_34
+      rect:
+        serializedVersion: 2
+        x: 12493
+        y: 3461
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79d5500c572b9104480d303a00caa41f
+      internalID: -948658086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_35
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 1795
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 430174da781cf914883dd188e8c67623
+      internalID: -801825395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_36
+      rect:
+        serializedVersion: 2
+        x: 2253
+        y: 1795
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c71ac159d3905c4f844c2471ec45a7b
+      internalID: -462428299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_37
+      rect:
+        serializedVersion: 2
+        x: 4301
+        y: 1795
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 074bd836fc96fea4e987b45ddc2c5240
+      internalID: -898072636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_38
+      rect:
+        serializedVersion: 2
+        x: 6349
+        y: 1795
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c57cfced53e61ba4e83910f6fdbcec31
+      internalID: -1562619376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_39
+      rect:
+        serializedVersion: 2
+        x: 8397
+        y: 1795
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0c9f09ace3db1d4ebf9dc5f55a6c77c
+      internalID: -62257434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_40
+      rect:
+        serializedVersion: 2
+        x: 10445
+        y: 1795
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78541781639cc2143acd0fa5bc9a64c6
+      internalID: 1268769385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_41
+      rect:
+        serializedVersion: 2
+        x: 12493
+        y: 1795
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9984ee6f95850954fbf2c2d2573f2745
+      internalID: 578696514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_42
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 129
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fb305f9f614b8b48b2e4204870af468
+      internalID: -1767514088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_43
+      rect:
+        serializedVersion: 2
+        x: 2253
+        y: 129
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7086dcfc400a6e46ba9eb9e29c11dfd
+      internalID: -1852165972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_44
+      rect:
+        serializedVersion: 2
+        x: 4301
+        y: 129
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ef2c093e2191ef4690d17202fb720e5
+      internalID: 1779465708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_45
+      rect:
+        serializedVersion: 2
+        x: 6349
+        y: 129
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9db83bd8b7b0531468fc5dceedd86ad4
+      internalID: 1494852414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rain_Drop_46
+      rect:
+        serializedVersion: 2
+        x: 8397
+        y: 129
+        width: 2048
+        height: 1666
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a50adc346349ab643b64dc07860eb273
+      internalID: -1133014701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Rain_Drop_0: -1655933649
+      Rain_Drop_1: 1989351014
+      Rain_Drop_10: 840953363
+      Rain_Drop_11: -1591696899
+      Rain_Drop_12: 441720863
+      Rain_Drop_13: 55706080
+      Rain_Drop_14: 746823235
+      Rain_Drop_15: -1477065684
+      Rain_Drop_16: -371872103
+      Rain_Drop_17: -737708337
+      Rain_Drop_18: 221829700
+      Rain_Drop_19: -1058389941
+      Rain_Drop_2: -320389173
+      Rain_Drop_20: -343474645
+      Rain_Drop_21: 1738109045
+      Rain_Drop_22: -1836855705
+      Rain_Drop_23: 1343577235
+      Rain_Drop_24: -1965435445
+      Rain_Drop_25: -453103229
+      Rain_Drop_26: -255708773
+      Rain_Drop_27: -742424443
+      Rain_Drop_28: -1447342568
+      Rain_Drop_29: 18094716
+      Rain_Drop_3: -281566356
+      Rain_Drop_30: 1622437941
+      Rain_Drop_31: -180988233
+      Rain_Drop_32: -1904619603
+      Rain_Drop_33: -388477295
+      Rain_Drop_34: -948658086
+      Rain_Drop_35: -801825395
+      Rain_Drop_36: -462428299
+      Rain_Drop_37: -898072636
+      Rain_Drop_38: -1562619376
+      Rain_Drop_39: -62257434
+      Rain_Drop_4: -1280643145
+      Rain_Drop_40: 1268769385
+      Rain_Drop_41: 578696514
+      Rain_Drop_42: -1767514088
+      Rain_Drop_43: -1852165972
+      Rain_Drop_44: 1779465708
+      Rain_Drop_45: 1494852414
+      Rain_Drop_46: -1133014701
+      Rain_Drop_5: 407268732
+      Rain_Drop_6: 465211763
+      Rain_Drop_7: 2068634041
+      Rain_Drop_8: 512774120
+      Rain_Drop_9: -529057231
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
