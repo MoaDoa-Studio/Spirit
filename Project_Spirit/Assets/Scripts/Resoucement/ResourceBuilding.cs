@@ -20,9 +20,10 @@ public class ResourceBuilding : MonoBehaviour
 
     [SerializeField]
     public bool CanUse = false;
-    [SerializeField]
-    List<GameObject> gameObjectList;
+   
+    public List<GameObject> ResourcegameObjectList;
     ResouceManager resourceManager;
+    
     int decreasedamount = 0;
     enum ResourceType
     {
@@ -46,7 +47,6 @@ public class ResourceBuilding : MonoBehaviour
 
     private void Start()
     {
-        gameObjectList = new List<GameObject>(4);
         InitializeResourceManger(); // => 자원 정보 초기화
        
     }
@@ -66,7 +66,7 @@ public class ResourceBuilding : MonoBehaviour
             CalculateTotalamountOfResoucre();
            
         }
-        gameObjectList.RemoveAll(item => item == null);
+        ResourcegameObjectList.RemoveAll(item => item == null);
     }
 
     #region 자원 총량 계산.
@@ -88,7 +88,7 @@ public class ResourceBuilding : MonoBehaviour
                 ResetTileType(pair.Key.x, pair.Key.y, 0);
 
             }
-            gameObjectList.Clear();
+          //  gameObjectList.Clear();
             Destroy(this.gameObject);
         }
     }
@@ -107,7 +107,7 @@ public class ResourceBuilding : MonoBehaviour
         DecreaseLeastColony(num);           // 자원 타일 초기화
         CalculateTotalamountOfResoucre();   // 자원 총 수량 계산
         Addamount(num);                     // ResouceManager 값 더하기
-        Debug.Log(Resource_reserves);
+        //Debug.Log(Resource_reserves);
     }
     void DecreaseLeastColony(int num)
     {   
@@ -255,7 +255,7 @@ public class ResourceBuilding : MonoBehaviour
     public bool CheckForCapacity()
     {
         if(connectedRoads == null) return false;
-        if (gameObjectList.Count >= 0 && gameObjectList.Count < 4)
+        if (ResourcegameObjectList.Count >= 0 && ResourcegameObjectList.Count < 4)
         {
             return true;
         }
@@ -265,14 +265,23 @@ public class ResourceBuilding : MonoBehaviour
 
     public void AddWorkingSprit(GameObject _gameObject)
     {
-        if(!gameObjectList.Contains(_gameObject)) 
+        if(!ResourcegameObjectList.Contains(_gameObject)) 
         {
-         gameObjectList.Add(_gameObject);
+            ResourcegameObjectList.Add(_gameObject);
         }
     }
     public void DeleteWorkingSprit(GameObject _gameObject)
     {
-        gameObjectList.Remove(_gameObject);
+        if (_gameObject == null)
+        {
+            Debug.LogWarning("Trying to remove a null game object from the list.");
+            return;
+        }
+
+        if (ResourcegameObjectList.Contains(_gameObject))
+        {
+            ResourcegameObjectList.Remove(_gameObject);
+        }
     }
 
     private void InitializeResourceManger()

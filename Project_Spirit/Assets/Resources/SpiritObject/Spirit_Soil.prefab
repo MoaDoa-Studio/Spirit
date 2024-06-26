@@ -32,6 +32,94 @@ PrefabInstance:
       propertyPath: SpiritElement
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: baseSkin
+      value: Soil_Lv1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: skeletonDataAssets.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: df200e99fcaa0f24b984a7c9e176add9, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[0].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: 2c4d6841210a1ab42a72d9a40607978f, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[0].stateName
+      value: Front_idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[1].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: a19870e66aabfdd488cb51458050ac05, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[1].stateName
+      value: Front_walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[2].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: 3d849b95d1446664181374b495339b6c, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[2].stateName
+      value: Front_crash
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[3].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: 489f3571ff68e9a459b8b03b9c51f114, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[3].stateName
+      value: Front_crash_Air
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[4].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: 1037254da5733b14d91052dc5281cd79, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[4].stateName
+      value: Front_crash_water
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[5].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: 6209e0bd2f44fdd42a07df4a3cd306a6, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[5].stateName
+      value: Front_disappear
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[6].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: 2decb98d8f639f64b99d13dba5843ff6, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[6].stateName
+      value: Front_enter_fm
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[7].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: 4eab36df41ff91c4aa2317dab0928ce5, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[7].stateName
+      value: Front_enter_m
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[8].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: 4fa507fc567c35545861e2eeca28b179, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[8].stateName
+      value: Front_exit_fm
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[9].animation
+      value: 
+      objectReference: {fileID: 11400000, guid: 4eab36df41ff91c4aa2317dab0928ce5, type: 2}
+    - target: {fileID: 6376813310599206530, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
+      propertyPath: statesAndAnimations.Array.data[9].stateName
+      value: Front_exit_m
+      objectReference: {fileID: 0}
     - target: {fileID: 6857780626138471456, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

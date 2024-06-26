@@ -4,6 +4,9 @@ using UnityEngine;
 using Spine.Unity;
 using Spine;
 using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Mail;
+using Unity.VisualScripting;
 
 public class SpiritAnim : MonoBehaviour
 {
@@ -11,13 +14,29 @@ public class SpiritAnim : MonoBehaviour
     Spine.AnimationState animationState;
     Spine.Skeleton _skeleton;
 
+    // 현재 슬롯과 첨부 파일 정보를 인스펙터에서 확인하기 위해 공개
+    [SerializeField]
+    private string currentSlotName;
+    [SerializeField]
+    private string currentAttachmentName;
+
+    // character skins
+    [SpineSkin] public string baseSkin = "skin-base";
+    [SpineSlot] public string[] capSlot = { };
+    public int activecapslotIndex = 0;
+    [SpineAttachment] public string[] capAttachment = { };
+    public int activeCapattachmentIndex = 0;
+    
+
+    [SerializeField]
+    SkeletonDataAsset[] skeletonDataAssets;
     // Setting Attachments
     [SpineSlot]
     public string slotProperty = "slotName";
     [SpineAttachment]
     public string attachmentProperty = "attachmentName";
     [SpineAnimation]
-    public string IdleAnimaitonName;
+    // public string IdleAnimaitonName;
     [Header("SpineEvent")]
     [SpineEvent(dataField = "skeletonAnimation")]
     public string disappeareventName;
@@ -26,12 +45,19 @@ public class SpiritAnim : MonoBehaviour
     public List<AnimationTransition> transitions = new List<AnimationTransition>();
     public int animationspeed;
 
-    
+    [SpineSkin]
+    public Skin characterSkin;
+
     EventData eventData;    // => 이벤트 데이터 클래스
     DetectMove.Detect currentState; // 현재 상태
     DetectMove.Detect previousState; //이전 상태
+    int previousDirection = -1;
+    int currentDirection;
+    int previousSpiritID;
+    int currentSpiritID;
 
     private List<Skin> _skins = new List<Skin>();
+    int spiritelement;
     int spiritID;
 
     [System.Serializable]
@@ -72,11 +98,35 @@ public class SpiritAnim : MonoBehaviour
 
     }
 
+    void SetInitialize()
+    {
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        animationState = skeletonAnimation.AnimationState;
+        _skeleton = skeletonAnimation.Skeleton;
+
+        // SkeletonAnimation 초기화.
+        foreach (var entry in statesAndAnimations)
+        {
+            entry.animation.Initialize();
+        }
+
+        foreach (var entry in transitions)
+        {
+            entry.from.Initialize();
+            entry.to.Initialize();
+            entry.transition.Initialize();
+        }
+
+        // 방향 바뀔떄마다 정령 직업 체크 후 적용.
+        ChangeSpiritJob();
+
+    }
+
     private void Start()
     {
-        spiritID = GetComponent<Spirit>().SpiritID;
+        spiritelement = GetComponent<Spirit>().SpiritElement;
         currentState = GetComponent<DetectMove>().GetDetection();
-        
+        currentDirection = GetComponent<DetectMove>().GetDirection();
         // 애니메이션 이벤트 저장.
         eventData = skeletonAnimation.Skeleton.Data.FindEvent(disappeareventName);
         skeletonAnimation.AnimationState.Event += HandleAnimationStateEvent;
@@ -85,18 +135,35 @@ public class SpiritAnim : MonoBehaviour
         //animationState.SetAnimation(0, "disappear", true);
         //skeletonAnimation.skeleton.SetSkin("Fire_Lv1");     // Set my skin.
         //skeletonAnimation.Skeleton.SetSlotsToSetupPose();   // Make sure to refresh it.
-                                                            // skeletonAnimation.AnimationState.Apply(skeletonAnimation.Skeleton); // Make sure the attachments from your currently playing animation are applied.
+        // skeletonAnimation.AnimationState.Apply(skeletonAnimation.Skeleton); // Make sure the attachments from your currently playing animation are applied.
         foreach (Skin skin in _skeleton.Data.Skins)
         {
             _skins.Add(skin);
         }
-
+      
     }
 
     private void Update()
     {
         currentState = GetComponent<DetectMove>().GetDetection();
+        currentDirection = GetComponent<DetectMove>().GetDirection();
+        currentSpiritID = GetComponent<Spirit>().GetSpiritID();
+        HandleSkeletonDataAsset();
         HandleAnimation();
+        HandleSetAttachment();
+    }
+
+    private void HandleSkeletonDataAsset()
+    {
+        bool directionChanged = previousDirection != currentDirection;
+        previousDirection = currentDirection;
+
+        if (directionChanged)
+        {
+            ChangeSkeletonAsset();
+            skeletonAnimation.Initialize(true);
+            SetInitialize();
+        }
     }
 
     private void HandleAnimation()
@@ -104,64 +171,385 @@ public class SpiritAnim : MonoBehaviour
         bool stateChanged = previousState != currentState;
         previousState = currentState;
 
-        if(stateChanged)
+        if (stateChanged)
         {
             HandleStateChanged();
         }
     }
 
+    private void HandleSetAttachment()
+    {
+        bool SpiritIDChanged = previousSpiritID != currentSpiritID;
+        previousSpiritID = currentSpiritID;
+        if(SpiritIDChanged)
+        {
+            ChangeSpiritJob();
+        }
+
+
+    }
     // 이벤트 발생 delegate 호출.
     private void HandleAnimationStateEvent(TrackEntry trackentry, Spine.Event e)
     {
         bool eventMatch = (e.Data == eventData);
-        if(eventMatch)
+        if (eventMatch)
         {
             // 실행 시킬 메서드
         }
     }
-   
+
+    private void ChangeSpiritJob()
+    {
+        switch(currentSpiritID)
+        {
+            case 0:
+                //SetAttachmentSlot("",)
+                break;
+            case 1:
+                if(currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap", "Cap_safety");
+                    UpdateSideCharacterSkin("Cap_safety");
+                    UpdateCombinedSkin();
+
+                }
+                else if(currentDirection == 1 ||  currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap", "Cap_safety");
+                    UpdateSideCharacterSkin("Cap_safety");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap", "Cap_safety");
+                    UpdateForwardCharacterSkin(2);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 2:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap_Graduation", "Cap_Graduation");
+                    UpdateSideCharacterSkin("Cap_Graduation");
+                    UpdateCombinedSkin();
+
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if(spiritelement == 1 || spiritelement == 4)
+                    SetAttachmentSlot("Cap_graduation_fm1", "Cap_graduation_1");
+                    else 
+                    SetAttachmentSlot("Cap_graduation_m1", "Cap_graduation_1");
+
+                    UpdateSideCharacterSkin("Cap_graduation_1");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap_Graduation", "Cap_Graduation");
+                    UpdateForwardCharacterSkin(6);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 3:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap", "Cap_Viking");
+                    UpdateSideCharacterSkin("Cap_Viking");
+                    UpdateCombinedSkin();
+                   
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap", "Cap_viking");
+                    UpdateSideCharacterSkin("Cap_viking");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap", "Cap_Viking");
+                    UpdateForwardCharacterSkin(3);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 4:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap", "Cap_knight");
+                    UpdateSideCharacterSkin("Cap_knight");
+                    UpdateCombinedSkin();
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap", "Cap_Knight");
+                    UpdateSideCharacterSkin("Cap_Knight");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap", "Cap_knight");
+                    UpdateForwardCharacterSkin(1);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 5:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap_fedora_2", "Cap_fedora_2");
+                    UpdateSideCharacterSkin("Cap_fedora_2");
+                    UpdateCombinedSkin();
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap_Fedora_2", "Cap_Fedora_2");
+                    UpdateSideCharacterSkin("Cap_Fedora_2");
+                    UpdateCombinedSkin();
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap_fedora_2", "Cap_fedora_2");
+                    UpdateForwardCharacterSkin(4);
+                    UpdateCombinedSkin();
+                }
+                break;
+            case 6:
+                if (currentDirection == 0)
+                {
+                    SetAttachmentSlot("Cap", "Cap_clerical");
+                    UpdateSideCharacterSkin("Cap_clerical");
+                    UpdateCombinedSkin();
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    SetAttachmentSlot("Cap", "Cap_clerical");
+                    UpdateSideCharacterSkin("Cap_clerical");
+                    UpdateCombinedSkin();
+                     
+                }
+                else
+                {
+                    SetAttachmentSlot("Cap", "Cap_clerical");
+                    UpdateForwardCharacterSkin(0);
+                    UpdateCombinedSkin();
+                }
+                break;
+        }
+    }
+
+    private void ChangeSkeletonAsset()
+    {
+        switch (currentDirection)
+        {
+            // 위로 갔을때
+            case 0:
+                skeletonAnimation.skeletonDataAsset = skeletonDataAssets[2];
+                transform.localScale = new Vector2(1f, 1f);
+                break;
+            // 좌 이동
+            case 1:
+                skeletonAnimation.skeletonDataAsset = skeletonDataAssets[1];
+                transform.localScale = new Vector2(-1f, 1f);
+               
+                break;
+            // 아래로 갔을때
+            case 2:
+                skeletonAnimation.skeletonDataAsset = skeletonDataAssets[0];
+                transform.localScale = new Vector2(1f, 1f);
+               
+                break;
+            // 우 이동
+            case 3:
+                skeletonAnimation.skeletonDataAsset = skeletonDataAssets[1];
+                transform.localScale = new Vector2(1f, 1f);
+                
+                break;
+        }
+    }
+
     private void HandleStateChanged()
     {
         string stateName = null;
         bool oneshot = false;
         int track = 0;
         animationspeed = 1;
-    
-        switch(currentState)
+
+        switch (currentState)
         {
             case DetectMove.Detect.None:
-                stateName = "idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.CheckTile:
-                stateName = "idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Factory_MoveMent:
-                stateName = "idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Basic_MoveMent:
-                stateName = "idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Factory:
-                stateName = "idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Loot:
-                stateName = "idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Academy:
-                stateName = "idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Move:
-                stateName = "walk";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_walk";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                    {
+                        stateName = "Side_walk";
+                    }
+                    else
+                        stateName = "Side_walk_Soil";
+                }
+                else
+                {
+                    stateName = "Front_walk";
+                }
                 break;
             case DetectMove.Detect.Mark_Check:
-                stateName = "idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.Stop:
-                stateName = "idle";
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
                 break;
             case DetectMove.Detect.FactoryOrLootOut:
                 stateName = exit_Gender();
-                oneshot = true;
+
                 break;
             case DetectMove.Detect.FactoryOrLootEnter:
                 stateName = enter_Gender();
@@ -181,14 +569,14 @@ public class SpiritAnim : MonoBehaviour
     {
         // 애니메이션 처리
         var animationclip = GetAnimationForState(stateName);
-        if(animationclip == null) { return; }
-        if(oneshot)
+        if (animationclip == null) { return; }
+        if (oneshot)
         {
-           PlayOneShot(animationclip, trackIndex, speed);
+            PlayOneShot(animationclip, trackIndex, speed);
         }
         else
         {
-           PlayNewAnimation(animationclip, trackIndex, speed);
+            PlayNewAnimation(animationclip, trackIndex, speed);
         }
     }
 
@@ -262,6 +650,7 @@ public class SpiritAnim : MonoBehaviour
     public Spine.Animation GetAnimationForState(int shortNameHash)
     {
         var animClip = statesAndAnimations.Find(entry => StringToHash(entry.stateName) == shortNameHash);
+        
         return (animClip == null) ? null : animClip.animation;
     }
     private int StringToHash(string s)
@@ -271,19 +660,168 @@ public class SpiritAnim : MonoBehaviour
 
     private string enter_Gender()
     {
-        if (spiritID == 2 || spiritID == 4)
-        { return "enter_fm"; }
+        if (currentDirection == 0)
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            {
+                return "Back_enter_fm";
+            }
+            else
+            {
+                return "Back_enter_m";
+            }
+        }
+        else if (currentDirection == 1 || currentDirection == 3) 
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            {
+                return "Side_enter_fm";
+            }
+            else
+            {
+                return "Side_enter_m";
+            }
+            
+        }
         else
-            return "enter_m";
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            { return "Front_enter_fm"; }
+            else
+                return "Front_enter_m";
+
+        }
     }
     private string exit_Gender()
     {
-        if (spiritID == 2 || spiritID == 4)
-        { return "exit_fm"; }
+        if (currentDirection == 0)
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            {
+                return "Back_exit_fm";
+            }
+            else
+            {
+                return "Back_exit_m";
+            }
+        }
+        else if (currentDirection == 1 || currentDirection == 3)
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            {
+                return "Side_exit_fm";
+            }
+            else if(spiritelement == 3)
+            {
+                return "Side_exit_Soil";
+            }
+            else
+            {
+                return "Side_exit_Water";
+            }
+
+        }
         else
-            return "exit_m";
+        {
+            if (spiritelement == 1 || spiritelement == 4)
+            { return "Front_exit_fm"; }
+            else
+                return "Front_xit_m";
+
+        }
     }
 
+    // 특정 슬롯에 스킨 설정하는 메서드.
+    private void SetAttachmentSlot(string slot, string attachment)
+    {
+        if (currentDirection == 2)
+        {
+            _skeleton.SetAttachment("Cap_Graduation_2", null);
+            _skeleton.SetAttachment("Cap_Graduation", null);
+            _skeleton.SetAttachment("Cap_fedora_2", null);
+            _skeleton.SetAttachment("Cap", null);
+
+        }
+        else if (currentDirection == 3 || currentDirection == 1)
+        {
+            _skeleton.SetAttachment("Cap", null);
+            _skeleton.SetAttachment("Cap_safety", null);
+            _skeleton.SetAttachment("Cap_Knight", null);
+            _skeleton.SetAttachment("Cap_graduation_fm2", null);
+            _skeleton.SetAttachment("Cap_graduation_fm1", null);
+            _skeleton.SetAttachment("Cap_graduation_m2", null);
+            _skeleton.SetAttachment("Cap_graduation_m1", null);
+            _skeleton.SetAttachment("Cap_Fedora_2", null);
+            _skeleton.SetAttachment("Cap_clerical", null);
+
+        }
+        else
+        {
+            _skeleton.SetAttachment("Cap", null);
+            _skeleton.SetAttachment("Cap_fedora_2", null);
+            _skeleton.SetAttachment("Cap_Graduation", null);
+
+        }
+      
+
+        _skeleton.SetAttachment(slot, attachment);
+
+        // 현재 슬롯과 첨부 파일 정보를 업데이트
+        currentSlotName = slot;
+        currentAttachmentName = attachment;
+    }
+    private void OnValidate()
+    {
+        // 인스펙터에서 값이 변경될 때마다 자동으로 업데이트
+        if (_skeleton != null)
+        {
+            SetAttachmentSlot(currentSlotName, currentAttachmentName);
+        }
+    }
+
+    void UpdateForwardCharacterSkin(int num)
+    {
+        SkeletonData skeletonData = _skeleton.Data;
+
+        _skeleton.SetBonesToSetupPose();
+
+        if (characterSkin == null)
+        {
+            characterSkin = new Skin(baseSkin);
+        }
+        //characterSkin.AddSkin(skeletonData.FindSkin(baseSkin));
+
+        characterSkin.AddSkin(skeletonData.FindSkin(capAttachment[num]));
+    }
+
+    void UpdateSideCharacterSkin(string skinName)
+    {
+        SkeletonData skeletonData = _skeleton.Data;
+
+        _skeleton.SetBonesToSetupPose();
+
+        if (characterSkin == null)
+        {
+            characterSkin = new Skin(baseSkin);
+        }
+        //characterSkin.AddSkin(skeletonData.FindSkin(baseSkin));
+
+       // characterSkin.AddSkin(_skeleton.Data.FindSkin(skinName));
+
+        Skin attachmentSkin = skeletonData.FindSkin(skinName);
+        characterSkin.AddSkin(attachmentSkin);
+    }
+
+    void UpdateCombinedSkin()
+    {
+        Skeleton skeleton = skeletonAnimation.Skeleton;
+        Skin resultCombinedSkin = new Skin("character-combined");
+
+        resultCombinedSkin.AddSkin(characterSkin);
+        
+        skeleton.SetSkin(resultCombinedSkin);
+        skeleton.SetSlotsToSetupPose();
+    }
 }
 
 
