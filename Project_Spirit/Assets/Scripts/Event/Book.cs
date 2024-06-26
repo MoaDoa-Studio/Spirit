@@ -12,7 +12,7 @@ public class Book : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        bookEventUI = GameObject.Find("BookEvent");
     }
 
     // Update is called once per frame
