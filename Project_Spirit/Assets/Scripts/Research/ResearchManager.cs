@@ -6,160 +6,213 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class ResearchManager : MonoBehaviour
+partial class ResearchManager : MonoBehaviour
 {
     [Header("오브젝트")]
     [SerializeField]
     private GameObject Research_UI;    
     [SerializeField]
-    private GameObject Blurry;
+    private GameObject StudyDetail;
     [SerializeField]
-    private GameObject TaskDetail;
+    private GameObject StudyComplete;    
     [SerializeField]
-    private GameObject TaskComplete;
+    private GameObject[] Tree;
     [SerializeField]
-    private GameObject StepButton;
+    private GameObject[] Blurry;
     [SerializeField]
-    private GameObject BuildingTree;    
+    private GameObject[] StepButton;
 
-    [Header("스크립트")]
-    [SerializeField]
-    private TaskData taskData;
-    
-    private GameObject currentClickObj;
-    private Task currentTask;
-    private int currentWork;
+    private GameObject currentClickedObj;
+    private Study currentStudy;
+    public int currentWork;
     private bool inProgress;
 
     private void Start()
     {
         inProgress = false;
-        currentClickObj = null;
-        currentTask = null;        
+        currentStudy = null;        
     }
     
     public void ShowResearchUI()
     {
         if (inProgress)
-        {
-            UpdateTaskDetailInfo();
-        }
-
+            UpdateStudyDetail();
         Research_UI.SetActive(true);
     }
 
-    public void OnClickEachTask(string TaskID)
+    Study GetStudy(int StudyID)
     {
-        if (inProgress) return;
+        if (!DatabaseManager.instance.Studies.ContainsKey(StudyID))
+            return null;
+        return DatabaseManager.instance.Studies[StudyID];
+    }    
 
-        Task _task = taskData.GetTask(TaskID);
-        if (_task == null || _task.isComplete) return;
-
-        currentClickObj = EventSystem.current.currentSelectedGameObject;
-        SetTaskDetailInfo(_task);
-    }
-
-    void SetTaskDetailInfo(Task _task)
+    public void OnClickStudyButton(int StudyID)
     {
-        TextMeshProUGUI TaskDetailName = TaskDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        Button StartBtn = TaskDetail.transform.GetChild(4).GetComponent<Button>();
-        Slider progressSlider = TaskDetail.transform.GetChild(5).GetComponent<Slider>();
-
-        TaskDetailName.text = _task.name;                
-        StartBtn.gameObject.SetActive(true);
-        StartBtn.onClick.RemoveAllListeners();
-        StartBtn.onClick.AddListener(() => OnClickResearchStartButton(_task));
-        progressSlider.gameObject.SetActive(false);
-
-        //if (_task.WoodRequire < (현재 나무) || _task.StoneRequire < (현재 돌))
-        // StartBtn.interactable = false;
-
-        TaskDetail.SetActive(true);
-    }
-
-    void UpdateTaskDetailInfo()
-    {
-        TextMeshProUGUI TaskDetailName = TaskDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        Button StartBtn = TaskDetail.transform.GetChild(4).GetComponent<Button>();
-        Slider progressSlider = TaskDetail.transform.GetChild(5).GetComponent<Slider>();
+        Study _study = GetStudy(StudyID);                
+        if (_study.isComplete)
+            return;
         
-        TaskDetailName.text = currentTask.name;
-        progressSlider.gameObject.SetActive(true);
-        progressSlider.value = (float)currentWork / currentTask.WorkRequire;
-        StartBtn.gameObject.SetActive(false);
+        currentClickedObj = EventSystem.current.currentSelectedGameObject;
+        SetStudyDetail(_study);
+        StudyDetail.SetActive(true);
+    }
 
-        TaskDetail.SetActive(true);
+    void SetStudyDetail(Study _study)
+    {        
+        TextMeshProUGUI Detail_StudyName = StudyDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI Detail_Explain = StudyDetail.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
+        Button Detail_StartButton = StudyDetail.transform.GetChild(4).GetComponent<Button>();
+        Slider Detail_ProgressSlider = StudyDetail.transform.GetChild(5).GetComponent<Slider>();
+
+        Detail_StudyName.text = _study.StudyName;
+        Detail_Explain.text = _study.StudyContent;
+        Detail_StartButton.gameObject.SetActive(true);
+        Detail_StartButton.onClick.RemoveAllListeners();
+        Detail_StartButton.onClick.AddListener(() => OnClickResearchStartButton(_study));
+        Detail_ProgressSlider.gameObject.SetActive(false);
+
+        //if (_study.WoodRequire < (현재 나무) || _study.StoneRequire < (현재 돌))
+        // StartBtn.interactable = false;               
+    }
+
+    void UpdateStudyDetail()
+    {
+        TextMeshProUGUI Detail_StudyName = StudyDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        Button Detail_StartButton = StudyDetail.transform.GetChild(4).GetComponent<Button>();
+        Slider Detail_ProgressSlider = StudyDetail.transform.GetChild(5).GetComponent<Slider>();
+
+        Detail_StudyName.text = currentStudy.StudyName;
+        Detail_ProgressSlider.gameObject.SetActive(true);
+        Detail_ProgressSlider.value = (float)currentWork / currentStudy.WorkRequirement;
+        Detail_StartButton.gameObject.SetActive(false);
+
+        StudyDetail.SetActive(true);
     }
     
-    public void OnClickResearchStartButton(Task _task)
+    public void OnClickResearchStartButton(Study _study)
     {
         inProgress = true;
-        currentTask = _task;
+        currentStudy = _study;
         currentWork = 0;
-        currentClickObj.transform.Find("InProgressMark").gameObject.SetActive(true);        
+        currentClickedObj.transform.Find("InProgressMark").gameObject.SetActive(true);        
 
-        UpdateTaskDetailInfo();
+        UpdateStudyDetail();
     }
 
-    public void CompleteTask()
+    public void CompleteStudy()
     {
-        currentTask.isComplete = true;        
+        currentStudy.isComplete = true;
 
-        ShowTaskComplete();
-        UpdateTaskLock();
+        ApplyStudyEffect();        
+        ActiveNextStepButton();
+        ShowStudyComplete();
 
-        currentClickObj.GetComponent<Button>().interactable = false;
-        currentClickObj.transform.Find("InProgressMark").gameObject.SetActive(false);
+        currentClickedObj.GetComponent<Button>().interactable = false;
+        currentClickedObj.transform.Find("InProgressMark").gameObject.SetActive(false);
 
-        currentTask = null;
-        currentClickObj = null;
+        currentStudy = null;
+        currentClickedObj = null;
         inProgress = false;        
     }
 
-    public void ShowTaskComplete()
-    {        
-        TaskComplete.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentTask.name;        
+    public void ShowStudyComplete()
+    {
+        StudyComplete.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentStudy.StudyName;
 
-        TaskComplete.SetActive(true);
-        TaskDetail.SetActive(false);
+        StudyComplete.SetActive(true);
+        StudyDetail.SetActive(false);
     }
     
     #region For Debug
-    void UpdateTaskLock()
+    // 연구소 단계별 블러리 오픈
+    public void ActiveNextStepButton()
     {
-        if (taskData.Tasks["B1"].isComplete)        
-            Blurry.transform.GetChild(0).gameObject.SetActive(false);        
-        if (taskData.Tasks["B2"].isComplete)        
-            Blurry.transform.GetChild(1).gameObject.SetActive(false);        
-        if (taskData.Tasks["B3"].isComplete)        
-            Blurry.transform.GetChild(2).gameObject.SetActive(false);        
-        if (taskData.Tasks["B4"].isComplete)        
-            Blurry.transform.GetChild(3).gameObject.SetActive(false);        
+        bool[,] check = new bool[5, 4] { { true, true, true, true },
+        { true, true, true, true }, { true, true, true, true },
+        { true, true, true, true }, { true, true, true, true }};
 
-        if (taskData.Tasks["B11"].isComplete &&
-            !taskData.Tasks["B2"].isComplete)
-            StepButton.transform.GetChild(1).GetComponent<Button>().interactable = true;
-        if (taskData.Tasks["B21"].isComplete && taskData.Tasks["B22"].isComplete &&
-            !taskData.Tasks["B3"].isComplete)        
-            StepButton.transform.GetChild(2).GetComponent<Button>().interactable = true;
-        if (taskData.Tasks["B31"].isComplete &&
-            !taskData.Tasks["B4"].isComplete)
-            StepButton.transform.GetChild(3).GetComponent<Button>().interactable = true;
+        foreach (Study study in DatabaseManager.instance.Studies.Values)
+        {
+            if (!study.isComplete)            
+                check[study.CategoryofStudy, study.PhaseofStudy - 1] = false;
+        }
+
+        // 해당 단계가 전부 다 클리어 되어 있는 경우. 다음 단계 버튼 활성화.
+        int tapCount = 3;
+        for(int i = 0; i < tapCount; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (check[i, j] == true)
+                    StepButton[i].transform.GetChild(j + 1).GetComponent<Button>().interactable = true;
+            }
+        }
     }
-    
     // 정령이 연구소에서 일할 때 호출 될 함수 로직.
     public void OnClickWork()
-    {
-        if (currentTask == null)
-            return;
-
+    {        
         currentWork += 2;
-        UpdateTaskDetailInfo();
-        if (currentWork >= currentTask.WorkRequire)
+        UpdateStudyDetail();
+        if (currentWork >= currentStudy.WorkRequirement)
         {
             currentWork = 0;            
-            CompleteTask();            
+            CompleteStudy();            
         }
     }
     #endregion
+}
+
+partial class ResearchManager
+{
+    [Header("효과 적용 오브젝트")]
+    [SerializeField]
+    private GameObject RockCraft_Button;
+    // 각 연구별 효과 클래스.
+    public void ApplyStudyEffect()
+    {
+        switch(currentStudy.StudyID)
+        {
+            case 1001:
+                Blurry[0].transform.GetChild(0).gameObject.SetActive(false);
+                break;
+            case 1002:
+                Blurry[0].transform.GetChild(1).gameObject.SetActive(false);
+                break;
+            case 1003:
+                Blurry[0].transform.GetChild(2).gameObject.SetActive(false);
+                break;
+            case 1004:
+                Blurry[0].transform.GetChild(3).gameObject.SetActive(false);
+                break;
+            case 1011:
+                // 돌 직접 생산 가능.
+                RockCraft_Button.GetComponent<Button>().interactable = true;
+                break;
+            case 1101:
+                Blurry[1].transform.GetChild(0).gameObject.SetActive(false);
+                break;
+            case 1102:
+                Blurry[1].transform.GetChild(1).gameObject.SetActive(false);
+                break;
+            case 1103:
+                Blurry[1].transform.GetChild(2).gameObject.SetActive(false);
+                break;
+            case 1104:
+                Blurry[1].transform.GetChild(3).gameObject.SetActive(false);
+                break;
+            case 1201:
+                Blurry[2].transform.GetChild(0).gameObject.SetActive(false);
+                break;
+            case 1202:
+                Blurry[2].transform.GetChild(1).gameObject.SetActive(false);
+                break;
+            case 1203:
+                Blurry[2].transform.GetChild(2).gameObject.SetActive(false);
+                break;
+            case 1204:
+                Blurry[2].transform.GetChild(3).gameObject.SetActive(false);
+                break;
+        }
+    }
 }
