@@ -116,7 +116,7 @@ public class Signal : MonoBehaviour
         signalType = SignalType.None;
     }
     void Left(int _dir)
-    {
+    { 
         //Debug.Log("왼쪽 표지방향 : " + _dir);
         int leftx = leftdirX[_dir];
         int lefty = leftdirY[_dir];
