@@ -25,7 +25,7 @@ public class OpenBookSequence : MonoBehaviour
     {
         if (currentFrame < sprites.Length - 1)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
 
             if (timer >= frameRate)
             {
