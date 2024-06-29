@@ -32,6 +32,7 @@ public partial class CraftManager : MonoBehaviour
 
     // For Debug. 
     private Vector3Int deleteStart;
+    public GameObject d;
     enum CraftMode
     {
         None,
@@ -67,7 +68,7 @@ public partial class CraftManager : MonoBehaviour
             case CraftMode.DeleteBuilding:                
             case CraftMode.PlaceRoad:
             case CraftMode.DeleteRoad:
-            case CraftMode.PlaceSign:
+            case CraftMode.PlaceSign:                
                 craftMenuUI.SetActive(false);
                 break;                
         }
@@ -136,7 +137,14 @@ public partial class CraftManager : MonoBehaviour
                     DeleteRoad();
                 }
                 break;            
-        }        
+        }
+
+        // For Debug.
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            ExitCraftMode();            
+            d.SetActive(true);
+        }
     }
     // Craft 모드 진입.
     public void EnterCraftMode()
@@ -170,13 +178,9 @@ public partial class CraftManager : MonoBehaviour
     }    
     public void ResetGridTile()
     {        
-        for(int i = 0; i < 103; i++)
-        {
-            for(int j = 0; j < 103; j++)
-            {
-                GridTilemap.SetTile(new Vector3Int(i, j, 0), defaultTile);
-            }
-        }
+        for(int i = 0; i < 103; i++)        
+            for(int j = 0; j < 103; j++)            
+                GridTilemap.SetTile(new Vector3Int(i, j, 0), defaultTile);            
     }
 }
 
@@ -221,8 +225,7 @@ partial class CraftManager
     }
 
     public void PlaceBuilding()
-    {
-        Vector2Int upperRight = new Vector2Int(Mathf.RoundToInt(mouseIndicator.transform.position.x), Mathf.RoundToInt(mouseIndicator.transform.position.y));
+    {        
         var angles = mouseIndicator.transform.GetChild(0).rotation.eulerAngles;
         int x = 0, y = 0;
         if (angles.z % 180 == 0)
@@ -234,8 +237,11 @@ partial class CraftManager
         {
             x = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.y;
             y = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.x;
-        }        
+        }
+        
+        Vector2Int upperRight = new Vector2Int(Mathf.RoundToInt(mouseIndicator.transform.position.x), Mathf.RoundToInt(mouseIndicator.transform.position.y));
         Vector2Int bottomLeft = new Vector2Int(upperRight.x - x + 1, upperRight.y - y + 1);
+        ResetGridTile();
 
         if (isBuildingOvelapBuilding(upperRight, bottomLeft))
         {            
@@ -244,20 +250,15 @@ partial class CraftManager
             return;
         }
 
-        for (int i = upperRight.y; i >= bottomLeft.y; i--)
-        {
-            for (int j = upperRight.x; j >= bottomLeft.x; j--)
-            {                                
+        for (int i = upperRight.y; i >= bottomLeft.y; i--)        
+            for (int j = upperRight.x; j >= bottomLeft.x; j--)            
                 TileDataManager.instance.SetTileType(j, i, 1);
-            }
-        }
-        ResetGridTile();
+        
         mouseIndicator.GetComponent<Building>().SetBuildingPos(upperRight, bottomLeft);
         BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());        
         
         mouseIndicator = null;        
-        ChangeCraftMode(CraftMode.Default);
-        
+        ChangeCraftMode(CraftMode.Default);        
     }
 
     bool isBuildingOvelapBuilding(Vector2Int upperRight, Vector2Int bottomLeft)
@@ -314,7 +315,7 @@ partial class CraftManager
         deleteBottomLeft.x = deleteStart.x < deleteEnd.x ? deleteStart.x : deleteEnd.x;
         deleteBottomLeft.y = deleteStart.y < deleteEnd.y ? deleteStart.y : deleteEnd.y;
         
-        Queue<Building> DeleteBuildingQueue = FindDeletingBuildingByRange(deleteUpperRight, deleteBottomLeft);
+        Queue<Building> DeleteBuildingQueue = FindBuildingToBeDeletedByRange(deleteUpperRight, deleteBottomLeft);
         while (DeleteBuildingQueue.Count != 0)
         {
             Building building = DeleteBuildingQueue.Dequeue();
@@ -325,7 +326,7 @@ partial class CraftManager
         ChangeCraftMode(CraftMode.Default);
     }
 
-    Queue<Building> FindDeletingBuildingByRange(Vector2Int deleteUpperRight, Vector2Int deleteBottomLeft)
+    Queue<Building> FindBuildingToBeDeletedByRange(Vector2Int deleteUpperRight, Vector2Int deleteBottomLeft)
     {        
         Queue<Building> result = new Queue<Building>();
         foreach (Building building in BuildingDataManager.instance.GetBuildingList())
@@ -361,9 +362,16 @@ partial class CraftManager
             return true;
         return false;
     }
-    bool isOvelapBuilding(Vector3Int pos)
+    bool isOverlapBuilding(Vector3Int pos)
     {
         if (TileDataManager.instance.GetTileType(pos.x, pos.y) == 1)
+            return true;
+        return false;
+    }
+    bool isOverlapResource(Vector3Int pos)
+    {
+        int type = TileDataManager.instance.GetTileType(pos.x, pos.y);
+        if (type == 6 || type == 7)
             return true;
         return false;
     }
@@ -384,11 +392,14 @@ partial class CraftManager
     {        
         // 배치 가능한 타일인지 체크.
         if (!roadBufferList.Contains(pos))
-        {
-            if (isOverlapRoad(pos))
-                GridTilemap.SetTile(pos, orangeTile);
-            else if (isOvelapBuilding(pos))
+        {            
+            if (isOverlapBuilding(pos) || isOverlapResource(pos))
+            {
                 GridTilemap.SetTile(pos, redTile);
+                return;
+            }
+            else if (isOverlapRoad(pos))
+                GridTilemap.SetTile(pos, orangeTile);
             else
                 GridTilemap.SetTile(pos, greenTile);
 
@@ -398,22 +409,21 @@ partial class CraftManager
                 copyArray[pos.x, pos.y] = 3;
                 roadBufferList.Add(pos);
             }
-
-            if (roadBufferList.Count == 1)
-                return;
-
-            // 대각선으로 진행해서 길이 끊어지는 것 방지.
-            Vector3Int prevRoad = roadBufferList[roadBufferList.Count - 2];
-            if ((prevRoad.x != pos.x) && (prevRoad.y != pos.y))
-            {
-                Vector3Int complementaryPos = new Vector3Int(prevRoad.x, pos.y, 0);
-                GameTilemap.SetTile(complementaryPos, selectedRoad);
-                if (TileDataManager.instance.isRange(complementaryPos.x, complementaryPos.y))
-                {
-                    copyArray[complementaryPos.x, complementaryPos.y] = 3;
-                    roadBufferList.Add(complementaryPos);
-                }
-            }
+            // 대각선으로 빠르게 진행할 때, 길이 끊어지는 것 방지.
+            //if (roadBufferList.Count != 1)
+            //{                
+            //    Vector3Int prevRoad = roadBufferList[roadBufferList.Count - 2];
+            //    if ((prevRoad.x != pos.x) && (prevRoad.y != pos.y))
+            //    {
+            //        Vector3Int complementaryPos = new Vector3Int(prevRoad.x, pos.y, 0);
+            //        GameTilemap.SetTile(complementaryPos, selectedRoad);
+            //        if (TileDataManager.instance.isRange(complementaryPos.x, complementaryPos.y))
+            //        {
+            //            copyArray[complementaryPos.x, complementaryPos.y] = 3;
+            //            roadBufferList.Add(complementaryPos);
+            //        }                    
+            //    }
+            //}
         }
     }
     public void PlaceRoadTile()
@@ -447,20 +457,15 @@ partial class CraftManager
 
         TileDataManager.instance.ChangeTileTypeByRange(deleteUpperRight, deleteBottomLeft, 3, 0); // 타일 타입이 3인 경우에만 초기화.
         // 타일 맵 초기화.
-        for (int i = deleteBottomLeft.y; i <= deleteUpperRight.y; i++)
-        {
-            for (int j = deleteBottomLeft.x; j <= deleteUpperRight.x; j++)
-            {
-                GameTilemap.SetTile(new Vector3Int(j, i, 0), null);
-            }
-        }
+        for (int i = deleteBottomLeft.y; i <= deleteUpperRight.y; i++)        
+            for (int j = deleteBottomLeft.x; j <= deleteUpperRight.x; j++)            
+                GameTilemap.SetTile(new Vector3Int(j, i, 0), null);         
 
         deleteStart = Vector3Int.back;
         ChangeCraftMode(CraftMode.Default);
     }
     #endregion
 }
-
 partial class CraftManager
 {
     #region 표식 배치 관련
@@ -491,8 +496,8 @@ partial class CraftManager
             Debug.Log("길이 아닙니다.");
             return false;
         }
-        string TileName = mouseIndicator.name.Split("(")[0];
-        Debug.Log(TileName);
+
+        string TileName = mouseIndicator.name.Split("(")[0];        
         switch (TileName)
         {
             case "Sign_0":
@@ -534,7 +539,6 @@ partial class CraftManager
     #region 표식 삭제 관련
     #endregion
 }
-
 partial class CraftManager
 {    
     void UpdateFieldStatus()
