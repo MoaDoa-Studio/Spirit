@@ -41,6 +41,9 @@ public class SpiritSpawner : MonoBehaviour
     [HideInInspector]
     Text textComp;
     Node[,] nodes;
+
+    // 정령 생산 속도 가중치.
+    public float spawnWeight = 1f;
     enum Dir
     {
         Up = 0,
@@ -64,7 +67,7 @@ public class SpiritSpawner : MonoBehaviour
         gameTimer += Time.deltaTime * realTimeToGameTimeRatio;
 
         float spawnTime = sliderValue * 720f;
-        if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime)
+        if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime / spawnWeight)
         {
             SpawnSpirit();
 

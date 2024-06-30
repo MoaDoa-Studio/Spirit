@@ -168,6 +168,8 @@ partial class ResearchManager
     [Header("효과 적용 오브젝트")]
     [SerializeField]
     private GameObject RockCraft_Button;
+    [SerializeField]
+    private SpiritSpawner spiritSpawner;
     // 각 연구별 효과 클래스.
     public void ApplyStudyEffect()
     {
