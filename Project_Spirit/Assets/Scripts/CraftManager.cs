@@ -300,7 +300,10 @@ partial class CraftManager
         }
         Vector2 mouseIndicatorPos = new Vector2(-(x / 2 - 1), -(y / 2 - 1));
         mouseIndicator.transform.GetChild(0).localPosition = mouseIndicatorPos;
-        mouseIndicator.transform.GetChild(0).rotation = Quaternion.Euler(angles);                       
+        mouseIndicator.transform.GetChild(0).rotation = Quaternion.Euler(angles);
+        Debug.Log("회전값은 : " + angles);
+        nodes = TileDataManager.instance.GetNodes();
+        nodes[(int)mouseIndicatorPos.x, (int)mouseIndicatorPos.y].rotation = Quaternion.Euler(angles);
     }
     #endregion
 
@@ -526,6 +529,10 @@ partial class CraftManager
         {            
             GameTilemap.SetTile(pos, selectedSign);
             TileDataManager.instance.SetTileType(pos.x, pos.y, 5);
+            nodes = TileDataManager.instance.GetNodes();
+            nodes[pos.x, pos.y].isSignal = true;
+            nodes[pos.x, pos.y].nodeTile = selectedSign;
+            
         }
         else        
             Destroy(mouseIndicator.gameObject);

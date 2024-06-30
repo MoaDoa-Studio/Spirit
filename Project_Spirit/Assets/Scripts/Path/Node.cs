@@ -19,7 +19,7 @@ public class Node
     public bool isBuild = false; 
     public bool isFactory = false;
     public bool isLoot = false;
-    public Sprite nodeSprite;
+    public Tile nodeTile;
     public Building building;
     public ResourceBuilding resourceBuilding;
    

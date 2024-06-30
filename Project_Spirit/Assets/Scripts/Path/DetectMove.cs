@@ -192,16 +192,12 @@ public class DetectMove : MonoBehaviour
             else
             {
                 nodes[(int)CurposX, (int)CurposY].spiritElement = spiritElement;  
-               // if(!nodes[(int)CurposX, (int)CurposY].nodeSprite)
-                {
-                    //Debug.Log(nodes[(int)CurposX, (int)CurposY].nodeSprite.name);
-                    //string signName = nodes[(int)CurposX, (int)CurposY].nodeSprite.name;
-                    // Sign ÆÇº°.
-                    //signType = ExtractNumber(signName);  
-               //
-                }
+                
                 if (nodes[(int)CurposX, (int)CurposY].isSignal)
-                {   detection = Detect.Mark_Check; }
+                {   
+                    string signName = nodes[(int)CurposX, (int)CurposY].nodeTile.name;
+                    signType = ExtractNumber(signName);  
+                    detection = Detect.Mark_Check; }
             
                 else
                 {   detection = Detect.Basic_MoveMent;}

@@ -140,7 +140,7 @@ public class TileDataManager : MonoBehaviour
                     else
                         //SetTileType(i, j, 4);
                    
-                    nodes[i, j].nodeSprite = tileSprite;
+                   // nodes[i, j].nodeTile = tileSprite;
                     nodes[i, j].isWalk = true;
                     
                     if (tileSprite == targetSprite[1] || tileSprite == targetSprite[2] || tileSprite == targetSprite[3] || tileSprite == targetSprite[4] || tileSprite == targetSprite[5] || tileSprite == targetSprite[6] || tileSprite == targetSprite[7] || tileSprite == targetSprite[8])
