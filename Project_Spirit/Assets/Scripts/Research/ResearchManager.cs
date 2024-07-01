@@ -33,6 +33,7 @@ partial class ResearchManager : MonoBehaviour
         currentStudy = null;        
     }
     
+    // 연구소 UI 띄워주는 함수.
     public void ShowResearchUI()
     {
         if (inProgress)
