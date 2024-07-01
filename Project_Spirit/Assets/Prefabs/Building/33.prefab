@@ -121,7 +121,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildID: 0
   sliderUI: {fileID: 0}
+  PreviewParent: {fileID: 0}
   GameObjectCount: 0
+  cellsize: 1
+  cellPrefab: {fileID: 0}
   upperRight: {x: 0, y: 0}
   bottomLeft: {x: 0, y: 0}
   gameObjectList: []
@@ -141,6 +144,8 @@ MonoBehaviour:
   DemandingWork: 0
   StructureCondition: 0
   constructionAmount: 0
+  EarnWoodResourceAmount: 0
+  EarnRockResourceAmount: 0
   buildOperator: 0
   buildState: 0
   MaxPlayer: 4
