@@ -37,13 +37,13 @@ public class TimeManager : MonoBehaviour
     {
         CalculateTime();
         SetTimeText();
-        SetSunLight();
+        
         CheckEventDate();
     }
 
     void CalculateTime()
     {
-        // Çö½Ç ½Ã°£ 1ÃÊ = °ÔÀÓ ½Ã°£ 12ºÐ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ 1ï¿½ï¿½ = ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ 12ï¿½ï¿½
         TimeSpan diff = DateTime.Now - calc;
         CurrentDate = DefaultDate 
             + TimeSpan.FromMinutes(diff.Seconds * 12) 
@@ -58,7 +58,7 @@ public class TimeManager : MonoBehaviour
         else
             Time_text.text = "AM " + CurrentDate.ToString("hh:mm");
         Date_text.text = CurrentDate.ToString("MM-dd");
-        Temperature_text.text = "±â¿Â " + temporature.ToString() + "¡Æ";
+        Temperature_text.text = "ï¿½ï¿½ï¿½ " + temporature.ToString() + "ï¿½ï¿½";
     }
 
     void SetSunLight()
@@ -66,17 +66,17 @@ public class TimeManager : MonoBehaviour
         int hour = CurrentDate.Hour;
         if (hour >= 19 || hour < 4)
         {
-            // ÃÖ¼Ò ¹à±â.
+            // ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½.
             LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
         }    
         else if (hour >= 8 && hour < 15)
         {
-            // ÃÖ´ë ¹à±â.
+            // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½.
             LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0f);
         }
         else if (hour >= 5 && hour < 8)
         {
-            // Á¡Á¡ ¹à¾ÆÁü            
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½            
             if (hour == 5)            
                 LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.6f);
             else if (hour == 6)
@@ -86,7 +86,7 @@ public class TimeManager : MonoBehaviour
         }
         else
         {
-            // Á¡Á¡ ¾îµÎ¿öÁü.
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ï¿½ï¿½.
             if (hour == 16)
                 LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.1f);            
             else if (hour == 17)
@@ -111,8 +111,8 @@ public class TimeManager : MonoBehaviour
     {
         if (CurrentDate.Month == weatherEventDate.Month && CurrentDate.Day == weatherEventDate.Day)
         {
-            // Á¤·É È£¿ì ÀÌº¥Æ® ¹ß¹ß!
-            Debug.Log(" Á¤·É È£¿ì ÀÌº¥Æ®");
+            // ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½ß¹ï¿½!
+            Debug.Log(" ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ ï¿½Ìºï¿½Æ®");
         }
     }
 }

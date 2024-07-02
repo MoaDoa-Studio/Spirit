@@ -5,20 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
-{    
-    public int QuestID;
-    public string QuestName;
-    public string QuestBody;
-    public string QuestConditionMent;
-    public int QuestCondition;
-    public int QuestClearCondition;
-    public int QuestClearTime;
-    public int QuestReward;
-    public int QuestDisadvantage;
-
-    public int ConditionID;
-    public int ConditionTarget;
-    public float ConditionStandard;
+{
+    private Quest currentQuest;
+    private int remainTime;
 
     public int CurrentConditionAchieve;
     
@@ -35,8 +24,9 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void Start()
     {
         CurrentConditionAchieve = 0;
-        isCleared = false;
+        isCleared = false;        
         time = 0f;
+        
         TimeText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
@@ -49,46 +39,35 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 time = 0f;
                 SetTime();
-                if (QuestClearTime <= 0)
+                if (remainTime <= 0)
                     FailQuest();
                 else
-                    QuestClearTime -= 1;
+                    remainTime -= 1;
             }
         }
     }
 
     // Todo. 데이터 테이블 불러오는 기능 구현되면 데이터 ID 값을 통해 모든 정보 불러올 수 있도록 수정할거.
-    public void SetQuest(int _id, string _name, string _body, string _conditionText,
-        int _condition, int _clearCondition, int _clearTime, int _disadvantage)
+    Quest GetQuest(int QuestID)
     {
-        QuestID = _id;
-        QuestName = _name;
-        QuestBody = _body;
-        QuestConditionMent = _conditionText;
-        QuestCondition = _condition;
-        QuestClearCondition = _clearCondition;
-        QuestClearTime = _clearTime;
-        QuestDisadvantage = _disadvantage;
-
-        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _name;
-        transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = _body;
-        transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = _conditionText;
-        SetTime();
-    }
+        if (!DatabaseManager.instance.Quests.ContainsKey(QuestID))
+            return null;
+        return DatabaseManager.instance.Quests[QuestID];
+    }    
     public void SetQuest(int questID)
     {
-        
-    }
-    public void SetCondition(int _cID, int _cTarget, float _cStandard)
-    {
-        ConditionID = _cID;
-        ConditionTarget = _cTarget;
-        ConditionStandard = _cStandard;
-    }
+        Quest quest = GetQuest(questID);
+        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = quest.QuestName;
+        transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = quest.QuestBody;
+        transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = quest.QuestConditionMent;
+        remainTime = quest.QuestClearTime;
+
+        SetTime();
+    }    
     public void SetTime()
     {
-        int min = QuestClearTime / 60;
-        int sec = QuestClearTime % 60;        
+        int min = remainTime / 60;
+        int sec = remainTime % 60;        
         string _min = min.ToString();
         string _sec = sec.ToString();        
         if (_min.Length < 2)        
@@ -100,7 +79,8 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public bool CheckClear()
     {
-        if (CurrentConditionAchieve >= ConditionStandard)
+        // For Debug.
+        if (CurrentConditionAchieve >= 10)
             return true;
         return false;
     }

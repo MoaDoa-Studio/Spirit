@@ -54,25 +54,6 @@ public class CradleManager : MonoBehaviour
         CalculateElementAverage();
         AddCradleGrowth();
         UpdateCradleUI();
-
-        // For Debug.        
-        //if (Input.GetKey(KeyCode.A))
-        //    AddElement("Fire", 10);
-        //if (Input.GetKey(KeyCode.S))
-        //    AddElement("Water", 10);
-        //if (Input.GetKey(KeyCode.D))
-        //    AddElement("Ground", 10);
-        //if (Input.GetKey(KeyCode.F))
-        //    AddElement("Air", 10);
-        //if (Input.GetKey(KeyCode.Z))
-        //    AddElement("Fire", 30);
-        //if (Input.GetKey(KeyCode.X))
-        //    AddElement("Water", 20);
-        //if (Input.GetKey(KeyCode.C))
-        //    AddElement("Ground", 15);
-        //if (Input.GetKey(KeyCode.V))
-        //    AddElement("Air", 40);
-
     }
 
     // 4원소 성장 게이지 관리 변수.
@@ -246,6 +227,13 @@ public class CradleManager : MonoBehaviour
     }
     void SetCradleGrowthState(int val)
     {
+        if (GetTotalElementAverage() == 0)
+        {
+            GrowthState = 3;
+            cradleGrowthRate.GetComponent<Image>().sprite = cradleGrowthRateSprite[3];
+            return;
+        }
+
         if (val <= 4)
         {
             GrowthState = 0;
