@@ -8,12 +8,17 @@ using TMPro;
 public partial class CraftManager : MonoBehaviour
 {
     [Header("건축 모드")]
+    public GameObject BuildingSelectUI;
+    public GameObject RoadSelectUI;
+    public GameObject CradleUI;
+
     public Grid grid; // 그리드.    
     public GameObject craftGrid; // 건축 모드 시 격자 표시.
     public GameObject craftMenuUI; // 하단 빌딩 선택 UI
+    
     public Transform BuildingSlot; // 생성될 빌딩의 부모 오브젝트.
     public Transform SignSlot; // 생성될 사인의 부모 오브젝트.
-    public BuildingDatabaseSO database;
+    public BuildingDatabaseSO database;    
 
     [Header("타일 맵")]
     public Tilemap GameTilemap;
@@ -62,6 +67,8 @@ public partial class CraftManager : MonoBehaviour
             case CraftMode.Default:
                 craftGrid.SetActive(true);
                 craftMenuUI.SetActive(true);
+                BuildingSelectUI.SetActive(true);
+                RoadSelectUI.SetActive(false);
                 UpdateFieldStatus(); // 필드 갱신. 건물 도로 등등.
                 break;
             case CraftMode.PlaceBuilding:
@@ -162,6 +169,7 @@ public partial class CraftManager : MonoBehaviour
     {
         craftGrid.SetActive(true);
         craftMenuUI.SetActive(true);
+        CradleUI.SetActive(false);
     }
     public void ExitCraftMode()
     {
@@ -170,7 +178,8 @@ public partial class CraftManager : MonoBehaviour
         deleteStart = Vector3Int.back;
         
         craftGrid.SetActive(false);
-        craftMenuUI.SetActive(false);        
+        craftMenuUI.SetActive(false);
+        CradleUI.SetActive(true);
     }
     public void EnterDeleteBuildingMode()
     {

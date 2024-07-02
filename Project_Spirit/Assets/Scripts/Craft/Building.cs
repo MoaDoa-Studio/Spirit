@@ -6,7 +6,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.EventSystems;
 public class Building : MonoBehaviour
 {
     [SerializeField]
@@ -109,7 +109,6 @@ public class Building : MonoBehaviour
         // �ܹ߼� �ǹ� ȿ��
 
     }
-
     void BuildOperation()
     {
         switch (buildOperator)
@@ -138,7 +137,6 @@ public class Building : MonoBehaviour
                 break;
         }
     }
-
     void BuildStater()
     {
         switch (buildState)
@@ -190,7 +188,6 @@ public class Building : MonoBehaviour
         }
         return false;
     }
-
     public bool CheckForAccesibleBeforeBuilt(GameObject _gameObject)
     {
         if(connectedRoads == null) return false;
@@ -279,34 +276,27 @@ public class Building : MonoBehaviour
         else
             return false;
     }
-
     public Tuple<Vector2Int, Vector2Int> GetBuildingPos()
     {
         return new Tuple<Vector2Int, Vector2Int>(upperRight, bottomLeft);
     }
-
     public void SetBuildingPos(Vector2Int upperRight, Vector2Int bottomLeft)
     {
         this.upperRight = upperRight;
         this.bottomLeft = bottomLeft;
     }
-
     public Tuple<Vector2Int, Vector2Int> GetConnectedRoad()
     {
         if (connectedRoads == null)
-        {
-            Debug.Log("���ΰ� 2���� �ƴմϴ�.");
+        {            
             return null;
         }
         return connectedRoads;
     }
-
     public void SetConnectedRoad(Tuple<Vector2Int, Vector2Int> connectedRoads)
     {
         this.connectedRoads = connectedRoads;
     }
-
-
     public void AddWorkingSprit(GameObject gameObject)
     {
         if (!gameObjectList.Contains(gameObject))
@@ -396,21 +386,13 @@ public class Building : MonoBehaviour
                 gameObject.GetComponent<Spirit>().SetSpiritID(6);
                 // 잔여체력을 감소
                 gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
-            }
-           
-                    
-                
-
+            }                                               
             } 
-
-        } 
-    
+        }     
     public void DeleteWorkingSprit(GameObject _gameObject) 
     {
-        gameObjectList.Remove(_gameObject);
-       
+        gameObjectList.Remove(_gameObject);       
     }
-
     // ���๰ ������ ���̺� ����ȭ => ����
     private BuildData FindDataFromBuildData(List<BuildData> buildDataList, int _buildID)
     {
@@ -423,7 +405,6 @@ public class Building : MonoBehaviour
         }
         return null;
     }
-
     // ���๰ ���� �Ӽ� ���̺� ����ȭ => ����
     private StructUniqueData FindDataFromStructUnique(List<StructUniqueData> structUniqueData, int _buildID)
     {
@@ -435,7 +416,6 @@ public class Building : MonoBehaviour
         }
         return null;
     }
-
     private void SycnXMLDataToBuilding(BuildData buildData, StructUniqueData structUniqueData)
     {
         structureID = buildData.structureID;
@@ -454,27 +434,22 @@ public class Building : MonoBehaviour
         DemandingWork = structUniqueData.DemandingWork;
         StructureCondition = structUniqueData.StructureCondition;
     }
-
     void ShowBuildSlideBarToUI()
     {
         buildBar = sliderUI.GetComponentInChildren<Slider>();
         sliderUI.SetActive(true);
         buildBar.value = constructionAmount / 10;
     }
-
     bool RestrictAccessToBuilding()
     {
         if(UniqueProperties == 107)
         {
             //Debug.Log("�̿����� ���մϴ�");
         return false;
-        }
-        
+        }        
         else
-            return true;
-    
+            return true;    
     }
-
     public void BuildingExpense(GameObject _targetObject)
     {
         // ���� ü�� ���� ����
@@ -484,20 +459,16 @@ public class Building : MonoBehaviour
         }
         gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves -= CostOfStone;
         gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves -= CostUseWood;
-        gameManager.GetComponentInChildren<ResouceManager>().Essence_reserves -= essenceRequirement;
-        
+        gameManager.GetComponentInChildren<ResouceManager>().Essence_reserves -= essenceRequirement;        
         // �߰������� ���� �������������� �ǹ��� �̿����� ���ϰ� �ؾ���
     }
 
     private void OnEnable()
     {
         isActivateCondition();
-    }
-
-    // ��ġ������ ȿ���� �ο��ؾ��ϴ� �ǹ��϶� �ش� Ư�� ����
+    }    
     void isActivateCondition()
-    {
-        // ���� ȿ���� ����Ǵ� UniqueProperties 107�� ������
+    {        
         if(UniqueProperties == 107)
         {
             if(StructureEffect == 214)
@@ -523,29 +494,21 @@ public class Building : MonoBehaviour
             else if (StructureEffect == 219)
             {
                 gameManager.GetComponentInChildren<ResouceManager>().Max_Timber_reserves += 500;
-            }
-            // �ҹ��� ������ ����
+            }            
             else if(StructureEffect == 220)
-            {
-               // GenerateHealGrid(bottomLeft, 7, 7, cellsize);
-            }
-            // ���޽��� ������ ����
+            {               
+            }            
             else if(StructureEffect == 221)
-            {
-                    
+            {                    
             }
         }
-
-    }
-
-    // ��Ȱ��ȭ �ɶ� ���� Ư��
+    }    
     private void OnDisable()
     {
         DeactivateCondition();
     }
     void DeactivateCondition()
     {
-        // ���� ȿ���� ����Ǵ� UniqueProperties 107�� ������
         if (UniqueProperties == 107)
         {
             if (StructureEffect == 214)
@@ -571,31 +534,25 @@ public class Building : MonoBehaviour
             else if (StructureEffect == 219)
             {
                 gameManager.GetComponentInChildren<ResouceManager>().Max_Timber_reserves -= 500;
-            }
-            // �ҹ��� ������ ����
+            }            
             else if(StructureEffect == 220)
             {
                 //GenerateHealGrid(bottomLeft, 7, 7, cellsize);
-            }
-            // ���޽��� ������ ����
+            }            
             else if(StructureEffect == 221)
             {
                // GenerateHealGrid(bottomLeft, 9, 9, cellsize);
             }
         }
-    }
-
-    // �ҹ� => 60�� �� / ���� => 25�� ��
+    }    
     void GenerateHealGrid(Vector2 center, int rows, int cols, float cellsize)
     {
         int halfRow = rows / 2;
         int halfCol = cols / 2;
-
         for(int i = -halfRow; i <= halfCol; i++)
         {
             for(int j = -halfCol; i <= halfCol; j++)
-            {
-                // �ܰ� �� ����
+            {                
                 Vector2 position = new Vector2(center.x + j * cellsize , center.y + i * cellsize);
                 Instantiate(cellPrefab, position, quaternion.identity);
             }
@@ -616,5 +573,5 @@ public class Building : MonoBehaviour
         {
             PreviewParent.SetActive(false);
         }
-    }
+    }    
 }

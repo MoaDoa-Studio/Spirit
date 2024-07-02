@@ -105,6 +105,8 @@ public class DetectMove : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         capsuleCollider = this.GetComponent<CapsuleCollider>();
 
+        // 변경되는 스피드에 맞게 생성
+        moveSpeed = SpiritManager.instance.spiritMoveSpeed;
     }
     private void Update()
     {  
