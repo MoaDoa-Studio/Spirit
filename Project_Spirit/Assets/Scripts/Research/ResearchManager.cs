@@ -156,12 +156,12 @@ partial class ResearchManager
     private GameObject LeaderTraining;
     [SerializeField]
     private GameObject WoodRoad;
+    [SerializeField]
+    private GameObject SpawnerSpiritUpgradeButton;
 
     [Header("효과 적용 스크립트")]
     [SerializeField]
-    private SpiritSpawner[] spiritSpawner;
-    [SerializeField]
-    private SpawnerUI spawnerUI;
+    private SpiritSpawner[] spiritSpawner;    
     [SerializeField]
     private ResouceManager resourceManager;
     // 각 연구별 효과 클래스.
@@ -240,8 +240,8 @@ partial class ResearchManager
                 SpiritManager.instance.ChangeSpiritSpeed(1.03f);
                 Tree[1].transform.Find("Studies/Step2/Speed2").GetComponent<Button>().interactable = true;
                 break;
-            case 1121: // 정령 단계 업그레이드 1 (미구현)
-                spawnerUI.UpgradeSpirit();
+            case 1121: // 정령 단계 업그레이드 1
+                SpawnerSpiritUpgradeButton.GetComponent<Button>().interactable = true;
                 break;
             case 1122: // 정령 이동 속도 상승 2
                 SpiritManager.instance.spiritMoveSpeed = 1.06f;
