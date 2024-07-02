@@ -276,7 +276,8 @@ MonoBehaviour:
   SpiritJob: 0
   SpiritElement: 4
   SDefaultLife: 100
-  SpiritSpeed: 0
+  HP: 0
+  SpiritSpeed: 1
   Work_Efficienty: 0
 --- !u!54 &1271995855667959514
 Rigidbody:

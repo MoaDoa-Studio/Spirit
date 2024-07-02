@@ -164,7 +164,7 @@ public class DetectMove : MonoBehaviour
     {   
         nodes = TileDataManager.instance.GetNodes();
 
-        if(!isFactory)
+                    Debug.Log("여기5?");
         if (isFactory)
         {
             SuddenlyFactoryDisapper();
@@ -176,8 +176,16 @@ public class DetectMove : MonoBehaviour
             return;
         }
         if (isPause) return;
-        if (nodes[(int)CurposX, (int)CurposY].isWalk)
+                   
+        if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 6 || (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 7))
         {
+                Debug.Log("Loot enter?");
+            detection = Detect.Loot; return; 
+        }
+
+        if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 3)
+        {
+                    Debug.Log("여기4?");
             if(nodes[(int)CurposX, (int)CurposY].isBuild)
             {
                 // 건물 이용시에는 반환
@@ -185,22 +193,21 @@ public class DetectMove : MonoBehaviour
                 detection = Detect.Factory_MoveMent; return;
             }
            
-            if(nodes[(int)CurposX, (int)CurposY].GetNodeType() == 6 || nodes[(int)CurposX, (int)CurposY].GetNodeType() == 7)
-            {
-                detection = Detect.Loot; return; 
-            }
             else
             {
                 nodes[(int)CurposX, (int)CurposY].spiritElement = spiritElement;  
                 
                 if (nodes[(int)CurposX, (int)CurposY].isSignal)
                 {   
+                    Debug.Log("여기1?");
                     string signName = nodes[(int)CurposX, (int)CurposY].nodeTile.name;
                     signType = ExtractNumber(signName);  
-                    detection = Detect.Mark_Check; }
-            
+                    detection = Detect.Mark_Check; 
+                }
                 else
-                {   detection = Detect.Basic_MoveMent;}
+                {
+                    Debug.Log("여기?");
+                    detection = Detect.Basic_MoveMent;}
 
             }
 
@@ -259,7 +266,7 @@ public class DetectMove : MonoBehaviour
         if (leftx < TileDataManager.instance.sizeX && leftx >= 0 && lefty < TileDataManager.instance.sizeY && lefty >= 0)
         {
             //  1. 현재 바라보는 방향으로 기준으로 왼쪽으로 갈 수 있는지 확인.
-            if (nodes[(int)leftx, (int)lefty].isWalk)
+           if(TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 3 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 6 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 7)
             {
                 // 가야할 타일에 같은 정령이 있다면.
                 if (nodes[(int)leftx, (int)lefty].spiritElement == spiritElement) return;
@@ -292,8 +299,8 @@ public class DetectMove : MonoBehaviour
         }
          if (frontx < TileDataManager.instance.sizeX && frontx >= 0 && fronty < TileDataManager.instance.sizeY && fronty >= 0)
         {
-             // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
-            if (nodes[(int)frontx, (int)fronty].isWalk)
+            // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
+            if (TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 3 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 6 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 7)
             {
                 if (nodes[(int)frontx, (int)fronty].spiritElement == spiritElement) return;
                 if (nodes[(int)frontx, (int)fronty].building != null)
@@ -320,7 +327,7 @@ public class DetectMove : MonoBehaviour
          if (rightx < TileDataManager.instance.sizeX && rightx >= 0 && righty < TileDataManager.instance.sizeY && righty >= 0)
         {
             // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
-            if (nodes[(int)rightx, (int)righty].isWalk)
+            if (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 3 || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 6 || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 7)))
             {
                 if (nodes[(int)rightx, (int)righty].spiritElement == spiritElement) return;
                 if (nodes[(int)rightx, (int)righty].building != null)

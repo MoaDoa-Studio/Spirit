@@ -277,7 +277,8 @@ MonoBehaviour:
   SpiritJob: 0
   SpiritElement: 2
   SDefaultLife: 100
-  SpiritSpeed: 0
+  HP: 0
+  SpiritSpeed: 1
   Work_Efficienty: 0
 --- !u!136 &7334590639970260949
 CapsuleCollider:
