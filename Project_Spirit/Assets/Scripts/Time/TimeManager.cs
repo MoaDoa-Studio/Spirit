@@ -36,7 +36,8 @@ public class TimeManager : MonoBehaviour
     {
         CalculateTime();
         SetTimeText();
-        SetSunLight();
+        // 임시 조치
+        //SetSunLight();
     }
 
     void CalculateTime()

@@ -268,6 +268,7 @@ public class ResourceBuilding : MonoBehaviour
         if(!ResourcegameObjectList.Contains(_gameObject)) 
         {
             ResourcegameObjectList.Add(_gameObject);
+            _gameObject.GetComponent<Spirit>().TakeDamageOfResourceBuilding();
         }
     }
     public void DeleteWorkingSprit(GameObject _gameObject)

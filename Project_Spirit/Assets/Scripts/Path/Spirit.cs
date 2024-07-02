@@ -30,6 +30,11 @@ public class Spirit : MonoBehaviour
         SDefaultLife *= (1 - 0.2f);
         HP *= (1 - 0.2f);
     }
+    public void TakeDamageOfResourceBuilding()
+    {        
+        SDefaultLife *= SpiritManager.instance.resourceBuildingDamagePercent; ;
+        HP *= SpiritManager.instance.resourceBuildingDamagePercent; ;
+    }
     public void TakeAdvantageOfBuilding()
     {
         SDefaultLife *= 4;
