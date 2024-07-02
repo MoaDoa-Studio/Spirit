@@ -18,7 +18,6 @@ public class TimeManager : MonoBehaviour
     DateTime DefaultDate;
     DateTime CurrentDate;
     DateTime calc;
-    DateTime weatherEventDate = new DateTime(1, 3, 25); 
     int currentWeather;
     int temporature;    
     TimeSpan span = TimeSpan.FromSeconds(10);
@@ -38,7 +37,6 @@ public class TimeManager : MonoBehaviour
         CalculateTime();
         SetTimeText();
         SetSunLight();
-        CheckEventDate();
     }
 
     void CalculateTime()
@@ -105,14 +103,5 @@ public class TimeManager : MonoBehaviour
     public int GetWeather()
     {
         return currentWeather;
-    }
-
-    void CheckEventDate()
-    {
-        if (CurrentDate.Month == weatherEventDate.Month && CurrentDate.Day == weatherEventDate.Day)
-        {
-            // 정령 호우 이벤트 발발!
-            Debug.Log(" 정령 호우 이벤트");
-        }
     }
 }

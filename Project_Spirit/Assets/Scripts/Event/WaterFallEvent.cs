@@ -6,14 +6,8 @@ public class WaterFallEvent : MonoBehaviour
 {
     [SerializeField]
     private GameObject RainDropEventUI;
-    [SerializeField]
-    private GameObject NewsPaperEventUI;
-    private bool rainEventOccured;
 
-    public void NewsPaperEventTrigger()
-    {
-        NewsPaperEventUI.SetActive(true);
-    }
+    private bool rainEventOccured;
 
     public void RainDropEventTrigger()
     {
@@ -25,8 +19,6 @@ public class WaterFallEvent : MonoBehaviour
     {
         if(rainEventOccured)
         {
-            // 물 정령 스폰시간 절반으로 줄이기
-
 
         }
     }
