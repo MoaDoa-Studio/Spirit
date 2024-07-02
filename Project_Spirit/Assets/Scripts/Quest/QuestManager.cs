@@ -16,12 +16,12 @@ public class QuestManager : MonoBehaviour
         else
             Destroy(this);
     }
-
-    public void InstantiateQuest(string name, string explain, string progress)
+    
+    public void InstantiateQuest(int QuestID)
     {
         GameObject clone = Instantiate(QuestPrefab, QuestUI_Transform);
         QuestPrefab quest = clone.GetComponent<QuestPrefab>();
-        quest.SetQuest(0, name, explain, progress, 0, 10, 30, 10);                        
+        quest.SetQuest(QuestID);
 
         UpdateQuestUI();
     }        
@@ -38,20 +38,8 @@ public class QuestManager : MonoBehaviour
             y_pos -= offset;
         }
     }
-
-
-    // For Debug.
-    public void TempInstantiateQuest()
-    {
-        GameObject clone = Instantiate(QuestPrefab, QuestUI_Transform);
-        QuestPrefab quest = clone.GetComponent<QuestPrefab>();
-        quest.SetQuest(0, "Quest1", "Quest1 Body", "Quest1 ConditionText", 0, 10, 10, 10);
         
-        clone = null;
-
-        UpdateQuestUI();
-    }
-    // For Debug
+    // For Debug. 이후, 구독 발행 모델로 퀘스트 컨디션 체크하면 될듯.
     public void GainItem(int targetNum, int count)
     {
         // targetNum의 아이템을 count개 획득했다.        
@@ -59,12 +47,8 @@ public class QuestManager : MonoBehaviour
         for (int i = 0; i < QuestUI_Transform.childCount; i++)
         {
             QuestPrefab quest = QuestUI_Transform.GetChild(i).GetComponent<QuestPrefab>();
-            if (quest.ConditionTarget == targetNum)
-            {
-                quest.CurrentConditionAchieve += count;
-                if (quest.CheckClear())
-                    clearIndex.Push(i);
-            }
+            if (quest.CheckClear())
+                clearIndex.Push(i);
         }
 
         while (clearIndex.Count != 0)

@@ -11,6 +11,8 @@ public class SpiritSpawner : MonoBehaviour
     GameObject[] allPrefabs;
     [SerializeField]
     GameObject SpawnUI;
+    [SerializeField]
+    Transform SpawnParent;
 
     GameObject Spiritprefab;
     [SerializeField]
@@ -41,6 +43,9 @@ public class SpiritSpawner : MonoBehaviour
     [HideInInspector]
     Text textComp;
     Node[,] nodes;
+
+    // 정령 생산 속도 가중치.
+    public float spawnWeight = 1f;
     enum Dir
     {
         Up = 0,
@@ -64,7 +69,7 @@ public class SpiritSpawner : MonoBehaviour
         gameTimer += Time.deltaTime * realTimeToGameTimeRatio;
 
         float spawnTime = sliderValue * 720f;
-        if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime)
+        if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime / spawnWeight)
         {
             SpawnSpirit();
 
@@ -85,7 +90,7 @@ public class SpiritSpawner : MonoBehaviour
 
             if (nodes[row, col].spiritElement == elementNum) return;    // 대기열이 꽉 찻을떄 반환.
             Vector3 newPosition = new Vector3(row, col, 0);
-            GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y + 0.5f, 0), Quaternion.identity);
+            GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y + 0.5f, 0), Quaternion.identity, SpawnParent);
             SpiritObject.GetComponent<DetectMove>().CurposX = row + 0.5f;
             SpiritObject.GetComponent<DetectMove>().CurposY = col + 0.5f;
             SpiritObject.GetComponent<DetectMove>()._dir = Redirection(row, col);
