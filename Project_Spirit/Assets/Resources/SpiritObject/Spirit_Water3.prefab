@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 6989933291066768110}
   - component: {fileID: 7951966631138293845}
   - component: {fileID: 7129832787559020255}
-  - component: {fileID: 2662318086248739754}
   m_Layer: 0
   m_Name: Spirit_Water3
   m_TagString: Spirit
@@ -299,10 +298,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.61760473
-  m_Height: 2.2406678
+  m_Radius: 0.33
+  m_Height: 0.03
   m_Direction: 1
-  m_Center: {x: -0.0025898218, y: 1.1223428, z: 0}
+  m_Center: {x: -0.014793247, y: -0.04, z: 0}
 --- !u!114 &7951966631138293845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,26 +342,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &2662318086248739754
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5612531606462097243}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.60692334
-  m_Height: 2.310656
-  m_Direction: 1
-  m_Center: {x: -0.0037711263, y: 1.146729, z: 0}

@@ -322,8 +322,6 @@ partial class CraftManager
 
         nodes = TileDataManager.instance.GetNodes();
         nodes[(int)mousePos.x, (int)mousePos.y].rotation = Quaternion.Euler(angles);
-        Debug.Log((int)mousePos.x + " ,  dd" + (int)mousePos.y);
-        Debug.Log(nodes[(int)mousePos.x, (int)mousePos.y].rotation);
     }
     #endregion
 

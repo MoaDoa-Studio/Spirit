@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 1931278765617740252}
   - component: {fileID: 3092116454583381681}
   - component: {fileID: 3429176357662180621}
-  - component: {fileID: 8010679366893567363}
   - component: {fileID: 125630402424327736}
   - component: {fileID: 5176877636377434708}
   - component: {fileID: 4763945741604091164}
@@ -280,29 +279,6 @@ MonoBehaviour:
   HP: 0
   SpiritSpeed: 1
   Work_Efficienty: 0
---- !u!136 &8010679366893567363
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031656477000935855}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.61760473
-  m_Height: 2.2406678
-  m_Direction: 1
-  m_Center: {x: -0.0025898218, y: 1.1223428, z: 0}
 --- !u!114 &125630402424327736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,10 +311,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.60692334
-  m_Height: 2.310656
+  m_Radius: 0.33
+  m_Height: 0.03
   m_Direction: 1
-  m_Center: {x: -0.0037711263, y: 1.146729, z: 0}
+  m_Center: {x: -0.014793247, y: -0.04, z: 0}
 --- !u!54 &4763945741604091164
 Rigidbody:
   m_ObjectHideFlags: 0

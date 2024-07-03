@@ -180,15 +180,12 @@ public class DetectMove : MonoBehaviour
                    
         if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 6 || (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 7))
         {
-                Debug.Log("Loot enter?");
             detection = Detect.Loot; return; 
         }
         if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 5)
         {
-           // Debug.Log((int)CurposX + " , " + (int)CurposY);
             string signName = nodes[(int)CurposX, (int)CurposY].nodeTile.name;
 
-            Debug.Log(nodes[(int)CurposX, (int)CurposY].nodeTile);
             signType = ExtractNumber(signName);
            // Debug.Log(" 표식의 숫자는 " + signType);
             detection = Detect.Mark_Check;
@@ -196,7 +193,6 @@ public class DetectMove : MonoBehaviour
         }
         if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 3)
         {
-                   // Debug.Log("여기4?");
             if(nodes[(int)CurposX, (int)CurposY].isBuild)
             {
                 // 건물 이용시에는 반환
@@ -238,8 +234,6 @@ public class DetectMove : MonoBehaviour
             CurposX += signal.pair.Item1;
             CurposY += signal.pair.Item2;
 
-            Debug.Log("추가된 x 는 " + signal.pair.Item1);
-            Debug.Log("추가된 y 는 " + signal.pair.Item2);
             // 표지방향으로 정령방향 전환.
             _dir = signal.spiritDir;
 
@@ -401,7 +395,7 @@ public class DetectMove : MonoBehaviour
     {
        // Debug.Log("건물 진입점에서 대기중");
         // 정령 움직임 구현
-        Vector2 targetVector = new Vector2(_curposx + 0.5f, _curposy + 0.5f);
+        Vector2 targetVector = new Vector2(_curposx + 0.5f , _curposy + 0.5f);
         Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
 
         if (Vector2.Distance(targetVector, transform.position) <= 0.1f)
