@@ -70,9 +70,9 @@ public class Spirit : MonoBehaviour
                         collision.gameObject.GetComponent<Spirit>().HP -= HP;
                         if (collision.gameObject.GetComponent<Spirit>().HP <= 0)
                         {
-                            Destroy(collision.gameObject);
+                            Destroy(gameObject);
                         }
-                        Destroy(this.gameObject);
+                        
                     }
                     else
                     {
