@@ -13,10 +13,12 @@ public class Spirit : MonoBehaviour
     public float Work_Efficienty;
     string SpiritName;
 
+    GameObject CradleManager;
     private void Start()
     {
         SDefaultLife = 100f;
         HP = SDefaultLife;
+        CradleManager = GameObject.Find("CradleManager");
     }
 
     public void TakeBuildingExpense()
@@ -48,6 +50,12 @@ public class Spirit : MonoBehaviour
     {
         Debug.Log(SpiritID);
         SpiritID = _SpiritID;
+    }
+
+    public void DevoteToCradle()
+    {
+        CradleManager.GetComponent<CradleManager>().AddElement(SpiritElement, (int)HP);
+        Destroy(this.gameObject);
     }
     #region 정령충돌 감지
     private void OnTriggerEnter(Collider collision)

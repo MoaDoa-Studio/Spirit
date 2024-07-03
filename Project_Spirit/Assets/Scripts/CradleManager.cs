@@ -44,7 +44,8 @@ public class CradleManager : MonoBehaviour
     private float GrowthCooldown = 10f;           
     
     void Start()
-    {        
+    {
+        SetCradleMap();
     }
 
     // Update is called once per frame    
@@ -105,23 +106,23 @@ public class CradleManager : MonoBehaviour
     }
 
     // 정령이 요람에 부딪혔을 경우 호출되는 함수 설계.
-    public void AddElement(string name, int val)
+    public void AddElement(int spiritElement, int val)
     {
-        switch (name)
+        switch (spiritElement)
         {
-            case "Fire":                
+            case 1:                
                 elementQueue[0].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));                
                 elementSum[0] += val;
                 break;
-            case "Water":
+            case 2:
                 elementQueue[1].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
                 elementSum[1] += val;                
                 break;
-            case "Ground":
+            case 3:
                 elementQueue[2].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
                 elementSum[2] += val;                
                 break;
-            case "Air":
+            case 4:
                 elementQueue[3].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
                 elementSum[3] += val;                
                 break;
@@ -269,4 +270,15 @@ public class CradleManager : MonoBehaviour
         return sum / count;
     }    
     // 게임 오버 함수.
+
+    void SetCradleMap()
+    {
+        for(int i = 49; i < 54; i++)
+        {
+            for(int j = 49; j < 54; j++)
+            {
+                TileDataManager.instance.SetTileType(i, j, 2);
+            }
+        }
+    }
 }
