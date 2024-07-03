@@ -30,7 +30,8 @@ public class BookEvent : MonoBehaviour
                 // 원래 시간으로 되돌아옴
                 Time.timeScale = 1f;
                 bookEventUI.SetActive(false);
-                
+                GameObject.FindAnyObjectByType<Camera>().orthographicSize = 11f;
+
                 // 연구소 퀘스트 창 나오게 한다.
             }
         }

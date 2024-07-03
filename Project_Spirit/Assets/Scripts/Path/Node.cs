@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
-using UnityEditor.Tilemaps;
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -19,7 +19,7 @@ public class Node
     public bool isBuild = false; 
     public bool isFactory = false;
     public bool isLoot = false;
-    public Tile nodeTile;
+    public GameObject nodeTile;
     public Building building;
     public ResourceBuilding resourceBuilding;
    

@@ -14,11 +14,13 @@ public class TimeManager : MonoBehaviour
     private TextMeshProUGUI Date_text;
     [SerializeField]
     private GameObject LightController;
+    GameObject EventManager;
 
     DateTime DefaultDate;
     DateTime CurrentDate;
     DateTime calc;
-    DateTime weatherEventDate = new DateTime(1, 3, 25); 
+    DateTime weatherEventDate = new DateTime(1, 3, 13); 
+    DateTime weatherEventOverDate = new DateTime(1, 3, 21); 
     int currentWeather;
     int temporature;    
     TimeSpan span = TimeSpan.FromSeconds(10);
@@ -31,6 +33,8 @@ public class TimeManager : MonoBehaviour
         // For Debug.
         temporature = 26;
         currentWeather = 0;
+
+        EventManager = GameObject.Find("[EventManager]");
     }
 
     private void Update()
@@ -111,8 +115,14 @@ public class TimeManager : MonoBehaviour
     {
         if (CurrentDate.Month == weatherEventDate.Month && CurrentDate.Day == weatherEventDate.Day)
         {
-            // ���� ȣ�� �̺�Ʈ �߹�!
-            Debug.Log(" ���� ȣ�� �̺�Ʈ");
+            EventManager.GetComponent<WaterFallEvent>().NewsPaperEventTrigger();
+        }
+
+        if (CurrentDate.Month == weatherEventOverDate.Month && CurrentDate.Day == weatherEventOverDate.Day)
+        {
+            EventManager.GetComponent<WaterFallEvent>().RainDropEventEnd();
         }
     }
+
+   
 }

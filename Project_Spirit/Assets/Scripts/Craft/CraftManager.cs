@@ -92,9 +92,9 @@ public partial class CraftManager : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Mouse0))                 
                     PlaceBuilding();
                 if (Input.GetKeyDown(KeyCode.Q))
-                    RotateObject(true);
+                    RotateObject(true, mousePos);
                 if (Input.GetKeyDown(KeyCode.E))
-                    RotateObject(false);
+                    RotateObject(false, mousePos);
                 break;
 
             case CraftMode.PlaceRoad:                
@@ -119,9 +119,9 @@ public partial class CraftManager : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                     PlaceSignTile(mousePos);
                 if (Input.GetKeyDown(KeyCode.Q))
-                    RotateObject(true);
+                    RotateObject(true, mousePos);
                 if (Input.GetKeyDown(KeyCode.E))
-                    RotateObject(false);
+                    RotateObject(false, mousePos);
                 break;
             
             case CraftMode.DeleteBuilding:
@@ -294,7 +294,7 @@ partial class CraftManager
         }
         return false;
     }
-    public void RotateObject(bool isRight)
+    public void RotateObject(bool isRight, Vector3Int mousePos)
     {
         var angles = mouseIndicator.transform.GetChild(0).rotation.eulerAngles;
         angles.z += isRight == true ? 90 : -90;
@@ -318,7 +318,12 @@ partial class CraftManager
         }
         Vector2 mouseIndicatorPos = new Vector2(-(x / 2 - 1), -(y / 2 - 1));
         mouseIndicator.transform.GetChild(0).localPosition = mouseIndicatorPos;
-        mouseIndicator.transform.GetChild(0).rotation = Quaternion.Euler(angles);                       
+        mouseIndicator.transform.GetChild(0).rotation = Quaternion.Euler(angles);
+
+        nodes = TileDataManager.instance.GetNodes();
+        nodes[(int)mousePos.x, (int)mousePos.y].rotation = Quaternion.Euler(angles);
+        Debug.Log((int)mousePos.x + " ,  dd" + (int)mousePos.y);
+        Debug.Log(nodes[(int)mousePos.x, (int)mousePos.y].rotation);
     }
     #endregion
 
@@ -523,8 +528,15 @@ partial class CraftManager
     }
     public void PlaceSignTile(Vector3Int pos)
     {
-        if (CanPlaceSignTile(pos))                    
-            TileDataManager.instance.SetTileType(pos.x, pos.y, 5);        
+        if (CanPlaceSignTile(pos))
+        {
+            TileDataManager.instance.SetTileType(pos.x, pos.y, 5);  
+            nodes = TileDataManager.instance.GetNodes();
+            nodes[pos.x, pos.y].isSignal = true;
+            nodes[pos.x, pos.y].nodeTile = mouseIndicator;
+            //Debug.Log(pos.x + "//" + pos.y);
+            
+        }
         else        
             Destroy(mouseIndicator.gameObject);
         

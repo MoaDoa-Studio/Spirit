@@ -246,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 280e3b62b11cabb4a961d543ab5edaf4, type: 2}
     - target: {fileID: 1547893462773229685, guid: 0401cd3d80a29b84db490515a2541d8d, type: 3}
       propertyPath: SpiritID
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1547893462773229685, guid: 0401cd3d80a29b84db490515a2541d8d, type: 3}
       propertyPath: SpiritElement
