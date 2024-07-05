@@ -14,7 +14,9 @@ partial class ResearchManager : MonoBehaviour
     [SerializeField]
     private GameObject StudyDetail;
     [SerializeField]
-    private GameObject StudyComplete;    
+    private GameObject StudyProgress;
+    [SerializeField]
+    private GameObject StudyComplete;
     [SerializeField]
     private GameObject[] Tree;
     [SerializeField]
@@ -37,7 +39,7 @@ partial class ResearchManager : MonoBehaviour
     public void ShowResearchUI()
     {
         if (inProgress)
-            UpdateStudyDetail();
+            UpdateStudyProgress();
         Research_UI.SetActive(true);
     }
 
@@ -63,42 +65,38 @@ partial class ResearchManager : MonoBehaviour
     {        
         TextMeshProUGUI Detail_StudyName = StudyDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         TextMeshProUGUI Detail_Explain = StudyDetail.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
-        Button Detail_StartButton = StudyDetail.transform.GetChild(4).GetComponent<Button>();
-        Slider Detail_ProgressSlider = StudyDetail.transform.GetChild(5).GetComponent<Slider>();
+        Button Detail_StartButton = StudyDetail.transform.GetChild(4).GetComponent<Button>();        
 
         Detail_StudyName.text = _study.StudyName;
         Detail_Explain.text = _study.StudyContent;
         Detail_StartButton.gameObject.SetActive(true);
         Detail_StartButton.onClick.RemoveAllListeners();
-        Detail_StartButton.onClick.AddListener(() => OnClickResearchStartButton(_study));
-        Detail_ProgressSlider.gameObject.SetActive(false);
+        Detail_StartButton.onClick.AddListener(() => OnClickResearchStartButton(_study));        
 
+        StudyDetail.SetActive(true);
+        StudyProgress.SetActive(false);        
         //if (_study.WoodRequire < (현재 나무) || _study.StoneRequire < (현재 돌))
         // StartBtn.interactable = false;               
     }
 
-    void UpdateStudyDetail()
-    {
-        TextMeshProUGUI Detail_StudyName = StudyDetail.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        Button Detail_StartButton = StudyDetail.transform.GetChild(4).GetComponent<Button>();
-        Slider Detail_ProgressSlider = StudyDetail.transform.GetChild(5).GetComponent<Slider>();
+    void UpdateStudyProgress()
+    {                
+        Slider ProgressSlider = StudyProgress.transform.GetChild(3).GetComponent<Slider>();
+        
+        ProgressSlider.gameObject.SetActive(true);
+        ProgressSlider.value = (float)currentWork / currentStudy.WorkRequirement;                
 
-        Detail_StudyName.text = currentStudy.StudyName;
-        Detail_ProgressSlider.gameObject.SetActive(true);
-        Detail_ProgressSlider.value = (float)currentWork / currentStudy.WorkRequirement;
-        Detail_StartButton.gameObject.SetActive(false);
-
-        StudyDetail.SetActive(true);
+        StudyDetail.SetActive(false);
+        StudyProgress.SetActive(true);
     }
     
     public void OnClickResearchStartButton(Study _study)
     {
         inProgress = true;
         currentStudy = _study;
-        currentWork = 0;
-        currentClickedObj.transform.Find("InProgressMark").gameObject.SetActive(true);        
+        currentWork = 0;                
 
-        UpdateStudyDetail();
+        UpdateStudyProgress();
     }
 
     public void CompleteStudy()
@@ -108,8 +106,7 @@ partial class ResearchManager : MonoBehaviour
         ApplyStudyEffect();                
         ShowStudyComplete();
 
-        currentClickedObj.GetComponent<Button>().interactable = false;
-        currentClickedObj.transform.Find("InProgressMark").gameObject.SetActive(false);
+        currentClickedObj.GetComponent<Button>().interactable = false;        
 
         currentStudy = null;
         currentClickedObj = null;
@@ -119,9 +116,11 @@ partial class ResearchManager : MonoBehaviour
     public void ShowStudyComplete()
     {
         StudyComplete.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentStudy.StudyName;
+        StudyComplete.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = currentStudy.StudyContent;
 
         StudyComplete.SetActive(true);
         StudyDetail.SetActive(false);
+        StudyProgress.SetActive(false);
     }
     
     #region For Debug    
@@ -129,7 +128,7 @@ partial class ResearchManager : MonoBehaviour
     public void OnClickWork()
     {        
         currentWork += 2000;
-        UpdateStudyDetail();
+        UpdateStudyProgress();
         if (currentWork >= currentStudy.WorkRequirement)
         {
             currentWork = 0;            
