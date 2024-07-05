@@ -22,7 +22,7 @@ public class ResouceCollider : MonoBehaviour
         if (uiObject.GetComponent<ResouceManager>().resourceShowbox.activeSelf)
         {
             //uiObject.GetComponent<ResouceManager>().resourceShowbox.transform.position = Camera.main.WorldToScreenPoint(new Vector3(mousePosition.x, mousePosition.y + 0.5f, mousePosition.z));
-        UpdateResourceBoxPosition();
+            //UpdateResourceBoxPosition();
         }
     }
     private void OnMouseEnter()

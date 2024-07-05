@@ -272,11 +272,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1402bb9579c8d547ae4b24b34dee44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpiritID: 1
+  SpiritID: 0
   SpiritJob: 0
   SpiritElement: 1
   SDefaultLife: 100
-  SpiritSpeed: 0
+  HP: 0
+  SpiritSpeed: 1
   Work_Efficienty: 0
 --- !u!54 &2746168645512144907
 Rigidbody:
@@ -324,10 +325,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.61760473
-  m_Height: 2.2406678
+  m_Radius: 0.33
+  m_Height: 0.03
   m_Direction: 1
-  m_Center: {x: -0.0025898218, y: 1.1223428, z: 0}
+  m_Center: {x: -0.014793247, y: -0.04, z: 0}
 --- !u!114 &4826128483215270765
 MonoBehaviour:
   m_ObjectHideFlags: 0

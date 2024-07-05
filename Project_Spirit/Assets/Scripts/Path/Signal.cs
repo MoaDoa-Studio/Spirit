@@ -91,15 +91,29 @@ public class Signal : MonoBehaviour
 
     #region 스프라이트 표식 분류
     // Sprite code => 해당하는 함수 호출
-    public void SetSignType(int _num, Quaternion _quaternion, int _dir, int _curposX, int _curposY)
+    public void SetSignType(int _num, GameObject _quaternion, int _dir, int _curposX, int _curposY)
     {
         nodes = TileDataManager.instance.GetNodes();
         int number = _num;
-        Quaternion rot = _quaternion;
+
+        Quaternion rot;
+        Transform squareTransform = _quaternion.transform.Find("Square");
+        if (squareTransform != null)
+        {
+            // Z축 회전 값을 가져오기
+            rot = squareTransform.rotation;
+
+            dir = CheckRotation(rot);
+            Debug.Log("Square 오브젝트의 Z축 회전 값: " + rot);
+        }
+        else
+        {
+            Debug.LogError("\"Square\"라는 하위 오브젝트를 찾을 수 없습니다.");
+        }
+
         curposX = _curposX;
         curposy = _curposY;
         signalType = (SignalType)number + 1;    // Type + 1 값으로 enum 선언.
-        dir = CheckRotation(rot);
         spiritDir = _dir;
         SetDirectionOfSpirit(dir);
     }
@@ -116,7 +130,7 @@ public class Signal : MonoBehaviour
         signalType = SignalType.None;
     }
     void Left(int _dir)
-    {
+    { 
         //Debug.Log("왼쪽 표지방향 : " + _dir);
         int leftx = leftdirX[_dir];
         int lefty = leftdirY[_dir];
