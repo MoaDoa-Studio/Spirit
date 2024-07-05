@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5629334453815301095, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
       propertyPath: SpiritID
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5629334453815301095, guid: 1a2933dccd6e5ec41ba69a9d9cd80b70, type: 3}
       propertyPath: SpiritElement

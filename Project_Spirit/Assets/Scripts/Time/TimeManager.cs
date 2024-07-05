@@ -14,10 +14,13 @@ public class TimeManager : MonoBehaviour
     private TextMeshProUGUI Date_text;
     [SerializeField]
     private GameObject LightController;
+    GameObject EventManager;
 
     DateTime DefaultDate;
     DateTime CurrentDate;
     DateTime calc;
+    DateTime weatherEventDate = new DateTime(1, 3, 13); 
+    DateTime weatherEventOverDate = new DateTime(1, 3, 21); 
     int currentWeather;
     int temporature;    
     TimeSpan span = TimeSpan.FromSeconds(10);
@@ -30,19 +33,21 @@ public class TimeManager : MonoBehaviour
         // For Debug.
         temporature = 26;
         currentWeather = 0;
+
+        EventManager = GameObject.Find("[EventManager]");
     }
 
     private void Update()
     {
         CalculateTime();
         SetTimeText();
-        // ÀÓ½Ã Á¶Ä¡
-        //SetSunLight();
+        
+        CheckEventDate();
     }
 
     void CalculateTime()
     {
-        // Çö½Ç ½Ã°£ 1ÃÊ = °ÔÀÓ ½Ã°£ 12ºÐ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ 1ï¿½ï¿½ = ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ 12ï¿½ï¿½
         TimeSpan diff = DateTime.Now - calc;
         CurrentDate = DefaultDate 
             + TimeSpan.FromMinutes(diff.Seconds * 12) 
@@ -57,7 +62,7 @@ public class TimeManager : MonoBehaviour
         else
             Time_text.text = "AM " + CurrentDate.ToString("hh:mm");
         Date_text.text = CurrentDate.ToString("MM-dd");
-        Temperature_text.text = "±â¿Â " + temporature.ToString() + "¡Æ";
+        Temperature_text.text = "ï¿½ï¿½ï¿½ " + temporature.ToString() + "ï¿½ï¿½";
     }
 
     void SetSunLight()
@@ -65,17 +70,17 @@ public class TimeManager : MonoBehaviour
         int hour = CurrentDate.Hour;
         if (hour >= 19 || hour < 4)
         {
-            // ÃÖ¼Ò ¹à±â.
+            // ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½.
             LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
         }    
         else if (hour >= 8 && hour < 15)
         {
-            // ÃÖ´ë ¹à±â.
+            // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½.
             LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0f);
         }
         else if (hour >= 5 && hour < 8)
         {
-            // Á¡Á¡ ¹à¾ÆÁü            
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½            
             if (hour == 5)            
                 LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.6f);
             else if (hour == 6)
@@ -85,7 +90,7 @@ public class TimeManager : MonoBehaviour
         }
         else
         {
-            // Á¡Á¡ ¾îµÎ¿öÁü.
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ï¿½ï¿½.
             if (hour == 16)
                 LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.1f);            
             else if (hour == 17)
@@ -105,4 +110,19 @@ public class TimeManager : MonoBehaviour
     {
         return currentWeather;
     }
+
+    void CheckEventDate()
+    {
+        if (CurrentDate.Month == weatherEventDate.Month && CurrentDate.Day == weatherEventDate.Day)
+        {
+            EventManager.GetComponent<WaterFallEvent>().NewsPaperEventTrigger();
+        }
+
+        if (CurrentDate.Month == weatherEventOverDate.Month && CurrentDate.Day == weatherEventOverDate.Day)
+        {
+            EventManager.GetComponent<WaterFallEvent>().RainDropEventEnd();
+        }
+    }
+
+   
 }
