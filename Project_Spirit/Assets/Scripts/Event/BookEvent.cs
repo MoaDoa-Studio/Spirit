@@ -11,7 +11,7 @@ public class BookEvent : MonoBehaviour
     private GameObject bookEventUI;
 
     private bool eventhasoccured;
-
+    bool bookSpawned = false;
     Node[,] nodes;
 
     // Start is called before the first frame update
@@ -42,11 +42,14 @@ public class BookEvent : MonoBehaviour
     {
         nodes = TileDataManager.instance.GetNodes();
 
+        bool validLocation = true;
+
+        if (bookSpawned) return;
+
         int x = UnityEngine.Random.Range(2, 100);
         int y = UnityEngine.Random.Range(2, 100);
         if (TileDataManager.instance.GetTileType(x, y) == 3)
         {
-            bool validLocation = true;
 
            for(int i = 0; i < 5; i++)
             {
@@ -69,6 +72,7 @@ public class BookEvent : MonoBehaviour
            if(validLocation)
            {
                Instantiate(bookPrefab, new Vector3(x + 0.5f, y + 0.5f, 0), Quaternion.identity);
+                bookSpawned = true;
                 return;
            }
         }

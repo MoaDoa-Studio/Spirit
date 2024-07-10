@@ -78,7 +78,8 @@ public class DetectMove : MonoBehaviour
         Mark_Check,
         FactoryOrLootOut,
         FactoryOrLootEnter,
-        Cradle
+        Cradle,
+        Wait
     }
     [SerializeField]
     Detect detection = Detect.None;
@@ -114,6 +115,7 @@ public class DetectMove : MonoBehaviour
     private void Update()
     {  
         spiritID = GetComponent<Spirit>().GetSpiritID();
+        SortSkeletonLayer();
 
         switch (detection)
         {
@@ -161,6 +163,9 @@ public class DetectMove : MonoBehaviour
                 FactoryOrLootEnter((int)CurposX, (int)CurposY);
                 break;
             case Detect.Cradle:
+                break;
+            case Detect.Wait:
+                WaitUntilPush();
                 break;
 
         }
@@ -439,10 +444,19 @@ public class DetectMove : MonoBehaviour
        
         yield return new WaitForSeconds(TimeforWorking);
 
-        TempBuilding.GetComponent<Building>().DeleteWorkingSprit(this.gameObject);
-        meshRenderer.enabled = true;
-        detection = Detect.FactoryOrLootOut;
-        
+        // 출구에 정령이 있다면, 휴식으로 전환
+        if(nodes[(int)saveX, (int)saveY].spiritElement != 0)
+        {
+            detection = Detect.Wait;
+            //Debug.Log("출구에 정령이 있습니다.");
+        }
+        else
+        {
+            TempBuilding.GetComponent<Building>().DeleteWorkingSprit(this.gameObject);
+            meshRenderer.enabled = true;
+            detection = Detect.FactoryOrLootOut;
+        }
+
     }
     private void FindFactoryPoint()
     {
@@ -536,10 +550,19 @@ public class DetectMove : MonoBehaviour
        
         yield return new WaitForSeconds(TimeforWorking);
 
-        TempResoucebuilding.GetComponent<ResourceBuilding>().DeleteWorkingSprit(this.gameObject);
+        // 출구에 정령이 있다면, 휴식으로 전환
+        if (nodes[(int)saveX, (int)saveY].spiritElement != 0)
+        {
+            detection = Detect.Wait;
+            //Debug.Log("출구에 정령이 있습니다.");
+        }
+        else
+        {  
+            TempResoucebuilding.GetComponent<ResourceBuilding>().DeleteWorkingSprit(this.gameObject);
+            meshRenderer.enabled = true;
+            detection = Detect.FactoryOrLootOut;
+        }
         
-        meshRenderer.enabled = true;
-        detection = Detect.FactoryOrLootOut;
     }
 
     void FindLootPoint()
@@ -705,5 +728,21 @@ public class DetectMove : MonoBehaviour
         }
     }
 
+    // 출구에서 나온 정령이 대기하는 방법
+    private void WaitUntilPush()
+    {
+        if (nodes[(int)saveX, (int)saveY].spiritElement == 0)
+        {
+            TempBuilding.GetComponent<Building>().DeleteWorkingSprit(this.gameObject);
+            meshRenderer.enabled = true;
+            detection = Detect.FactoryOrLootOut;
+
+        }
+    }
+    // Layer 정해주는 로직
+    void SortSkeletonLayer()
+    {
+        GetComponent<MeshRenderer>().sortingOrder = 103 - (int)CurposY;
+    }
 
 }

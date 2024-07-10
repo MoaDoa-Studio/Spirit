@@ -30,7 +30,7 @@ public class SpiritSpawner : MonoBehaviour
     public int elementNum = 0;
 
     int[,] Area = new int[103, 103];
-    float[] Spawn = new float[] { 2f, 1.5f, 1f };   // 24, 18, 12
+    float[] Spawn = new float[] { 8f, 6f, 4f };   // 정령 스폰 시간 1,2,3 단계  96, 72, 48
     float SpawnDuration = 0f;
 
     float gameTimer = 0f;
@@ -134,9 +134,9 @@ public class SpiritSpawner : MonoBehaviour
 
     void SetAirMap()
     {
-        for (int i = 50; i < 56; i++)
+        for (int i = 51; i < 55; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < 6; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
@@ -146,15 +146,15 @@ public class SpiritSpawner : MonoBehaviour
                 //Debug.Log("공기영역");
             }
         }
-        bottomLeft = new Vector2(50, 0);
-        topRight = new Vector2(56, 4);
+        bottomLeft = new Vector2(51, 0);
+        topRight = new Vector2(55, 6);
     }
 
     void SetWaterMAp()
     {
-        for (int i = 50; i < 56; i++)
+        for (int i = 51; i < 55; i++)
         {
-            for (int j = 99; j < 103; j++)
+            for (int j = 97; j < 103; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
@@ -164,8 +164,8 @@ public class SpiritSpawner : MonoBehaviour
                 SetGamePrefabForSpawner();
             }
         }
-        bottomLeft = new Vector2(50, 99);
-        topRight = new Vector2(56, 103);
+        bottomLeft = new Vector2(51, 97);
+        topRight = new Vector2(55, 103);
     }
 
     void SetGroundMap()
@@ -306,7 +306,7 @@ public class SpiritSpawner : MonoBehaviour
         return spawnInfo;
     }
 
-    // 실질적인 업그레이드를 구현하는 메서드.
+    // 정령 단계 실질적인 업그레이드를 구현하는 메서드.
     public void UpgradeByUIButton()
     {
         if(spLv == 2)
