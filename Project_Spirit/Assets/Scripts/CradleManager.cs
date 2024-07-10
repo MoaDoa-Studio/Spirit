@@ -33,6 +33,7 @@ public class CradleManager : MonoBehaviour
     };
     private float[] elementAverage = { 0, 0, 0, 0 };
     private int[] elementSum = { 0, 0, 0, 0 };
+    private bool[] checkFirstElement = { false, false, false, false };
     TimeSpan span = TimeSpan.FromSeconds(10);
 
     // 요람 관련 변수.
@@ -52,6 +53,14 @@ public class CradleManager : MonoBehaviour
     {
         RemoveExpiredElement();
         CalculateElementAverage();
+
+        // 네 정령이 전부 한 번씩 들어간 이후에만 정령왕 성장 표시.
+        for(int i = 0; i < 4; i++)
+        {
+            if (!checkFirstElement[i])
+                return;
+        }
+
         AddCradleGrowth();
         UpdateCradleUI();
     }
@@ -107,25 +116,33 @@ public class CradleManager : MonoBehaviour
     // 정령이 요람에 부딪혔을 경우 호출되는 함수 설계.
     public void AddElement(string name, int val)
     {
+        int index = -1;
         switch (name)
         {
             case "Fire":                
-                elementQueue[0].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));                
-                elementSum[0] += val;
+                index = 0;
                 break;
-            case "Water":
-                elementQueue[1].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
-                elementSum[1] += val;                
+            case "Water":                
+                index = 1;
                 break;
-            case "Ground":
-                elementQueue[2].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
-                elementSum[2] += val;                
+            case "Ground":                
+                index = 2;
                 break;
             case "Air":
-                elementQueue[3].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
-                elementSum[3] += val;                
+                index = 3;
                 break;
         }
+
+        if (index == -1)
+        {
+            Debug.LogError("잘못된 정령 타입이 입력됨");
+            return;
+        }
+
+        if (!checkFirstElement[index])
+            checkFirstElement[index] = true;
+        elementQueue[index].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
+        elementSum[index] += val;
     }
 
     public void RemoveExpiredElement()
