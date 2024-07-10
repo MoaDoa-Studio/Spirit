@@ -184,33 +184,33 @@ partial class ResearchManager
                 Blurry[0].transform.GetChild(3).gameObject.SetActive(false);
                 break;
             case 1011: // 돌 생산소 1 생산 가능.
-                StoneFactory_Button[0].GetComponent<Button>().interactable = true;
+                StoneFactory_Button[0].SetActive(true);
                 Tree[0].transform.Find("Studies/Step2/StoneFactory2").GetComponent<Button>().interactable = true;
                 break;
             case 1012: // 나무 생산소 1 생산 가능.
-                WoodFactory_Button[0].GetComponent<Button>().interactable = true;
+                WoodFactory_Button[0].SetActive(true);
                 Tree[0].transform.Find("Studies/Step2/WoodFactory2").GetComponent<Button>().interactable = true;
                 break;
             case 1013: // 평범한 돌 저장소 생산 가능.
-                StoneStorage_Button[0].GetComponent<Button>().interactable = true;
+                StoneStorage_Button[0].SetActive(true);
                 break;
             case 1014: // 평범한 나무 저장소 생산 가능.
-                WoodStorage_Button[0].GetComponent<Button>().interactable = true;
+                WoodStorage_Button[0].SetActive(true);
                 break;
             case 1021: // 기사 훈련소
-                KnightTraining.GetComponent<Button>().interactable = true;
+                KnightTraining.SetActive(true);
                 break;
             case 1022: // 장사 훈련소
-                LeaderTraining.GetComponent<Button>().interactable = true;
+                LeaderTraining.SetActive(true);
                 break;
             case 1023: // 돌 생산소 2
-                StoneFactory_Button[1].GetComponent<Button>().interactable = true;
+                StoneFactory_Button[1].SetActive(true);
                 break;
             case 1024: // 나무 생산소 2
-                WoodFactory_Button[1].GetComponent<Button>().interactable = true;
+                WoodFactory_Button[1].SetActive(true);
                 break;
             case 1025: // 나무 길
-                WoodRoad.GetComponent<Button>().interactable = true;
+                WoodRoad.SetActive(true);
                 break;
 
             case 1101: // 정령 1단계 해금
