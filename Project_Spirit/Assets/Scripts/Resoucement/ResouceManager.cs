@@ -22,7 +22,7 @@ public class ResouceManager : MonoBehaviour
     public List<GameObject> RockObjects;
     [HideInInspector]
     public bool resourceDeployed = false;
-    [HideInInspector]
+    
     public GameObject resourceShowbox;
 
     public float Element_reserves { get; set; }

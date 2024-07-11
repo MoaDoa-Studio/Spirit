@@ -18,11 +18,14 @@ public class SpiritSpawner : MonoBehaviour
     [SerializeField]
     List<GameObject> setPrefab = new List<GameObject>();
 
+    public bool PathtoCradle = false;
     public bool Fire;
     public bool Water;
     public bool Ground;
     public bool Air;
 
+    // 요람까지 도달 체크 배열
+    private bool[,] visited;
     public string SpawnerName;
     [HideInInspector]
     public float sliderValue = 0;
@@ -30,7 +33,7 @@ public class SpiritSpawner : MonoBehaviour
     public int elementNum = 0;
 
     int[,] Area = new int[103, 103];
-    float[] Spawn = new float[] { 2f, 1.5f, 1f };   // 24, 18, 12
+    float[] Spawn = new float[] { 8f, 6f, 4f };   // 정령 스폰 시간 1,2,3 단계  96, 72, 48
     float SpawnDuration = 0f;
 
     float gameTimer = 0f;
@@ -40,9 +43,11 @@ public class SpiritSpawner : MonoBehaviour
 
     Vector2 bottomLeft;
     Vector2 topRight;
+    Vector2Int road;
     [HideInInspector]
     Text textComp;
     Node[,] nodes;
+
 
     // 정령 생산 속도 가중치.
     public float spawnWeight = 1f;
@@ -65,17 +70,38 @@ public class SpiritSpawner : MonoBehaviour
     private void Update()
     {
         // float spawnTime = slider.value * 1440f;
+
         // 현실 1초 => 12분 계산 24분 => 
-        gameTimer += Time.deltaTime * realTimeToGameTimeRatio;
 
-        float spawnTime = sliderValue * 720f;
-        if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime / spawnWeight)
+        Vector2Int? OneRoad = isOneRoadAttached();
+        if(OneRoad.HasValue)
         {
-            SpawnSpirit();
+            road = OneRoad.Value;
+            if (CanReachCradle(road))
+            {
+                Debug.Log("길이 정령까지 존재합니다.");
 
-            gameTimer = 0f;
+                gameTimer += Time.deltaTime * realTimeToGameTimeRatio;
+
+                float spawnTime = sliderValue * 720f;
+                if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime / spawnWeight)
+                {
+                    SpawnSpirit();
+
+                    gameTimer = 0f;
+                }
+            }
+            else
+            {
+                Debug.Log("정령왕의 요람까지 가는길이 존재하지 않습니다.");
+            }
+
         }
-
+        else
+        {
+            Debug.Log("Oneroad is null");
+        }
+       
 
     }
     void SpawnSpirit()
@@ -84,7 +110,7 @@ public class SpiritSpawner : MonoBehaviour
 
         if (OneRoad.HasValue)
         {
-            Vector2Int road = OneRoad.Value;
+            road = OneRoad.Value;
             int row = road.x;
             int col = road.y;
 
@@ -95,12 +121,8 @@ public class SpiritSpawner : MonoBehaviour
             SpiritObject.GetComponent<DetectMove>().CurposY = col + 0.5f;
             SpiritObject.GetComponent<DetectMove>()._dir = Redirection(row, col);
 
-
         }
-        else
-        {
-            // Debug.Log("Oneroad is null");
-        }
+       
     }
 
     #region 정령 생산소 세팅
@@ -134,9 +156,9 @@ public class SpiritSpawner : MonoBehaviour
 
     void SetAirMap()
     {
-        for (int i = 50; i < 56; i++)
+        for (int i = 51; i < 55; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < 6; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
@@ -146,15 +168,15 @@ public class SpiritSpawner : MonoBehaviour
                 //Debug.Log("공기영역");
             }
         }
-        bottomLeft = new Vector2(50, 0);
-        topRight = new Vector2(56, 4);
+        bottomLeft = new Vector2(51, 0);
+        topRight = new Vector2(55, 6);
     }
 
     void SetWaterMAp()
     {
-        for (int i = 50; i < 56; i++)
+        for (int i = 51; i < 55; i++)
         {
-            for (int j = 99; j < 103; j++)
+            for (int j = 97; j < 103; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 1);
                 Area[i, j] = 1;
@@ -164,8 +186,8 @@ public class SpiritSpawner : MonoBehaviour
                 SetGamePrefabForSpawner();
             }
         }
-        bottomLeft = new Vector2(50, 99);
-        topRight = new Vector2(56, 103);
+        bottomLeft = new Vector2(51, 97);
+        topRight = new Vector2(55, 103);
     }
 
     void SetGroundMap()
@@ -306,7 +328,7 @@ public class SpiritSpawner : MonoBehaviour
         return spawnInfo;
     }
 
-    // 실질적인 업그레이드를 구현하는 메서드.
+    // 정령 단계 실질적인 업그레이드를 구현하는 메서드.
     public void UpgradeByUIButton()
     {
         if(spLv == 2)
@@ -377,6 +399,56 @@ public class SpiritSpawner : MonoBehaviour
     }
 
 
+    bool CanReachCradle(Vector2Int startPoint)
+    {
+        nodes = TileDataManager.instance.GetNodes();
+        visited = new bool[103, 103];
+
+        return DFS(startPoint.x, startPoint.y);
+    }
+
+    bool DFS(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= 102 || y >= 102 || visited[x, y])
+        {
+            return false;
+        }
+        visited[x, y] = true;
+
+        // 요람
+        if(TileDataManager.instance.GetTileType(x,y) == 2)
+        {
+            Debug.Log(" 정령까지 가는 요람길이 존재합니다.");
+            return true;
+        }
+        if (TileDataManager.instance.GetTileType(x, y) != 1 && TileDataManager.instance.GetTileType(x, y) != 3 && TileDataManager.instance.GetTileType(x, y) != 4
+            && TileDataManager.instance.GetTileType(x, y) != 5 && TileDataManager.instance.GetTileType(x, y) != 6 && TileDataManager.instance.GetTileType(x, y) != 7)
+        {
+            return false;
+        }
+
+        // 상하좌우 탐색
+        Vector2Int[] directions = new Vector2Int[]
+        {
+            new Vector2Int(0, 1), // 상
+            new Vector2Int(0, -1), // 하
+            new Vector2Int(1, 0), // 우
+            new Vector2Int(-1, 0) // 좌
+        };
+
+        foreach (var direction in directions)
+        {
+            int newX = x + direction.x;
+            int newY = y + direction.y;
+
+            if (DFS(newX, newY))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 

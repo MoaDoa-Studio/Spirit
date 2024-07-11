@@ -52,6 +52,7 @@ public class DetectMove : MonoBehaviour
     
     CapsuleCollider capsuleCollider;
     SpiritAnim spiritAni;
+    GameObject CradleManager;
     // 정령 텔포 이동전 좌표.
     Vector2 accessPoint;
 
@@ -76,7 +77,9 @@ public class DetectMove : MonoBehaviour
         Academy,
         Mark_Check,
         FactoryOrLootOut,
-        FactoryOrLootEnter
+        FactoryOrLootEnter,
+        Cradle,
+        Wait
     }
     [SerializeField]
     Detect detection = Detect.None;
@@ -104,6 +107,7 @@ public class DetectMove : MonoBehaviour
         spiritAni = GetComponent<SpiritAnim>();
         meshRenderer = GetComponent<MeshRenderer>();
         capsuleCollider = this.GetComponent<CapsuleCollider>();
+        CradleManager = GameObject.Find("CradleManager");
 
         // 변경되는 스피드에 맞게 생성
         moveSpeed = SpiritManager.instance.spiritMoveSpeed;
@@ -111,6 +115,7 @@ public class DetectMove : MonoBehaviour
     private void Update()
     {  
         spiritID = GetComponent<Spirit>().GetSpiritID();
+        SortSkeletonLayer();
 
         switch (detection)
         {
@@ -157,6 +162,11 @@ public class DetectMove : MonoBehaviour
             case Detect.FactoryOrLootEnter:
                 FactoryOrLootEnter((int)CurposX, (int)CurposY);
                 break;
+            case Detect.Cradle:
+                break;
+            case Detect.Wait:
+                WaitUntilPush();
+                break;
 
         }
     }
@@ -177,11 +187,12 @@ public class DetectMove : MonoBehaviour
             return;
         }
         if (isPause) return;
-                   
+        // 돌 혹은 나무 자원           
         if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 6 || (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 7))
         {
             detection = Detect.Loot; return; 
         }
+        // 표식
         if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 5)
         {
             string signName = nodes[(int)CurposX, (int)CurposY].nodeTile.name;
@@ -191,6 +202,14 @@ public class DetectMove : MonoBehaviour
             detection = Detect.Mark_Check;
             return;
         }
+        // 정령 요람
+        if(TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 2)
+        {
+            Debug.Log("정령 세계로 이바지 합니다.");
+            GetComponent<Spirit>().DevoteToCradle();
+           
+        }
+
         if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 3)
         {
             if(nodes[(int)CurposX, (int)CurposY].isBuild)
@@ -267,7 +286,7 @@ public class DetectMove : MonoBehaviour
         if (leftx < TileDataManager.instance.sizeX && leftx >= 0 && lefty < TileDataManager.instance.sizeY && lefty >= 0)
         {
             //  1. 현재 바라보는 방향으로 기준으로 왼쪽으로 갈 수 있는지 확인.
-           if(TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 3 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 6 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 7 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 5)
+           if(TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 3 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 6 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 7 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 5 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 2)
             {
                 // 가야할 타일에 같은 정령이 있다면.
                 if (nodes[(int)leftx, (int)lefty].spiritElement == spiritElement) return;
@@ -301,7 +320,7 @@ public class DetectMove : MonoBehaviour
          if (frontx < TileDataManager.instance.sizeX && frontx >= 0 && fronty < TileDataManager.instance.sizeY && fronty >= 0)
         {
             // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
-            if (TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 3 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 6 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 7 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 5)
+            if (TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 3 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 6 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 7 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 5 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 2)
             {
                 if (nodes[(int)frontx, (int)fronty].spiritElement == spiritElement) return;
                 if (nodes[(int)frontx, (int)fronty].building != null)
@@ -327,8 +346,8 @@ public class DetectMove : MonoBehaviour
         }
          if (rightx < TileDataManager.instance.sizeX && rightx >= 0 && righty < TileDataManager.instance.sizeY && righty >= 0)
         {
-            // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
-            if (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 3 || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 6 || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 7) || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 5)))
+            // 2. 현재 바라보는 방향을 기준으로 우측할 수 있는지 확인.
+            if (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 3 || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 6 || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 7) || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 5 || TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 2)))
             {
                 if (nodes[(int)rightx, (int)righty].spiritElement == spiritElement) return;
                 if (nodes[(int)rightx, (int)righty].building != null)
@@ -425,10 +444,19 @@ public class DetectMove : MonoBehaviour
        
         yield return new WaitForSeconds(TimeforWorking);
 
-        TempBuilding.GetComponent<Building>().DeleteWorkingSprit(this.gameObject);
-        meshRenderer.enabled = true;
-        detection = Detect.FactoryOrLootOut;
-        
+        // 출구에 정령이 있다면, 휴식으로 전환
+        if(nodes[(int)saveX, (int)saveY].spiritElement != 0)
+        {
+            detection = Detect.Wait;
+            //Debug.Log("출구에 정령이 있습니다.");
+        }
+        else
+        {
+            TempBuilding.GetComponent<Building>().DeleteWorkingSprit(this.gameObject);
+            meshRenderer.enabled = true;
+            detection = Detect.FactoryOrLootOut;
+        }
+
     }
     private void FindFactoryPoint()
     {
@@ -522,10 +550,19 @@ public class DetectMove : MonoBehaviour
        
         yield return new WaitForSeconds(TimeforWorking);
 
-        TempResoucebuilding.GetComponent<ResourceBuilding>().DeleteWorkingSprit(this.gameObject);
+        // 출구에 정령이 있다면, 휴식으로 전환
+        if (nodes[(int)saveX, (int)saveY].spiritElement != 0)
+        {
+            detection = Detect.Wait;
+            //Debug.Log("출구에 정령이 있습니다.");
+        }
+        else
+        {  
+            TempResoucebuilding.GetComponent<ResourceBuilding>().DeleteWorkingSprit(this.gameObject);
+            meshRenderer.enabled = true;
+            detection = Detect.FactoryOrLootOut;
+        }
         
-        meshRenderer.enabled = true;
-        detection = Detect.FactoryOrLootOut;
     }
 
     void FindLootPoint()
@@ -691,5 +728,21 @@ public class DetectMove : MonoBehaviour
         }
     }
 
+    // 출구에서 나온 정령이 대기하는 방법
+    private void WaitUntilPush()
+    {
+        if (nodes[(int)saveX, (int)saveY].spiritElement == 0)
+        {
+            TempBuilding.GetComponent<Building>().DeleteWorkingSprit(this.gameObject);
+            meshRenderer.enabled = true;
+            detection = Detect.FactoryOrLootOut;
+
+        }
+    }
+    // Layer 정해주는 로직
+    void SortSkeletonLayer()
+    {
+        GetComponent<MeshRenderer>().sortingOrder = 103 - (int)CurposY;
+    }
 
 }

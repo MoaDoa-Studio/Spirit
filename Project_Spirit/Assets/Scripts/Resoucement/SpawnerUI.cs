@@ -379,6 +379,9 @@ public class SpawnerUI : MonoBehaviour
    {
         MainSpawner.GetComponent<SpiritSpawner>().spLv += 1; 
         MainSpawner.GetComponent<SpiritSpawner>().UpgradeByUIButton();
+
+        // sliderParent max Value 값을 96, 72, 48로 변경해야함
+
    }
 
     // UI 버튼별 상호작용 case문 작성 예시

@@ -8,8 +8,7 @@ public class WaterFallEvent : MonoBehaviour
     private GameObject RainDropEventUI;
     [SerializeField]
     private GameObject NewsPaperEventUI;
-    private bool rainEventOccured;
-
+   
     bool newsPaperOpened = false;
 
     public void NewsPaperEventTrigger()
@@ -22,13 +21,13 @@ public class WaterFallEvent : MonoBehaviour
     public void RainDropEventTrigger()
     {
         RainDropEventUI.SetActive(true);
-        rainEventOccured = true;
+      
     }
 
     public void RainDropEventEnd()
     {
         RainDropEventUI.SetActive(false);
-        rainEventOccured = false;
+      
     }    
 
     private void Update()

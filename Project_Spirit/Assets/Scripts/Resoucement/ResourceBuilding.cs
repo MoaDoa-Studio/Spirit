@@ -9,21 +9,25 @@ using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 public class ResourceBuilding : MonoBehaviour
-{   
+{
     public int Resource_reserves;
     public int yOffset = 2;
     public List<KeyValuePair<Vector2Int, int>> resourceBuilding;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
-    
+
     public GameObject[] RockObject;
     public GameObject[] WoodObject;
+    public Camera mainCamera;
 
     [SerializeField]
     public bool CanUse = false;
-   
+    bool resourceWayTooltip = false;
+
     public List<GameObject> ResourcegameObjectList;
     ResouceManager resourceManager;
-    
+
+    Vector2Int firstKey;
+
     int decreasedamount = 0;
     enum ResourceType
     {
@@ -48,25 +52,34 @@ public class ResourceBuilding : MonoBehaviour
     private void Start()
     {
         InitializeResourceManger(); // => 자원 정보 초기화
-       
+        mainCamera = Camera.main;
+
     }
     private void Update()
     {
         if (resourceBuilding != null)
         {
+            firstKey = default(Vector2Int);
+            foreach (var pair in resourceBuilding)
+            {
+                firstKey = pair.Key;
+                break;
+            }
             foreach (KeyValuePair<Vector2Int, int> pair in resourceBuilding)
             {
                 int pairX = pair.Key.x;
                 int pairY = pair.Key.y;
-
                 TileDataManager.instance.nodes[pairX, pairY].resourceBuilding = this;
             }
             Tuple<Vector2Int, Vector2Int> TwoRoads = isTwoRoadAttachedResource();
             if (TwoRoads != null) SetConnectedRoad(TwoRoads);
             CalculateTotalamountOfResoucre();
-           
+
         }
         ResourcegameObjectList.RemoveAll(item => item == null);
+
+        // 자원 주의, 느낌표 아이콘
+        WarningContent();
     }
 
     #region 자원 총량 계산.
@@ -88,7 +101,7 @@ public class ResourceBuilding : MonoBehaviour
                 ResetTileType(pair.Key.x, pair.Key.y, 0);
 
             }
-          //  gameObjectList.Clear();
+            //  gameObjectList.Clear();
             Destroy(this.gameObject);
         }
     }
@@ -110,20 +123,20 @@ public class ResourceBuilding : MonoBehaviour
         //Debug.Log(Resource_reserves);
     }
     void DecreaseLeastColony(int num)
-    {   
-       // Debug.Log(Resource_reserves);
+    {
+        // Debug.Log(Resource_reserves);
         decreasedamount += num;
         if (decreasedamount % resourceBuilding.Count == 0)
         {
             int tempResourceamount = Resource_reserves / resourceBuilding.Count;
 
             foreach (KeyValuePair<Vector2Int, int> pair in resourceBuilding)
-            {  
+            {
                 RelocateTile(pair.Key, tempResourceamount, TileType());
             }
             decreasedamount = 0;
         }
-        
+
         int randomIndex = UnityEngine.Random.Range(0, resourceBuilding.Count);
         // 차감하는 값이 0일때, 타일 계산 재할당.
         if (resourceBuilding[randomIndex].Value <= 0)
@@ -135,7 +148,7 @@ public class ResourceBuilding : MonoBehaviour
         KeyValuePair<Vector2Int, int> updatedPair = new KeyValuePair<Vector2Int, int>(randPos, posses - num);
         resourceBuilding.RemoveAt(randomIndex);
         resourceBuilding.Add(updatedPair);
-        
+
 
     }
     // 타일 재동기화
@@ -240,12 +253,12 @@ public class ResourceBuilding : MonoBehaviour
 
         if (result.Count == 2)
         {
-            CanUse =true;
+            CanUse = true;
             return new Tuple<Vector2Int, Vector2Int>(result[0], result[1]);
         }
         else
         {
-            CanUse=false;
+            CanUse = false;
             return null;
         }
     }
@@ -254,7 +267,7 @@ public class ResourceBuilding : MonoBehaviour
 
     public bool CheckForCapacity()
     {
-        if(connectedRoads == null) return false;
+        if (connectedRoads == null) return false;
         if (ResourcegameObjectList.Count >= 0 && ResourcegameObjectList.Count < 4)
         {
             return true;
@@ -265,7 +278,7 @@ public class ResourceBuilding : MonoBehaviour
 
     public void AddWorkingSprit(GameObject _gameObject)
     {
-        if(!ResourcegameObjectList.Contains(_gameObject)) 
+        if (!ResourcegameObjectList.Contains(_gameObject))
         {
             ResourcegameObjectList.Add(_gameObject);
             _gameObject.GetComponent<Spirit>().TakeDamageOfResourceBuilding();
@@ -310,8 +323,78 @@ public class ResourceBuilding : MonoBehaviour
         }
         else
             resourceManager.AddTimer(num);
-               
+
     }
 
+    void WarningContent()
+    { 
+        if (!CanUse)
+        {
+            // 해당 UI 오브젝트가 prefab으로 생성되어 MaxPairX,Y 값 위치에 생성되게 해야함. 또한 해당 prefab을 눌렸을때, 안내 지침서가 추가 설명 필요.
+            if (!resourceWayTooltip)
+            {
+                GameObject tooltipUI = GameObject.Find("CraftManager");
+                Vector3 worldPos = new Vector3(firstKey.x, firstKey.y, 0);
+               
+                Transform tooltipTransform = FindChildByName(gameObject.transform, "Circle");
+                Transform tooltipoffTransform = FindChildByName(gameObject.transform, "Detail");
+                // UI를 스크린 좌표계로 이동
+                tooltipTransform.position = new Vector3(firstKey.x + 0.5f, firstKey.y + 3.5f, 0);
+                tooltipoffTransform.position = new Vector3(firstKey.x + 0.5f, firstKey.y + 2.8f, 0);
+                resourceWayTooltip = true;
+            }
+        }
+        else
+        {
+            resourceWayTooltip = false;
+            Transform tooltipTransform = FindNotChildByName(gameObject.transform, "Circle");
+            // UI를 스크린 좌표계로 이동
+            tooltipTransform.position = new Vector3(firstKey.x+0.5f, firstKey.y + 3.5f, 0);
+        }
+    }
+
+    Transform FindChildByName(Transform parent, string name)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == name)
+            {
+                child.gameObject.SetActive(true);
+                return child;
+            }
+
+        }
+        return null;
+    }
+
+    Transform FindNotChildByName(Transform parent, string name)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == name)
+            {
+                child.gameObject.SetActive(false);
+                return child;
+            }
+
+        }
+        return null;
+    }
+
+    void ToggleObject(Transform parent, string name)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == name)
+            {
+                child.gameObject.SetActive(!child.gameObject.activeSelf);
+            }
+        }
+    }
+    public void WarningButtonDown()
+    {
+        ToggleObject(gameObject.transform.parent, "Detail");
+        Debug.Log(" warningbutton clicked");
+    }
 }
 

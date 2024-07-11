@@ -151,6 +151,7 @@ public class SpiritAnim : MonoBehaviour
         HandleSkeletonDataAsset();
         HandleAnimation();
         HandleSetAttachment();
+      
     }
 
     private void HandleSkeletonDataAsset()
@@ -393,6 +394,23 @@ public class SpiritAnim : MonoBehaviour
                 }
                 break;
             case DetectMove.Detect.CheckTile:
+                if (currentDirection == 0)
+                {
+                    stateName = "Back_idle";
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement != 3)
+                        stateName = "Side_idle";
+                    else
+                        stateName = "Side_idle_Soil";
+                }
+                else
+                {
+                    stateName = "Front_idle";
+                }
+                break;
+            case DetectMove.Detect.Wait:
                 if (currentDirection == 0)
                 {
                     stateName = "Back_idle";
@@ -822,6 +840,7 @@ public class SpiritAnim : MonoBehaviour
         skeleton.SetSkin(resultCombinedSkin);
         skeleton.SetSlotsToSetupPose();
     }
+
 }
 
 
