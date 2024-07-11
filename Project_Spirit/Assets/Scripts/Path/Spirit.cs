@@ -7,6 +7,7 @@ public class Spirit : MonoBehaviour
     public int SpiritID;
     public int SpiritJob;
     public int SpiritElement;
+    public string type;
     public float SDefaultLife;
     public float HP;
     public float SpiritSpeed;
@@ -19,6 +20,7 @@ public class Spirit : MonoBehaviour
         SDefaultLife = 100f;
         HP = SDefaultLife;
         CradleManager = GameObject.Find("CradleManager");
+        check();
     }
 
     public void TakeBuildingExpense()
@@ -52,9 +54,27 @@ public class Spirit : MonoBehaviour
         SpiritID = _SpiritID;
     }
 
+    void check()
+    {
+        switch(SpiritElement)
+        {
+            case 1:
+                type = "Fire";
+                break;
+            case 2:
+                type = "Water";
+                break;
+            case 3:
+                type = "Ground";
+                break;
+            case 4:
+                type = "Air";
+                break;
+        }
+    }
     public void DevoteToCradle()
     {
-        CradleManager.GetComponent<CradleManager>().AddElement(SpiritElement, (int)HP);
+        CradleManager.GetComponent<CradleManager>().AddElement(type, (int)HP);
         Destroy(this.gameObject);
     }
     #region 정령충돌 감지

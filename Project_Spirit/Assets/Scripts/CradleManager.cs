@@ -115,10 +115,10 @@ public class CradleManager : MonoBehaviour
     }
 
     // ������ ����� �ε����� ��� ȣ��Ǵ� �Լ� ����.
-    public void AddElement(int spiritElement, int val)
+    public void AddElement(string spiritElement, int val)
     {
         int index = -1;
-        switch (name)
+        switch (spiritElement)
         {
             case "Fire":                
                 index = 0;
