@@ -41,7 +41,7 @@ public class TimeManager : MonoBehaviour
     {
         CalculateTime();
         SetTimeText();
-        
+        SetSunLight();
         CheckEventDate();
     }
 
