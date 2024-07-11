@@ -336,19 +336,20 @@ public class ResourceBuilding : MonoBehaviour
                 GameObject tooltipUI = GameObject.Find("CraftManager");
                 Vector3 worldPos = new Vector3(firstKey.x, firstKey.y, 0);
                
-                Transform tooltipTransform = FindChildByName(gameObject.transform, "Tooltip_bar");
+                Transform tooltipTransform = FindChildByName(gameObject.transform, "Circle");
                 Transform tooltipoffTransform = FindChildByName(gameObject.transform, "Detail");
                 // UI를 스크린 좌표계로 이동
-                tooltipTransform.position = new Vector3(firstKey.x, firstKey.y, 0);
+                tooltipTransform.position = new Vector3(firstKey.x + 0.5f, firstKey.y + 3.5f, 0);
+                tooltipoffTransform.position = new Vector3(firstKey.x + 0.5f, firstKey.y + 2.8f, 0);
                 resourceWayTooltip = true;
             }
         }
         else
         {
             resourceWayTooltip = false;
-            Transform tooltipTransform = FindNotChildByName(gameObject.transform, "Tooltip_bar");
+            Transform tooltipTransform = FindNotChildByName(gameObject.transform, "Circle");
             // UI를 스크린 좌표계로 이동
-            tooltipTransform.position = new Vector3(firstKey.x+0.5f, firstKey.y + 0.5f, 0);
+            tooltipTransform.position = new Vector3(firstKey.x+0.5f, firstKey.y + 3.5f, 0);
         }
     }
 
@@ -393,6 +394,7 @@ public class ResourceBuilding : MonoBehaviour
     public void WarningButtonDown()
     {
         ToggleObject(gameObject.transform.parent, "Detail");
+        Debug.Log(" warningbutton clicked");
     }
 }
 
