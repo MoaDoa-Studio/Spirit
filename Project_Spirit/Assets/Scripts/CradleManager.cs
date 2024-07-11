@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 using TMPro;
 public class CradleManager : MonoBehaviour
 {
@@ -42,24 +41,10 @@ public class CradleManager : MonoBehaviour
     private int GrowthState = 0;
     private int[] GrowthValue = { 50, 25, 10, -40 };
     private float GrowthTime = 0f;
-    private float GrowthCooldown = 10f;
-    
-    // For Debug.
-    [SerializeField]
-    private GameObject DebuggingBtn;
+    private float GrowthCooldown = 10f;           
     
     void Start()
-    {
-        // For Debug.
-        DebuggingBtn.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => AddElement("Fire", 10));
-        DebuggingBtn.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => AddElement("Water", 10));
-        DebuggingBtn.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => AddElement("Ground", 10));
-        DebuggingBtn.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => AddElement("Air", 10));
-        DebuggingBtn.transform.GetChild(4).GetComponent<Button>().onClick.AddListener(() => AddElement("Fire", 30));
-        DebuggingBtn.transform.GetChild(5).GetComponent<Button>().onClick.AddListener(() => AddElement("Water", 20));
-        DebuggingBtn.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(() => AddElement("Ground", 15));
-        DebuggingBtn.transform.GetChild(7).GetComponent<Button>().onClick.AddListener(() => AddElement("Air", 40));
-        //
+    {        
     }
 
     // Update is called once per frame    
@@ -69,6 +54,25 @@ public class CradleManager : MonoBehaviour
         CalculateElementAverage();
         AddCradleGrowth();
         UpdateCradleUI();
+
+        // For Debug.        
+        //if (Input.GetKey(KeyCode.A))
+        //    AddElement("Fire", 10);
+        //if (Input.GetKey(KeyCode.S))
+        //    AddElement("Water", 10);
+        //if (Input.GetKey(KeyCode.D))
+        //    AddElement("Ground", 10);
+        //if (Input.GetKey(KeyCode.F))
+        //    AddElement("Air", 10);
+        //if (Input.GetKey(KeyCode.Z))
+        //    AddElement("Fire", 30);
+        //if (Input.GetKey(KeyCode.X))
+        //    AddElement("Water", 20);
+        //if (Input.GetKey(KeyCode.C))
+        //    AddElement("Ground", 15);
+        //if (Input.GetKey(KeyCode.V))
+        //    AddElement("Air", 40);
+
     }
 
     // 4원소 성장 게이지 관리 변수.
