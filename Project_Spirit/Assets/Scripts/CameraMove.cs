@@ -23,8 +23,8 @@ public class CameraMove : MonoBehaviour
         Vector3 position = transform.position;
 
         // 입력 값에 따라 위치를 업데이트합니다.
-        position.x += horizontal * cameraSpeed * Time.deltaTime;
-        position.y += vertical * cameraSpeed * Time.deltaTime;
+        position.x += horizontal * cameraSpeed ;
+        position.y += vertical * cameraSpeed ;
 
         // 새로운 위치로 이동합니다.
         transform.position = position;

@@ -302,6 +302,8 @@ public class Building : MonoBehaviour
         if (!gameObjectList.Contains(gameObject))
         {
             gameObjectList.Add(gameObject);
+            // 일하는 노동 시간 부여
+            gameObject.GetComponent<DetectMove>().TimeforWorking = WorkingTime;
             constructionAmount++;
         }
 

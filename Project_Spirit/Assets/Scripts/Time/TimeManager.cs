@@ -22,7 +22,8 @@ public class TimeManager : MonoBehaviour
     DateTime weatherEventDate = new DateTime(1, 3, 13); 
     DateTime weatherEventOverDate = new DateTime(1, 3, 21); 
     int currentWeather;
-    int temporature;    
+    int temporature;
+    float accumulatedGameTime = 0f;
     TimeSpan span = TimeSpan.FromSeconds(10);
     private void Start()
     {
@@ -47,12 +48,20 @@ public class TimeManager : MonoBehaviour
 
     void CalculateTime()
     {
+        // 현실 시간 1초 = 게임 시간 12초
+        float deltaTime = (float)(DateTime.Now - calc).TotalSeconds;
+        accumulatedGameTime += deltaTime * Time.timeScale * 12f * 60f;
+        calc = DateTime.Now;
+
+        // 누적된 게임 시간을 이용해 현재 게임 날짜와 시간을 계산합니다.
+        CurrentDate = DefaultDate + TimeSpan.FromSeconds(accumulatedGameTime);
+
         // ���� �ð� 1�� = ���� �ð� 12��
-        TimeSpan diff = DateTime.Now - calc;
-        CurrentDate = DefaultDate 
-            + TimeSpan.FromMinutes(diff.Seconds * 12) 
-            + TimeSpan.FromHours(diff.Minutes * 12) 
-            + TimeSpan.FromDays(diff.Hours * 30);
+       // TimeSpan diff = DateTime.Now - calc;
+       // CurrentDate = DefaultDate 
+        //    + TimeSpan.FromMinutes(diff.Seconds * 12) 
+         //   + TimeSpan.FromHours(diff.Minutes * 12) 
+          //  + TimeSpan.FromDays(diff.Hours * 30);
     }
 
     void SetTimeText()
@@ -124,5 +133,25 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-   
+   public void PauseCradleUI()
+   {
+        Time.timeScale = 0f;
+   }
+
+    public void PlayCradleUI()
+    {
+        Time.timeScale = 1f;
+    }
+
+    public void FastPlay()
+    {
+        Time.timeScale = 4f;
+    }
+
+    public void DoudlbePlay()
+    {
+        Time.timeScale = 8f;
+
+    }
+
 }
