@@ -22,12 +22,14 @@ public class WaterFallEvent : MonoBehaviour
     {
         RainDropEventUI.SetActive(true);
       
+        // 물 정령 생산소 두배로 출력하게 하는 매서드
     }
 
     public void RainDropEventEnd()
     {
         RainDropEventUI.SetActive(false);
       
+        // 물 정령 생산소 출력양 복구하게 출력하게 하는 매서드
     }    
 
     private void Update()

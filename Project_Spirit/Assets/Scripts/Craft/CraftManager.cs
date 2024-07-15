@@ -159,10 +159,10 @@ public partial class CraftManager : MonoBehaviour
         }
 
         // For Debug.
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            ExitCraftMode();                        
-        }
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    ExitCraftMode();                        
+        //}
     }
     // Craft 모드 진입.
     public void EnterCraftMode()

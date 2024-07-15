@@ -207,7 +207,7 @@ public class DetectMove : MonoBehaviour
         {
             Debug.Log("정령 세계로 이바지 합니다.");
             GetComponent<Spirit>().DevoteToCradle();
-           
+            return;
         }
 
         if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 3)
