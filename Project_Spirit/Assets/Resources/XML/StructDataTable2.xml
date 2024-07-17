@@ -14,6 +14,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>201</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>12</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1002</StructureID>
@@ -28,6 +29,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>202</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>15</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1003</StructureID>
@@ -42,6 +44,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>203</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>18</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1004</StructureID>
@@ -56,6 +59,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>204</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>12</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1005</StructureID>
@@ -70,6 +74,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>205</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>15</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1006</StructureID>
@@ -84,6 +89,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>206</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>18</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1007</StructureID>
@@ -98,6 +104,7 @@
 		<UniqueProperties>102</UniqueProperties>
 		<StructureEffect>207</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>22</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1008</StructureID>
@@ -112,6 +119,7 @@
 		<UniqueProperties>103</UniqueProperties>
 		<StructureEffect>208</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>20</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1009</StructureID>
@@ -126,6 +134,7 @@
 		<UniqueProperties>103</UniqueProperties>
 		<StructureEffect>209</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>20</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1010</StructureID>
@@ -140,6 +149,7 @@
 		<UniqueProperties>104</UniqueProperties>
 		<StructureEffect>210</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>25</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1011</StructureID>
@@ -154,6 +164,7 @@
 		<UniqueProperties>104</UniqueProperties>
 		<StructureEffect>211</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>25</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1012</StructureID>
@@ -168,6 +179,7 @@
 		<UniqueProperties>105</UniqueProperties>
 		<StructureEffect>212</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>30</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1013</StructureID>
@@ -182,6 +194,7 @@
 		<UniqueProperties>106</UniqueProperties>
 		<StructureEffect>213</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>30</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1014</StructureID>
@@ -196,6 +209,7 @@
 		<UniqueProperties>107</UniqueProperties>
 		<StructureEffect>214</StructureEffect>
 		<BasicStructure>true</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1015</StructureID>
@@ -210,6 +224,7 @@
 		<UniqueProperties>107</UniqueProperties>
 		<StructureEffect>215</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1016</StructureID>
@@ -224,6 +239,7 @@
 		<UniqueProperties>107</UniqueProperties>
 		<StructureEffect>216</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1017</StructureID>
@@ -238,6 +254,7 @@
 		<UniqueProperties>107</UniqueProperties>
 		<StructureEffect>217</StructureEffect>
 		<BasicStructure>true</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1018</StructureID>
@@ -252,6 +269,7 @@
 		<UniqueProperties>107</UniqueProperties>
 		<StructureEffect>218</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1019</StructureID>
@@ -266,6 +284,7 @@
 		<UniqueProperties>107</UniqueProperties>
 		<StructureEffect>219</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1020</StructureID>
@@ -280,6 +299,7 @@
 		<UniqueProperties>107</UniqueProperties>
 		<StructureEffect>220</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1021</StructureID>
@@ -294,6 +314,7 @@
 		<UniqueProperties>107</UniqueProperties>
 		<StructureEffect>221</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>2001</StructureID>
@@ -308,6 +329,7 @@
 		<UniqueProperties>302</UniqueProperties>
 		<StructureEffect>222</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>2002</StructureID>
@@ -322,6 +344,7 @@
 		<UniqueProperties>301</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>true</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3001</StructureID>
@@ -336,6 +359,7 @@
 		<UniqueProperties>201</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3002</StructureID>
@@ -350,6 +374,7 @@
 		<UniqueProperties>202</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3003</StructureID>
@@ -364,6 +389,7 @@
 		<UniqueProperties>203</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3004</StructureID>
@@ -378,6 +404,7 @@
 		<UniqueProperties>201</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3005</StructureID>
@@ -392,6 +419,7 @@
 		<UniqueProperties>202</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3006</StructureID>
@@ -406,6 +434,7 @@
 		<UniqueProperties>203</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3007</StructureID>
@@ -420,6 +449,7 @@
 		<UniqueProperties>204</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3008</StructureID>
@@ -434,6 +464,7 @@
 		<UniqueProperties>205</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3009</StructureID>
@@ -448,6 +479,7 @@
 		<UniqueProperties>205</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3010</StructureID>
@@ -462,6 +494,7 @@
 		<UniqueProperties>206</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3011</StructureID>
@@ -476,6 +509,7 @@
 		<UniqueProperties>206</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3012</StructureID>
@@ -490,6 +524,7 @@
 		<UniqueProperties>207</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>3013</StructureID>
@@ -504,5 +539,6 @@
 		<UniqueProperties>207</UniqueProperties>
 		<StructureEffect>null</StructureEffect>
 		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
 	</StructData>
 </root>

@@ -99,6 +99,7 @@ public class BuildingDataManager : MonoBehaviour
             buildData.UniqueProperties = int.Parse(xmlNode.SelectSingleNode("UniqueProperties").InnerText);
             //buildData.StructureEffect = int.Parse(xmlNode.SelectSingleNode("StructureEffect").InnerText);
             buildData.baseState = xmlNode.SelectSingleNode("BasicStructure").InnerText;
+            buildData.ConstructionAmount = int.Parse(xmlNode.SelectSingleNode("ConstructionAmount").InnerText);
             buildDataList.Add(buildData);
         }
     }

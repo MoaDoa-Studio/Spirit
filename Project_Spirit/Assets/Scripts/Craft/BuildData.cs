@@ -18,6 +18,7 @@ public class BuildData : ScriptableObject
     public int UniqueProperties = 0;
     public int StructureEffect = 0;
     public string baseState = "None";
+    public int ConstructionAmount;
 }
 
 public class StructUniqueData : ScriptableObject
@@ -30,4 +31,5 @@ public class StructUniqueData : ScriptableObject
     public float CostOfStone;
     public int DemandingWork;
     public int StructureCondition;
+  
 }

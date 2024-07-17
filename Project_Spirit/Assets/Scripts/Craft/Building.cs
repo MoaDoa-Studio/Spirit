@@ -54,10 +54,9 @@ public class Building : MonoBehaviour
     public float CostOfStone;
     public int DemandingWork;
     public int StructureCondition;
+    public float constructionAmount = 0;
 
-    [SerializeField]
-    private float constructionAmount = 0;
-
+    float constructiondevote = 0;
     // �ڿ� �Ѱ��� �����ϴµ� �ʿ��� ������ ��
     [SerializeField]
     private float EarnWoodResourceAmount = 0;
@@ -126,7 +125,7 @@ public class Building : MonoBehaviour
                 if(UniqueProperties != 107)
                 ShowBuildSlideBarToUI();
 
-                if (constructionAmount > 10)
+                if (constructiondevote >= constructionAmount)
                 {
                     buildOperator = BuildOperator.Done; 
                     break;
@@ -308,7 +307,7 @@ public class Building : MonoBehaviour
             gameObjectList.Add(gameObject);
             // 일하는 노동 시간 부여
             gameObject.GetComponent<DetectMove>().TimeforWorking = WorkingTime;
-            constructionAmount++;
+            constructiondevote++;
         }
 
         if (buildOperator == BuildOperator.Done)
@@ -432,6 +431,7 @@ public class Building : MonoBehaviour
         essenceRequirement = buildData.essenceRequirement;
         UniqueProperties = buildData.UniqueProperties;
         StructureEffect = buildData.StructureEffect;
+        constructionAmount = buildData.ConstructionAmount;
         WorkingTime = structUniqueData.WorkingTime;
         Capacity = structUniqueData.Capacity;
         HCostOfUse = structUniqueData.HCostOfUse;
