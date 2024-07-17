@@ -6,10 +6,11 @@ using UnityEngine.UI;
 using TMPro;
 public class TimeManager : MonoBehaviour
 {
+    public int Month;
+    public int Day;
+
     [SerializeField]
     private TextMeshProUGUI Time_text;
-    [SerializeField]
-    private TextMeshProUGUI Temperature_text;
     [SerializeField]
     private TextMeshProUGUI Date_text;
     [SerializeField]
@@ -42,7 +43,7 @@ public class TimeManager : MonoBehaviour
     {
         CalculateTime();
         SetTimeText();
-        
+        SetSunLight();
         CheckEventDate();
     }
 
@@ -71,7 +72,7 @@ public class TimeManager : MonoBehaviour
         else
             Time_text.text = "AM " + CurrentDate.ToString("hh:mm");
         Date_text.text = CurrentDate.ToString("MM-dd");
-        Temperature_text.text = "��� " + temporature.ToString() + "��";
+        //Temperature_text.text = "기온 " + temporature.ToString() + "°";
     }
 
     void SetSunLight()
@@ -154,4 +155,33 @@ public class TimeManager : MonoBehaviour
 
     }
 
+    public string GetCurrentDateTimeString()
+    {
+        string month = CurrentDate.Month.ToString("00");
+        string day = CurrentDate.Day.ToString("00");
+        string hour = CurrentDate.Hour.ToString("00");
+
+        string timeString = month + day + hour;
+        return timeString;
+    }
+    public void SetDate(int Month, int day)
+    {
+        // 새로운 날짜 설정
+        DefaultDate = new DateTime(1, Month, day, 0, 0, 0);
+        CurrentDate = new DateTime(1, Month, day, 0, 0, 0);
+
+        // 게임 시간 초기화
+        accumulatedGameTime = 0f;
+        calc = DateTime.Now;
+
+        // 업데이트된 날짜로 즉시 시간을 재설정
+        SetTimeText();
+        SetSunLight();
+        CheckEventDate();
+    }
+
+    public void MoveDate()
+    {
+        SetDate(3, 12);
+    }
 }

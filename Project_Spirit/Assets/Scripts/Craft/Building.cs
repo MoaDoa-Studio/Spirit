@@ -193,9 +193,11 @@ public class Building : MonoBehaviour
     public bool CheckForAccesibleBeforeBuilt(GameObject _gameObject)
     {
         if(connectedRoads == null) return false;
+        // 귀족 정령일 경우엔 공사시에도 참여할 수 없음.
         if (_gameObject.GetComponent<Spirit>().SpiritID == 5) return false;
         if (gameObjectList.Count >= 0 && gameObjectList.Count <= Capacity)
         {
+            _gameObject.GetComponent<DetectMove>().TimeforWorking = WorkingTime;
             return true;
         }
         else
@@ -211,7 +213,7 @@ public class Building : MonoBehaviour
 
         if (gameObjectList.Count >= 0 && gameObjectList.Count <= Capacity)
         {
-            //_gameObject.GetComponent<DetectMove>().TimeforWorking = WorkingTime;
+            _gameObject.GetComponent<DetectMove>().TimeforWorking = WorkingTime;
             // ����Ҹ� ����Ѵٸ�...!
             if(UniqueProperties == 101)
             {
@@ -444,11 +446,12 @@ public class Building : MonoBehaviour
         sliderUI.SetActive(true);
         buildBar.value = constructionAmount / 10;
     }
+    // 저장소일 경우엔 정령 접근 금지
     bool RestrictAccessToBuilding()
     {
         if(UniqueProperties == 107)
         {
-            //Debug.Log("�̿����� ���մϴ�");
+            //Debug.Log("정령은 사용할 수 없음");
         return false;
         }        
         else
@@ -466,11 +469,14 @@ public class Building : MonoBehaviour
         gameManager.GetComponentInChildren<ResouceManager>().Essence_reserves -= essenceRequirement;        
         // �߰������� ���� �������������� �ǹ��� �̿����� ���ϰ� �ؾ���
     }
-
+    
+    // 건물이 지어졌을때 활성화 되어야하는 조건.
     private void OnEnable()
     {
         isActivateCondition();
     }    
+
+    // 저장소 같은 경우에는 즉시 효과 적용.
     void isActivateCondition()
     {        
         if(UniqueProperties == 107)

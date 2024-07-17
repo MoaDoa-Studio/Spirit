@@ -9,15 +9,16 @@ public class WaterFallEvent : MonoBehaviour
     [SerializeField]
     private GameObject NewsPaperEventUI;
    
+    [SerializeField]
     bool newsPaperOpened = false;
 
     public void NewsPaperEventTrigger()
     {
         StartCoroutine(ShownewsText());
-        Time.timeScale = 0.01f;
+       
     }
 
- 
+
     public void RainDropEventTrigger()
     {
         RainDropEventUI.SetActive(true);
@@ -32,16 +33,20 @@ public class WaterFallEvent : MonoBehaviour
         // 물 정령 생산소 출력양 복구하게 출력하게 하는 매서드
     }    
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (newsPaperOpened)
         {
             // 물 정령 스폰시간 절반으로 줄이기
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                NewsPaperEventUI.SetActive(false);
-                Time.timeScale = 1f;
+                
+                Debug.Log("Escape key pressed, hiding NewsPaperEventUI");
 
+                Destroy(NewsPaperEventUI);
+                Time.timeScale = 1f;
+                newsPaperOpened =false;
+                //SetActiveRecursively(NewsPaperEventUI, false);
                 // 비 이벤트 발생
                 RainDropEventTrigger();
             }
@@ -50,19 +55,24 @@ public class WaterFallEvent : MonoBehaviour
 
         IEnumerator ShownewsText()
         {
-            yield return new WaitForSecondsRealtime(0.7f);
+            yield return new WaitForSeconds(0.7f);
             SetActiveRecursively(NewsPaperEventUI, true);
 
-            yield return new WaitForSecondsRealtime(3f);
+            yield return new WaitForSeconds(3f);
+          
             newsPaperOpened = true;
         }
 
         private void SetActiveRecursively(GameObject obj, bool state)
         {
-            obj.SetActive(state);
-            foreach (Transform child in obj.transform)
+            if(obj != null)
             {
-                child.gameObject.SetActive(state);
+                obj.SetActive(state);
+                foreach (Transform child in obj.transform)
+                {
+                    child.gameObject.SetActive(state);
+                }
+
             }
         }
     } 
