@@ -565,6 +565,9 @@ public class SpiritAnim : MonoBehaviour
                     stateName = "Front_idle";
                 }
                 break;
+            case DetectMove.Detect.Dead:
+                HitAndDissapear();
+                break;
             case DetectMove.Detect.FactoryOrLootOut:
                 stateName = exit_Gender();
 
@@ -579,7 +582,65 @@ public class SpiritAnim : MonoBehaviour
     // 정령끼리 부딪힌 후 재생되는 애니메이션
     public void HitAndDissapear()
     {
+        if (currentDirection == 0)
+        {
+            if(spiritelement == 4)
+            {
+                PlayAnimationForState("Back_crash_Air", 0, true, animationspeed);
 
+            }
+            else if(spiritelement == 2)
+            {
+                PlayAnimationForState("Back_crash_Water", 0, true, animationspeed);
+
+            }
+            else
+            {
+                PlayAnimationForState("Back_crush_Soil_Fire", 0, true, animationspeed);
+
+            }
+        }
+        else if (currentDirection == 1 || currentDirection == 3)
+        {
+            if (spiritelement == 4)
+            {
+                PlayAnimationForState("Side_crash_Air", 0, true, animationspeed);
+
+            }
+            else if (spiritelement == 2)
+            {
+                PlayAnimationForState("Side_crash_Water", 0, true, animationspeed);
+
+            }
+            else if(spiritelement == 1)
+            {
+                PlayAnimationForState("Side_crash_Fire", 0, true, animationspeed);
+
+            }
+            else
+            {
+                PlayAnimationForState("Side_crash_Soil", 0, true, animationspeed);
+
+            }
+        }
+        else
+        {
+            if (spiritelement == 4)
+            {
+                PlayAnimationForState("Front_crash_Air", 0, true, animationspeed);
+
+            }
+            else if (spiritelement == 2)
+            {
+                PlayAnimationForState("Front_crash_Water", 0, true, animationspeed);
+
+            }
+            else
+            {
+                PlayAnimationForState("Back_crash", 0, true, animationspeed);
+
+            }
+        }
     }
 
     private void UpdateSkin()

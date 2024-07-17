@@ -15,6 +15,7 @@ public class Spirit : MonoBehaviour
     string SpiritName;
 
     GameObject CradleManager;
+   
     private void Start()
     {
         SDefaultLife = 100f;
@@ -99,7 +100,9 @@ public class Spirit : MonoBehaviour
                 // 기사 정령인 상황.
                 if (SpiritID == 4)
                 {
-                    Destroy(collision.gameObject);
+                    collision.GetComponent<SpiritAnim>().HitAndDissapear();
+                    collision.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                    Destroy(collision.gameObject, 2f);
                 }
                 // 기사 정령이 아닌 상황.
                 else
@@ -109,14 +112,24 @@ public class Spirit : MonoBehaviour
                         collision.gameObject.GetComponent<Spirit>().HP -= HP;
                         if (collision.gameObject.GetComponent<Spirit>().HP <= 0)
                         {
-                            Destroy(gameObject);
+                            collision.gameObject.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                            Destroy(collision.gameObject, 1f);
+
                         }
+                            gameObject.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                            Destroy(gameObject, 1f);
                         
                     }
                     else
                     {
                         HP -= collision.gameObject.GetComponent<Spirit>().HP;
-                        Destroy(collision.gameObject);
+                        if(HP <= 0)
+                        {
+                            gameObject.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                            Destroy(gameObject, 1f);
+                        }
+                        collision.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                        Destroy(collision.gameObject,1f);
                     }
                 }
             }

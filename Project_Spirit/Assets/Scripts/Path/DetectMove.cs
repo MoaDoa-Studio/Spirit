@@ -79,7 +79,8 @@ public class DetectMove : MonoBehaviour
         FactoryOrLootOut,
         FactoryOrLootEnter,
         Cradle,
-        Wait
+        Wait,
+        Dead
     }
     [SerializeField]
     Detect detection = Detect.None;
@@ -89,6 +90,10 @@ public class DetectMove : MonoBehaviour
         return detection;
     }
 
+    public void SetDetection(Detect detect)
+    {
+        detection = detect;
+    }
     public int GetDirection()
     {
         return _dir;
@@ -166,6 +171,8 @@ public class DetectMove : MonoBehaviour
                 break;
             case Detect.Wait:
                 WaitUntilPush();
+                break;
+            case Detect.Dead:
                 break;
 
         }

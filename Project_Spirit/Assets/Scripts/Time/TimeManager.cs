@@ -197,7 +197,7 @@ public class TimeManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(60); // 1분 대기
+            yield return new WaitForSeconds(3600); // 1분 대기
 
             // 예시: EventManager의 하위 오브젝트에 대해 피해를 입힘
             temperatureManager.WeatherAndSpiritRealtion(); ;

@@ -177,7 +177,7 @@ MonoBehaviour:
     animation: {fileID: 11400000, guid: 3d849b95d1446664181374b495339b6c, type: 2}
   - stateName: Front_crash_Air
     animation: {fileID: 11400000, guid: 489f3571ff68e9a459b8b03b9c51f114, type: 2}
-  - stateName: Front_crash_water
+  - stateName: Front_crash_Water
     animation: {fileID: 11400000, guid: 1037254da5733b14d91052dc5281cd79, type: 2}
   - stateName: Front_disappear
     animation: {fileID: 11400000, guid: 6209e0bd2f44fdd42a07df4a3cd306a6, type: 2}
@@ -193,8 +193,6 @@ MonoBehaviour:
     animation: {fileID: 11400000, guid: 86d15b42aa148d447a075949a7bf781f, type: 2}
   - stateName: Back_crash_Water
     animation: {fileID: 11400000, guid: 6178f135d72851e47b22460d26c73fc2, type: 2}
-  - stateName: Back_crush
-    animation: {fileID: 11400000, guid: 37b0ef752aa1005438130e4bb745a652, type: 2}
   - stateName: Back_enter_fm
     animation: {fileID: 11400000, guid: de9b30db219d7164792c6535b5c91ae9, type: 2}
   - stateName: Back_enter_m
@@ -233,6 +231,8 @@ MonoBehaviour:
     animation: {fileID: 11400000, guid: 7c1d2e560f92f644888676036a38201d, type: 2}
   - stateName: Back_idle
     animation: {fileID: 11400000, guid: d634916ca8b0aa245a1cbe4bfec682a5, type: 2}
+  - stateName: Back_crash_Soil_Fire
+    animation: {fileID: 11400000, guid: 37b0ef752aa1005438130e4bb745a652, type: 2}
   transitions: []
   animationspeed: 0
 --- !u!114 &3092116454583381681
@@ -275,6 +275,7 @@ MonoBehaviour:
   SpiritID: 0
   SpiritJob: 0
   SpiritElement: 3
+  type: 
   SDefaultLife: 100
   HP: 0
   SpiritSpeed: 1

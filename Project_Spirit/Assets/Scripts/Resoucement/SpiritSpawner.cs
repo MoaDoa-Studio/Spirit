@@ -79,7 +79,7 @@ public class SpiritSpawner : MonoBehaviour
             road = OneRoad.Value;
             if (CanReachCradle(road))
             {
-                Debug.Log("길이 정령까지 존재합니다.");
+                //Debug.Log("길이 정령까지 존재합니다.");
 
                 gameTimer += Time.deltaTime * realTimeToGameTimeRatio;
 
