@@ -43,7 +43,7 @@ public class SpiritAnim : MonoBehaviour
     public Spine.Animation TargetAnimation { get; private set; }
     public List<StateNameToAnimationReference> statesAndAnimations = new List<StateNameToAnimationReference>();
     public List<AnimationTransition> transitions = new List<AnimationTransition>();
-    public int animationspeed;
+    public float animationspeed;
 
     [SpineSkin]
     public Skin characterSkin;
@@ -151,7 +151,7 @@ public class SpiritAnim : MonoBehaviour
         HandleSkeletonDataAsset();
         HandleAnimation();
         HandleSetAttachment();
-      
+        AdjustmentAnimationSpeed();
     }
 
     private void HandleSkeletonDataAsset()
@@ -576,6 +576,12 @@ public class SpiritAnim : MonoBehaviour
         PlayAnimationForState(stateName, track, oneshot, animationspeed);
     }
 
+    // 정령끼리 부딪힌 후 재생되는 애니메이션
+    public void HitAndDissapear()
+    {
+
+    }
+
     private void UpdateSkin()
     {
         // Temporaly
@@ -841,7 +847,15 @@ public class SpiritAnim : MonoBehaviour
         skeleton.SetSlotsToSetupPose();
     }
 
+    void AdjustmentAnimationSpeed()
+    {
+        float maxAnimationspeed = 2;
+        animationspeed = Math.Min(Time.timeScale, maxAnimationspeed);
+
+        skeletonAnimation.timeScale = animationspeed;
+    }
 }
+
 
 
 /// <summary>

@@ -83,7 +83,7 @@ public class BuildingDataManager : MonoBehaviour
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(xmlAsset.text);
 
-        XmlNodeList xmlNodeList = xmlDoc.SelectNodes("//text");
+        XmlNodeList xmlNodeList = xmlDoc.SelectNodes("//StructData");
 
         foreach (XmlNode xmlNode in xmlNodeList)
         {
@@ -91,11 +91,14 @@ public class BuildingDataManager : MonoBehaviour
             buildData.structureID = float.Parse(xmlNode.SelectSingleNode("StructureID").InnerText);
             buildData.structureName = xmlNode.SelectSingleNode("StructureName").InnerText;
             buildData.KindOfStructure = int.Parse(xmlNode.SelectSingleNode("KindOfStructure").InnerText);
+            buildData.SturctureIndex = int.Parse(xmlNode.SelectSingleNode("StructureIndex").InnerText);
             buildData.stoneRequirement = float.Parse(xmlNode.SelectSingleNode("StoneRequirement").InnerText);
             buildData.woodRequirement = float.Parse(xmlNode.SelectSingleNode("WoodRequirement").InnerText);
             buildData.essenceRequirement = float.Parse(xmlNode.SelectSingleNode("EssenceRequirement").InnerText);
+            buildData.StructureDescription = xmlNode.SelectSingleNode("StructureDescription").InnerText;
             buildData.UniqueProperties = int.Parse(xmlNode.SelectSingleNode("UniqueProperties").InnerText);
-            buildData.StructureEffect = int.Parse(xmlNode.SelectSingleNode("StructureEffect").InnerText);
+            //buildData.StructureEffect = int.Parse(xmlNode.SelectSingleNode("StructureEffect").InnerText);
+            buildData.baseState = xmlNode.SelectSingleNode("BasicStructure").InnerText;
             buildDataList.Add(buildData);
         }
     }
@@ -113,13 +116,13 @@ public class BuildingDataManager : MonoBehaviour
         foreach (XmlNode xmlNode in xmlNodeList)
         {
             StructUniqueData buildUniqueData = ScriptableObject.CreateInstance<StructUniqueData>();
-            buildUniqueData.UniqueProperties = int.Parse(xmlNode.SelectSingleNode("UniqueProperties").InnerText);
+            buildUniqueData.UniqueProperties = int.Parse(xmlNode.SelectSingleNode("UniquePropertiesID").InnerText);
             buildUniqueData.WorkingTime = float.Parse(xmlNode.SelectSingleNode("WorkingTime").InnerText);
             buildUniqueData.Capacity = int.Parse(xmlNode.SelectSingleNode("Capacity").InnerText);
-            buildUniqueData.HCostOfUse = float.Parse(xmlNode.SelectSingleNode("HCostofUse").InnerText);
-            buildUniqueData.CostUseWood = float.Parse(xmlNode.SelectSingleNode("CostUseWood").InnerText);
-            buildUniqueData.CostOfStone = float.Parse(xmlNode.SelectSingleNode("CostUseStone").InnerText);
-            buildUniqueData.DemandingWork = int.Parse(xmlNode.SelectSingleNode("Demanding").InnerText);
+            buildUniqueData.HCostOfUse = float.Parse(xmlNode.SelectSingleNode("HCostOfUse").InnerText);
+            buildUniqueData.CostUseWood = float.Parse(xmlNode.SelectSingleNode("CostOfUseWood").InnerText);
+            buildUniqueData.CostOfStone = float.Parse(xmlNode.SelectSingleNode("CostOfUseStone").InnerText);
+            buildUniqueData.DemandingWork = int.Parse(xmlNode.SelectSingleNode("DemandingWork").InnerText);
             buildUniqueData.StructureCondition = int.Parse(xmlNode.SelectSingleNode("StructureCondition").InnerText);
           
             structUniqueDataList.Add(buildUniqueData);

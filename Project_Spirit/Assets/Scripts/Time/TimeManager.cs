@@ -54,7 +54,7 @@ public class TimeManager : MonoBehaviour
         calc = DateTime.Now;
 
         // 누적된 게임 시간을 이용해 현재 게임 날짜와 시간을 계산합니다.
-        CurrentDate = DefaultDate + TimeSpan.FromSeconds(accumulatedGameTime);
+        CurrentDate = DefaultDate + TimeSpan.FromSeconds(accumulatedGameTime); 
 
         // ���� �ð� 1�� = ���� �ð� 12��
        // TimeSpan diff = DateTime.Now - calc;

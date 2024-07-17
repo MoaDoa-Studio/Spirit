@@ -17,8 +17,8 @@ public class Building : MonoBehaviour
     GameObject PreviewParent;
     [SerializeField]
     public int GameObjectCount;
-    [SerializeField]
-    private float cellsize = 1f;
+    
+    //private float cellsize = 1f;
     [SerializeField]
     private GameObject cellPrefab;
 
@@ -84,6 +84,7 @@ public class Building : MonoBehaviour
     public int MaxPlayer = 4;
     private void Start()
     {
+
         connectedRoads = null;
         gameObjectList = new List<GameObject>();
         gameManager = GameObject.Find("GameManager");
@@ -99,6 +100,7 @@ public class Building : MonoBehaviour
         }
         structUniqueData = FindDataFromStructUnique(structUniqueDataList, buildData.UniqueProperties);
         SycnXMLDataToBuilding(buildData, structUniqueData);
+        CalculateWorkingTimeInGame();
     }
     private void Update()
     {
@@ -576,4 +578,16 @@ public class Building : MonoBehaviour
             PreviewParent.SetActive(false);
         }
     }    
+
+    private void CalculateWorkingTimeInGame()
+    {
+        // 현실 시간 1초 = 게임시간 12분
+        float gameTimePerSecond = 12f * 60f;
+
+        // 게임 1초는 현실 시간으로?
+        float gameTimeInSeconds = 1f;
+        float realTimeInseconds = gameTimeInSeconds / gameTimePerSecond;
+
+        WorkingTime *= realTimeInseconds;
+    }
 }
