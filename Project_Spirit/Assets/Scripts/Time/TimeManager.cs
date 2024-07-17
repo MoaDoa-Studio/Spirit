@@ -26,6 +26,8 @@ public class TimeManager : MonoBehaviour
     int temporature;
     float accumulatedGameTime = 0f;
     TimeSpan span = TimeSpan.FromSeconds(10);
+
+    TemperatureManager temperatureManager;
     private void Start()
     {
         DefaultDate = DateTime.ParseExact("01-01 00:00:00", "MM-dd HH:mm:ss", null);
@@ -37,6 +39,11 @@ public class TimeManager : MonoBehaviour
         currentWeather = 0;
 
         EventManager = GameObject.Find("[EventManager]");
+        temperatureManager = GetComponent<TemperatureManager>();
+
+        // 날씨와 정령의 체력 감소 관계
+        StartCoroutine(TakeDamageRoutine());
+
     }
 
     private void Update()
@@ -49,7 +56,7 @@ public class TimeManager : MonoBehaviour
 
     void CalculateTime()
     {
-        // 현실 시간 1초 = 게임 시간 12초
+        // 현실 시간 1초 = 게임 시간 12분
         float deltaTime = (float)(DateTime.Now - calc).TotalSeconds;
         accumulatedGameTime += deltaTime * Time.timeScale * 12f * 60f;
         calc = DateTime.Now;
@@ -183,5 +190,17 @@ public class TimeManager : MonoBehaviour
     public void MoveDate()
     {
         SetDate(3, 12);
+    }
+
+    // 1분마다 TakeDamageByWeather 메서드를 실행하는 Coroutine
+    IEnumerator TakeDamageRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(60); // 1분 대기
+
+            // 예시: EventManager의 하위 오브젝트에 대해 피해를 입힘
+            temperatureManager.WeatherAndSpiritRealtion(); ;
+        }
     }
 }

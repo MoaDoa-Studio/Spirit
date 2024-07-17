@@ -77,6 +77,17 @@ public class Spirit : MonoBehaviour
         CradleManager.GetComponent<CradleManager>().AddElement(type, (int)HP);
         Destroy(this.gameObject);
     }
+
+    public void TakeDamage25ByWeather()
+    {
+        HP  -= HP - 0.041667f; 
+    }
+
+    public void TakeDamage25OverByWeather(float temp)
+    {
+        HP -= (0.041667f * (temp - 25) / 10);
+    }
+
     #region 정령충돌 감지
     private void OnTriggerEnter(Collider collision)
     {

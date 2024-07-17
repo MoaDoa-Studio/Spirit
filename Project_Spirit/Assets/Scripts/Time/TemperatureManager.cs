@@ -12,6 +12,10 @@ public class TemperatureManager : MonoBehaviour
     public string fileName;
 
     [SerializeField]
+    private GameObject SpiritParent;
+    [SerializeField]
+    private float worldTemperature;
+    [SerializeField]
     private TextMeshProUGUI Temperature_text;
     [SerializeField]
     private string timeTostring;
@@ -30,6 +34,9 @@ public class TemperatureManager : MonoBehaviour
     {
         // 기온 & 날짜 형식 동기화.
         MatchDateWithTemperature();
+
+        // 날씨와 정령의 체력 감소 관계
+        // WeatherAndSpiritRealtion();
     }
     // 기온 XML 빌드 데이터 로드.
     private void LoadTempData(string _fileName)
@@ -64,10 +71,49 @@ public class TemperatureManager : MonoBehaviour
             if(TempData.Nowtime == timeTostring)
             {
                 Temperature_text.text = "/ 기온 " + TempData.Temperature.ToString() + "°";
+                worldTemperature = TempData.Temperature;
             }
         }
     }
 
+    public void WeatherAndSpiritRealtion()
+    {
+        // 기온이 25도 이하일시 1분당 체력 감소 정도
+        // 0.041667 의 체력퍼 대미지
+        if(worldTemperature <= 25)
+        {
+            TakeDamageByWeather(SpiritParent);
+        }
+        // 기온이 26도 이상일 시 정령의 1분당 체력 감소 정도
+        // 0.041667 * ((현재기온 -25)/ 10)
+        else
+        {
+            TakeDamageOverByWeather(SpiritParent);
+        }
+    }
+
+    void TakeDamageByWeather(GameObject spiritParent)
+    {
+      foreach(Transform child in spiritParent.transform)
+        {
+            Spirit spirit = child.GetComponent<Spirit>();
+            if(spirit != null)
+            {
+                spirit.TakeDamage25ByWeather();
+            }
+        }
+    }
+    void TakeDamageOverByWeather(GameObject spiritParent)
+    {
+        foreach (Transform child in spiritParent.transform)
+        {
+            Spirit spirit = child.GetComponent<Spirit>();
+            if (spirit != null)
+            {
+                spirit.TakeDamage25OverByWeather(worldTemperature);
+            }
+        }
+    }
 }
 
 
