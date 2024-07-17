@@ -566,7 +566,57 @@ public class SpiritAnim : MonoBehaviour
                 }
                 break;
             case DetectMove.Detect.Dead:
-                HitAndDissapear();
+                if (currentDirection == 0)
+                {
+                    if (spiritelement == 4)
+                    {
+                        stateName = "Back_crash_Air";
+
+
+                    }
+                    else if (spiritelement == 2)
+                    {
+                        stateName = "Back_crash_Water";
+                    }
+                    else
+                    {
+                        stateName = "Back_crush_Soil_Fire";
+                    }
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement == 4)
+                    {
+                        stateName = "Side_crash_Air";
+                    }
+                    else if (spiritelement == 2)
+                    {
+                        stateName = "Side_crash_Water";
+                    }
+                    else if (spiritelement == 1)
+                    {
+                        stateName = "Side_crash_Fire";
+                    }
+                    else
+                    {
+                        stateName = "Side_crash_Soil";
+                    }
+                }
+                else
+                {
+                    if (spiritelement == 4)
+                    {
+                        stateName = "Front_crash_Air";
+                    }
+                    else if (spiritelement == 2)
+                    {
+                        stateName = "Front_crash_Water";
+                    }
+                    else
+                    {
+                        stateName = "Front_crash";
+                    }
+                }
                 break;
             case DetectMove.Detect.FactoryOrLootOut:
                 stateName = exit_Gender();
@@ -587,6 +637,7 @@ public class SpiritAnim : MonoBehaviour
             if(spiritelement == 4)
             {
                 PlayAnimationForState("Back_crash_Air", 0, true, animationspeed);
+                
 
             }
             else if(spiritelement == 2)
@@ -637,7 +688,7 @@ public class SpiritAnim : MonoBehaviour
             }
             else
             {
-                PlayAnimationForState("Back_crash", 0, true, animationspeed);
+                PlayAnimationForState("Front_crash", 0, true, animationspeed);
 
             }
         }
