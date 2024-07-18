@@ -30,6 +30,7 @@ public partial class CraftManager : MonoBehaviour
     private Tile selectedSign;
     Node[,] nodes;
     private int[,] copyArray = new int[103, 103];
+    [SerializeField]
     private List<Vector3Int> roadBufferList = new List<Vector3Int>();
     private Vector3Int signBuffer = new Vector3Int();
     private Vector3Int deleteStart;
@@ -429,6 +430,8 @@ partial class CraftManager
             {
                 copyArray[pos.x, pos.y] = 3;
                 roadBufferList.Add(pos);
+
+                // 길 설치 사운드 소리 여기서 추가하기
             }
         }
     }
