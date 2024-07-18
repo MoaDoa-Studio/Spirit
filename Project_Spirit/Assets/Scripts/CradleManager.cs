@@ -292,7 +292,7 @@ public class CradleManager : MonoBehaviour
     {
         for(int i = 49; i < 54; i++)
         {
-            for(int j = 49; j < 54; j++)
+            for(int j = 49; j <= 54; j++)
             {
                 TileDataManager.instance.SetTileType(i, j, 2);
             }
