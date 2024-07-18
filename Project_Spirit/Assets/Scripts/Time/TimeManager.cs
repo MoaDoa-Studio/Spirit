@@ -15,6 +15,8 @@ public class TimeManager : MonoBehaviour
     private TextMeshProUGUI Date_text;
     [SerializeField]
     private GameObject LightController;
+    [SerializeField]
+    private GameObject soundController;
     GameObject EventManager;
 
     DateTime DefaultDate;
@@ -50,8 +52,9 @@ public class TimeManager : MonoBehaviour
     {
         CalculateTime();
         SetTimeText();
-        SetSunLight();
+        //SetSunLight();
         CheckEventDate();
+        SetBGM();
     }
 
     void CalculateTime()
@@ -80,6 +83,20 @@ public class TimeManager : MonoBehaviour
             Time_text.text = "AM " + CurrentDate.ToString("hh:mm");
         Date_text.text = CurrentDate.ToString("MM-dd");
         //Temperature_text.text = "기온 " + temporature.ToString() + "°";
+    }
+
+    void SetBGM()
+    {
+        if(CurrentDate.Hour >= 7 && CurrentDate.Hour < 18)
+        {
+            soundController.GetComponent<SoundManager>().PlayBgm("BGM4");
+        }
+        else if ((CurrentDate.Hour > 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute >= 30)) ||
+              (CurrentDate.Hour < 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute < 20)))
+        {
+            soundController.GetComponent<SoundManager>().PlayBgm("BGM5");
+
+        }
     }
 
     void SetSunLight()

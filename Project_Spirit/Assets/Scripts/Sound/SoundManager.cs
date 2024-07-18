@@ -16,6 +16,9 @@ public partial class SoundManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioMixer audioMixer;
 
+    private Coroutine currentFadeOutCoroutine;
+
+    #region singleton
     private void Awake()
     {
         if (instance != null)
@@ -33,93 +36,71 @@ public partial class SoundManager : MonoBehaviour
             s.source = this.gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
 
-            s.source.volume = s.volume * 0.5f;
+            s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
 
             if (s.source.loop)
             {
-                s.source.outputAudioMixerGroup = audioMixerGroup[1];//BGM
+                s.source.outputAudioMixerGroup = audioMixerGroup[0];//BGM
             }
             else
             {
-                s.source.outputAudioMixerGroup = audioMixerGroup[2];//SFX
+                s.source.outputAudioMixerGroup = audioMixerGroup[1];//SFX
             }
         }
     }
-
+    #endregion
+    #region Main BGM 설치 로직
     public void Play(string name)
     {
-        Sound sound = null;
-
-        foreach (Sound s in sounds)
-        {
-            if (s.name == name)
-            {
-                sound = s;
-                break;
-            }
-        }
-
+        Sound sound = FindSound(name);
         if (sound == null)
         {
-            Debug.Log("Sound : " + name + "File not found!!!");
+            Debug.Log("Sound not found: " + name);
             return;
         }
 
         sound.source.Play();
     }
 
-    public void StopBgm()
+    IEnumerator FadeOutAndStop(Sound sound, float fadeDuration)
     {
-        Sound sound = null;
+        float startVolume = sound.source.volume;
+        float timer = 0f;
 
-        foreach (Sound s in sounds)
+        while (timer < fadeDuration)
         {
-            if (s.name == bgmName)
-            {
-                sound = s;
-                break;
-            }
+            timer += Time.deltaTime;
+            sound.source.volume = Mathf.Lerp(startVolume, 0f, timer / fadeDuration);
+            yield return null;
         }
 
-        if (sound == null)
-        {
-            //Debug.Log("Stop Sound : " + name + "File not found!!!");
-            return;
-        }
-
-        bgmName = "";
         sound.source.Stop();
+        sound.source.volume = startVolume;
     }
 
-    public void PlayBgm(string name)
+    public void StopBgm()
     {
-        //기존에 플레이 되는 배경음과 새로운 배경음이 같을때
-        if (bgmName == name)
-        {
-            return;
-        }
-
-        //기존 배경음 중단
-        StopBgm();
-
-        //새로운 배경음 플레이
-        Sound sound = null;
-
-        foreach (Sound s in sounds)
-        {
-            if (s.name == name)
-            {
-                sound = s;
-                break;
-            }
-        }
-
+        Sound sound = FindSound(bgmName);
         if (sound == null)
         {
-            Debug.Log("Play Sound : " + name + "File not found!!!");
             return;
+        }
+
+        StartCoroutine(FadeOutAndStop(sound, 0.2f));
+    }
+
+
+    IEnumerator PlayBgmDelayed(string name, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Sound sound = FindSound(name);
+        if (sound == null)
+        {
+            Debug.Log("BGM not found: " + name);
+            yield break;
         }
 
         sound.volume = 0.7f;
@@ -128,6 +109,31 @@ public partial class SoundManager : MonoBehaviour
         sound.source.Play();
     }
 
+    public void PlayBgm(string name)
+    {
+        if (bgmName == name)
+        {
+            return;
+        }
+
+        StopBgm();
+
+        StartCoroutine(PlayBgmDelayed(name, 0.1f));
+    }
+
+    Sound FindSound(string name)
+    {
+        foreach (Sound s in sounds)
+        {
+            if (s.name == name)
+            {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    #endregion
 }
 
 
@@ -214,6 +220,7 @@ public partial class SoundManager
         AudioClip clip = roadSFX[count];
         AudioSource source = gameObject.AddComponent<AudioSource>();
         source.clip = clip;
+        source.volume *= 0.3f;
         //source.outputAudioMixerGroup = audioMixer.FindMatchingGroups("SFX")[0];
         source.Play();
         Destroy(source, clip.length);
