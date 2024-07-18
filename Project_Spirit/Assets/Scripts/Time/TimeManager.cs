@@ -24,6 +24,12 @@ public class TimeManager : MonoBehaviour
     DateTime calc;
     DateTime weatherEventDate = new DateTime(1, 3, 13); 
     DateTime weatherEventOverDate = new DateTime(1, 3, 21); 
+    DateTime BookEventDate = new DateTime(1, 3, 25);
+
+    int bookEventHour = 13;
+    int weatherEventHour = 17;
+    int weatherEventOverHour = 6;
+
     int currentWeather;
     int temporature;
     float accumulatedGameTime = 0f;
@@ -147,15 +153,21 @@ public class TimeManager : MonoBehaviour
 
     void CheckEventDate()
     {
-        if (CurrentDate.Month == weatherEventDate.Month && CurrentDate.Day == weatherEventDate.Day)
+        if (CurrentDate.Month == weatherEventDate.Month && CurrentDate.Day == weatherEventDate.Day && CurrentDate.Hour == weatherEventHour)
         {
             EventManager.GetComponent<WaterFallEvent>().NewsPaperEventTrigger();
         }
 
-        if (CurrentDate.Month == weatherEventOverDate.Month && CurrentDate.Day == weatherEventOverDate.Day)
+        if (CurrentDate.Month == weatherEventOverDate.Month && CurrentDate.Day == weatherEventOverDate.Day && CurrentDate.Hour == weatherEventOverHour)
         {
             EventManager.GetComponent<WaterFallEvent>().RainDropEventEnd();
         }
+
+        if(CurrentDate.Month == BookEventDate.Month && CurrentDate.Day == BookEventDate.Day && CurrentDate.Hour == bookEventHour)
+        {
+            EventManager.GetComponent<BookEvent>().BookEventTrigger();
+        }
+
     }
 
    public void PauseCradleUI()
@@ -200,15 +212,19 @@ public class TimeManager : MonoBehaviour
 
         // 업데이트된 날짜로 즉시 시간을 재설정
         SetTimeText();
-        SetSunLight();
+        //SetSunLight();
         CheckEventDate();
     }
 
-    public void MoveDate()
+    public void MoveDateTo312()
     {
         SetDate(3, 12);
     }
 
+    public void MoveDateTo325()
+    {
+        SetDate(3, 25);
+    }
     // 1분마다 TakeDamageByWeather 메서드를 실행하는 Coroutine
     IEnumerator TakeDamageRoutine()
     {
