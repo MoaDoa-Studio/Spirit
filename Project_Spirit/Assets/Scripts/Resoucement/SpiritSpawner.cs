@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class SpiritSpawner : MonoBehaviour
@@ -31,6 +32,8 @@ public class SpiritSpawner : MonoBehaviour
     public float sliderValue = 0;
     [HideInInspector]
     public int elementNum = 0;
+    public Tilemap NoticeTilemap;
+    public Tile NoteTile;
 
     int[,] Area = new int[103, 103];
     float[] Spawn = new float[] { 8f, 6f, 4f };   // 정령 스폰 시간 1,2,3 단계  96, 72, 48
@@ -50,8 +53,16 @@ public class SpiritSpawner : MonoBehaviour
     Text textComp;
     Node[,] nodes;
 
+    [SerializeField]
+    GameObject noteTile;
     Vector2Int spawnPos1;
     Vector2Int spawnPos2;
+
+    private float alphaMin = 67f / 255f;
+    private float alphaMax = 180f / 255f;
+    private float duration = 1.0f;
+
+
     // 정령 생산 속도 가중치.
     public float spawnWeight = 1f;
     enum Dir
@@ -78,6 +89,9 @@ public class SpiritSpawner : MonoBehaviour
 
         if(isTwoRoadAttached())
         {
+            NoticeTilemap.SetTile(new Vector3Int(spawnPos1.x, spawnPos1.y, 0), null);
+            NoticeTilemap.SetTile(new Vector3Int(spawnPos2.x, spawnPos2.y, 0), null);
+
             if (CanReachCradle(road))
             {
                 //Debug.Log("길이 정령까지 존재합니다.");
@@ -100,6 +114,8 @@ public class SpiritSpawner : MonoBehaviour
         }
         else
         {
+            // 알림 타일맵 알림 부여
+            NoticeTileMap(); 
             Debug.Log("Oneroad is null");
         }
        
@@ -509,6 +525,47 @@ public class SpiritSpawner : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void NoticeTileMap()
+    {  
+        NoticeTilemap.SetTile(new Vector3Int(spawnPos1.x, spawnPos1.y, 0), NoteTile);
+        NoticeTilemap.SetTile(new Vector3Int(spawnPos2.x, spawnPos2.y, 0), NoteTile);
+
+
+        StartCoroutine(ChangeTileAlpha());
+    }
+
+    IEnumerator ChangeTileAlpha()
+    {
+        while (true)
+        {
+            yield return StartCoroutine(FadeAlpha(alphaMin, alphaMax, duration));
+            yield return StartCoroutine(FadeAlpha(alphaMax, alphaMin, duration));
+        }
+    }
+
+    IEnumerator FadeAlpha(float startAlpha, float endAlpha, float duration)
+    {
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
+            SetTileAlpha((Vector3Int)spawnPos1, newAlpha);
+            SetTileAlpha((Vector3Int)spawnPos2, newAlpha);
+            yield return null;
+        }
+    }
+
+    void SetTileAlpha(Vector3Int position, float alpha)
+    {
+        if (NoticeTilemap.HasTile(position))
+        {
+            Color tileColor = NoticeTilemap.GetColor(position);
+            tileColor.a = alpha;
+            NoticeTilemap.SetColor(position, tileColor);
+        }
     }
 }
 
