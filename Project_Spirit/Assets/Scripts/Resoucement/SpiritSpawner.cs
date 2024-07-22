@@ -41,14 +41,17 @@ public class SpiritSpawner : MonoBehaviour
     public int spLv { get; set; } = 1;
     public int spwLv { get; set; } = 1;
 
+    int termcnt = 0;
     Vector2 bottomLeft;
     Vector2 topRight;
+    [SerializeField]
     Vector2Int road;
     [HideInInspector]
     Text textComp;
     Node[,] nodes;
 
-
+    Vector2Int spawnPos1;
+    Vector2Int spawnPos2;
     // 정령 생산 속도 가중치.
     public float spawnWeight = 1f;
     enum Dir
@@ -73,10 +76,8 @@ public class SpiritSpawner : MonoBehaviour
 
         // 현실 1초 => 12분 계산 24분 => 
 
-        Vector2Int? OneRoad = isOneRoadAttached();
-        if(OneRoad.HasValue)
+        if(isTwoRoadAttached())
         {
-            road = OneRoad.Value;
             if (CanReachCradle(road))
             {
                 //Debug.Log("길이 정령까지 존재합니다.");
@@ -105,22 +106,10 @@ public class SpiritSpawner : MonoBehaviour
 
     }
     void SpawnSpirit()
-    {
-        Vector2Int? OneRoad = isOneRoadAttached();
-
-        if (OneRoad.HasValue)
+    { 
+        if(isTwoRoadAttached())
         {
-            road = OneRoad.Value;
-            int row = road.x;
-            int col = road.y;
-
-            if (nodes[row, col].spiritElement == elementNum) return;    // 대기열이 꽉 찻을떄 반환.
-            Vector3 newPosition = new Vector3(row, col, 0);
-            GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y + 0.5f, 0), Quaternion.identity, SpawnParent);
-            SpiritObject.GetComponent<DetectMove>().CurposX = row + 0.5f;
-            SpiritObject.GetComponent<DetectMove>().CurposY = col + 0.5f;
-            SpiritObject.GetComponent<DetectMove>()._dir = Redirection(row, col);
-
+            CheckSpawnAttachedRoad();
         }
        
     }
@@ -165,6 +154,8 @@ public class SpiritSpawner : MonoBehaviour
                 Spiritprefab = allPrefabs[3];
                 elementNum = 4;
                 SetGamePrefabForSpawner();
+                spawnPos1 = new Vector2Int(52, 6);
+                spawnPos2 = new Vector2Int(53, 6);
                 //Debug.Log("공기영역");
             }
         }
@@ -184,6 +175,8 @@ public class SpiritSpawner : MonoBehaviour
                 //Debug.Log("물영역");
                 elementNum = 2;
                 SetGamePrefabForSpawner();
+                spawnPos1 = new Vector2Int(52, 96);
+                spawnPos2 = new Vector2Int(53, 96);
             }
         }
         bottomLeft = new Vector2(51, 97);
@@ -202,6 +195,8 @@ public class SpiritSpawner : MonoBehaviour
                 //Debug.Log("땅영역");
                 elementNum = 3;
                 SetGamePrefabForSpawner();
+                spawnPos1 = new Vector2Int(96, 50);
+                spawnPos2 = new Vector2Int(96, 51);
             }
         }
         bottomLeft = new Vector2(97, 49);
@@ -220,12 +215,78 @@ public class SpiritSpawner : MonoBehaviour
                 //Debug.Log("불영역");
                 elementNum = 1;
                 SetGamePrefabForSpawner();
+                spawnPos1 = new Vector2Int(6, 50);
+                spawnPos2 = new Vector2Int(6, 51);
             }
         }
         bottomLeft = new Vector2(0, 49);
         topRight = new Vector2(6, 53);
     }
     #endregion
+
+    private bool isTwoRoadAttached()
+    {
+        if (TileDataManager.instance.GetTileType(spawnPos1.x, spawnPos1.y) == 3 || TileDataManager.instance.GetTileType(spawnPos2.x, spawnPos2.y) == 3)
+        {
+            if(TileDataManager.instance.GetTileType(spawnPos1.x, spawnPos1.y) == 3)
+            { road = spawnPos1; }
+            else if(TileDataManager.instance.GetTileType(spawnPos2.x, spawnPos2.y) == 3)
+            {   road = spawnPos2;}
+            return true;
+        }
+        else
+        {
+            road = Vector2Int.zero;
+            return false;
+        }
+        
+    }
+
+    private void CheckSpawnAttachedRoad()
+    {
+        // 두 곳 모두 봉인되었을때
+        if (nodes[spawnPos1.x, spawnPos1.y].spiritElement == elementNum && nodes[spawnPos2.x, spawnPos2.y].spiritElement == elementNum) return;
+        {   
+            if (termcnt % 2 == 0)
+            {
+                termcnt++;
+                Vector3 newPosition = new Vector3(spawnPos1.x, spawnPos1.y, 0);
+                GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y + 0.5f, 0), Quaternion.identity, SpawnParent);
+                SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos1.x + 0.5f;
+                SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos1.y + 0.5f;
+                SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos1.x, spawnPos1.y);
+            }
+            else
+            {
+                termcnt = 0;
+                Vector3 newPosition = new Vector3(spawnPos2.x, spawnPos2.y, 0);
+                GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y + 0.5f, 0), Quaternion.identity, SpawnParent);
+                SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos2.x + 0.5f;
+                SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos2.y + 0.5f;
+                SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos2.x, spawnPos2.y);
+            }
+            
+        }
+        if (TileDataManager.instance.GetTileType(spawnPos1.x, spawnPos1.y) == 3 && TileDataManager.instance.GetTileType(spawnPos2.x, spawnPos2.y) != 3)
+        {
+            if (nodes[spawnPos1.x, spawnPos1.y].spiritElement == elementNum) return;
+            Vector3 newPosition = new Vector3(spawnPos1.x, spawnPos1.y, 0);
+            GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y + 0.5f, 0), Quaternion.identity, SpawnParent);
+            SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos1.x + 0.5f;
+            SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos1.y + 0.5f;
+            SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos1.x, spawnPos1.y);
+
+        }
+        else if (TileDataManager.instance.GetTileType(spawnPos1.x, spawnPos1.y) != 3 && TileDataManager.instance.GetTileType(spawnPos2.x, spawnPos2.y) == 3)
+        {
+            if (nodes[spawnPos2.x, spawnPos2.y].spiritElement == elementNum) return;
+            Vector3 newPosition = new Vector3(spawnPos2.x, spawnPos2.y, 0);
+            GameObject SpiritObject = Instantiate(Spiritprefab, new Vector3(newPosition.x + 0.5f, newPosition.y + 0.5f, 0), Quaternion.identity, SpawnParent);
+            SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos2.x + 0.5f;
+            SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos2.y + 0.5f;
+            SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos2.x, spawnPos2.y);
+        }
+    }
 
     Vector2Int? isOneRoadAttached()
     {
