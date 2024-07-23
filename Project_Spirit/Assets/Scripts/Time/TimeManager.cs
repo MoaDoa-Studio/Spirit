@@ -38,8 +38,8 @@ public class TimeManager : MonoBehaviour
     TemperatureManager temperatureManager;
     private void Start()
     {
-        DefaultDate = DateTime.ParseExact("03-01 00:00:00", "MM-dd HH:mm:ss", null);
-        CurrentDate = DateTime.ParseExact("03-01 00:00:00", "MM-dd HH:mm:ss", null);
+        DefaultDate = DateTime.ParseExact("03-01 07:00:00", "MM-dd HH:mm:ss", null);
+        CurrentDate = DateTime.ParseExact("03-01 07:00:00", "MM-dd HH:mm:ss", null);
         calc = DateTime.Now;
 
         // For Debug.

@@ -164,7 +164,7 @@ public class DetectMove : MonoBehaviour
                     LootOrFactoryAnimationMove(saveX, saveY);
                     return;// 나온 후의 움직임
                 }
-                break;
+                
             case Detect.FactoryOrLootEnter:
                 FactoryOrLootEnter((int)CurposX, (int)CurposY);
                 break;

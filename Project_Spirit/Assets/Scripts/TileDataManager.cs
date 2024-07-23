@@ -16,10 +16,13 @@ public class TileDataManager : MonoBehaviour
 
     public int sizeX, sizeY;
 
+    [Header("맵 타일 세팅")]
     [SerializeField]
-    Sprite[] springSprites;
+    Tilemap GameTilemap;
     [SerializeField]
-    Sprite[] summerSprites;
+    TileBase[] springSprites;
+    [SerializeField]
+    TileBase[] summerSprites;
     enum TileType
     {
         None = 0,
@@ -50,6 +53,7 @@ public class TileDataManager : MonoBehaviour
     private void Start()
     {
         CheckEveryTile();
+        SetGameGridTileMapSpring();
     }
 
     public void Update()
@@ -187,6 +191,58 @@ public class TileDataManager : MonoBehaviour
 
 
     #region 타일 배치 규칙
+    private void SetGameGridTileMapSpring()
+    {
+        for (int i = 0; i < sizeX; i++)
+        {
+            for (int j = 0; j < sizeY; j++)
+            {
+                int selectedTileIndex = GetRandomTileIndex();
+                GameTilemap.SetTile(new Vector3Int(i, j, 0), springSprites[selectedTileIndex]);
+            }
+        }
+    }
 
-    #endregion
+    public void SetGameGridTileMapSummer()
+    {
+        for (int i = 0; i < sizeX; i++)
+        {
+            for (int j = 0; j < sizeY; j++)
+            {
+                int selectedTileIndex = GetRandomTileIndex();
+                GameTilemap.SetTile(new Vector3Int(i, j, 0), summerSprites[selectedTileIndex]);
+            }
+        }
+    }
+
+    int GetRandomTileIndex()
+    {
+        float randomValue = Random.value; 
+        if (randomValue < 0.95f)
+        {
+            return 0; 
+        }
+        else if (randomValue < 0.96f)
+        {
+            return 1; 
+        }
+        else if (randomValue < 0.97f)
+        {
+            return 2;
+        }
+        else if (randomValue < 0.98f)
+        {
+            return 3; 
+        }
+        else if (randomValue < 0.99f)
+        {
+            return 4;
+        }
+        else
+        {
+            return 5;
+        }
+    }
 }
+    #endregion
+
