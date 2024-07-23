@@ -16,6 +16,10 @@ public class TileDataManager : MonoBehaviour
 
     public int sizeX, sizeY;
 
+    [SerializeField]
+    Sprite[] springSprites;
+    [SerializeField]
+    Sprite[] summerSprites;
     enum TileType
     {
         None = 0,
@@ -179,5 +183,10 @@ public class TileDataManager : MonoBehaviour
             }
         }
     }
+    #endregion
+
+
+    #region 타일 배치 규칙
+
     #endregion
 }
