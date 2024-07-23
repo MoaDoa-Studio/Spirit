@@ -261,8 +261,10 @@ public class SpiritSpawner : MonoBehaviour
     private void CheckSpawnAttachedRoad()
     {
         // 두 곳 모두 봉인되었을때
-        if (nodes[spawnPos1.x, spawnPos1.y].spiritElement == elementNum && nodes[spawnPos2.x, spawnPos2.y].spiritElement == elementNum) return;
-        {   
+        if (TileDataManager.instance.GetTileType(spawnPos1.x, spawnPos1.y) == 3 && TileDataManager.instance.GetTileType(spawnPos2.x, spawnPos2.y) == 3)
+        {
+            if (nodes[spawnPos1.x, spawnPos1.y].spiritElement == elementNum && nodes[spawnPos2.x, spawnPos2.y].spiritElement == elementNum) return;
+            
             if (termcnt % 2 == 0)
             {
                 termcnt++;
@@ -271,6 +273,7 @@ public class SpiritSpawner : MonoBehaviour
                 SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos1.x + 0.5f;
                 SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos1.y + 0.5f;
                 SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos1.x, spawnPos1.y);
+                return;
             }
             else
             {
@@ -280,8 +283,9 @@ public class SpiritSpawner : MonoBehaviour
                 SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos2.x + 0.5f;
                 SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos2.y + 0.5f;
                 SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos2.x, spawnPos2.y);
+                return;
             }
-            
+
         }
         if (TileDataManager.instance.GetTileType(spawnPos1.x, spawnPos1.y) == 3 && TileDataManager.instance.GetTileType(spawnPos2.x, spawnPos2.y) != 3)
         {

@@ -38,7 +38,12 @@ public class Building : MonoBehaviour
     GameObject gameManager;
     Slider buildBar;
 
-    [Header("���� �Ӽ�")]
+    [SerializeField]
+    Sprite constructsprite;
+    [SerializeField]
+    Sprite buildingSprite;
+
+    [Header("빌딩 세팅")]
     public float structureID;
     public string structureName = "New Item";
     public int KindOfStructure = 0;
@@ -57,12 +62,13 @@ public class Building : MonoBehaviour
     public float constructionAmount = 0;
 
     float constructiondevote = 0;
-    // �ڿ� �Ѱ��� �����ϴµ� �ʿ��� ������ ��
+  
     [SerializeField]
     private float EarnWoodResourceAmount = 0;
     [SerializeField]
     private float EarnRockResourceAmount = 0;
-    // ���� � ���¸� ��Ÿ��
+   
+
     public enum BuildOperator
     {
         None,
@@ -100,6 +106,7 @@ public class Building : MonoBehaviour
         structUniqueData = FindDataFromStructUnique(structUniqueDataList, buildData.UniqueProperties);
         SycnXMLDataToBuilding(buildData, structUniqueData);
         CalculateWorkingTimeInGame();
+        GetStartSprite();
     }
     private void Update()
     {
@@ -134,7 +141,7 @@ public class Building : MonoBehaviour
             case BuildOperator.Done:
                 if(UniqueProperties != 107)
                 sliderUI.SetActive(false);
-
+                ChangeSpriteByConstructMode();
                 break;
         }
     }
@@ -307,7 +314,7 @@ public class Building : MonoBehaviour
             gameObjectList.Add(gameObject);
             // 일하는 노동 시간 부여
             gameObject.GetComponent<DetectMove>().TimeforWorking = WorkingTime;
-            constructiondevote++;
+          
         }
 
         if (buildOperator == BuildOperator.Done)
@@ -396,7 +403,8 @@ public class Building : MonoBehaviour
         }     
     public void DeleteWorkingSprit(GameObject _gameObject) 
     {
-        gameObjectList.Remove(_gameObject);       
+        gameObjectList.Remove(_gameObject);
+        constructiondevote++;
     }
     // ���๰ ������ ���̺� ����ȭ => ����
     private BuildData FindDataFromBuildData(List<BuildData> buildDataList, int _buildID)
@@ -443,8 +451,10 @@ public class Building : MonoBehaviour
     void ShowBuildSlideBarToUI()
     {
         buildBar = sliderUI.GetComponentInChildren<Slider>();
+        if(constructiondevote > 0)
         sliderUI.SetActive(true);
-        buildBar.value = constructionAmount / 10;
+        buildBar.maxValue = constructionAmount;
+        buildBar.value = constructiondevote;
     }
     // 저장소일 경우엔 정령 접근 금지
     bool RestrictAccessToBuilding()
@@ -585,6 +595,7 @@ public class Building : MonoBehaviour
         }
     }    
 
+    // 정령 일하는 시간 부여.
     private void CalculateWorkingTimeInGame()
     {
         // 현실 시간 1초 = 게임시간 12분
@@ -595,5 +606,34 @@ public class Building : MonoBehaviour
         float realTimeInseconds = gameTimeInSeconds / gameTimePerSecond;
 
         WorkingTime *= realTimeInseconds;
+    }
+
+
+    void ChangeSpriteByConstructMode()
+    {
+
+        foreach (Transform child in transform)
+        {
+            if (child.name == "Square")
+            {
+                child.gameObject.GetComponent<SpriteRenderer>().sprite = buildingSprite;
+
+            }
+        }
+    }
+
+    void GetStartSprite()
+    {
+        
+        foreach (Transform child in transform)
+        {
+            if(child.name == "Square")
+            {
+                buildingSprite = child.gameObject.GetComponent<SpriteRenderer>().sprite;
+
+               child.gameObject.GetComponent<SpriteRenderer>().sprite = constructsprite;
+
+            }
+        }
     }
 }

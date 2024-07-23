@@ -68,17 +68,21 @@ PrefabInstance:
       propertyPath: BuildID
       value: 1008
       objectReference: {fileID: 0}
+    - target: {fileID: 4896557280666147804, guid: 7ac7e5b397ad6124ea48c74244479eea, type: 3}
+      propertyPath: constructsprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6b4bfcab1c1c6814787187dcdcdb2852, type: 3}
     - target: {fileID: 5996061584074487498, guid: 7ac7e5b397ad6124ea48c74244479eea, type: 3}
       propertyPath: m_Name
       value: "\uAE30\uC220\uC790\uD6C8\uB828\uC18C Variant"
       objectReference: {fileID: 0}
     - target: {fileID: 6211821635439020156, guid: 7ac7e5b397ad6124ea48c74244479eea, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.93
+      value: 2.62
       objectReference: {fileID: 0}
     - target: {fileID: 6211821635439020156, guid: 7ac7e5b397ad6124ea48c74244479eea, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.17
+      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

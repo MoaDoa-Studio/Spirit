@@ -348,6 +348,7 @@ public class ResourceBuilding : MonoBehaviour
         {
             resourceWayTooltip = false;
             Transform tooltipTransform = FindNotChildByName(gameObject.transform, "Circle");
+            Transform tooltip2Transform = FindNotChildByName(gameObject.transform, "Detail");
             // UI를 스크린 좌표계로 이동
             tooltipTransform.position = new Vector3(firstKey.x+0.5f, firstKey.y + 3.5f, 0);
         }

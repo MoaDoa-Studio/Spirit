@@ -161,7 +161,8 @@ public class DetectMove : MonoBehaviour
                 }
                 else
                 {
-                    LootOrFactoryAnimationMove(saveX, saveY);   // 나온 후의 움직임
+                    LootOrFactoryAnimationMove(saveX, saveY);
+                    return;// 나온 후의 움직임
                 }
                 break;
             case Detect.FactoryOrLootEnter:
@@ -403,10 +404,6 @@ public class DetectMove : MonoBehaviour
         if(Vector2.Distance(targetVector, transform.position) <= 0.05f)
         {
             transform.position = targetVector;
-
-            // 다음 칸에 도착할 시 정령 체력 감소
-            if(spiritID != 3)
-            { GetComponent<Spirit>().HP -= 1; }
             detection = Detect.None;
             return;
         }
@@ -666,7 +663,7 @@ public class DetectMove : MonoBehaviour
        
         Vector2 direction = (targetVector - (Vector2)transform.position).normalized;
 
-        if (Vector2.Distance(targetVector, transform.position) <= 0.01f)
+        if (Vector2.Distance(targetVector, transform.position) <= 0.1f)
         {
             transform.position = targetVector;
             CurposX = _curposx; CurposY = _curposy;

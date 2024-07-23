@@ -412,11 +412,12 @@ MonoBehaviour:
   sliderUI: {fileID: 2470682661563090550}
   PreviewParent: {fileID: 0}
   GameObjectCount: 0
-  cellsize: 1
   cellPrefab: {fileID: 0}
   upperRight: {x: 0, y: 0}
   bottomLeft: {x: 0, y: 0}
   gameObjectList: []
+  constructsprite: {fileID: 0}
+  buildingSprite: {fileID: 0}
   structureID: 0
   structureName: New Item
   KindOfStructure: 0

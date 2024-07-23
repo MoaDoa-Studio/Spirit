@@ -392,10 +392,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildID: 1017
   sliderUI: {fileID: 5362454790821014397}
+  PreviewParent: {fileID: 0}
   GameObjectCount: 0
+  cellPrefab: {fileID: 0}
   upperRight: {x: 0, y: 0}
   bottomLeft: {x: 0, y: 0}
   gameObjectList: []
+  constructsprite: {fileID: 21300000, guid: c23cc876dd89d6543b6ea864251f438a, type: 3}
+  buildingSprite: {fileID: 0}
   structureID: 0
   structureName: New Item
   KindOfStructure: 0
