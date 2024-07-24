@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1402bb9579c8d547ae4b24b34dee44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpiritID: 0
+  SpiritID: 1
   SpiritJob: 0
   SpiritElement: 3
   type: 
