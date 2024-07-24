@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 621651572604442631}
   - component: {fileID: 8017260269443200704}
   - component: {fileID: 7802936035873969109}
-  - component: {fileID: 7554042242820560649}
   - component: {fileID: 3833560547665126409}
   m_Layer: 0
   m_Name: Spirit_Soil3
@@ -273,11 +272,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1402bb9579c8d547ae4b24b34dee44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpiritID: 3
+  SpiritID: 1
   SpiritJob: 0
   SpiritElement: 3
+  type: 
   SDefaultLife: 100
-  SpiritSpeed: 0
+  HP: 0
+  SpiritSpeed: 1
   Work_Efficienty: 0
 --- !u!136 &8017260269443200704
 CapsuleCollider:
@@ -298,10 +299,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.61760473
-  m_Height: 2.2406678
+  m_Radius: 0.33
+  m_Height: 0.03
   m_Direction: 1
-  m_Center: {x: -0.0025898218, y: 1.1223428, z: 0}
+  m_Center: {x: -0.014793247, y: -0.04, z: 0}
 --- !u!114 &7802936035873969109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,29 +316,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reference: {fileID: 362812924152535181}
---- !u!136 &7554042242820560649
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3694542969985074976}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.60692334
-  m_Height: 2.310656
-  m_Direction: 1
-  m_Center: {x: -0.0037711263, y: 1.146729, z: 0}
 --- !u!54 &3833560547665126409
 Rigidbody:
   m_ObjectHideFlags: 0

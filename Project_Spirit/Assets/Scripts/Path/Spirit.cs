@@ -7,16 +7,20 @@ public class Spirit : MonoBehaviour
     public int SpiritID;
     public int SpiritJob;
     public int SpiritElement;
+    public string type;
     public float SDefaultLife;
     public float HP;
     public float SpiritSpeed;
     public float Work_Efficienty;
     string SpiritName;
 
+    GameObject CradleManager;
     private void Start()
     {
         SDefaultLife = 100f;
         HP = SDefaultLife;
+        CradleManager = GameObject.Find("CradleManager");
+        check();
     }
 
     public void TakeBuildingExpense()
@@ -29,6 +33,11 @@ public class Spirit : MonoBehaviour
     {
         SDefaultLife *= (1 - 0.2f);
         HP *= (1 - 0.2f);
+    }
+    public void TakeDamageOfResourceBuilding()
+    {        
+        SDefaultLife *= SpiritManager.instance.resourceBuildingDamagePercent; ;
+        HP *= SpiritManager.instance.resourceBuildingDamagePercent; ;
     }
     public void TakeAdvantageOfBuilding()
     {
@@ -43,6 +52,30 @@ public class Spirit : MonoBehaviour
     {
         Debug.Log(SpiritID);
         SpiritID = _SpiritID;
+    }
+
+    void check()
+    {
+        switch(SpiritElement)
+        {
+            case 1:
+                type = "Fire";
+                break;
+            case 2:
+                type = "Water";
+                break;
+            case 3:
+                type = "Ground";
+                break;
+            case 4:
+                type = "Air";
+                break;
+        }
+    }
+    public void DevoteToCradle()
+    {
+        CradleManager.GetComponent<CradleManager>().AddElement(type, (int)HP);
+        Destroy(this.gameObject);
     }
     #region 정령충돌 감지
     private void OnTriggerEnter(Collider collision)
@@ -65,9 +98,9 @@ public class Spirit : MonoBehaviour
                         collision.gameObject.GetComponent<Spirit>().HP -= HP;
                         if (collision.gameObject.GetComponent<Spirit>().HP <= 0)
                         {
-                            Destroy(collision.gameObject);
+                            Destroy(gameObject);
                         }
-                        Destroy(this.gameObject);
+                        
                     }
                     else
                     {

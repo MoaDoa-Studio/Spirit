@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 public class CradleManager : MonoBehaviour
 {
-    [Header("¿ÀºêÁ§Æ®")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®")]
     [SerializeField]
     private GameObject cradle;    
     [SerializeField]
@@ -16,7 +16,7 @@ public class CradleManager : MonoBehaviour
     [SerializeField]
     private GameObject cradleGage;
     
-    [Header("½ºÇÁ¶óÀÌÆ®")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®")]
     [SerializeField]
     private Sprite[] cradleSprite;
     [SerializeField]
@@ -24,7 +24,7 @@ public class CradleManager : MonoBehaviour
     [SerializeField]
     private Sprite[] cradleGageSprite;
 
-    // ¿ø¼Ò °ü·Ã º¯¼ö.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
     Queue<Tuple<int, DateTime>>[] elementQueue = { 
         new Queue<Tuple<int, DateTime>>(), 
         new Queue<Tuple<int, DateTime>>(), 
@@ -33,9 +33,10 @@ public class CradleManager : MonoBehaviour
     };
     private float[] elementAverage = { 0, 0, 0, 0 };
     private int[] elementSum = { 0, 0, 0, 0 };
+    private bool[] checkFirstElement = { false, false, false, false };
     TimeSpan span = TimeSpan.FromSeconds(10);
 
-    // ¿ä¶÷ °ü·Ã º¯¼ö.
+    // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
     private int Level = 0;
     private int GrowthPoint = 0;
     private int GrowthState = 0;
@@ -44,7 +45,8 @@ public class CradleManager : MonoBehaviour
     private float GrowthCooldown = 10f;           
     
     void Start()
-    {        
+    {
+        SetCradleMap();
     }
 
     // Update is called once per frame    
@@ -52,31 +54,20 @@ public class CradleManager : MonoBehaviour
     {
         RemoveExpiredElement();
         CalculateElementAverage();
+
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î°£ ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½É¿ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½.
+        for(int i = 0; i < 4; i++)
+        {
+            if (!checkFirstElement[i])
+                return;
+        }
+
         AddCradleGrowth();
         UpdateCradleUI();
-
-        // For Debug.        
-        //if (Input.GetKey(KeyCode.A))
-        //    AddElement("Fire", 10);
-        //if (Input.GetKey(KeyCode.S))
-        //    AddElement("Water", 10);
-        //if (Input.GetKey(KeyCode.D))
-        //    AddElement("Ground", 10);
-        //if (Input.GetKey(KeyCode.F))
-        //    AddElement("Air", 10);
-        //if (Input.GetKey(KeyCode.Z))
-        //    AddElement("Fire", 30);
-        //if (Input.GetKey(KeyCode.X))
-        //    AddElement("Water", 20);
-        //if (Input.GetKey(KeyCode.C))
-        //    AddElement("Ground", 15);
-        //if (Input.GetKey(KeyCode.V))
-        //    AddElement("Air", 40);
-
     }
 
-    // 4¿ø¼Ò ¼ºÀå °ÔÀÌÁö °ü¸® º¯¼ö.
-    // Á¤·É¿Õ ¼ºÀå °ÔÀÌÁö º¯¼ö.            
+    // 4ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+    // ï¿½ï¿½ï¿½É¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.            
     void AddCradleGrowth()
     {
         GrowthTime += Time.deltaTime;
@@ -88,7 +79,7 @@ public class CradleManager : MonoBehaviour
                 ToNextCradle();
             else if (GrowthPoint < 100)
             {
-                // °ÔÀÓ ¿À¹ö.
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             }            
             
             SetCradleGrowthSlider();
@@ -110,7 +101,7 @@ public class CradleManager : MonoBehaviour
         }
     }
 
-    // Á¤·É¿Õ ·¹º§¾÷ ÇÔ¼ö.
+    // ï¿½ï¿½ï¿½É¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
     public void ToNextCradle()
     {
         Level++;
@@ -119,32 +110,40 @@ public class CradleManager : MonoBehaviour
             cradle.transform.Find("CradleImage").GetComponent<Image>().sprite = cradleSprite[Level];
         else
         {
-            // °ÔÀÓ Å¬¸®¾î ÆÇÁ¤.
+            // ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
         }
     }
 
-    // Á¤·ÉÀÌ ¿ä¶÷¿¡ ºÎµúÇûÀ» °æ¿ì È£ÃâµÇ´Â ÇÔ¼ö ¼³°è.
-    public void AddElement(string name, int val)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½.
+    public void AddElement(string spiritElement, int val)
     {
-        switch (name)
+        int index = -1;
+        switch (spiritElement)
         {
             case "Fire":                
-                elementQueue[0].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));                
-                elementSum[0] += val;
+                index = 0;
                 break;
-            case "Water":
-                elementQueue[1].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
-                elementSum[1] += val;                
+            case "Water":                
+                index = 1;
                 break;
-            case "Ground":
-                elementQueue[2].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
-                elementSum[2] += val;                
+            case "Ground":                
+                index = 2;
                 break;
             case "Air":
-                elementQueue[3].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
-                elementSum[3] += val;                
+                index = 3;
                 break;
         }
+
+        if (index == -1)
+        {
+            Debug.LogError("ï¿½ß¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·Âµï¿½");
+            return;
+        }
+
+        if (!checkFirstElement[index])
+            checkFirstElement[index] = true;
+        elementQueue[index].Enqueue(new Tuple<int, DateTime>(val, DateTime.Now));
+        elementSum[index] += val;
     }
 
     public void RemoveExpiredElement()
@@ -153,7 +152,7 @@ public class CradleManager : MonoBehaviour
         {            
             while (elementQueue[i].Count != 0)
             {
-                // Temp. ÇöÀç ½Ã°£°ú °¡Àå °ú°ÅÀÇ ¿ø¼ÒÀÇ ÁøÀÔ ½Ã°£ÀÌ 10ÃÊ ÀÌ³»·Î Â÷ÀÌ ³¯ °æ¿ì Break;
+                // Temp. ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ 10ï¿½ï¿½ ï¿½Ì³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ Break;
                 if (DateTime.Now - elementQueue[i].Peek().Item2 < span)
                     break;                
                 
@@ -173,30 +172,30 @@ public class CradleManager : MonoBehaviour
                 elementAverage[i] = elementSum[i] / elementQueue[i].Count;
         }
     }
-    // ÇÏ´Ü UI °»½Å ÇÔ¼ö.
-    // °»½Å ¸ñ·Ï, °¢ ¿ø¼Òº° ¼ºÀå ¼Óµµ °ÔÀÌÁö, Á¤·É ¼ºÀå ¼Óµµ ¸¶Å©, Á¤·É¿ÕÀÇ ¼ºÀå °ÔÀÌÁö, Á¤·É¿Õ ÀÌ¹ÌÁö
-    // ¼­¼­È÷ ¿Ã¶ó°¡´Â °ÔÀÌÁö´Â ÄÚ·çÆ¾ ÀÌ¿ëÇØ¼­ ¼³°è.
+    // ï¿½Ï´ï¿½ UI ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½ï¿½Òºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½Å©, ï¿½ï¿½ï¿½É¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½É¿ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¶ó°¡´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½.
     public void UpdateCradleUI()
     {
-        // ¿ä¶÷ ¼ºÀå »óÅÂ °»½Å.
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
         SetCradleGrowthState(GetCradleGrowthRate());
         
-        // ¿ø¼Ò ±â¿© ½½¶óÀÌ´õ °»½Å.
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½â¿© ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½.
         SetElementSliderColor();
         SetElementSliderSize();        
     }
 
-    // ¿ø¼Òº° ¼ºÀå ¼Óµµ °ÔÀÌÁö Ç¥½Ã
+    // ï¿½ï¿½ï¿½Òºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
     public void SetElementSliderSize()
     {
         float totalElementAverage = GetTotalElementAverage();
-        float offset = 1.3f; // ÀüÃ¼ ½½¶óÀÌ´õÀÇ ±æÀÌ¿¡ µû¶ó ¹Ù²î´Â °ª. ÀüÃ¼ ½½¶óÀÌ´õ ±æÀÌ / 2 / 100 °ªÀÌ µé¾î°¨.
+        float offset = 1.3f; // ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½ï¿½. ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½ / 2 / 100 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î°¨.
 
         for (int i = 0; i < 4; i++)
         {
             RectTransform result = elementSlider[i].transform.GetChild(0).GetComponent<RectTransform>();
 
-            float ratio = 0f; // °ÔÀÌÁö¿¡¼­ Â÷ÁöÇÒ ºñÀ².
+            float ratio = 0f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             float x_pos = 0f;
             float width = 0f;            
 
@@ -214,7 +213,7 @@ public class CradleManager : MonoBehaviour
         }
     }
 
-    // Á¤·É¿ÕÀÇ ¼ºÀå ¼Óµµ °è»ê ¹× ÆÇÁ¤ ÇÔ¼ö.
+    // ï¿½ï¿½ï¿½É¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
     public int GetCradleGrowthRate()
     {
         float totalElementAverage = GetTotalElementAverage();
@@ -246,6 +245,13 @@ public class CradleManager : MonoBehaviour
     }
     void SetCradleGrowthState(int val)
     {
+        if (GetTotalElementAverage() == 0)
+        {
+            GrowthState = 3;
+            cradleGrowthRate.GetComponent<Image>().sprite = cradleGrowthRateSprite[3];
+            return;
+        }
+
         if (val <= 4)
         {
             GrowthState = 0;
@@ -280,5 +286,16 @@ public class CradleManager : MonoBehaviour
             return 0;
         return sum / count;
     }    
-    // °ÔÀÓ ¿À¹ö ÇÔ¼ö.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
+
+    void SetCradleMap()
+    {
+        for(int i = 49; i < 54; i++)
+        {
+            for(int j = 49; j < 54; j++)
+            {
+                TileDataManager.instance.SetTileType(i, j, 2);
+            }
+        }
+    }
 }

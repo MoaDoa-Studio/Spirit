@@ -22,7 +22,7 @@ public class ResouceManager : MonoBehaviour
     public List<GameObject> RockObjects;
     [HideInInspector]
     public bool resourceDeployed = false;
-    [HideInInspector]
+    
     public GameObject resourceShowbox;
 
     public float Element_reserves { get; set; }
@@ -37,6 +37,7 @@ public class ResouceManager : MonoBehaviour
     float IncreasingTime = 5f;
     float naturalTime = 5f;
 
+    public int resourceWeight = 1;
     // 자원 표시 UI
     
     public GameObject TimberTxt_UI;
@@ -87,7 +88,7 @@ public class ResouceManager : MonoBehaviour
         if (minvalue < 50)
         {
             // 수정된 값 할당
-            KeyValuePair<Vector2Int, int> updatedPair = new KeyValuePair<Vector2Int, int>(minCoord, minvalue + 1);
+            KeyValuePair<Vector2Int, int> updatedPair = new KeyValuePair<Vector2Int, int>(minCoord, minvalue + resourceWeight);
             for (int i = 0; i < selectedPairedList.Count; i++)
             {
                 if (selectedPairedList[i].Key == minCoord)
@@ -175,7 +176,7 @@ public class ResouceManager : MonoBehaviour
         if (minvalue < 50)
         {
             // 수정된 값 할당
-            KeyValuePair<Vector2Int, int> updatedPair = new KeyValuePair<Vector2Int, int>(minCoord, minvalue + 1);
+            KeyValuePair<Vector2Int, int> updatedPair = new KeyValuePair<Vector2Int, int>(minCoord, minvalue + resourceWeight);
             for (int i = 0; i < selectedPairedList.Count; i++)
             {
                 if (selectedPairedList[i].Key == minCoord)
@@ -205,6 +206,10 @@ public class ResouceManager : MonoBehaviour
         }
     }
 
+    public void IncreaseResourceWeight()
+    {
+        resourceWeight += 1;
+    }
     void RelocateTileasWood(Vector2Int minCoord, int _updateValue, GameObject _setparents)
     {
         Vector3 col = new Vector3(minCoord.x + 0.5f, minCoord.y + 0.5f, 0);
