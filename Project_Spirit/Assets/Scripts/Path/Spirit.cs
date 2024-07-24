@@ -135,6 +135,12 @@ public class Spirit : MonoBehaviour
             }
             
         }
+
+        if(collision.gameObject.tag == "Cradle")
+        {
+            GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+            Destroy(gameObject);
+        }
     }
     #endregion
 }
