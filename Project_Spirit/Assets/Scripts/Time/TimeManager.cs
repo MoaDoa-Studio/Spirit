@@ -32,10 +32,14 @@ public class TimeManager : MonoBehaviour
 
     int currentWeather;
     int temporature;
-    float accumulatedGameTime = 0f;
-    TimeSpan span = TimeSpan.FromSeconds(10);
+    public int timeSpeed = 1;
+    public float accumulatedGameTime = 0f;
 
+    
+    TimeSpan span = TimeSpan.FromSeconds(10);
     TemperatureManager temperatureManager;
+    SpiritManager spiritManager;
+    BuildingDataManager buildingDataManager;
     private void Start()
     {
         DefaultDate = DateTime.ParseExact("03-01 07:00:00", "MM-dd HH:mm:ss", null);
@@ -47,6 +51,8 @@ public class TimeManager : MonoBehaviour
         currentWeather = 0;
 
         EventManager = GameObject.Find("[EventManager]");
+        spiritManager = GameObject.Find("GameManager").GetComponent<SpiritManager>();
+        buildingDataManager = GameObject.Find("GameManager").GetComponent<BuildingDataManager>();
         temperatureManager = GetComponent<TemperatureManager>();
 
         // 날씨와 정령의 체력 감소 관계
@@ -67,7 +73,7 @@ public class TimeManager : MonoBehaviour
     {
         // 현실 시간 1초 = 게임 시간 12분
         float deltaTime = (float)(DateTime.Now - calc).TotalSeconds;
-        accumulatedGameTime += deltaTime * Time.timeScale * 12f * 60f;
+        accumulatedGameTime += deltaTime * Time.timeScale * 12f * 60f * timeSpeed;
         calc = DateTime.Now;
 
         // 누적된 게임 시간을 이용해 현재 게임 날짜와 시간을 계산합니다.
@@ -175,26 +181,37 @@ public class TimeManager : MonoBehaviour
    public void PauseCradleUI()
    {
         SoundManager.instance.UIButtonclick();
-        Time.timeScale = 0f;
+        spiritManager.GetSpeed();
+        spiritManager.SetSpeed(0f);
+        timeSpeed = 0;
    }
 
     public void PlayCradleUI()
     {
         SoundManager.instance.UIButtonclick();
-        Time.timeScale = 1f;
+        spiritManager.GetSpeed();
+        spiritManager.SetSpeed(1f);
+        timeSpeed = 1;
+        
     }
 
     public void FastPlay()
     {
         SoundManager.instance.UIButtonclick();
-        Time.timeScale = 4f;
+        spiritManager.GetSpeed();
+        spiritManager.SetSpeed(2f);
+        timeSpeed = 2;
+        
     }
 
     public void DoudlbePlay()
     {
         SoundManager.instance.UIButtonclick();
-        Time.timeScale = 8f;
-
+        spiritManager.GetSpeed();
+        spiritManager.SetSpeed(3f);
+      
+        timeSpeed = 4;
+        
     }
 
     public string GetCurrentDateTimeString()

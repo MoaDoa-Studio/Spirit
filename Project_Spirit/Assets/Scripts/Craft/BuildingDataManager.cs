@@ -19,7 +19,7 @@ public class BuildingDataManager : MonoBehaviour
 
     public GameObject buildinginfo_UI;
     public GameObject characterinfo_UI;
-
+    public GameObject BuildingSlot;
     // XML 데이터 scriptableObject 리스트
     public List<BuildData> buildDataList;
     public List<StructUniqueData> structUniqueDataList;
@@ -129,6 +129,14 @@ public class BuildingDataManager : MonoBehaviour
             buildUniqueData.StructureCondition = int.Parse(xmlNode.SelectSingleNode("StructureCondition").InnerText);
           
             structUniqueDataList.Add(buildUniqueData);
+        }
+    }
+
+    public void ChangeBuildingWorkTime(float time)
+    {
+        for (int i = 0; i < BuildingSlot.transform.childCount; i++)
+        {
+            BuildingSlot.transform.GetChild(i).GetComponent<Building>().WorkingTime *= time;
         }
     }
 }

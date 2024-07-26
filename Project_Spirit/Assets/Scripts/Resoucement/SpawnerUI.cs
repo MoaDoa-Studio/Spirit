@@ -27,7 +27,8 @@ public class SpawnerUI : MonoBehaviour
     GameObject[] showSlider;
     [SerializeField]
     GameObject MainSlider;
-   
+    [SerializeField]
+    GameObject warnigTxt;
     public Button[] buttons;
     
     public Slider slider;
@@ -47,7 +48,9 @@ public class SpawnerUI : MonoBehaviour
     bool isSlider2Active = false;
     bool isSlider3Active = false;
     bool isSliderAllActive = false;
-    
+
+    int[] SpawnTime = new int[] { 96, 72, 48 };
+    int spwnLv;
     List<GameObject> spawnManage = new List<GameObject>(); // 정령 생산 전체 리스트
     Canvas canvas;
 
@@ -93,7 +96,14 @@ public class SpawnerUI : MonoBehaviour
             if(MainSpawner != null)
             {
                 Debug.Log(MainSpawner);
+                // 입력할 수 있는 값보다 높은 값을 받으면
+                if(inputValue > SpawnTime[spwnLv -1])
+                {
+                    warnigTxt.SetActive(true);
+                    return;
+                }
                 MainSpawner.GetComponent<SpiritSpawner>().sliderValue = inputValue;
+                warnigTxt.SetActive(false);
                 Debug.Log(MainSpawner.GetComponent<SpiritSpawner>().sliderValue);
             }
         }
@@ -142,6 +152,7 @@ public class SpawnerUI : MonoBehaviour
     {
         Spawner_Name.GetComponent<TextMeshProUGUI>().text = spawnInfo.SpawnerName + "의 생산소";
         SpawnLv.GetComponentInChildren<TextMeshProUGUI>().text = spawnInfo.SpwnLv.ToString() + "단계";
+        spwnLv = spawnInfo.SpwnLv;
         SpiritLv.GetComponentInChildren<TextMeshProUGUI>().text = spawnInfo.SpiritLv.ToString() + "단계";
         TextMeshProUGUI[] textComponets = SpiritLv.GetComponentsInChildren<TextMeshProUGUI>();
         foreach(TextMeshProUGUI textComponet in textComponets)
@@ -155,6 +166,10 @@ public class SpawnerUI : MonoBehaviour
                 // 데이터 테이블 받아서 구현해야함
                 textComponet.text = spawnInfo.SpiritLv.ToString();
             }
+        }
+        foreach(Transform t in parentSliderPos)
+        {
+            t.GetComponent<Slider>().maxValue = SpawnTime[spawnInfo.SpwnLv];
         }
         ChangeMainHandleImageInChildren(MainSlider.transform, spawnInfo.elementNum);
     }
