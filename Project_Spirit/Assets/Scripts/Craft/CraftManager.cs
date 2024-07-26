@@ -28,11 +28,12 @@ public partial class CraftManager : MonoBehaviour
     private GameObject mouseIndicator;
     private Tile selectedRoad;
     private Tile selectedSign;
-    Node[,] nodes;
     private int[,] copyArray = new int[103, 103];
     private Vector3Int deleteStart;
     private Vector3Int signBuffer = new Vector3Int();
 
+    Node[,] nodes;
+    SoundManager soundManager;
     [SerializeField]
     private List<Vector3Int> roadBufferList = new List<Vector3Int>();
     [SerializeField]
@@ -60,6 +61,7 @@ public partial class CraftManager : MonoBehaviour
         craftMode = CraftMode.None;
         mouseIndicator = null; 
         deleteStart = Vector3Int.back;        
+        soundManager = GameObject.Find("AudioManager").GetComponent<SoundManager>();
     }
 
     void ChangeCraftMode(CraftMode mode)
@@ -142,13 +144,11 @@ public partial class CraftManager : MonoBehaviour
             
             case CraftMode.DeleteBuilding:
                 if (Input.GetKeyDown(KeyCode.Mouse0))
-
                 {
                     deleteStart = mousePos;
-                    
                 }
-                    if (Input.GetKeyUp(KeyCode.Mouse0))
-                {
+               if (Input.GetKeyUp(KeyCode.Mouse0))
+               {
                     if (deleteStart == Vector3Int.back)
                         return;
                     DeleteBuilding();
@@ -321,8 +321,8 @@ partial class CraftManager
                 TileDataManager.instance.SetTileType(j, i, 1);
         
         mouseIndicator.GetComponent<Building>().SetBuildingPos(upperRight, bottomLeft);
-        BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());        
-        
+        BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());
+        soundManager.BuildingOnbound(4);
         mouseIndicator = null;        
         ChangeCraftMode(CraftMode.Default);        
     }
@@ -375,6 +375,7 @@ partial class CraftManager
     #region 건물 삭제 관련
     void DeleteBuilding()
     {
+        Debug.Log("건물 삭제하는거 들어오긴하니?");
         Vector3Int deleteEnd = grid.WorldToCell(ProcessingMousePosition());
         Vector2Int deleteUpperRight = new Vector2Int();
         Vector2Int deleteBottomLeft = new Vector2Int();
@@ -407,6 +408,11 @@ partial class CraftManager
             {                
                 TileDataManager.instance.ChangeTileTypeByRange(upperRight, bottomLeft, 1, 0); // 타일 타입 초기화.
                 result.Enqueue(building);
+            }
+            for(int i = bottomLeft.x; i<= upperRight.x; i++)
+            {
+                for(int j = bottomLeft.y; j<= upperRight.y; j++)
+                GridTilemap.SetTile(new Vector3Int(i, j, 0), defaultTile);
             }
         }
         return result;
@@ -531,7 +537,7 @@ partial class CraftManager
                 GameTilemap.SetTile(new Vector3Int(j, i, 0), null);         
                 GridTilemap.SetTile(new Vector3Int(j, i, 0), defaultTile);
             }
-
+        soundManager.BuildingOnbound(3);
         deleteStart = Vector3Int.back;
         ChangeCraftMode(CraftMode.Default);
     }

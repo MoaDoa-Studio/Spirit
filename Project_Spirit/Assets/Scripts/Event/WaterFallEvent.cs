@@ -11,6 +11,7 @@ public class WaterFallEvent : MonoBehaviour
    
     [SerializeField]
     bool newsPaperOpened = false;
+    public bool waterFallEvent = false;
 
     public void NewsPaperEventTrigger()
     {
@@ -22,14 +23,15 @@ public class WaterFallEvent : MonoBehaviour
     public void RainDropEventTrigger()
     {
         RainDropEventUI.SetActive(true);
-      
+        waterFallEvent = true;
         // 물 정령 생산소 두배로 출력하게 하는 매서드
+
     }
 
     public void RainDropEventEnd()
     {
         RainDropEventUI.SetActive(false);
-      
+        waterFallEvent = false;
         // 물 정령 생산소 출력양 복구하게 출력하게 하는 매서드
     }    
 
@@ -40,13 +42,12 @@ public class WaterFallEvent : MonoBehaviour
             // 물 정령 스폰시간 절반으로 줄이기
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                
+                SoundManager.instance.UIButtonclick();
                 Debug.Log("Escape key pressed, hiding NewsPaperEventUI");
 
                 Destroy(NewsPaperEventUI);
                 Time.timeScale = 1f;
                 newsPaperOpened =false;
-                //SetActiveRecursively(NewsPaperEventUI, false);
                 // 비 이벤트 발생
                 RainDropEventTrigger();
             }

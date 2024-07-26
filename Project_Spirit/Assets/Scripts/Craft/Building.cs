@@ -21,12 +21,13 @@ public class Building : MonoBehaviour
     //private float cellsize = 1f;
     [SerializeField]
     private GameObject cellPrefab;
+    [SerializeField]
+    private GameObject building_info;
 
     [HideInInspector] 
     public Vector2Int upperRight;
     public Vector2Int bottomLeft;
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
-    // ���� ��� ����Ʈ
     
     public List<GameObject> gameObjectList;
     BuildingDataManager buildingDataManager;
@@ -34,7 +35,7 @@ public class Building : MonoBehaviour
     List<StructUniqueData> structUniqueDataList;
     BuildData buildData;
     StructUniqueData structUniqueData;
-
+    SoundManager soundManager;
     GameObject gameManager;
     Slider buildBar;
 
@@ -67,13 +68,15 @@ public class Building : MonoBehaviour
     private float EarnWoodResourceAmount = 0;
     [SerializeField]
     private float EarnRockResourceAmount = 0;
-   
+
+    bool infoUIActive = false;
 
     public enum BuildOperator
     {
         None,
         Construct,
-        Done
+        Done,
+        Finish
     }
 
     public enum BuildState
@@ -93,9 +96,10 @@ public class Building : MonoBehaviour
         connectedRoads = null;
         gameObjectList = new List<GameObject>();
         gameManager = GameObject.Find("GameManager");
-        // ���� ������ �ʱ�ȭ.
+        soundManager = GameObject.Find("AudioManager").GetComponent<SoundManager>();
         buildDataList = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().buildDataList;
         structUniqueDataList = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().structUniqueDataList;
+        building_info = gameManager.GetComponent<BuildingDataManager>().buildinginfo_UI;
         buildData = FindDataFromBuildData(buildDataList, BuildID);
        
         if (buildData == null)
@@ -113,7 +117,7 @@ public class Building : MonoBehaviour
         gameObjectList.RemoveAll(item => item == null);
         BuildOperation();
         BuildStater();
-
+        ToggleBuildingInfoUI();
         // �ܹ߼� �ǹ� ȿ��
 
     }
@@ -142,6 +146,10 @@ public class Building : MonoBehaviour
                 if(UniqueProperties != 107)
                 sliderUI.SetActive(false);
                 ChangeSpriteByConstructMode();
+                soundManager.BuildingOnbound(2);
+                buildOperator = BuildOperator.Finish;
+                break;
+            case BuildOperator.Finish:
                 break;
         }
     }
@@ -314,7 +322,9 @@ public class Building : MonoBehaviour
             gameObjectList.Add(gameObject);
             // 일하는 노동 시간 부여
             gameObject.GetComponent<DetectMove>().TimeforWorking = WorkingTime;
-          
+
+            // 입장하는 사운드 넣기.
+            soundManager.BuildingOnbound(0);
         }
 
         if (buildOperator == BuildOperator.Done)
@@ -401,10 +411,13 @@ public class Building : MonoBehaviour
             }                                               
             } 
         }     
+
+    // 빌딩에서 일한 이후.
     public void DeleteWorkingSprit(GameObject _gameObject) 
     {
         gameObjectList.Remove(_gameObject);
         constructiondevote++;
+        soundManager.BuildingOnbound(1);
     }
     // ���๰ ������ ���̺� ����ȭ => ����
     private BuildData FindDataFromBuildData(List<BuildData> buildDataList, int _buildID)
@@ -635,5 +648,50 @@ public class Building : MonoBehaviour
 
             }
         }
+    }
+
+    private void OnMouseDown()
+    {
+        foreach(Transform child in building_info.transform)
+        {
+            if (child.gameObject.name == structureID.ToString())
+            { 
+                child.gameObject.SetActive(true);    
+                infoUIActive = true;
+            }
+        }
+    }
+
+    private void ToggleBuildingInfoUI()
+    {
+        if(infoUIActive)
+        {
+            if(Input.GetKey(KeyCode.Escape))
+            {
+                foreach (Transform child in building_info.transform)
+                {
+                    if (child.gameObject.name == structureID.ToString())
+                    {
+                        child.gameObject.SetActive(false);
+                        infoUIActive = false;
+                    }
+                }
+            }
+        }
+    }
+
+    // 객체가 파괴되기 전에 호출되는 매서드
+    private void OnDestroy()
+    {
+        foreach (Transform child in building_info.transform)
+        {
+            if (child.gameObject.name == structureID.ToString())
+            {
+                child.gameObject.SetActive(false);
+              
+            }
+        }
+
+        soundManager.BuildingOnbound(3);
     }
 }

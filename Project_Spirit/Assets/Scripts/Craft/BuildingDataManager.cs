@@ -12,11 +12,13 @@ public class BuildingDataManager : MonoBehaviour
     public List<Building> BuildingList = new List<Building>();    
     [SerializeField]
     private GameObject BuildingParent;    
-
     [SerializeField]
     private string StructTableName;
     [SerializeField]
     private string StructUniqueTableName;
+
+    public GameObject buildinginfo_UI;
+    public GameObject characterinfo_UI;
 
     // XML 데이터 scriptableObject 리스트
     public List<BuildData> buildDataList;

@@ -499,7 +499,7 @@ public class SpiritSpawner : MonoBehaviour
         // 요람
         if(TileDataManager.instance.GetTileType(x,y) == 2)
         {
-            Debug.Log(" 정령까지 가는 요람길이 존재합니다.");
+            //Debug.Log(" 정령까지 가는 요람길이 존재합니다.");
             return true;
         }
         if (TileDataManager.instance.GetTileType(x, y) != 1 && TileDataManager.instance.GetTileType(x, y) != 3 && TileDataManager.instance.GetTileType(x, y) != 4

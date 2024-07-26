@@ -9,7 +9,7 @@ public class BookEvent : MonoBehaviour
     private GameObject bookPrefab;
     [SerializeField]
     private GameObject bookEventUI;
-
+    
     private bool eventhasoccured;
     bool bookSpawned = false;
     Node[,] nodes;
@@ -66,6 +66,7 @@ public class BookEvent : MonoBehaviour
                 {
                     Debug.Log("책이 소환할 수 없는 위치입니다.");
                     BookEventTrigger();
+                    SoundManager.instance.BookDrop(0);
                 }
             }
             
@@ -88,7 +89,8 @@ public class BookEvent : MonoBehaviour
 
     // 책 눌렀을 때 실행되는 메서드.
     public void BookMouseOn()
-    {
+    { 
+        SoundManager.instance.UIButtonclick();
         bookEventUI.SetActive(true);
 
         // 2. 카메라 시점이 떨어진 책을 중심으로 함

@@ -1,6 +1,8 @@
  using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Spirit : MonoBehaviour
 {
@@ -15,7 +17,13 @@ public class Spirit : MonoBehaviour
     string SpiritName;
 
     GameObject CradleManager;
-   
+    GameObject ui_characater_info;
+
+    Slider slider;
+    private TMP_InputField title;
+    private TMP_InputField text;
+
+    bool characterinfo = false;
     private void Start()
     {
         SDefaultLife = 100f;
@@ -28,7 +36,10 @@ public class Spirit : MonoBehaviour
     {
 
     }
-
+    private void Update()
+    {
+        ToggleCharacterInfoUI();
+    }
     // 각종 훈련소, 연구소 사용시 적용되는 효과
     public void TakeDamageOfBuilding()
     {
@@ -61,15 +72,19 @@ public class Spirit : MonoBehaviour
         {
             case 1:
                 type = "Fire";
+                SpiritName = " 불 정령";
                 break;
             case 2:
                 type = "Water";
+                SpiritName = " 물 정령";
                 break;
             case 3:
                 type = "Ground";
+                SpiritName = " 땅 정령";
                 break;
             case 4:
                 type = "Air";
+                SpiritName = " 공기 정령";
                 break;
         }
     }
@@ -143,4 +158,70 @@ public class Spirit : MonoBehaviour
         }
     }
     #endregion
+
+    private void OnMouseDown()
+    {
+        ui_characater_info = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().characterinfo_UI;
+        ui_characater_info.SetActive(true);
+        SetUIInfo(ui_characater_info.transform);
+        characterinfo = true;
+    }
+
+
+    void SetUIInfo(Transform transform)
+    {
+        foreach (Transform t in transform)
+        {
+            if (t.gameObject.name == SpiritElement.ToString())
+            {
+                t.gameObject.SetActive(true);
+            }
+
+            if (t.gameObject.name == "title")
+            {
+                t.GetComponent<TextMeshProUGUI>().text = $"      @@ ({SpiritJob})  @@ {SpiritName}";
+               
+            }
+            if (t.gameObject.name == "gauge")
+            {
+                t.GetComponent<Slider>().maxValue = SDefaultLife;
+                t.GetComponent <Slider>().value = HP;
+            }
+        }
+
+
+    }
+
+    // UI 정보 초기화
+    void InitializeUIInfo()
+    {
+        foreach (Transform t in transform)
+        {
+            if (t.gameObject.name == SpiritElement.ToString())
+            {
+                t.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void ToggleCharacterInfoUI()
+    {
+        if (characterinfo)
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+
+                foreach(Transform t in ui_characater_info.transform)
+                {
+
+                    if (t.gameObject.name == "1" || t.gameObject.name == "2" || t.gameObject.name == "3" || t.gameObject.name == "4")
+                    {
+                         t.gameObject.SetActive(false);
+                    }
+                }
+                SoundManager.instance.UIButtonclick();
+                ui_characater_info.SetActive(false);
+            }
+        }
+    }
 }

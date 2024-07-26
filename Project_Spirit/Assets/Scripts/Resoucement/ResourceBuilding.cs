@@ -25,7 +25,7 @@ public class ResourceBuilding : MonoBehaviour
 
     public List<GameObject> ResourcegameObjectList;
     ResouceManager resourceManager;
-
+    SoundManager soundManager;
     Vector2Int firstKey;
 
     int decreasedamount = 0;
@@ -53,6 +53,7 @@ public class ResourceBuilding : MonoBehaviour
     {
         InitializeResourceManger(); // => 자원 정보 초기화
         mainCamera = Camera.main;
+        soundManager = GameObject.Find("AudioManager").GetComponent<SoundManager>();
 
     }
     private void Update()
@@ -282,6 +283,8 @@ public class ResourceBuilding : MonoBehaviour
         {
             ResourcegameObjectList.Add(_gameObject);
             _gameObject.GetComponent<Spirit>().TakeDamageOfResourceBuilding();
+            _gameObject.GetComponent<DetectMove>().TimeforWorking = 2f;
+            soundManager.BuildingOnbound(0);
         }
     }
     public void DeleteWorkingSprit(GameObject _gameObject)
@@ -295,6 +298,7 @@ public class ResourceBuilding : MonoBehaviour
         if (ResourcegameObjectList.Contains(_gameObject))
         {
             ResourcegameObjectList.Remove(_gameObject);
+            soundManager.BuildingOnbound(1);
         }
     }
 

@@ -73,12 +73,6 @@ public class TimeManager : MonoBehaviour
         // 누적된 게임 시간을 이용해 현재 게임 날짜와 시간을 계산합니다.
         CurrentDate = DefaultDate + TimeSpan.FromSeconds(accumulatedGameTime); 
 
-        // ���� �ð� 1�� = ���� �ð� 12��
-       // TimeSpan diff = DateTime.Now - calc;
-       // CurrentDate = DefaultDate 
-        //    + TimeSpan.FromMinutes(diff.Seconds * 12) 
-         //   + TimeSpan.FromHours(diff.Minutes * 12) 
-          //  + TimeSpan.FromDays(diff.Hours * 30);
     }
 
     void SetTimeText()
@@ -88,20 +82,28 @@ public class TimeManager : MonoBehaviour
         else
             Time_text.text = "AM " + CurrentDate.ToString("hh:mm");
         Date_text.text = CurrentDate.ToString("MM-dd");
-        //Temperature_text.text = "기온 " + temporature.ToString() + "°";
+       
     }
 
     void SetBGM()
     {
-        if(CurrentDate.Hour >= 7 && CurrentDate.Hour < 18)
+        if(EventManager.GetComponent<WaterFallEvent>().waterFallEvent)
         {
-            soundController.GetComponent<SoundManager>().PlayBgm("BGM4");
+            soundController.GetComponent<SoundManager>().PlayBgm("Rain");
         }
-        else if ((CurrentDate.Hour > 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute >= 30)) ||
-              (CurrentDate.Hour < 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute < 20)))
+        else
         {
-            soundController.GetComponent<SoundManager>().PlayBgm("BGM5");
 
+            if(CurrentDate.Hour >= 7 && CurrentDate.Hour < 18)
+            {
+                soundController.GetComponent<SoundManager>().PlayBgm("BGM4");
+            }
+            else if ((CurrentDate.Hour > 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute >= 30)) ||
+                  (CurrentDate.Hour < 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute < 20)))
+            {
+                soundController.GetComponent<SoundManager>().PlayBgm("BGM5");
+
+            }
         }
     }
 
@@ -172,21 +174,25 @@ public class TimeManager : MonoBehaviour
 
    public void PauseCradleUI()
    {
+        SoundManager.instance.UIButtonclick();
         Time.timeScale = 0f;
    }
 
     public void PlayCradleUI()
     {
+        SoundManager.instance.UIButtonclick();
         Time.timeScale = 1f;
     }
 
     public void FastPlay()
     {
+        SoundManager.instance.UIButtonclick();
         Time.timeScale = 4f;
     }
 
     public void DoudlbePlay()
     {
+        SoundManager.instance.UIButtonclick();
         Time.timeScale = 8f;
 
     }

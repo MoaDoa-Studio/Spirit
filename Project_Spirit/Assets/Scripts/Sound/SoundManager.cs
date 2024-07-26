@@ -9,6 +9,8 @@ public partial class SoundManager : MonoBehaviour
 
     public Sound[] sounds;
     public AudioClip[] roadSFX;
+    public AudioClip[] boundSFX;
+    public AudioClip[] EventSFX;
 
     //플레이 배경음 이름
     public string bgmName = "";
@@ -225,6 +227,44 @@ public partial class SoundManager
         source.Play();
         Destroy(source, clip.length);
     }
+    #endregion
+
+    #region 정령 건물 진입 사운드
+    public void BuildingOnbound(int count)
+    {
+        AudioClip clip = boundSFX[count];
+        AudioSource source = gameObject.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume *= 0.3f;
+        //source.outputAudioMixerGroup = audioMixer.FindMatchingGroups("SFX")[0];
+        source.Play();
+        Destroy(source, clip.length);
+    }
+    #endregion
+
+    #region 이벤트 사운드
+
+    // 책 떨어지는 소리
+    public void BookDrop(int count)
+    {
+        AudioClip clip = EventSFX[count];
+        AudioSource source = gameObject.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume *= 0.3f;
+        source.Play();
+        Destroy(source, clip.length);
+    }
+
+    public void UIButtonclick()
+    {
+        AudioClip clip = EventSFX[9];
+        AudioSource source = gameObject.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume *= 0.5f;
+        source.Play();
+        Destroy(source, clip.length);
+    }
+
     #endregion
 }
 
