@@ -1,6 +1,8 @@
  using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Spirit : MonoBehaviour
 {
@@ -15,6 +17,13 @@ public class Spirit : MonoBehaviour
     string SpiritName;
 
     GameObject CradleManager;
+    GameObject ui_characater_info;
+
+    Slider slider;
+    private TMP_InputField title;
+    private TMP_InputField text;
+
+    bool characterinfo = false;
     private void Start()
     {
         SDefaultLife = 100f;
@@ -27,7 +36,10 @@ public class Spirit : MonoBehaviour
     {
 
     }
-
+    private void Update()
+    {
+        ToggleCharacterInfoUI();
+    }
     // 각종 훈련소, 연구소 사용시 적용되는 효과
     public void TakeDamageOfBuilding()
     {
@@ -60,15 +72,19 @@ public class Spirit : MonoBehaviour
         {
             case 1:
                 type = "Fire";
+                SpiritName = " 불 정령";
                 break;
             case 2:
                 type = "Water";
+                SpiritName = " 물 정령";
                 break;
             case 3:
                 type = "Ground";
+                SpiritName = " 땅 정령";
                 break;
             case 4:
                 type = "Air";
+                SpiritName = " 공기 정령";
                 break;
         }
     }
@@ -77,6 +93,17 @@ public class Spirit : MonoBehaviour
         CradleManager.GetComponent<CradleManager>().AddElement(type, (int)HP);
         Destroy(this.gameObject);
     }
+
+    public void TakeDamage25ByWeather()
+    {
+        HP  -= HP - 0.041667f; 
+    }
+
+    public void TakeDamage25OverByWeather(float temp)
+    {
+        HP -= (0.041667f * (temp - 25) / 10);
+    }
+
     #region 정령충돌 감지
     private void OnTriggerEnter(Collider collision)
     {
@@ -88,7 +115,9 @@ public class Spirit : MonoBehaviour
                 // 기사 정령인 상황.
                 if (SpiritID == 4)
                 {
-                    Destroy(collision.gameObject);
+                    collision.GetComponent<SpiritAnim>().HitAndDissapear();
+                    collision.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                    Destroy(collision.gameObject, 2f);
                 }
                 // 기사 정령이 아닌 상황.
                 else
@@ -98,19 +127,101 @@ public class Spirit : MonoBehaviour
                         collision.gameObject.GetComponent<Spirit>().HP -= HP;
                         if (collision.gameObject.GetComponent<Spirit>().HP <= 0)
                         {
-                            Destroy(gameObject);
+                            collision.gameObject.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                            Destroy(collision.gameObject, 1f);
+
                         }
+                            gameObject.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                            Destroy(gameObject, 1f);
                         
                     }
                     else
                     {
                         HP -= collision.gameObject.GetComponent<Spirit>().HP;
-                        Destroy(collision.gameObject);
+                        if(HP <= 0)
+                        {
+                            gameObject.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                            Destroy(gameObject, 1f);
+                        }
+                        collision.GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+                        Destroy(collision.gameObject,1f);
                     }
                 }
             }
             
         }
+
+        if(collision.gameObject.tag == "Cradle")
+        {
+            GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
+            Destroy(gameObject);
+        }
     }
     #endregion
+
+    private void OnMouseDown()
+    {
+        ui_characater_info = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().characterinfo_UI;
+        ui_characater_info.SetActive(true);
+        SetUIInfo(ui_characater_info.transform);
+        characterinfo = true;
+    }
+
+
+    void SetUIInfo(Transform transform)
+    {
+        foreach (Transform t in transform)
+        {
+            if (t.gameObject.name == SpiritElement.ToString())
+            {
+                t.gameObject.SetActive(true);
+            }
+
+            if (t.gameObject.name == "title")
+            {
+                t.GetComponent<TextMeshProUGUI>().text = $"      @@ ({SpiritJob})  @@ {SpiritName}";
+               
+            }
+            if (t.gameObject.name == "gauge")
+            {
+                t.GetComponent<Slider>().maxValue = SDefaultLife;
+                t.GetComponent <Slider>().value = HP;
+            }
+        }
+
+
+    }
+
+    // UI 정보 초기화
+    void InitializeUIInfo()
+    {
+        foreach (Transform t in transform)
+        {
+            if (t.gameObject.name == SpiritElement.ToString())
+            {
+                t.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void ToggleCharacterInfoUI()
+    {
+        if (characterinfo)
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+
+                foreach(Transform t in ui_characater_info.transform)
+                {
+
+                    if (t.gameObject.name == "1" || t.gameObject.name == "2" || t.gameObject.name == "3" || t.gameObject.name == "4")
+                    {
+                         t.gameObject.SetActive(false);
+                    }
+                }
+                SoundManager.instance.UIButtonclick();
+                ui_characater_info.SetActive(false);
+            }
+        }
+    }
 }

@@ -583,10 +583,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildID: 1015
   sliderUI: {fileID: 3776910828176441431}
+  PreviewParent: {fileID: 0}
   GameObjectCount: 0
+  cellPrefab: {fileID: 0}
   upperRight: {x: 0, y: 0}
   bottomLeft: {x: 0, y: 0}
   gameObjectList: []
+  constructsprite: {fileID: 21300000, guid: 3c031cc38f2ebac4aa82217b10c91a57, type: 3}
+  buildingSprite: {fileID: 0}
   structureID: 0
   structureName: New Item
   KindOfStructure: 0

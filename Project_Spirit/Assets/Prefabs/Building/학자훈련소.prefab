@@ -367,7 +367,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6, y: 4}
+  m_Size: {x: 8, y: 4}
   m_EdgeRadius: 0
 --- !u!50 &8067222235730123945
 Rigidbody2D:
@@ -412,11 +412,12 @@ MonoBehaviour:
   sliderUI: {fileID: 2470682661563090550}
   PreviewParent: {fileID: 0}
   GameObjectCount: 0
-  cellsize: 1
   cellPrefab: {fileID: 0}
   upperRight: {x: 0, y: 0}
   bottomLeft: {x: 0, y: 0}
   gameObjectList: []
+  constructsprite: {fileID: 0}
+  buildingSprite: {fileID: 0}
   structureID: 0
   structureName: New Item
   KindOfStructure: 0
@@ -465,7 +466,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.8, y: -0.84, z: 0}
-  m_LocalScale: {x: 2.02, y: 1.0933, z: 1}
+  m_LocalScale: {x: 1.5, y: 0.58, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3051293056180329036}
@@ -511,8 +512,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 9
-  m_Sprite: {fileID: 21300000, guid: 0e171e3b4b0bdc14cac403ba7b2cc370, type: 3}
-  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 81640150061cf3a41ad388d51663ceb6, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

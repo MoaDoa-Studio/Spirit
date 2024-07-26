@@ -28,11 +28,17 @@ public partial class CraftManager : MonoBehaviour
     private GameObject mouseIndicator;
     private Tile selectedRoad;
     private Tile selectedSign;
-    Node[,] nodes;
     private int[,] copyArray = new int[103, 103];
-    private List<Vector3Int> roadBufferList = new List<Vector3Int>();
-    private Vector3Int signBuffer = new Vector3Int();
     private Vector3Int deleteStart;
+    private Vector3Int signBuffer = new Vector3Int();
+
+    Node[,] nodes;
+    SoundManager soundManager;
+    [SerializeField]
+    private List<Vector3Int> roadBufferList = new List<Vector3Int>();
+    [SerializeField]
+    private GameObject soundmanager;
+    private int roadcnt;
 
     public bool IsPointerOverUI()
     => EventSystem.current.IsPointerOverGameObject();
@@ -55,6 +61,7 @@ public partial class CraftManager : MonoBehaviour
         craftMode = CraftMode.None;
         mouseIndicator = null; 
         deleteStart = Vector3Int.back;        
+        soundManager = GameObject.Find("AudioManager").GetComponent<SoundManager>();
     }
 
     void ChangeCraftMode(CraftMode mode)
@@ -72,10 +79,15 @@ public partial class CraftManager : MonoBehaviour
                 UpdateFieldStatus(); // 필드 갱신. 건물 도로 등등.
                 break;
             case CraftMode.PlaceBuilding:
-            case CraftMode.DeleteBuilding:                
+               
+            case CraftMode.DeleteBuilding:
+               
             case CraftMode.PlaceRoad:
+               
             case CraftMode.DeleteRoad:
+               
             case CraftMode.PlaceSign:
+               
             case CraftMode.DeleteSign:
                 craftMenuUI.SetActive(false);
                 break;                
@@ -86,6 +98,9 @@ public partial class CraftManager : MonoBehaviour
         Vector3Int mousePos = grid.WorldToCell(ProcessingMousePosition());
         switch (craftMode)
         {
+            case CraftMode.Default:
+                ExitCraftKeyCode();
+                break;
             case CraftMode.PlaceBuilding:                
                 mouseIndicator.transform.position = mousePos;
                 PlaceBuildingBuffer();
@@ -95,6 +110,7 @@ public partial class CraftManager : MonoBehaviour
                     RotateObject(true, mousePos);
                 if (Input.GetKeyDown(KeyCode.E))
                     RotateObject(false, mousePos);
+                ExitCraftKeyCode();
                 break;
 
             case CraftMode.PlaceRoad:                
@@ -106,6 +122,7 @@ public partial class CraftManager : MonoBehaviour
                         return;                    
                     PlaceRoadTile();
                 }
+                ExitCraftKeyCode();
                 break;
             
             case CraftMode.PlaceSign:                
@@ -122,28 +139,44 @@ public partial class CraftManager : MonoBehaviour
                     RotateObject(true, mousePos);
                 if (Input.GetKeyDown(KeyCode.E))
                     RotateObject(false, mousePos);
+                
                 break;
             
             case CraftMode.DeleteBuilding:
                 if (Input.GetKeyDown(KeyCode.Mouse0))
-                    deleteStart = mousePos;
-                if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
+                    deleteStart = mousePos;
+                }
+               if (Input.GetKeyUp(KeyCode.Mouse0))
+               {
                     if (deleteStart == Vector3Int.back)
                         return;
                     DeleteBuilding();
                 }
+                ExitCraftKeyCode();
                 break;
             
             case CraftMode.DeleteRoad:
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                    deleteStart = mousePos;
+                if (Input.GetKey(KeyCode.Mouse0))
+                {
+                    // 마우스를 누르고 있는 동안 드래그 시작 위치 설정
+                    if (deleteStart == Vector3Int.back)
+                    {
+                        deleteStart = grid.WorldToCell(ProcessingMousePosition());
+                    }
+                    DragToDeleteRoad();
+
+                    //deleteStart = mousePos;
+                    //DragToDeleteRoad();
+                }
                 if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     if (deleteStart == Vector3Int.back)
                         return;
                     DeleteRoad();
+                    return;
                 }
+                ExitCraftKeyCode();
                 break;
 
             case CraftMode.DeleteSign:
@@ -154,9 +187,26 @@ public partial class CraftManager : MonoBehaviour
                     if (deleteStart == Vector3Int.back)
                         return;
                     DeleteSign();
+                    
                 }
+                ExitCraftKeyCode();
                 break;
-        }        
+        }
+
+        // For Debug.
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    ExitCraftMode();                        
+        //}
+    }
+
+    private void ExitCraftKeyCode()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            ExitCraftMode();
+            return;
+        }
     }
     // Craft 모드 진입.
     public void EnterCraftMode()
@@ -164,6 +214,9 @@ public partial class CraftManager : MonoBehaviour
         craftGrid.SetActive(true);
         craftMenuUI.SetActive(true);
         CradleUI.SetActive(false);
+
+        // 건물 차지하고 있는 타일 주황색으로 표시
+        DrawTileUsed();
     }
     public void ExitCraftMode()
     {
@@ -268,8 +321,8 @@ partial class CraftManager
                 TileDataManager.instance.SetTileType(j, i, 1);
         
         mouseIndicator.GetComponent<Building>().SetBuildingPos(upperRight, bottomLeft);
-        BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());        
-        
+        BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());
+        soundManager.BuildingOnbound(4);
         mouseIndicator = null;        
         ChangeCraftMode(CraftMode.Default);        
     }
@@ -322,6 +375,7 @@ partial class CraftManager
     #region 건물 삭제 관련
     void DeleteBuilding()
     {
+        Debug.Log("건물 삭제하는거 들어오긴하니?");
         Vector3Int deleteEnd = grid.WorldToCell(ProcessingMousePosition());
         Vector2Int deleteUpperRight = new Vector2Int();
         Vector2Int deleteBottomLeft = new Vector2Int();
@@ -354,6 +408,11 @@ partial class CraftManager
             {                
                 TileDataManager.instance.ChangeTileTypeByRange(upperRight, bottomLeft, 1, 0); // 타일 타입 초기화.
                 result.Enqueue(building);
+            }
+            for(int i = bottomLeft.x; i<= upperRight.x; i++)
+            {
+                for(int j = bottomLeft.y; j<= upperRight.y; j++)
+                GridTilemap.SetTile(new Vector3Int(i, j, 0), defaultTile);
             }
         }
         return result;
@@ -423,6 +482,10 @@ partial class CraftManager
             {
                 copyArray[pos.x, pos.y] = 3;
                 roadBufferList.Add(pos);
+
+                // 길 설치 사운드 소리 여기서 추가하기
+                soundmanager.GetComponent<SoundManager>().SetRoadSoundByCount(roadcnt);
+                roadcnt++;
             }
         }
     }
@@ -440,11 +503,22 @@ partial class CraftManager
         }
         ResetGridTile();
         roadBufferList.Clear();
+        roadcnt = 0;
         ChangeCraftMode(CraftMode.Default);
     }
     #endregion
-    
+
     #region 길 삭제 관련
+
+    // 드래그시 일시적으로 빨간 타일로 표시
+    void DragToDeleteRoad()
+    {
+        Vector3Int deleteEnd = grid.WorldToCell(ProcessingMousePosition());
+        
+                if (TileDataManager.instance.GetTileType(deleteEnd.x, deleteEnd.y) == 3)
+                GridTilemap.SetTile(new Vector3Int(deleteEnd.x, deleteEnd.y, 0), redTile);
+
+    }
     void DeleteRoad()
     {
         Vector3Int deleteEnd = grid.WorldToCell(ProcessingMousePosition());
@@ -458,9 +532,12 @@ partial class CraftManager
         TileDataManager.instance.ChangeTileTypeByRange(deleteUpperRight, deleteBottomLeft, 3, 0); // 타일 타입이 3인 경우에만 초기화.
         // 타일 맵 초기화.
         for (int i = deleteBottomLeft.y; i <= deleteUpperRight.y; i++)        
-            for (int j = deleteBottomLeft.x; j <= deleteUpperRight.x; j++)            
+            for (int j = deleteBottomLeft.x; j <= deleteUpperRight.x; j++)
+            {
                 GameTilemap.SetTile(new Vector3Int(j, i, 0), null);         
-
+                GridTilemap.SetTile(new Vector3Int(j, i, 0), defaultTile);
+            }
+        soundManager.BuildingOnbound(3);
         deleteStart = Vector3Int.back;
         ChangeCraftMode(CraftMode.Default);
     }
@@ -657,6 +734,23 @@ partial class CraftManager
             for (int j = 0; j < 103; j++)
             {
                 TileDataManager.instance.SetTileType(j, i, copyArray[j, i]);
+            }
+        }
+    }
+
+    // 이미 차지한 타일 주황색으로 표현
+    void DrawTileUsed()
+    {
+        for (int i = 0; i < 103; i++)
+        {
+            for (int j = 0; j < 103; j++)
+            {
+                // 자원, 빌딩, 요람
+                if(TileDataManager.instance.GetTileType(i , j) == 1 || TileDataManager.instance.GetTileType(i, j) == 2 || TileDataManager.instance.GetTileType(i, j) == 4 || TileDataManager.instance.GetTileType(i, j) == 6 || TileDataManager.instance.GetTileType(i, j) == 7)
+                {
+                    Vector3Int newTilepos = new Vector3Int(i ,j );
+                    GridTilemap.SetTile(newTilepos, orangeTile);
+                }
             }
         }
     }

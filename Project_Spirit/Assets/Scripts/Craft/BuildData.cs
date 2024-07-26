@@ -10,12 +10,15 @@ public class BuildData : ScriptableObject
     public float structureID;
     public string structureName = "New Item";
     public int KindOfStructure = 0;
+    public int SturctureIndex = 0;
     public float stoneRequirement = 0;
     public float woodRequirement = 0;
     public float essenceRequirement = 0;
+    public string StructureDescription = "None";
     public int UniqueProperties = 0;
     public int StructureEffect = 0;
-
+    public string baseState = "None";
+    public int ConstructionAmount;
 }
 
 public class StructUniqueData : ScriptableObject
@@ -28,4 +31,5 @@ public class StructUniqueData : ScriptableObject
     public float CostOfStone;
     public int DemandingWork;
     public int StructureCondition;
+  
 }

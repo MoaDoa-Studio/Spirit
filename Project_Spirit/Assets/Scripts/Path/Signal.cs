@@ -104,7 +104,7 @@ public class Signal : MonoBehaviour
             rot = squareTransform.rotation;
 
             dir = CheckRotation(rot);
-            Debug.Log("Square 오브젝트의 Z축 회전 값: " + rot);
+            //Debug.Log("Square 오브젝트의 Z축 회전 값: " + rot);
         }
         else
         {

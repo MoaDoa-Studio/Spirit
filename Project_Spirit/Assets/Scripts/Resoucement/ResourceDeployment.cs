@@ -40,7 +40,7 @@ public class ResourceDeployment : MonoBehaviour
         WoodObjects = GetComponent<ResouceManager>().WoodObjects;
         RockObjects = GetComponent<ResouceManager>().RockObjects;
         
-        SetDefaultMapResource();
+        //SetDefaultMapResource();
         RandomlySetRockResources();
         RandomlySetWoodResources();
         PlaceRockTiles();

@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<StructData>
+		<StructureID>1001</StructureID>
+		<StructureName>허름한 돌 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>2</StructureIndex>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>돌을 직접 생산할 수 있는 마법의 건물이다. 지은지는 얼마 되진 않았지만, 무척 낡아 보인다.</StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>201</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>12</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1002</StructureID>
+		<StructureName>평범한 돌 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>2</StructureIndex>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>돌을 직접 생산할 수 있는 마법의 건물이다. 그냥 평범한 돌 생산소이다.</StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>202</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>15</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1003</StructureID>
+		<StructureName>최고급 돌 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>2</StructureIndex>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>돌을 직접 생산할 수 있는 마법의 건물이다. 각종 최상급 자재로 만들어진 모습이다.</StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>203</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>18</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1004</StructureID>
+		<StructureName>허름한 나무 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>2</StructureIndex>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>나무를 직접 생산할 수 있는 마법의 건물이다. 지은지는 얼마 되진 않았지만, 무척 낡아 보인다.</StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>204</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>12</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1005</StructureID>
+		<StructureName>평범한 나무 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>2</StructureIndex>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>나무를 직접 생산할 수 있는 마법의 건물이다. 그냥 평범한 돌 생산소이다.</StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>205</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>15</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1006</StructureID>
+		<StructureName>최고급 나무 생산소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>2</StructureIndex>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>400</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>나무를 직접 생산할 수 있는 마법의 건물이다. 각종 최상급 자재로 만들어진 모습이다.</StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>101</UniqueProperties>
+		<StructureEffect>206</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>18</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1007</StructureID>
+		<StructureName>연구소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>1</StructureIndex>
+		<StoneRequirement>350</StoneRequirement>
+		<WoodRequirement>350</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>학자 정령들이 연구를 하여 각종 신기술을 개발하고 정령 세계를 발전시키는 방법을 연구하는 신비의 장소입니다.</StructureDescription>
+		<StructureSize>(8, 6)</StructureSize>
+		<UniqueProperties>102</UniqueProperties>
+		<StructureEffect>207</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>22</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1008</StructureID>
+		<StructureName>기술자 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>3</StructureIndex>
+		<StoneRequirement>350</StoneRequirement>
+		<WoodRequirement>150</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>돌과 나무 생산소를 이용할 수 있는 기술자들을 육성하는 훈련소입니다.</StructureDescription>
+		<StructureSize>(8, 4)</StructureSize>
+		<UniqueProperties>103</UniqueProperties>
+		<StructureEffect>208</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>20</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1009</StructureID>
+		<StructureName>학자 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>3</StructureIndex>
+		<StoneRequirement>350</StoneRequirement>
+		<WoodRequirement>150</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>연구소를 이용할 수 있는 학자들을 육성하는 훈련소입니다.</StructureDescription>
+		<StructureSize>(8, 4)</StructureSize>
+		<UniqueProperties>103</UniqueProperties>
+		<StructureEffect>209</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>20</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1010</StructureID>
+		<StructureName>기사 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>3</StructureIndex>
+		<StoneRequirement>400</StoneRequirement>
+		<WoodRequirement>200</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>자원을 조금 소비함으로써, 다른 종류의 원소 정령을 체력 감소 없이 없앨 수 있는 기사를 육성하는 훈련소입니다.</StructureDescription>
+		<StructureSize>(6, 6)</StructureSize>
+		<UniqueProperties>104</UniqueProperties>
+		<StructureEffect>210</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>25</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1011</StructureID>
+		<StructureName>장사 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>3</StructureIndex>
+		<StoneRequirement>400</StoneRequirement>
+		<WoodRequirement>200</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>자원을 조금 소비함으로써, 체력 감소 없이 각종 일을 수행할 수 있는 힘있는 장사를 육성하는 훈련소입니다.</StructureDescription>
+		<StructureSize>(8, 4)</StructureSize>
+		<UniqueProperties>104</UniqueProperties>
+		<StructureEffect>211</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>25</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1012</StructureID>
+		<StructureName>귀족 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>3</StructureIndex>
+		<StoneRequirement>450</StoneRequirement>
+		<WoodRequirement>300</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>자원을 많이 소비함으로써 체력이 남들보다 4배나 많은 귀족 정령들을 육성하는 훈련소입니다. 하지만 귀족인 만큼 굳은 일은 하지 않습니다.</StructureDescription>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>105</UniqueProperties>
+		<StructureEffect>212</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>30</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1013</StructureID>
+		<StructureName>치유사 훈련소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>3</StructureIndex>
+		<StoneRequirement>450</StoneRequirement>
+		<WoodRequirement>300</WoodRequirement>
+		<EssenceRequirement>1</EssenceRequirement>
+		<StructureDescription>자원을 많이 소비함으로써 주변 정령들의 체력을 주기적으로 회복시켜주는 치유사 정령을 육성하는 훈련소입니다.</StructureDescription>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>106</UniqueProperties>
+		<StructureEffect>213</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>30</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1014</StructureID>
+		<StructureName>허름한 돌 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>150</StoneRequirement>
+		<WoodRequirement>50</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>언제 부서질지 모르는 돌 저장소 입니다. 보유 가능한 돌 개수를 조금 증가시킵니다.</StructureDescription>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>214</StructureEffect>
+		<BasicStructure>true</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1015</StructureID>
+		<StructureName>평범한 돌 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>250</StoneRequirement>
+		<WoodRequirement>100</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>평범한 돌 저장소 입니다. 보유 가능한 돌 개수를  충분히 증가시킵니다.</StructureDescription>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>215</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1016</StructureID>
+		<StructureName>번듯한 돌 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>350</StoneRequirement>
+		<WoodRequirement>150</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>번듯한 돌 저장소 입니다. 보유 가능한 돌 개수를 많이 증가시킵니다.</StructureDescription>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>216</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1017</StructureID>
+		<StructureName>허름한 나무 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>50</StoneRequirement>
+		<WoodRequirement>150</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>언제 부서질지 모르는 나무 저장소 입니다. 보유 가능한 나무 개수를 조금 증가시킵니다.</StructureDescription>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>217</StructureEffect>
+		<BasicStructure>true</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1018</StructureID>
+		<StructureName>평범한 나무 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>100</StoneRequirement>
+		<WoodRequirement>250</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>평범한 나무 저장소 입니다. 보유 가능한 나무 개수를  충분히 증가시킵니다.</StructureDescription>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>218</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1019</StructureID>
+		<StructureName>번듯한 나무 저장소</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>150</StoneRequirement>
+		<WoodRequirement>350</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>번듯한 나무 저장소 입니다. 보유 가능한 나무 개수를 많이 증가시킵니다.</StructureDescription>
+		<StructureSize>(3, 4)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>219</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1020</StructureID>
+		<StructureName>마법의 동상</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>4</StructureIndex>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>200</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>한 시간에 돌과 나무 하나씩을 소비하여 주변의 정령들을 주기적으로 회복시키는 신비한 동상입니다.</StructureDescription>
+		<StructureSize>(1, 1)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>220</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>1021</StructureID>
+		<StructureName>마법의 분수</StructureName>
+		<KindOfStructure>0</KindOfStructure>
+		<StructureIndex>4</StructureIndex>
+		<StoneRequirement>200</StoneRequirement>
+		<WoodRequirement>200</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription>한 시간에 돌과 나무 두개 씩을 소비하여 더 넓은 범위의 정령들을 더 자주 회복시키는 마법의 분수입니다.</StructureDescription>
+		<StructureSize>(3, 3)</StructureSize>
+		<UniqueProperties>107</UniqueProperties>
+		<StructureEffect>221</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>2001</StructureID>
+		<StructureName>나무 길</StructureName>
+		<KindOfStructure>1</KindOfStructure>
+		<StructureIndex>10</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>7</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(1, 1)</StructureSize>
+		<UniqueProperties>302</UniqueProperties>
+		<StructureEffect>222</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>2002</StructureID>
+		<StructureName>흙 길 </StructureName>
+		<KindOfStructure>1</KindOfStructure>
+		<StructureIndex>10</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(1, 1)</StructureSize>
+		<UniqueProperties>301</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>true</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3001</StructureID>
+		<StructureName>허름한 돌 생산소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>201</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3002</StructureID>
+		<StructureName>평범한 돌 생산소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>202</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3003</StructureID>
+		<StructureName>최고급 돌 생산소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>203</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3004</StructureID>
+		<StructureName>허름한 나무 생산소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>201</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3005</StructureID>
+		<StructureName>평범한 나무 생산소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>202</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3006</StructureID>
+		<StructureName>최고급 나무 생산소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(5, 4)</StructureSize>
+		<UniqueProperties>203</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3007</StructureID>
+		<StructureName> 연구소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(8, 6)</StructureSize>
+		<UniqueProperties>204</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3008</StructureID>
+		<StructureName>기술자 훈련소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(8, 4)</StructureSize>
+		<UniqueProperties>205</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3009</StructureID>
+		<StructureName>학자 훈련소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(8, 4)</StructureSize>
+		<UniqueProperties>205</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3010</StructureID>
+		<StructureName>기사 훈련소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(6, 6)</StructureSize>
+		<UniqueProperties>206</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3011</StructureID>
+		<StructureName>장사 훈련소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(8, 4)</StructureSize>
+		<UniqueProperties>206</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3012</StructureID>
+		<StructureName>귀족 훈련소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>207</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+	<StructData>
+		<StructureID>3013</StructureID>
+		<StructureName>치유사 훈련소 공사</StructureName>
+		<KindOfStructure>2</KindOfStructure>
+		<StructureIndex>0</StructureIndex>
+		<StoneRequirement>0</StoneRequirement>
+		<WoodRequirement>0</WoodRequirement>
+		<EssenceRequirement>0</EssenceRequirement>
+		<StructureDescription></StructureDescription>
+		<StructureSize>(6, 4)</StructureSize>
+		<UniqueProperties>207</UniqueProperties>
+		<StructureEffect>null</StructureEffect>
+		<BasicStructure>false</BasicStructure>
+		<ConstructionAmount>0</ConstructionAmount>
+	</StructData>
+</root>

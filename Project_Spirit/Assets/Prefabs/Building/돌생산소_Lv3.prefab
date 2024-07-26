@@ -122,10 +122,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildID: 1003
   sliderUI: {fileID: 7144184624790624904}
+  PreviewParent: {fileID: 0}
   GameObjectCount: 0
+  cellPrefab: {fileID: 0}
   upperRight: {x: 0, y: 0}
   bottomLeft: {x: 0, y: 0}
   gameObjectList: []
+  constructsprite: {fileID: 21300000, guid: ee788cbdec91147429c3223ea0150351, type: 3}
+  buildingSprite: {fileID: 0}
   structureID: 0
   structureName: New Item
   KindOfStructure: 0
@@ -441,7 +445,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 9
   m_TargetDisplay: 0
 --- !u!114 &5203469853983409478
 MonoBehaviour:

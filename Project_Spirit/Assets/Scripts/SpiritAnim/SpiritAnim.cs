@@ -43,7 +43,7 @@ public class SpiritAnim : MonoBehaviour
     public Spine.Animation TargetAnimation { get; private set; }
     public List<StateNameToAnimationReference> statesAndAnimations = new List<StateNameToAnimationReference>();
     public List<AnimationTransition> transitions = new List<AnimationTransition>();
-    public int animationspeed;
+    public float animationspeed;
 
     [SpineSkin]
     public Skin characterSkin;
@@ -151,7 +151,7 @@ public class SpiritAnim : MonoBehaviour
         HandleSkeletonDataAsset();
         HandleAnimation();
         HandleSetAttachment();
-      
+        AdjustmentAnimationSpeed();
     }
 
     private void HandleSkeletonDataAsset()
@@ -565,6 +565,59 @@ public class SpiritAnim : MonoBehaviour
                     stateName = "Front_idle";
                 }
                 break;
+            case DetectMove.Detect.Dead:
+                if (currentDirection == 0)
+                {
+                    if (spiritelement == 4)
+                    {
+                        stateName = "Back_crash_Air";
+
+
+                    }
+                    else if (spiritelement == 2)
+                    {
+                        stateName = "Back_crash_Water";
+                    }
+                    else
+                    {
+                        stateName = "Back_crush_Soil_Fire";
+                    }
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement == 4)
+                    {
+                        stateName = "Side_crash_Air";
+                    }
+                    else if (spiritelement == 2)
+                    {
+                        stateName = "Side_crash_Water";
+                    }
+                    else if (spiritelement == 1)
+                    {
+                        stateName = "Side_crash_Fire";
+                    }
+                    else
+                    {
+                        stateName = "Side_crash_Soil";
+                    }
+                }
+                else
+                {
+                    if (spiritelement == 4)
+                    {
+                        stateName = "Front_crash_Air";
+                    }
+                    else if (spiritelement == 2)
+                    {
+                        stateName = "Front_crash_Water";
+                    }
+                    else
+                    {
+                        stateName = "Front_crash";
+                    }
+                }
+                break;
             case DetectMove.Detect.FactoryOrLootOut:
                 stateName = exit_Gender();
 
@@ -574,6 +627,71 @@ public class SpiritAnim : MonoBehaviour
                 break;
         }
         PlayAnimationForState(stateName, track, oneshot, animationspeed);
+    }
+
+    // 정령끼리 부딪힌 후 재생되는 애니메이션
+    public void HitAndDissapear()
+    {
+        if (currentDirection == 0)
+        {
+            if(spiritelement == 4)
+            {
+                PlayAnimationForState("Back_crash_Air", 0, true, animationspeed);
+                
+
+            }
+            else if(spiritelement == 2)
+            {
+                PlayAnimationForState("Back_crash_Water", 0, true, animationspeed);
+
+            }
+            else
+            {
+                PlayAnimationForState("Back_crush_Soil_Fire", 0, true, animationspeed);
+
+            }
+        }
+        else if (currentDirection == 1 || currentDirection == 3)
+        {
+            if (spiritelement == 4)
+            {
+                PlayAnimationForState("Side_crash_Air", 0, true, animationspeed);
+
+            }
+            else if (spiritelement == 2)
+            {
+                PlayAnimationForState("Side_crash_Water", 0, true, animationspeed);
+
+            }
+            else if(spiritelement == 1)
+            {
+                PlayAnimationForState("Side_crash_Fire", 0, true, animationspeed);
+
+            }
+            else
+            {
+                PlayAnimationForState("Side_crash_Soil", 0, true, animationspeed);
+
+            }
+        }
+        else
+        {
+            if (spiritelement == 4)
+            {
+                PlayAnimationForState("Front_crash_Air", 0, true, animationspeed);
+
+            }
+            else if (spiritelement == 2)
+            {
+                PlayAnimationForState("Front_crash_Water", 0, true, animationspeed);
+
+            }
+            else
+            {
+                PlayAnimationForState("Front_crash", 0, true, animationspeed);
+
+            }
+        }
     }
 
     private void UpdateSkin()
@@ -841,7 +959,15 @@ public class SpiritAnim : MonoBehaviour
         skeleton.SetSlotsToSetupPose();
     }
 
+    void AdjustmentAnimationSpeed()
+    {
+        float maxAnimationspeed = 2;
+        animationspeed = Math.Min(Time.timeScale, maxAnimationspeed);
+
+        skeletonAnimation.timeScale = animationspeed;
+    }
 }
+
 
 
 /// <summary>
