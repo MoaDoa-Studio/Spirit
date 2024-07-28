@@ -44,6 +44,7 @@ public class SpiritSpawner : MonoBehaviour
     public int spLv { get; set; } = 1;
     public int spwLv { get; set; } = 1;
 
+    TimeManager timeManager;
     int termcnt = 0;
     Vector2 bottomLeft;
     Vector2 topRight;
@@ -62,7 +63,7 @@ public class SpiritSpawner : MonoBehaviour
     private float alphaMax = 180f / 255f;
     private float duration = 1.0f;
 
-
+ 
     // 정령 생산 속도 가중치.
     public float spawnWeight = 1f;
     enum Dir
@@ -79,6 +80,7 @@ public class SpiritSpawner : MonoBehaviour
         SetSpawnerType();
         SpawnDuration = Spawn[0];
         SpawnUI.GetComponent<SpawnerUI>().ReceiveDefaultSpiritSpawnInfo(SetUIInfo());
+        timeManager = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>();
     }
 
     private void Update()
@@ -96,7 +98,7 @@ public class SpiritSpawner : MonoBehaviour
             {
                 //Debug.Log("길이 정령까지 존재합니다.");
 
-                gameTimer += Time.deltaTime * realTimeToGameTimeRatio;
+                gameTimer += Time.deltaTime * realTimeToGameTimeRatio *timeManager.timeSpeed;
 
                 float spawnTime = sliderValue * 720f;
                 if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime / spawnWeight)

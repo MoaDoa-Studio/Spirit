@@ -10,6 +10,8 @@ public class SpiritManager : MonoBehaviour
 
     public float spiritMoveSpeed = 1f;
     public float resourceBuildingDamagePercent = 0.8f;
+
+    private float saveMovespeed = 1f;
     private void Awake()
     {
         if (instance == null)
@@ -24,5 +26,23 @@ public class SpiritManager : MonoBehaviour
         {
             SpawnSlot.transform.GetChild(i).GetComponent<DetectMove>().moveSpeed = speed;
         }
+    }
+
+    // 지정해주기
+    public void SetSpeed(float speed)
+    { 
+        saveMovespeed = spiritMoveSpeed;
+        spiritMoveSpeed = speed;
+        for (int i = 0; i < SpawnSlot.transform.childCount; i++)
+        {
+            SpawnSlot.transform.GetChild(i).GetComponent<DetectMove>().moveSpeed = speed;
+        }
+    }
+
+    // 가져오는 것
+    public void GetSpeed()
+    {
+        spiritMoveSpeed = saveMovespeed;
+        
     }
 }
