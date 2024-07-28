@@ -153,6 +153,7 @@ public class Spirit : MonoBehaviour
 
         if(collision.gameObject.tag == "Cradle")
         {
+            CradleManager.GetComponent<CradleManager>().AddElement(type, (int)HP);
             GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
             Destroy(gameObject);
         }
