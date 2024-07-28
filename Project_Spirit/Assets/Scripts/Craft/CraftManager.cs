@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 using TMPro;
@@ -40,6 +41,7 @@ public partial class CraftManager : MonoBehaviour
     private GameObject soundmanager;
     private int roadcnt;
 
+    public bool isCraftMode = false;
     public bool IsPointerOverUI()
     => EventSystem.current.IsPointerOverGameObject();
         
@@ -208,18 +210,36 @@ public partial class CraftManager : MonoBehaviour
             return;
         }
     }
+
+    public void ChangeCraftMode()
+    {
+        Debug.Log("isCraftMode: " + isCraftMode);
+        if (isCraftMode)
+        {
+            ExitCraftMode();
+            return ;
+        }
+        if(!isCraftMode)
+        {
+            EnterCraftMode();
+            return ;
+        }
+    }
     // Craft 모드 진입.
     public void EnterCraftMode()
     {
+        Debug.Log("EnterCraftMode called");
         craftGrid.SetActive(true);
         craftMenuUI.SetActive(true);
         CradleUI.SetActive(false);
-
         // 건물 차지하고 있는 타일 주황색으로 표시
         DrawTileUsed();
+        isCraftMode = true;
+        
     }
     public void ExitCraftMode()
     {
+        Debug.Log("ExitCraftMode called");
         craftMode = CraftMode.None;
         mouseIndicator = null;
         deleteStart = Vector3Int.back;
@@ -227,6 +247,8 @@ public partial class CraftManager : MonoBehaviour
         craftGrid.SetActive(false);
         craftMenuUI.SetActive(false);
         CradleUI.SetActive(true);
+       isCraftMode = false;
+        
     }
     public void EnterDeleteBuildingMode()
     {

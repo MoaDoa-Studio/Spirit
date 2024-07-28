@@ -96,7 +96,7 @@ public class Spirit : MonoBehaviour
 
     public void TakeDamage25ByWeather()
     {
-        HP  -= HP - 0.041667f; 
+        HP  -= 0.041667f; 
     }
 
     public void TakeDamage25OverByWeather(float temp)
@@ -180,13 +180,18 @@ public class Spirit : MonoBehaviour
 
             if (t.gameObject.name == "title")
             {
-                t.GetComponent<TextMeshProUGUI>().text = $"      @@ ({SpiritJob})  @@ {SpiritName}";
+                t.GetComponent<TextMeshProUGUI>().text = $"        Á÷¾÷({SpiritJob})  {SpiritName}";
                
             }
             if (t.gameObject.name == "gauge")
             {
                 t.GetComponent<Slider>().maxValue = SDefaultLife;
                 t.GetComponent <Slider>().value = HP;
+            }
+
+            if (t.gameObject.name == SpiritElement.ToString())
+            {
+                t.gameObject.SetActive(true);
             }
         }
 
@@ -220,8 +225,8 @@ public class Spirit : MonoBehaviour
                          t.gameObject.SetActive(false);
                     }
                 }
-                SoundManager.instance.UIButtonclick();
                 ui_characater_info.SetActive(false);
+                SoundManager.instance.UIButtonclick();
             }
         }
     }

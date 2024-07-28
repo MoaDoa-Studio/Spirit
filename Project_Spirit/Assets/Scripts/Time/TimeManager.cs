@@ -87,7 +87,7 @@ public class TimeManager : MonoBehaviour
             Time_text.text = "PM " + CurrentDate.ToString("hh:mm");
         else
             Time_text.text = "AM " + CurrentDate.ToString("hh:mm");
-        Date_text.text = CurrentDate.ToString("MM-dd");
+        Date_text.text = CurrentDate.ToString("M월 d일");
        
     }
 
@@ -253,7 +253,7 @@ public class TimeManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(3600); // 1분 대기
+            yield return new WaitForSeconds(0.1f); // 1분 대기
 
             // 예시: EventManager의 하위 오브젝트에 대해 피해를 입힘
             temperatureManager.WeatherAndSpiritRealtion(); ;
