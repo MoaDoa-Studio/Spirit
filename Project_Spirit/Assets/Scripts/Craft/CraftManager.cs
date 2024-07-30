@@ -44,7 +44,7 @@ public partial class CraftManager : MonoBehaviour
     public bool isCraftMode = false;
     public bool IsPointerOverUI()
     => EventSystem.current.IsPointerOverGameObject();
-        
+    
     enum CraftMode
     {
         None,
@@ -159,6 +159,7 @@ public partial class CraftManager : MonoBehaviour
                 break;
             
             case CraftMode.DeleteRoad:
+               
                 if (Input.GetKey(KeyCode.Mouse0))
                 {
                     // 마우스를 누르고 있는 동안 드래그 시작 위치 설정
@@ -195,11 +196,7 @@ public partial class CraftManager : MonoBehaviour
                 break;
         }
 
-        // For Debug.
-        //if (Input.GetKeyDown(KeyCode.W))
-        //{
-        //    ExitCraftMode();                        
-        //}
+      
     }
 
     private void ExitCraftKeyCode()
@@ -213,7 +210,7 @@ public partial class CraftManager : MonoBehaviour
 
     public void ChangeCraftMode()
     {
-        Debug.Log("isCraftMode: " + isCraftMode);
+       // Debug.Log("isCraftMode: " + isCraftMode);
         if (isCraftMode)
         {
             ExitCraftMode();
@@ -228,7 +225,7 @@ public partial class CraftManager : MonoBehaviour
     // Craft 모드 진입.
     public void EnterCraftMode()
     {
-        Debug.Log("EnterCraftMode called");
+      //  Debug.Log("EnterCraftMode called");
         craftGrid.SetActive(true);
         craftMenuUI.SetActive(true);
         CradleUI.SetActive(false);
@@ -239,7 +236,7 @@ public partial class CraftManager : MonoBehaviour
     }
     public void ExitCraftMode()
     {
-        Debug.Log("ExitCraftMode called");
+       // Debug.Log("ExitCraftMode called");
         craftMode = CraftMode.None;
         mouseIndicator = null;
         deleteStart = Vector3Int.back;
@@ -253,6 +250,10 @@ public partial class CraftManager : MonoBehaviour
     public void EnterDeleteBuildingMode()
     {
         ChangeCraftMode(CraftMode.DeleteBuilding);
+    }
+    public void EnterDeleteMarkMode()
+    {
+        ChangeCraftMode(CraftMode.DeleteSign);
     }
     public void EnterDeleteRoadMode()
     {
@@ -306,6 +307,8 @@ partial class CraftManager
             for (int j = upperRight.x; j >= bottomLeft.x; j--)
             {
                 if (TileDataManager.instance.GetTileType(j, i) == 1)                
+                    GridTilemap.SetTile(new Vector3Int(j, i, 0), redTile);
+                else if(TileDataManager.instance.GetTileType(j, i) == 2)
                     GridTilemap.SetTile(new Vector3Int(j, i, 0), redTile);
                 else
                     GridTilemap.SetTile(new Vector3Int(j, i, 0), greenTile);                
@@ -464,6 +467,12 @@ partial class CraftManager
             return true;
         return false;
     }
+    bool isOverlapCradle(Vector3Int pos)
+    {
+        if (TileDataManager.instance.GetTileType(pos.x, pos.y) == 2)
+            return true;
+        return false;
+    }
     bool isOverlapResource(Vector3Int pos)
     {
         int type = TileDataManager.instance.GetTileType(pos.x, pos.y);
@@ -489,7 +498,7 @@ partial class CraftManager
         // 배치 가능한 타일인지 체크.
         if (!roadBufferList.Contains(pos))
         {            
-            if (isOverlapBuilding(pos) || isOverlapResource(pos))
+            if (isOverlapBuilding(pos) || isOverlapResource(pos) || isOverlapCradle(pos))
             {
                 GridTilemap.SetTile(pos, redTile);
                 return;
@@ -664,11 +673,14 @@ partial class CraftManager
         Queue<GameObject> result = new Queue<GameObject>();        
         for(int i = 0; i < SignSlot.transform.childCount; i++)
         {
-            Vector3 signPos = SignSlot.transform.GetChild(i).position;            
+            Vector3 signPos = SignSlot.transform.GetChild(i).position;
+            GameObject deleteMark = SignSlot.transform.GetChild(i).gameObject;
             if (signPos.x <= deleteUpperRight.x && signPos.y <= deleteUpperRight.y
                 && signPos.x >= deleteBottomLeft.x && signPos.y >= deleteBottomLeft.y)
             {                
                 TileDataManager.instance.SetTileType((int)signPos.x, (int)signPos.y, 0);
+                
+                Destroy(deleteMark);
             }
         }
         return result;

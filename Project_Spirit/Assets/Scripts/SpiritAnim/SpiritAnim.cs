@@ -625,6 +625,28 @@ public class SpiritAnim : MonoBehaviour
             case DetectMove.Detect.FactoryOrLootEnter:
                 stateName = enter_Gender();
                 break;
+            case DetectMove.Detect.Ascension:
+                if (currentDirection == 0)
+                {       stateName = "Back_disappear";
+                   
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement == 3)
+                    {
+                        stateName = "Side_disappear_Soil";
+                    }
+                    else 
+                    {
+                        stateName = "Side_disappear";
+                    }
+                  
+                }
+                else
+                {       stateName = "Front_disappear";
+                   
+                }
+               break;
         }
         PlayAnimationForState(stateName, track, oneshot, animationspeed);
     }

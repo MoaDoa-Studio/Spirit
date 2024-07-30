@@ -80,7 +80,8 @@ public class DetectMove : MonoBehaviour
         FactoryOrLootEnter,
         Cradle,
         Wait,
-        Dead
+        Dead,
+        Ascension
     }
     [SerializeField]
     Detect detection = Detect.None;
@@ -175,6 +176,9 @@ public class DetectMove : MonoBehaviour
                 break;
             case Detect.Dead:
                 break;
+            case Detect.Ascension:
+                AscensionToSky();
+                break;
 
         }
     }
@@ -237,8 +241,13 @@ public class DetectMove : MonoBehaviour
             }
 
         }
+        // 길 타일이 아니라면 소멸되게 하기
         else
-            Destroy(gameObject);
+        {
+            detection = Detect.Ascension;
+          
+            return;
+        }
     }
 
     private void MarkCheck(int _signType)
@@ -756,6 +765,13 @@ public class DetectMove : MonoBehaviour
     void SortSkeletonLayer()
     {
         GetComponent<MeshRenderer>().sortingOrder = 103 - (int)CurposY;
+    }
+
+    // 하늘로 승천
+    void AscensionToSky()
+    {
+        GetComponent<Spirit>().InitializeUIInfo();
+        Destroy(gameObject, 1.3f);
     }
 
 }

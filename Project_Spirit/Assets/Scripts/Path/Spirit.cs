@@ -200,15 +200,17 @@ public class Spirit : MonoBehaviour
     }
 
     // UI 정보 초기화
-    void InitializeUIInfo()
+    public void InitializeUIInfo()
     {
-        foreach (Transform t in transform)
+        ui_characater_info = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().characterinfo_UI;
+        foreach (Transform t in ui_characater_info.transform)
         {
             if (t.gameObject.name == SpiritElement.ToString())
             {
                 t.gameObject.SetActive(false);
             }
         }
+        ui_characater_info.SetActive(false);
     }
 
     private void ToggleCharacterInfoUI()
