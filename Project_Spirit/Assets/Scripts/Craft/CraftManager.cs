@@ -530,6 +530,7 @@ partial class CraftManager
             {
                 if (TileDataManager.instance.GetTileType(roadBuffer.x, roadBuffer.y) != 3)                    
                     GameTilemap.SetTile(roadBuffer, null);
+
             }
         }
         ResetGridTile();
@@ -560,6 +561,7 @@ partial class CraftManager
         deleteBottomLeft.x = deleteStart.x < deleteEnd.x ? deleteStart.x : deleteEnd.x;
         deleteBottomLeft.y = deleteStart.y < deleteEnd.y ? deleteStart.y : deleteEnd.y;
 
+        DeleteSignWithRoadDelete();
         TileDataManager.instance.ChangeTileTypeByRange(deleteUpperRight, deleteBottomLeft, 3, 0); // 타일 타입이 3인 경우에만 초기화.
         // 타일 맵 초기화.
         for (int i = deleteBottomLeft.y; i <= deleteUpperRight.y; i++)        
@@ -569,6 +571,7 @@ partial class CraftManager
                 GridTilemap.SetTile(new Vector3Int(j, i, 0), defaultTile);
             }
         soundManager.BuildingOnbound(3);
+
         deleteStart = Vector3Int.back;
         ChangeCraftMode(CraftMode.Default);
     }
@@ -602,7 +605,9 @@ partial class CraftManager
             Debug.Log("길이 아닙니다.");
             return false;
         }
-
+        else
+            return true;
+        /*
         string TileName = mouseIndicator.name.Split("(")[0];        
         switch (TileName)
         {
@@ -618,6 +623,7 @@ partial class CraftManager
                 break;
         }
         return true;
+        */
     }
     public void PlaceSignTileBuffer(Vector3Int pos)
     {
@@ -678,13 +684,32 @@ partial class CraftManager
             if (signPos.x <= deleteUpperRight.x && signPos.y <= deleteUpperRight.y
                 && signPos.x >= deleteBottomLeft.x && signPos.y >= deleteBottomLeft.y)
             {                
-                TileDataManager.instance.SetTileType((int)signPos.x, (int)signPos.y, 0);
+                TileDataManager.instance.SetTileType((int)signPos.x, (int)signPos.y, 3);
                 
                 Destroy(deleteMark);
             }
         }
         return result;
     }
+
+    void DeleteSignWithRoadDelete()
+    {
+        Vector3Int deleteEnd = grid.WorldToCell(ProcessingMousePosition());
+        Vector2Int deleteUpperRight = new Vector2Int();
+        Vector2Int deleteBottomLeft = new Vector2Int();
+        deleteUpperRight.x = deleteStart.x > deleteEnd.x ? deleteStart.x : deleteEnd.x;
+        deleteUpperRight.y = deleteStart.y > deleteEnd.y ? deleteStart.y : deleteEnd.y;
+        deleteBottomLeft.x = deleteStart.x < deleteEnd.x ? deleteStart.x : deleteEnd.x;
+        deleteBottomLeft.y = deleteStart.y < deleteEnd.y ? deleteStart.y : deleteEnd.y;
+
+        Queue<GameObject> DeleteSignQueue = FindSignToBeDeletedByRange(deleteUpperRight, deleteBottomLeft);
+        while (DeleteSignQueue.Count != 0)
+        {
+            GameObject sign = DeleteSignQueue.Dequeue();
+            Destroy(sign);
+        }
+    }
+
     #endregion
 }
 partial class CraftManager

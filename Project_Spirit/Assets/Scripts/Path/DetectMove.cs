@@ -207,6 +207,7 @@ public class DetectMove : MonoBehaviour
         // 표식
         if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 5)
         {
+            nodes[(int)CurposX, (int)CurposY].spiritElement = spiritElement;
             string signName = nodes[(int)CurposX, (int)CurposY].nodeTile.name;
 
             signType = ExtractNumber(signName);
@@ -255,6 +256,9 @@ public class DetectMove : MonoBehaviour
 
         nodes = TileDataManager.instance.GetNodes();
 
+        // 표식에 올라가서도 땅 차지해야함
+        //nodes[(int)CurposX, (int)CurposY].spiritElement = spiritElement;
+
         if (_signType == 7)
         {
             if (!isPause)
@@ -272,6 +276,14 @@ public class DetectMove : MonoBehaviour
         
         if (_dir == signal.dir)
         {
+            float disX = CurposX;
+            float disY = CurposY;
+            float tempsignX = CurposX + signal.pair.Item1;
+            float tempsigny = CurposY + signal.pair.Item2;
+
+            if (nodes[(int)tempsignX, (int)tempsigny].spiritElement == spiritElement)
+                return;
+
             CurposX += signal.pair.Item1;
             CurposY += signal.pair.Item2;
 
@@ -282,8 +294,17 @@ public class DetectMove : MonoBehaviour
             if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) != 3 && TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) != 5)
 
             { detection = Detect.None;}
+            // 걸을 수 있다면..
+            else if(TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 3 || TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) == 5)
+            {
+                nodes[(int)disX, (int)disY].spiritElement = 0;
+                detection = Detect.Move;
+            }
             else
             {// 다음 칸이 공장 혹은 자원 채집하는 곳이라면..
+
+                nodes[(int)disX, (int)disY].spiritElement = 0;
+
                 detection = Detect.Move;
                 return;
             }
@@ -297,7 +318,11 @@ public class DetectMove : MonoBehaviour
     private void BaseMove()
     {
         nodes = TileDataManager.instance.GetNodes();    // 매우 매우 중요!! 코드 간결화
-                                                        
+        if (TileDataManager.instance.GetTileType((int)CurposX, (int)CurposY) != 3)
+        {
+            detection = Detect.Ascension;
+        }
+           
         float leftx = CurposX + leftX[_dir];
         float lefty = CurposY + leftY[_dir];
         float frontx = CurposX + frontX[_dir];
@@ -311,7 +336,11 @@ public class DetectMove : MonoBehaviour
            if(TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 3 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 6 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 7 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 5 || TileDataManager.instance.GetTileType((int)leftx, (int)lefty) == 2)
             {
                 // 가야할 타일에 같은 정령이 있다면.
-                if (nodes[(int)leftx, (int)lefty].spiritElement == spiritElement) return;
+                if (nodes[(int)leftx, (int)lefty].spiritElement == spiritElement)
+                {
+                    detection = Detect.None;
+                    return;
+                }
 
                 if (nodes[(int)leftx, (int)lefty].building != null)
                 {
@@ -344,7 +373,10 @@ public class DetectMove : MonoBehaviour
             // 2. 현재 바라보는 방향을 기준으로 전진할 수 있는지 확인.
             if (TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 3 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 6 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 7 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 5 || TileDataManager.instance.GetTileType((int)frontx, (int)fronty) == 2)
             {
-                if (nodes[(int)frontx, (int)fronty].spiritElement == spiritElement) return;
+                if (nodes[(int)frontx, (int)fronty].spiritElement == spiritElement)
+                {   detection = Detect.None; 
+                    return;
+                }
                 if (nodes[(int)frontx, (int)fronty].building != null)
                 {
                     if (nodes[(int)frontx, (int)fronty].building.AskPermissionOfUse(this.gameObject) == false)
@@ -371,7 +403,11 @@ public class DetectMove : MonoBehaviour
             // 2. 현재 바라보는 방향을 기준으로 우측할 수 있는지 확인.
             if (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 3 || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 6 || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 7) || (TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 5 || TileDataManager.instance.GetTileType((int)rightx, (int)righty) == 2)))
             {
-                if (nodes[(int)rightx, (int)righty].spiritElement == spiritElement) return;
+                if (nodes[(int)rightx, (int)righty].spiritElement == spiritElement)
+                {
+                    detection = Detect.None;
+                    return;
+                }
                 if (nodes[(int)rightx, (int)righty].building != null)
                 {
                     if (nodes[(int)rightx, (int)righty].building.AskPermissionOfUse(this.gameObject) == false)
@@ -400,7 +436,7 @@ public class DetectMove : MonoBehaviour
     }
     private void Move(int _curposx, int _curposy)
     {
-        if(detection != Detect.Move) { return; }
+        //if(detection != Detect.Move) { return; }
 
         // 건물 진입 애니메이션 작동하게 해야함
         if (nodes[_curposx, _curposy].building != null || nodes[_curposx, _curposy].resourceBuilding != null)

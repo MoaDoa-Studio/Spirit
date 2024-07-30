@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 public class CradleManager : MonoBehaviour
 {
-    [Header("������Ʈ")]
+    [Header("UI 요소들")]
     [SerializeField]
     private GameObject cradle;    
     [SerializeField]
@@ -15,8 +15,8 @@ public class CradleManager : MonoBehaviour
     private GameObject[] elementSlider;
     [SerializeField]
     private GameObject cradleGage;
-    
-    [Header("��������Ʈ")]
+
+    [Header("스프라이트들")]
     [SerializeField]
     private Sprite[] cradleSprite;
     [SerializeField]
@@ -24,7 +24,7 @@ public class CradleManager : MonoBehaviour
     [SerializeField]
     private Sprite[] cradleGageSprite;
 
-    // ���� ���� ����.
+    // 요소 큐 선언
     Queue<Tuple<int, DateTime>>[] elementQueue = { 
         new Queue<Tuple<int, DateTime>>(), 
         new Queue<Tuple<int, DateTime>>(), 
@@ -34,16 +34,19 @@ public class CradleManager : MonoBehaviour
     private float[] elementAverage = { 0, 0, 0, 0 };
     private int[] elementSum = { 0, 0, 0, 0 };
     private bool[] checkFirstElement = { false, false, false, false };
-    TimeSpan span = TimeSpan.FromSeconds(10);
+    TimeSpan span = TimeSpan.FromSeconds(600);
 
-    // ��� ���� ����.
+    // 성장 관련 변수들
     private int Level = 0;
     private int GrowthPoint = 0;
     private int GrowthState = 0;
     private int[] GrowthValue = { 50, 25, 10, -40 };
     private float GrowthTime = 0f;
-    private float GrowthCooldown = 10f;           
-    
+    private float GrowthCooldown = 3f;
+    private int[] LevelPoint = { 36000, 40000, 45000, 50000, 53000, 54000, 55000, 60000 };
+
+    private bool cradleUIenable = false;
+    bool first = false;
     void Start()
     {
         SetCradleMap();
@@ -60,14 +63,22 @@ public class CradleManager : MonoBehaviour
         {
             if (!checkFirstElement[i])
                 return;
+            else
+            {
+                if(!first)
+                StartCoroutine(EnableCradleUIAfterDelay(120));
+               
+            }
         }
 
-        AddCradleGrowth();
-        UpdateCradleUI();
+        if(cradleUIenable)
+        {
+            AddCradleGrowth();
+            UpdateCradleUI();
+        }
     }
 
-    // 4���� ���� ������ ���� ����.
-    // ���ɿ� ���� ������ ����.            
+    // 4가지 요소를 기반으로 성장 추가           
     void AddCradleGrowth()
     {
         GrowthTime += Time.deltaTime;
@@ -75,9 +86,9 @@ public class CradleManager : MonoBehaviour
         {
             GrowthPoint += GrowthValue[GrowthState];
 
-            if (GrowthPoint > 100)
+            if (GrowthPoint > LevelPoint[Level])
                 ToNextCradle();
-            else if (GrowthPoint < 100)
+            else if (GrowthPoint < LevelPoint[Level])
             {
                 // ���� ����.
             }            
@@ -86,7 +97,13 @@ public class CradleManager : MonoBehaviour
             GrowthTime = 0f;
         }
     }
-
+    private IEnumerator EnableCradleUIAfterDelay(float delay)
+    {
+        SetCradleGrowthState(1);
+        yield return new WaitForSeconds(delay);
+        cradleUIenable = true;
+        first = true;
+    }
     void SetCradleGrowthSlider()
     {
         if (GrowthPoint < 0)
@@ -101,7 +118,7 @@ public class CradleManager : MonoBehaviour
         }
     }
 
-    // ���ɿ� ������ �Լ�.
+    // 다음 단계로 성장
     public void ToNextCradle()
     {
         Level++;
@@ -114,7 +131,7 @@ public class CradleManager : MonoBehaviour
         }
     }
 
-    // ������ ����� �ε����� ��� ȣ��Ǵ� �Լ� ����.
+    // 요소 추가 시 호출되는 메서드
     public void AddElement(string spiritElement, int val)
     {
         int index = -1;
@@ -172,20 +189,20 @@ public class CradleManager : MonoBehaviour
                 elementAverage[i] = elementSum[i] / elementQueue[i].Count;
         }
     }
-    // �ϴ� UI ���� �Լ�.
-    // ���� ���, �� ���Һ� ���� �ӵ� ������, ���� ���� �ӵ� ��ũ, ���ɿ��� ���� ������, ���ɿ� �̹���
-    // ������ �ö󰡴� �������� �ڷ�ƾ �̿��ؼ� ����.
+    // UI 업데이트 메서드
+    // 성장 상태, 슬라이더 크기, 색상 업데이트
     public void UpdateCradleUI()
     {
-        // ��� ���� ���� ����.
+        // 성장 상태 설정
         SetCradleGrowthState(GetCradleGrowthRate());
-        
-        // ���� �⿩ �����̴� ����.
+
+        // 요소 슬라이더 업데이트
         SetElementSliderColor();
         SetElementSliderSize();        
     }
 
-    // ���Һ� ���� �ӵ� ������ ǥ��
+
+    // 요소 슬라이더 크기 설정
     public void SetElementSliderSize()
     {
         float totalElementAverage = GetTotalElementAverage();
@@ -213,7 +230,7 @@ public class CradleManager : MonoBehaviour
         }
     }
 
-    // ���ɿ��� ���� �ӵ� ��� �� ���� �Լ�.
+    // 성장률 계산
     public int GetCradleGrowthRate()
     {
         float totalElementAverage = GetTotalElementAverage();
