@@ -237,10 +237,15 @@ public class DetectMove : MonoBehaviour
             }
 
         }
+        else
+            Destroy(gameObject);
     }
 
     private void MarkCheck(int _signType)
     {
+
+        nodes = TileDataManager.instance.GetNodes();
+
         if (_signType == 7)
         {
             if (!isPause)
@@ -438,6 +443,8 @@ public class DetectMove : MonoBehaviour
     #region 공장 움직임
     private void FactoryWork()
     {
+        nodes = TileDataManager.instance.GetNodes();
+
         StartCoroutine(Buildpattern());
         detection = Detect.None;
         return;
@@ -544,6 +551,8 @@ public class DetectMove : MonoBehaviour
     #region 자원 움직임
     void LootWork()
     {
+        nodes = TileDataManager.instance.GetNodes();
+
         StartCoroutine(LootPattern());
         detection = Detect.None;
         return;
