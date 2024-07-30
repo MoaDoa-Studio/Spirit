@@ -377,6 +377,8 @@ public class SpiritAnim : MonoBehaviour
         switch (currentState)
         {
             case DetectMove.Detect.None:
+                stateName = null;
+                /*
                 if (currentDirection == 0)
                 {
                     stateName = "Back_idle";
@@ -392,8 +394,10 @@ public class SpiritAnim : MonoBehaviour
                 {
                     stateName = "Front_idle";
                 }
+                */
                 break;
             case DetectMove.Detect.CheckTile:
+                /*
                 if (currentDirection == 0)
                 {
                     stateName = "Back_idle";
@@ -407,8 +411,11 @@ public class SpiritAnim : MonoBehaviour
                 }
                 else
                 {
+                
                     stateName = "Front_idle";
                 }
+                */
+                stateName = null;
                 break;
             case DetectMove.Detect.Wait:
                 if (currentDirection == 0)
@@ -445,6 +452,8 @@ public class SpiritAnim : MonoBehaviour
                 }
                 break;
             case DetectMove.Detect.Basic_MoveMent:
+                stateName = null;
+                /*
                 if (currentDirection == 0)
                 {
                     stateName = "Back_idle";
@@ -460,6 +469,7 @@ public class SpiritAnim : MonoBehaviour
                 {
                     stateName = "Front_idle";
                 }
+                */
                 break;
             case DetectMove.Detect.Factory:
                 if (currentDirection == 0)
@@ -513,6 +523,7 @@ public class SpiritAnim : MonoBehaviour
                 }
                 break;
             case DetectMove.Detect.Move:
+                animationspeed = 2f;
                 if (currentDirection == 0)
                 {
                     stateName = "Back_walk";
@@ -648,6 +659,7 @@ public class SpiritAnim : MonoBehaviour
                 }
                break;
         }
+        if(stateName != null)
         PlayAnimationForState(stateName, track, oneshot, animationspeed);
     }
 
@@ -751,7 +763,7 @@ public class SpiritAnim : MonoBehaviour
         if (transition != null)
         {
             skeletonAnimation.AnimationState.SetAnimation(layerIndex, transition, false).TimeScale = speed;
-            skeletonAnimation.AnimationState.AddAnimation(layerIndex, target, true, 0).TimeScale = speed;
+            skeletonAnimation.AnimationState.AddAnimation(layerIndex, target, true, 0.1f).TimeScale = speed;
         }
         else
         {
