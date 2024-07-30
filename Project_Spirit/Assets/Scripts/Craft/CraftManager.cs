@@ -349,6 +349,7 @@ partial class CraftManager
         BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());
         soundManager.BuildingOnbound(4);
         mouseIndicator = null;        
+
         ChangeCraftMode(CraftMode.Default);        
     }
     bool isBuildingOvelapBuilding(Vector2Int upperRight, Vector2Int bottomLeft)

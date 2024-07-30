@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class OpenBookSequence : MonoBehaviour
 {
     public Sprite[] sprites; // 스프라이트 배열
+    public Sprite[] Hotsprites; // 스프라이트 배열
     public float frameRate = 0.1f; // 프레임 속도
     public float rainDropInterval = 1.5f; // BookDrop 메서드 호출 간격
-
+    public GameObject eventmanager;
     private Image image; // 이미지 컴포넌트
     private float timer; // 타이머
     private int currentFrame; // 현재 프레임
@@ -18,33 +19,50 @@ public class OpenBookSequence : MonoBehaviour
 
     void Start()
     {
-        image = GetComponent<Image>();
-        if (sprites.Length > 0)
+        if (!eventmanager.GetComponent<BookEvent>().Hoteventhasoccured)
         {
-            image.sprite = sprites[0];
+            image = GetComponent<Image>();
+            if (sprites.Length > 0)
+            {
+                image.sprite = sprites[0];
+            }
         }
+        else
+        {
+            image = GetComponent<Image>();
+                image.sprite = Hotsprites[0];
+        }
+
+        
     }
 
     void Update()
     {
-        if (currentFrame < sprites.Length - 1)
+        if(!eventmanager.GetComponent<BookEvent>().Hoteventhasoccured)
         {
-            timer += Time.unscaledDeltaTime;
 
-            if (timer >= frameRate)
+            if (currentFrame < sprites.Length - 1)
             {
-                timer -= frameRate;
-                currentFrame = Mathf.Min(currentFrame + 1, sprites.Length - 1);
-                image.sprite = sprites[currentFrame];
-            }
-        }
+                timer += Time.unscaledDeltaTime;
 
-        rainDropTimer += Time.unscaledDeltaTime;
-        if (!isBookDropPlay && rainDropTimer >= rainDropInterval)
-        {
-            int count = Random.Range(3, 9);
-            StartCoroutine(PlayRainDrop(count));
-            rainDropTimer = 0f; // 타이머 리셋
+                if (timer >= frameRate)
+                {
+                    timer -= frameRate;
+                    currentFrame = Mathf.Min(currentFrame + 1, sprites.Length - 1);
+                    image.sprite = sprites[currentFrame];
+                }
+            }
+
+            rainDropTimer += Time.unscaledDeltaTime;
+            if (!isBookDropPlay && rainDropTimer >= rainDropInterval)
+            {
+                int count = Random.Range(3, 9);
+                StartCoroutine(PlayRainDrop(count));
+                rainDropTimer = 0f; // 타이머 리셋
+            }
+
+
+
         }
     }
 

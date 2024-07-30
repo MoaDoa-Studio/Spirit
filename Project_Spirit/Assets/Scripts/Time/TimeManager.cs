@@ -23,12 +23,17 @@ public class TimeManager : MonoBehaviour
     DateTime CurrentDate;
     DateTime calc;
     DateTime weatherEventDate = new DateTime(1, 3, 13); 
-    DateTime weatherEventOverDate = new DateTime(1, 3, 21); 
+    DateTime weatherEventOverDate = new DateTime(1, 3, 15); 
+    DateTime weatherHotDate = new DateTime(1, 4, 27); 
+    DateTime weatherHotOverDate = new DateTime(1, 5, 6); 
+    DateTime HotWarnDate = new DateTime(1, 4, 20);
     DateTime BookEventDate = new DateTime(1, 3, 25);
-
     int bookEventHour = 13;
     int weatherEventHour = 17;
     int weatherEventOverHour = 6;
+    int weatherHotHour = 7;
+    int weatherHotOverHour = 0;
+    int weatherwarnHour = 7;
 
     int currentWeather;
     int temporature;
@@ -176,6 +181,18 @@ public class TimeManager : MonoBehaviour
             EventManager.GetComponent<BookEvent>().BookEventTrigger();
         }
 
+        if (CurrentDate.Month == HotWarnDate.Month && CurrentDate.Day == HotWarnDate.Day && CurrentDate.Hour == weatherwarnHour)
+        {
+            EventManager.GetComponent<BookEvent>().WeatherHotEvent();
+        }
+        if (CurrentDate.Month == weatherHotDate.Month && CurrentDate.Day == weatherHotDate.Day && CurrentDate.Hour == weatherHotHour)
+        {
+            EventManager.GetComponent<WaterFallEvent>().HotEventTrigger();
+        }
+        if (CurrentDate.Month == weatherHotOverDate.Month && CurrentDate.Day == weatherHotOverDate.Day && CurrentDate.Hour == weatherHotOverHour)
+        {
+            EventManager.GetComponent<WaterFallEvent>().HotEventEventEnd();
+        }
     }
 
    public void PauseCradleUI()
@@ -247,6 +264,16 @@ public class TimeManager : MonoBehaviour
     public void MoveDateTo325()
     {
         SetDate(3, 25);
+    }
+
+    public void MoveTo420()
+    {
+        SetDate(4, 20);
+    }
+
+    public void MoveTo427()
+    {
+        SetDate(4, 27);
     }
     // 1분마다 TakeDamageByWeather 메서드를 실행하는 Coroutine
     IEnumerator TakeDamageRoutine()
