@@ -13,6 +13,7 @@ public class Building : MonoBehaviour
     private int BuildID;
     [SerializeField]
     GameObject sliderUI;
+   
     [SerializeField]
     GameObject PreviewParent;
     [SerializeField]
@@ -30,6 +31,7 @@ public class Building : MonoBehaviour
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
     
     public List<GameObject> gameObjectList;
+    ResearchManager researchManager;
     BuildingDataManager buildingDataManager;
     List<BuildData> buildDataList;
     List<StructUniqueData> structUniqueDataList;
@@ -661,6 +663,13 @@ public class Building : MonoBehaviour
                 infoUIActive = true;
             }
         }
+        if(structureID == 1007)
+        {
+            researchManager = GameObject.Find("ResearchManager").GetComponent<ResearchManager>();
+            researchManager.ShowResearchUI();
+            researchManager.gainWorkUI.SetActive(true);
+        }
+
     }
 
     private void ToggleBuildingInfoUI()
@@ -682,7 +691,7 @@ public class Building : MonoBehaviour
     }
 
     // 객체가 파괴되기 전에 호출되는 매서드
-    private void OnDestroy()
+    public void Destroy()
     {
         foreach (Transform child in building_info.transform)
         {

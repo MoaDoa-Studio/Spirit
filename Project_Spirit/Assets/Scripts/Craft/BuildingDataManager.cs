@@ -74,6 +74,7 @@ public class BuildingDataManager : MonoBehaviour
 
         // 리스트에서 제거해주고 오브젝트 파괴.
         BuildingList.Remove(building);
+        building.Destroy();
         Destroy(obj);
     }
     

@@ -401,7 +401,6 @@ partial class CraftManager
     #region 건물 삭제 관련
     void DeleteBuilding()
     {
-        Debug.Log("건물 삭제하는거 들어오긴하니?");
         Vector3Int deleteEnd = grid.WorldToCell(ProcessingMousePosition());
         Vector2Int deleteUpperRight = new Vector2Int();
         Vector2Int deleteBottomLeft = new Vector2Int();

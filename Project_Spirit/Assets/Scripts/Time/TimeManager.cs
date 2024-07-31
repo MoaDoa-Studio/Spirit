@@ -48,8 +48,8 @@ public class TimeManager : MonoBehaviour
 
     private void Start()
     {
-        DefaultDate = DateTime.ParseExact("03-01 06:20:00", "MM-dd HH:mm:ss", null);
-        CurrentDate = DateTime.ParseExact("03-01 06:20:00", "MM-dd HH:mm:ss", null);
+        DefaultDate = DateTime.ParseExact("03-01 06:00:00", "MM-dd HH:mm:ss", null);
+        CurrentDate = DateTime.ParseExact("03-01 06:00:00", "MM-dd HH:mm:ss", null);
         calc = DateTime.Now;
 
         // For Debug.
@@ -73,7 +73,7 @@ public class TimeManager : MonoBehaviour
         //SetSunLight();
         CheckEventDate();
         CheckEventBGM();
-        SetBGMbyTime();
+        SetBGM();
     }
 
     void CalculateTime()
@@ -138,12 +138,24 @@ public class TimeManager : MonoBehaviour
             return CurrentDate.Month > 4 || (CurrentDate.Month == 4 && CurrentDate.Day >= 27);
         }
 
+        // 짝수 날인지 확인
+        bool IsEvenDay()
+        {
+            return CurrentDate.Day % 2 == 0;
+        }
+
         if (IsAfterApril27())
         {
             if (IsDayTime())
             {
-                int random = UnityEngine.Random.Range(1, 3);
-                soundController.GetComponent<SoundManager>().PlayBgm($"Summer_BGM_0{random}");
+                if (IsEvenDay())
+                {
+                    soundController.GetComponent<SoundManager>().PlayBgm("Summer_BGM_01");
+                }
+                else
+                {
+                    soundController.GetComponent<SoundManager>().PlayBgm("Summer_BGM_02");
+                }
             }
             else
             {
@@ -154,8 +166,14 @@ public class TimeManager : MonoBehaviour
         {
             if (IsDayTime())
             {
-                int random = UnityEngine.Random.Range(0, 2);
-                soundController.GetComponent<SoundManager>().PlayBgm($"BGM_Day{random}");
+                if (IsEvenDay())
+                {
+                    soundController.GetComponent<SoundManager>().PlayBgm("BGM_Day0");
+                }
+                else
+                {
+                    soundController.GetComponent<SoundManager>().PlayBgm("BGM_Day1");
+                }
             }
             else
             {
