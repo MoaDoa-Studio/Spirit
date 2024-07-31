@@ -806,6 +806,7 @@ public class DetectMove : MonoBehaviour
     // ÇÏ´Ã·Î ½ÂÃµ
     void AscensionToSky()
     {
+        nodes[(int)CurposX, (int)CurposY].spiritElement = 0;
         GetComponent<Spirit>().InitializeUIInfo();
         Destroy(gameObject, 1.3f);
     }

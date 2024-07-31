@@ -342,9 +342,13 @@ partial class CraftManager
         }
 
         for (int i = upperRight.y; i >= bottomLeft.y; i--)        
-            for (int j = upperRight.x; j >= bottomLeft.x; j--)            
+            for (int j = upperRight.x; j >= bottomLeft.x; j--)
+            {
                 TileDataManager.instance.SetTileType(j, i, 1);
-        
+                GameTilemap.SetTile(new Vector3Int(j, i, 0), null);
+                GridTilemap.SetTile(new Vector3Int(j, i, 0), defaultTile);
+            }
+
         mouseIndicator.GetComponent<Building>().SetBuildingPos(upperRight, bottomLeft);
         BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());
         soundManager.BuildingOnbound(4);

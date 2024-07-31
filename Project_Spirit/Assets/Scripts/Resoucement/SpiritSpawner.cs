@@ -47,6 +47,7 @@ public class SpiritSpawner : MonoBehaviour
     public int spwLv { get; set; } = 1;
 
     TimeManager timeManager;
+    WaterFallEvent waterFallEvent;
     int termcnt = 0;
     Vector2 bottomLeft;
     Vector2 topRight;
@@ -66,6 +67,7 @@ public class SpiritSpawner : MonoBehaviour
  
     // 정령 생산 속도 가중치.
     public float spawnWeight = 1f;
+    float reducement = 1f;
     enum Dir
     {
         Up = 0,
@@ -81,6 +83,7 @@ public class SpiritSpawner : MonoBehaviour
         SpawnDuration = Spawn[0];
         SpawnUI.GetComponent<SpawnerUI>().ReceiveDefaultSpiritSpawnInfo(SetUIInfo());
         timeManager = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>();
+        waterFallEvent = GameObject.Find("[EventManager]").GetComponent<WaterFallEvent>();
     }
 
     private void Update()
@@ -98,10 +101,16 @@ public class SpiritSpawner : MonoBehaviour
             {
                 //Debug.Log("길이 정령까지 존재합니다.");
 
+                if (waterFallEvent.waterFallEvent && elementNum == 2)
+                    reducement = 0.6f;
+                else
+                    reducement = 1f;
+                        
+
                 gameTimer += Time.deltaTime * realTimeToGameTimeRatio *timeManager.timeSpeed;
 
                 float spawnTime = (sliderValue / sliderBar[spwLv]) * 720f;
-                if (gameTimer >= realTimeToGameTimeRatio * Spawn[spwLv] + spawnTime / spawnWeight)
+                if (gameTimer >= (realTimeToGameTimeRatio * Spawn[spwLv] + spawnTime / spawnWeight) * reducement)
                 {
                     SpawnSpirit();
 
@@ -275,6 +284,7 @@ public class SpiritSpawner : MonoBehaviour
                 SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos1.x + 0.5f;
                 SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos1.y + 0.5f;
                 SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos1.x, spawnPos1.y);
+                SpiritObject.GetComponent<DetectMove>().moveSpeed = timeManager.timeSpeed;
                 return;
             }
             else
@@ -285,6 +295,7 @@ public class SpiritSpawner : MonoBehaviour
                 SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos2.x + 0.5f;
                 SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos2.y + 0.5f;
                 SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos2.x, spawnPos2.y);
+                SpiritObject.GetComponent<DetectMove>().moveSpeed = timeManager.timeSpeed;
                 return;
             }
 
@@ -297,6 +308,7 @@ public class SpiritSpawner : MonoBehaviour
             SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos1.x + 0.5f;
             SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos1.y + 0.5f;
             SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos1.x, spawnPos1.y);
+                SpiritObject.GetComponent<DetectMove>().moveSpeed = timeManager.timeSpeed;
 
         }
         else if (TileDataManager.instance.GetTileType(spawnPos1.x, spawnPos1.y) != 3 && TileDataManager.instance.GetTileType(spawnPos2.x, spawnPos2.y) == 3)
@@ -307,6 +319,7 @@ public class SpiritSpawner : MonoBehaviour
             SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos2.x + 0.5f;
             SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos2.y + 0.5f;
             SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos2.x, spawnPos2.y);
+                SpiritObject.GetComponent<DetectMove>().moveSpeed = timeManager.timeSpeed;
         }
     }
 

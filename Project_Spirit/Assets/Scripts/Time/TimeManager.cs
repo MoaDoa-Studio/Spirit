@@ -80,7 +80,7 @@ public class TimeManager : MonoBehaviour
     {
         // 현실 시간 1초 = 게임 시간 12분
         float deltaTime = (float)(DateTime.Now - calc).TotalSeconds;
-        accumulatedGameTime += deltaTime * Time.timeScale * 12f * 60f * timeSpeed;
+        accumulatedGameTime += deltaTime * Time.timeScale * 12f * 60f * timeSpeed * 2;  // 플레이 시간이 너무 긺 
         calc = DateTime.Now;
 
         // 누적된 게임 시간을 이용해 현재 게임 날짜와 시간을 계산합니다.

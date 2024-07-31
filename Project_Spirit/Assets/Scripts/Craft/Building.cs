@@ -330,7 +330,7 @@ public class Building : MonoBehaviour
             soundManager.BuildingOnbound(0);
         }
 
-        if (buildOperator == BuildOperator.Done)
+        if (buildOperator == BuildOperator.Finish)
         {
             if (UniqueProperties == 101)
             {
@@ -372,6 +372,7 @@ public class Building : MonoBehaviour
             if(structureID == 1008)
             {
                 gameObject.GetComponent<Spirit>().SetSpiritID(1);
+                Debug.Log("왜 안함?");
                 // 잔여 체력을 감소
                 gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
             }
@@ -531,6 +532,7 @@ public class Building : MonoBehaviour
             {
                 gameManager.GetComponentInChildren<ResouceManager>().Max_Timber_reserves += 500;
             }            
+            // 마법의 동상
             else if(StructureEffect == 220)
             {               
             }            
@@ -538,6 +540,13 @@ public class Building : MonoBehaviour
             {                    
             }
         }
+        // 연구소 지어지면 퀘스트 클리어
+        if(structureID == 1007)
+        {
+            GameObject.Find("QuestManager").GetComponent<QuestManager>().researchSettlement += 1;
+            GameObject.Find("QuestManager").GetComponent<QuestManager>().GainItem();
+        }
+
     }    
     private void OnDisable()
     {

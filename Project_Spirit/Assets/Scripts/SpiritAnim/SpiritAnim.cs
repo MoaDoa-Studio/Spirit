@@ -124,6 +124,8 @@ public class SpiritAnim : MonoBehaviour
 
     private void Start()
     {
+        characterSkin = _skeleton.Skin;
+        Debug.Log(characterSkin);
         spiritelement = GetComponent<Spirit>().SpiritElement;
         currentState = GetComponent<DetectMove>().GetDetection();
         currentDirection = GetComponent<DetectMove>().GetDirection();
@@ -896,7 +898,7 @@ public class SpiritAnim : MonoBehaviour
             if (spiritelement == 1 || spiritelement == 4)
             { return "Front_exit_fm"; }
             else
-                return "Front_xit_m";
+                return "Front_exit_m";
 
         }
     }
@@ -962,6 +964,7 @@ public class SpiritAnim : MonoBehaviour
         //characterSkin.AddSkin(skeletonData.FindSkin(baseSkin));
 
         characterSkin.AddSkin(skeletonData.FindSkin(capAttachment[num]));
+       
     }
 
     void UpdateSideCharacterSkin(string skinName)
@@ -973,13 +976,16 @@ public class SpiritAnim : MonoBehaviour
         if (characterSkin == null)
         {
             characterSkin = new Skin(baseSkin);
+            
         }
         //characterSkin.AddSkin(skeletonData.FindSkin(baseSkin));
 
        // characterSkin.AddSkin(_skeleton.Data.FindSkin(skinName));
 
         Skin attachmentSkin = skeletonData.FindSkin(skinName);
+        
         characterSkin.AddSkin(attachmentSkin);
+        
     }
 
     void UpdateCombinedSkin()

@@ -47,7 +47,7 @@ public class BookEvent : MonoBehaviour
 
                 // 연구소 퀘스트 창 나오게 한다.
                 ResearchTaskQuest();
-
+                eventhasoccured = false;
             }
         }
 
