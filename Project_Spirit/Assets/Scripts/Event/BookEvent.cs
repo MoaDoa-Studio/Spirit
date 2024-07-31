@@ -38,6 +38,10 @@ public class BookEvent : MonoBehaviour
                 GameObject.FindAnyObjectByType<Camera>().orthographicSize = 11f;
 
                 // 연구소 퀘스트 창 나오게 한다.
+                // QuestID 1002번 
+                QuestManager.instance.InstantiateQuest(1002);
+
+
             }
         }
 
