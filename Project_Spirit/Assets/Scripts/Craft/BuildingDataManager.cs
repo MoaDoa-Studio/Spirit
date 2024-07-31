@@ -100,9 +100,10 @@ public class BuildingDataManager : MonoBehaviour
             buildData.essenceRequirement = float.Parse(xmlNode.SelectSingleNode("EssenceRequirement").InnerText);
             buildData.StructureDescription = xmlNode.SelectSingleNode("StructureDescription").InnerText;
             buildData.UniqueProperties = int.Parse(xmlNode.SelectSingleNode("UniqueProperties").InnerText);
-            //buildData.StructureEffect = int.Parse(xmlNode.SelectSingleNode("StructureEffect").InnerText);
+            buildData.StructureEffect = int.Parse(xmlNode.SelectSingleNode("StructureEffect").InnerText);
             buildData.baseState = xmlNode.SelectSingleNode("BasicStructure").InnerText;
             buildData.ConstructionAmount = int.Parse(xmlNode.SelectSingleNode("ConstructionAmount").InnerText);
+          
             buildDataList.Add(buildData);
         }
     }

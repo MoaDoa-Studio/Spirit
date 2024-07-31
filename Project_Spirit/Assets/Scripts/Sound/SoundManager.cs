@@ -32,6 +32,7 @@ public partial class SoundManager : MonoBehaviour
         //DontDestroyOnLoad(gameObject);
 
         AudioMixerGroup[] audioMixerGroup = audioMixer.FindMatchingGroups("Master");
+            
 
         foreach (Sound s in sounds)
         {

@@ -118,7 +118,7 @@ public class SpiritSpawner : MonoBehaviour
         {
             // 알림 타일맵 알림 부여
             NoticeTileMap(); 
-            Debug.Log("Oneroad is null");
+            //Debug.Log("Oneroad is null");
         }
        
 

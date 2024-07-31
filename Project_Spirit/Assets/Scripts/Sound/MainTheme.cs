@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public class MainTheme : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        
+        SetMainThemeBGM();
     }
 
     // Update is called once per frame
@@ -17,8 +16,10 @@ public class SceneLoader : MonoBehaviour
         
     }
 
-    public void LoadPlayScene()
+    // 메인테마 사운드
+    public void SetMainThemeBGM()
     {
-        SceneManager.LoadScene("AlphaScene");
+
+        SoundManager.instance.PlayBgm("MainTheme");
     }
 }
