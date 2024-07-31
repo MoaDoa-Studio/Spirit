@@ -81,13 +81,13 @@ public class BookEvent : MonoBehaviour
                 {
                     Debug.Log("책이 소환할 수 없는 위치입니다.");
                     BookEventTrigger();
-                    SoundManager.instance.BookDrop(0);
                 }
             }
             
            if(validLocation)
            {
                Instantiate(bookPrefab, new Vector3(x + 0.5f, y + 0.5f, 0), Quaternion.identity);
+                 SoundManager.instance.EvemtSFX(0);
                 bookSpawned = true;
                 return;
            }

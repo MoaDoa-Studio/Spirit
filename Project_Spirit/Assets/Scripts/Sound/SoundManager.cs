@@ -245,7 +245,7 @@ public partial class SoundManager
     #region 이벤트 사운드
 
     // 책 떨어지는 소리
-    public void BookDrop(int count)
+    public void EvemtSFX(int count)
     {
         AudioClip clip = EventSFX[count];
         AudioSource source = gameObject.AddComponent<AudioSource>();

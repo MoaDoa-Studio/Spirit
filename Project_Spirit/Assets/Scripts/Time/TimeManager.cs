@@ -45,10 +45,11 @@ public class TimeManager : MonoBehaviour
     TemperatureManager temperatureManager;
     SpiritManager spiritManager;
     BuildingDataManager buildingDataManager;
+
     private void Start()
     {
-        DefaultDate = DateTime.ParseExact("03-01 07:00:00", "MM-dd HH:mm:ss", null);
-        CurrentDate = DateTime.ParseExact("03-01 07:00:00", "MM-dd HH:mm:ss", null);
+        DefaultDate = DateTime.ParseExact("03-01 06:20:00", "MM-dd HH:mm:ss", null);
+        CurrentDate = DateTime.ParseExact("03-01 06:20:00", "MM-dd HH:mm:ss", null);
         calc = DateTime.Now;
 
         // For Debug.
@@ -71,7 +72,8 @@ public class TimeManager : MonoBehaviour
         SetTimeText();
         //SetSunLight();
         CheckEventDate();
-        SetBGM();
+        CheckEventBGM();
+        SetBGMbyTime();
     }
 
     void CalculateTime()
@@ -93,29 +95,77 @@ public class TimeManager : MonoBehaviour
         else
             Time_text.text = "AM " + CurrentDate.ToString("hh:mm");
         Date_text.text = CurrentDate.ToString("M월 d일");
-       
+
     }
 
-    void SetBGM()
+    void SetBGMbyTime()
     {
-        if(EventManager.GetComponent<WaterFallEvent>().waterFallEvent)
+        // 오전 6:30에 BGM 설정
+        if (CurrentDate.Hour == 6 && CurrentDate.Minute == 30)
+        {
+            SetBGM();
+       
+        }
+
+        // 오후 6:30에 BGM 설정
+        if (CurrentDate.Hour == 18 && CurrentDate.Minute == 30)
+        {
+            SetBGM();
+         
+        }
+    }
+
+    void CheckEventBGM()
+    {
+        if (EventManager.GetComponent<WaterFallEvent>().waterFallEvent)
         {
             soundController.GetComponent<SoundManager>().PlayBgm("Rain");
+        }
+    }
+    void SetBGM()
+    {
+       
+        // 4월 27일 이후의 경우 특정 BGM 재생
+        if (CurrentDate.Month > 4 || (CurrentDate.Month == 4 && CurrentDate.Day >= 27))
+        {
+            // 오전 6:30부터 오후 6:30까지 "Summer" BGM 재생
+            if ((CurrentDate.Hour > 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute >= 30)) &&
+                (CurrentDate.Hour < 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute < 30)))
+            {
+                int random = UnityEngine.Random.Range(1, 3);
+                soundController.GetComponent<SoundManager>().PlayBgm($"Summer_BGM_0{random}");
+            }
+            else
+            {
+                // 그 이외의 시간대에는 "밤" BGM 재생
+                soundController.GetComponent<SoundManager>().PlayBgm("BGM_Night");
+            }
         }
         else
         {
 
-            if(CurrentDate.Hour >= 7 && CurrentDate.Hour < 18)
+            // 오전 6:30부터 오후 6:30까지 "Summer" BGM 재생
+            if ((CurrentDate.Hour > 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute >= 30)) &&
+                (CurrentDate.Hour < 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute < 30)))
             {
-                soundController.GetComponent<SoundManager>().PlayBgm("BGM4");
+                int random = UnityEngine.Random.Range(0, 2);
+
+                soundController.GetComponent<SoundManager>().PlayBgm($"BGM_Day{random}");
             }
-            else if ((CurrentDate.Hour > 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute >= 30)) ||
-                  (CurrentDate.Hour < 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute < 20)))
+            
+            else 
             {
-                soundController.GetComponent<SoundManager>().PlayBgm("BGM5");
+                soundController.GetComponent<SoundManager>().PlayBgm("BGM_Night");
 
             }
         }
+    }
+
+    // 메인테마 사운드
+    public void SetMainThemeBGM()
+    {
+
+        soundController.GetComponent<SoundManager>().PlayBgm("MainTheme");
     }
 
     void SetSunLight()
@@ -164,6 +214,7 @@ public class TimeManager : MonoBehaviour
         return currentWeather;
     }
 
+    // 날짜별 이벤트 호출 메서드
     void CheckEventDate()
     {
         if (CurrentDate.Month == weatherEventDate.Month && CurrentDate.Day == weatherEventDate.Day && CurrentDate.Hour == weatherEventHour)

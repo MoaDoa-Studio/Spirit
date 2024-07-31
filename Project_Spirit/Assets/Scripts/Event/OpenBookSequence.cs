@@ -56,8 +56,8 @@ public class OpenBookSequence : MonoBehaviour
             rainDropTimer += Time.unscaledDeltaTime;
             if (!isBookDropPlay && rainDropTimer >= rainDropInterval)
             {
-                int count = Random.Range(3, 9);
-                StartCoroutine(PlayRainDrop(count));
+               
+                StartCoroutine(PlayRainDrop(11));
                 rainDropTimer = 0f; // 타이머 리셋
             }
 

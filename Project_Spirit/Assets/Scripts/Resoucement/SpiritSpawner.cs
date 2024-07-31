@@ -37,7 +37,8 @@ public class SpiritSpawner : MonoBehaviour
     private GameObject[] NoteTile = new GameObject[2];
 
     int[,] Area = new int[103, 103];
-    float[] Spawn = new float[] { 8f, 6f, 4f };   // 정령 스폰 시간 1,2,3 단계  96, 72, 48
+    float[] Spawn = new float[] {8f, 8f, 6f, 4f };   // 정령 스폰 시간 1,2,3 단계  96, 72, 48
+    float[] sliderBar = new float[] { 96, 96, 72, 48f };    // 슬라이더바 값 조정
     float SpawnDuration = 0f;
 
     float gameTimer = 0f;
@@ -99,8 +100,8 @@ public class SpiritSpawner : MonoBehaviour
 
                 gameTimer += Time.deltaTime * realTimeToGameTimeRatio *timeManager.timeSpeed;
 
-                float spawnTime = sliderValue * 720f;
-                if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime / spawnWeight)
+                float spawnTime = (sliderValue / sliderBar[spwLv]) * 720f;
+                if (gameTimer >= realTimeToGameTimeRatio * Spawn[spwLv] + spawnTime / spawnWeight)
                 {
                     SpawnSpirit();
 
