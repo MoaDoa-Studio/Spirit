@@ -62,6 +62,7 @@ public class Building : MonoBehaviour
     public int StructureCondition;
     public float constructionAmount = 0;
 
+    [SerializeField]
     float constructiondevote = 0;
   
     [SerializeField]
@@ -692,6 +693,6 @@ public class Building : MonoBehaviour
             }
         }
 
-        soundManager.BuildingOnbound(3);
+        SoundManager.instance.BuildingOnbound(3);
     }
 }

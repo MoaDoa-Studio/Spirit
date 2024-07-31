@@ -124,39 +124,42 @@ public class TimeManager : MonoBehaviour
     }
     void SetBGM()
     {
-       
-        // 4월 27일 이후의 경우 특정 BGM 재생
-        if (CurrentDate.Month > 4 || (CurrentDate.Month == 4 && CurrentDate.Day >= 27))
+
+        // 특정 시간대 (오전 6:30부터 오후 6:30까지)인지 확인하는 함수
+        bool IsDayTime()
         {
-            // 오전 6:30부터 오후 6:30까지 "Summer" BGM 재생
-            if ((CurrentDate.Hour > 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute >= 30)) &&
-                (CurrentDate.Hour < 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute < 30)))
+            return (CurrentDate.Hour > 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute >= 30)) &&
+                   (CurrentDate.Hour < 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute < 30));
+        }
+
+        // 4월 27일 이후인지 확인
+        bool IsAfterApril27()
+        {
+            return CurrentDate.Month > 4 || (CurrentDate.Month == 4 && CurrentDate.Day >= 27);
+        }
+
+        if (IsAfterApril27())
+        {
+            if (IsDayTime())
             {
                 int random = UnityEngine.Random.Range(1, 3);
                 soundController.GetComponent<SoundManager>().PlayBgm($"Summer_BGM_0{random}");
             }
             else
             {
-                // 그 이외의 시간대에는 "밤" BGM 재생
                 soundController.GetComponent<SoundManager>().PlayBgm("BGM_Night");
             }
         }
         else
         {
-
-            // 오전 6:30부터 오후 6:30까지 "Summer" BGM 재생
-            if ((CurrentDate.Hour > 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute >= 30)) &&
-                (CurrentDate.Hour < 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute < 30)))
+            if (IsDayTime())
             {
                 int random = UnityEngine.Random.Range(0, 2);
-
                 soundController.GetComponent<SoundManager>().PlayBgm($"BGM_Day{random}");
             }
-            
-            else 
+            else
             {
                 soundController.GetComponent<SoundManager>().PlayBgm("BGM_Night");
-
             }
         }
     }

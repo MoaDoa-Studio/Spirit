@@ -203,7 +203,7 @@ Transform:
   m_GameObject: {fileID: 2828559151546791557}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8, y: -1.84, z: 0}
+  m_LocalPosition: {x: -3.01, y: -0.99, z: 0}
   m_LocalScale: {x: 1.2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -386,6 +386,7 @@ MonoBehaviour:
   PreviewParent: {fileID: 0}
   GameObjectCount: 0
   cellPrefab: {fileID: 0}
+  building_info: {fileID: 0}
   upperRight: {x: 0, y: 0}
   bottomLeft: {x: 0, y: 0}
   gameObjectList: []
@@ -407,6 +408,7 @@ MonoBehaviour:
   DemandingWork: 0
   StructureCondition: 0
   constructionAmount: 0
+  constructiondevote: 0
   EarnWoodResourceAmount: 0
   EarnRockResourceAmount: 0
   buildOperator: 0
