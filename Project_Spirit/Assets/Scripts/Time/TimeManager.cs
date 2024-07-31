@@ -46,6 +46,14 @@ public class TimeManager : MonoBehaviour
     SpiritManager spiritManager;
     BuildingDataManager buildingDataManager;
 
+    [Header("조명 세팅")]
+    public Image lightImage; // LightController에 연결된 Image 컴포넌트
+    public Color nightColor = new Color(56f / 255f, 0f / 255f, 130f / 255f, 160f / 255f);
+    public Color morningColor = new Color(61f / 255f, 0f / 255f, 182f / 255f, 160f / 255f);
+    public Color dayColor = new Color(255f / 255f, 255f / 255f, 255f / 255f, 1f);
+    public Color eveningColor = new Color(255f / 255f, 0f / 255f, 23f / 255f, 60f / 255f);
+
+
     private void Start()
     {
         DefaultDate = DateTime.ParseExact("03-01 06:00:00", "MM-dd HH:mm:ss", null);
@@ -70,7 +78,7 @@ public class TimeManager : MonoBehaviour
     {
         CalculateTime();
         SetTimeText();
-        //SetSunLight();
+        SetSunLight();
         CheckEventDate();
         CheckEventBGM();
         SetBGM();
@@ -192,36 +200,33 @@ public class TimeManager : MonoBehaviour
     void SetSunLight()
     {
         int hour = CurrentDate.Hour;
-        if (hour >= 19 || hour < 4)
-        {
-            // �ּ� ���.
-            LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
-        }    
-        else if (hour >= 8 && hour < 15)
-        {
-            // �ִ� ���.
-            LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0f);
-        }
-        else if (hour >= 5 && hour < 8)
-        {
-            // ���� �����            
-            if (hour == 5)            
-                LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.6f);
-            else if (hour == 6)
-                LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.2f);
-            else if (hour == 7)
-                LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.1f);
-        }
-        else
-        {
-            // ���� ��ο���.
-            if (hour == 16)
-                LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.1f);            
-            else if (hour == 17)
-                LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.2f);
-            else if (hour == 18)
-                LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.6f);
 
+        float t = (CurrentDate.Minute + CurrentDate.Second / 60f) / 60f; // 분과 초를 0-1 사이의 값으로 변환
+
+        if (hour >= 21 || hour < 5)
+        {
+            // 밤 색상
+            lightImage.color = Color.Lerp(nightColor, nightColor, t); // 변화 없음
+        }
+        else if (hour >= 5 && hour < 7)
+        {
+            // 밤 -> 아침 색상 전환
+            lightImage.color = Color.Lerp(nightColor, morningColor, t + (hour - 5));
+        }
+        else if (hour >= 7 && hour < 18)
+        {
+            // 아침 -> 낮 색상 전환
+            lightImage.color = Color.Lerp(morningColor, dayColor, (hour - 7 + t) / 11f);
+        }
+        else if (hour >= 18 && hour < 21)
+        {
+            // 낮 -> 저녁 색상 전환
+            lightImage.color = Color.Lerp(dayColor, eveningColor, (hour - 18 + t) / 3f);
+        }
+        else if (hour >= 21 && hour < 24)
+        {
+            // 저녁 -> 밤 색상 전환
+            lightImage.color = Color.Lerp(eveningColor, nightColor, (hour - 21 + t) / 3f);
         }
     }
 
