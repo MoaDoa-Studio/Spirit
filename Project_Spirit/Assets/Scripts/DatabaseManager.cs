@@ -76,6 +76,8 @@ public class DatabaseManager : MonoBehaviour
             tempQuest.QuestID = int.Parse(texts[i]["QuestID"].ToString());
             tempQuest.QuestName = texts[i]["QuestName"].ToString();
             tempQuest.QuestBody = texts[i]["QuestBody"].ToString();
+            tempQuest.QuestClearMent = texts[i]["QuestBody"].ToString();
+            tempQuest.QuestFailMent = texts[i]["QuestBody"].ToString();
             tempQuest.QuestCondition = int.Parse(texts[i]["QuestCondition"].ToString());
             tempQuest.QuestClearCondition = int.Parse(texts[i]["QuestCCondition"].ToString());
             tempQuest.QuestConditionMent = texts[i]["QuestConditionMent"].ToString();

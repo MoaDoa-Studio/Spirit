@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 280e3b62b11cabb4a961d543ab5edaf4, type: 2}
+  - {fileID: 2100000, guid: ca8b28611ea7cf64d89b483ed699b307, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 8d48633561f428c499eb278e393d11e4, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 3e99635a09ac4cb4f8f86230fb18a760, type: 2}
   initialSkinName: Soil_Lv3
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentSlotName: 
   currentAttachmentName: 
-  baseSkin: Soil_Lv3
+  baseSkin: Air_Lv1
   capSlot:
   - Cap
   - Cap_fedora
@@ -162,77 +162,83 @@ MonoBehaviour:
   - Cap_Graduation_2
   activeCapattachmentIndex: 0
   skeletonDataAssets:
-  - {fileID: 11400000, guid: 8d48633561f428c499eb278e393d11e4, type: 2}
-  - {fileID: 11400000, guid: d31dbfe3f8f8a79429f1acc54e23e03c, type: 2}
-  - {fileID: 11400000, guid: df200e99fcaa0f24b984a7c9e176add9, type: 2}
+  - {fileID: 11400000, guid: 3e99635a09ac4cb4f8f86230fb18a760, type: 2}
+  - {fileID: 11400000, guid: c462f7c2f11f8c9439d4f62b2fa48b2f, type: 2}
+  - {fileID: 11400000, guid: 06dfbfb8d90faa64a807e61193501da1, type: 2}
   slotProperty: Cap
   attachmentProperty: Cap_knight
   disappeareventName: 
   statesAndAnimations:
   - stateName: Front_idle
-    animation: {fileID: 11400000, guid: 2c4d6841210a1ab42a72d9a40607978f, type: 2}
+    animation: {fileID: 11400000, guid: fb8845ba7c73dd84f97e2b45348ed867, type: 2}
   - stateName: Front_walk
-    animation: {fileID: 11400000, guid: a19870e66aabfdd488cb51458050ac05, type: 2}
+    animation: {fileID: 11400000, guid: c204a8f1c32a8814c9a31ecb1ebc5634, type: 2}
   - stateName: Front_crash
-    animation: {fileID: 11400000, guid: 3d849b95d1446664181374b495339b6c, type: 2}
+    animation: {fileID: 11400000, guid: 7dafedc68dce14b42af0dca94f56ec87, type: 2}
   - stateName: Front_crash_Air
-    animation: {fileID: 11400000, guid: 489f3571ff68e9a459b8b03b9c51f114, type: 2}
+    animation: {fileID: 11400000, guid: 4924c907520cd5548a81857a41d6aaca, type: 2}
   - stateName: Front_crash_Water
-    animation: {fileID: 11400000, guid: 1037254da5733b14d91052dc5281cd79, type: 2}
+    animation: {fileID: 11400000, guid: 1d013c0fc18d2d84390ee4fd43042e20, type: 2}
   - stateName: Front_disappear
-    animation: {fileID: 11400000, guid: 6209e0bd2f44fdd42a07df4a3cd306a6, type: 2}
+    animation: {fileID: 11400000, guid: 897d136c4cf018b4b97ee10027cc6ac5, type: 2}
   - stateName: Front_enter_fm
-    animation: {fileID: 11400000, guid: 2decb98d8f639f64b99d13dba5843ff6, type: 2}
+    animation: {fileID: 11400000, guid: 0992c94b701f5e84a9fecd7dcbffd9a9, type: 2}
   - stateName: Front_enter_m
-    animation: {fileID: 11400000, guid: 4eab36df41ff91c4aa2317dab0928ce5, type: 2}
+    animation: {fileID: 11400000, guid: 3d88e1b4c61381a44b61eae7b6201f6e, type: 2}
   - stateName: Front_exit_fm
-    animation: {fileID: 11400000, guid: 4fa507fc567c35545861e2eeca28b179, type: 2}
+    animation: {fileID: 11400000, guid: f6d9aa9f9f2a23448bf78be9515c8da9, type: 2}
   - stateName: Front_exit_m
-    animation: {fileID: 11400000, guid: 4eab36df41ff91c4aa2317dab0928ce5, type: 2}
+    animation: {fileID: 11400000, guid: b1cee9c98e4da3f4a9a40b0ebc7bf8a6, type: 2}
   - stateName: Back_crash_Air
-    animation: {fileID: 11400000, guid: 86d15b42aa148d447a075949a7bf781f, type: 2}
+    animation: {fileID: 11400000, guid: d718e7efe4d75bf419dbc7b89feb43ac, type: 2}
   - stateName: Back_crash_Water
-    animation: {fileID: 11400000, guid: 6178f135d72851e47b22460d26c73fc2, type: 2}
+    animation: {fileID: 11400000, guid: 4528858d5f0c79643b8cb627a7192ee8, type: 2}
   - stateName: Back_enter_fm
-    animation: {fileID: 11400000, guid: de9b30db219d7164792c6535b5c91ae9, type: 2}
+    animation: {fileID: 11400000, guid: 02f97094e66b32846be9d138b8741699, type: 2}
   - stateName: Back_enter_m
-    animation: {fileID: 11400000, guid: 22d47f6d3ee9dfe4b9a8a5bd11d9a3d2, type: 2}
+    animation: {fileID: 11400000, guid: 61fb7c9238fac344ebf0a2afbaadd150, type: 2}
   - stateName: Back_exit_fm
-    animation: {fileID: 11400000, guid: 4240273236b8b0b46a692bb591d481f3, type: 2}
+    animation: {fileID: 11400000, guid: 31e1e2fe07968bd44a0f2906171b06db, type: 2}
   - stateName: Back_exit_m
-    animation: {fileID: 11400000, guid: 4eab36df41ff91c4aa2317dab0928ce5, type: 2}
+    animation: {fileID: 11400000, guid: ae8db7e986cb2374a98d355ac5eeec73, type: 2}
   - stateName: Back_walk
-    animation: {fileID: 11400000, guid: e3bc489b17a156a4aa6da90877164ed6, type: 2}
+    animation: {fileID: 11400000, guid: 89434309d22bbb8459106ccea56aeb4a, type: 2}
   - stateName: Side_crash_Air
-    animation: {fileID: 11400000, guid: 855a29ec5beed37488f4f1fc4bed463a, type: 2}
+    animation: {fileID: 11400000, guid: bb5bdcc7db0b51144a2fe723b8f15d38, type: 2}
   - stateName: Side_crash_Fire
-    animation: {fileID: 11400000, guid: 5c23717a4a9770c4bbdaaa77eb609c27, type: 2}
+    animation: {fileID: 11400000, guid: 049e01ea6b062a24e92cc296d201ef7c, type: 2}
   - stateName: Side_crash_Soil
-    animation: {fileID: 11400000, guid: 6d414991cad8e0149aa0f12c2f780929, type: 2}
+    animation: {fileID: 11400000, guid: 64ea86a34115e2444b4de70b4ac740bf, type: 2}
   - stateName: Side_crash_Water
-    animation: {fileID: 11400000, guid: c71a3e0aa1aa8c64dacf5a467d30127a, type: 2}
+    animation: {fileID: 11400000, guid: e5eb198c3f73a6942938f38694f9147f, type: 2}
   - stateName: Side_enter_fm
-    animation: {fileID: 11400000, guid: 51e11a2319e2211438fb623c02f0925a, type: 2}
+    animation: {fileID: 11400000, guid: e88ab0a9a2e8e284c8eeef9773897f88, type: 2}
   - stateName: Side_enter_m
-    animation: {fileID: 11400000, guid: 9a7d9abe097884e4ea2a1c77ad481383, type: 2}
+    animation: {fileID: 11400000, guid: bf29a9eb4250e1242b6ad3236a879e2c, type: 2}
   - stateName: Side_exit_fm
-    animation: {fileID: 11400000, guid: 8e0e83a17c3c61541933c265986092e9, type: 2}
+    animation: {fileID: 11400000, guid: 10cfdd7ff44c01c4e9d58da319199c16, type: 2}
   - stateName: Side_exit_Soil
-    animation: {fileID: 11400000, guid: 97a0cdff70bc7a54793e5f4052895987, type: 2}
+    animation: {fileID: 11400000, guid: 6142b991597d2fc41a8f9aa9dd437700, type: 2}
   - stateName: Side_exit_Water
-    animation: {fileID: 11400000, guid: 201a1a2c160da2847a7473cac2e9d388, type: 2}
+    animation: {fileID: 11400000, guid: 1561fc41f193296418d51c7fe7a69f64, type: 2}
   - stateName: Side_idle
-    animation: {fileID: 11400000, guid: cc643a8dbb24ecb4698089d26b7c6e5a, type: 2}
+    animation: {fileID: 11400000, guid: b30e864d41d81cc4493187b127108bc7, type: 2}
   - stateName: Side_idle_Soil
-    animation: {fileID: 11400000, guid: b307a9660a23f2040adb8aa8ca775d6c, type: 2}
+    animation: {fileID: 11400000, guid: 3ff58fba3ca029f42bc5c5d9f5026f85, type: 2}
   - stateName: Side_walk
-    animation: {fileID: 11400000, guid: d5e48c5bfa1671446ac39f6df2e92887, type: 2}
+    animation: {fileID: 11400000, guid: ff8452df0e4e7bd4c881d2cc000da47a, type: 2}
   - stateName: Side_walk_Soil
-    animation: {fileID: 11400000, guid: 7c1d2e560f92f644888676036a38201d, type: 2}
+    animation: {fileID: 11400000, guid: d5653fda6f740394096158647126eb10, type: 2}
   - stateName: Back_idle
-    animation: {fileID: 11400000, guid: d634916ca8b0aa245a1cbe4bfec682a5, type: 2}
+    animation: {fileID: 11400000, guid: ac4ea5db5b34b464e886b027565d5b71, type: 2}
   - stateName: Back_crash_Soil_Fire
-    animation: {fileID: 11400000, guid: 37b0ef752aa1005438130e4bb745a652, type: 2}
+    animation: {fileID: 11400000, guid: 36530fa7169d5924d84426f46057237a, type: 2}
+  - stateName: Back_disappear
+    animation: {fileID: 11400000, guid: e7d14cd016519b54b8ddba3082b076ba, type: 2}
+  - stateName: Side_disappear
+    animation: {fileID: 11400000, guid: c41915d8b0501874f8260d227d97fd03, type: 2}
+  - stateName: Side_disappear_Soil
+    animation: {fileID: 11400000, guid: ebad8574af48d454883e803e29ea11a4, type: 2}
   transitions: []
   animationspeed: 0
 --- !u!114 &7158861477683944311
@@ -272,7 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1402bb9579c8d547ae4b24b34dee44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpiritID: 1
+  SpiritID: 0
   SpiritJob: 0
   SpiritElement: 3
   type: 

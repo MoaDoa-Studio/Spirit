@@ -124,6 +124,8 @@ public class SpiritAnim : MonoBehaviour
 
     private void Start()
     {
+        characterSkin = _skeleton.Skin;
+        Debug.Log(characterSkin);
         spiritelement = GetComponent<Spirit>().SpiritElement;
         currentState = GetComponent<DetectMove>().GetDetection();
         currentDirection = GetComponent<DetectMove>().GetDirection();
@@ -377,6 +379,8 @@ public class SpiritAnim : MonoBehaviour
         switch (currentState)
         {
             case DetectMove.Detect.None:
+                stateName = null;
+                /*
                 if (currentDirection == 0)
                 {
                     stateName = "Back_idle";
@@ -392,8 +396,10 @@ public class SpiritAnim : MonoBehaviour
                 {
                     stateName = "Front_idle";
                 }
+                */
                 break;
             case DetectMove.Detect.CheckTile:
+                /*
                 if (currentDirection == 0)
                 {
                     stateName = "Back_idle";
@@ -407,8 +413,11 @@ public class SpiritAnim : MonoBehaviour
                 }
                 else
                 {
+                
                     stateName = "Front_idle";
                 }
+                */
+                stateName = null;
                 break;
             case DetectMove.Detect.Wait:
                 if (currentDirection == 0)
@@ -445,6 +454,8 @@ public class SpiritAnim : MonoBehaviour
                 }
                 break;
             case DetectMove.Detect.Basic_MoveMent:
+                stateName = null;
+                /*
                 if (currentDirection == 0)
                 {
                     stateName = "Back_idle";
@@ -460,6 +471,7 @@ public class SpiritAnim : MonoBehaviour
                 {
                     stateName = "Front_idle";
                 }
+                */
                 break;
             case DetectMove.Detect.Factory:
                 if (currentDirection == 0)
@@ -513,6 +525,7 @@ public class SpiritAnim : MonoBehaviour
                 }
                 break;
             case DetectMove.Detect.Move:
+                animationspeed = 2f;
                 if (currentDirection == 0)
                 {
                     stateName = "Back_walk";
@@ -625,7 +638,30 @@ public class SpiritAnim : MonoBehaviour
             case DetectMove.Detect.FactoryOrLootEnter:
                 stateName = enter_Gender();
                 break;
+            case DetectMove.Detect.Ascension:
+                if (currentDirection == 0)
+                {       stateName = "Back_disappear";
+                   
+                }
+                else if (currentDirection == 1 || currentDirection == 3)
+                {
+                    if (spiritelement == 3)
+                    {
+                        stateName = "Side_disappear_Soil";
+                    }
+                    else 
+                    {
+                        stateName = "Side_disappear";
+                    }
+                  
+                }
+                else
+                {       stateName = "Front_disappear";
+                   
+                }
+               break;
         }
+        if(stateName != null)
         PlayAnimationForState(stateName, track, oneshot, animationspeed);
     }
 
@@ -729,7 +765,7 @@ public class SpiritAnim : MonoBehaviour
         if (transition != null)
         {
             skeletonAnimation.AnimationState.SetAnimation(layerIndex, transition, false).TimeScale = speed;
-            skeletonAnimation.AnimationState.AddAnimation(layerIndex, target, true, 0).TimeScale = speed;
+            skeletonAnimation.AnimationState.AddAnimation(layerIndex, target, true, 0.1f).TimeScale = speed;
         }
         else
         {
@@ -862,7 +898,7 @@ public class SpiritAnim : MonoBehaviour
             if (spiritelement == 1 || spiritelement == 4)
             { return "Front_exit_fm"; }
             else
-                return "Front_xit_m";
+                return "Front_exit_m";
 
         }
     }
@@ -928,6 +964,7 @@ public class SpiritAnim : MonoBehaviour
         //characterSkin.AddSkin(skeletonData.FindSkin(baseSkin));
 
         characterSkin.AddSkin(skeletonData.FindSkin(capAttachment[num]));
+       
     }
 
     void UpdateSideCharacterSkin(string skinName)
@@ -939,13 +976,16 @@ public class SpiritAnim : MonoBehaviour
         if (characterSkin == null)
         {
             characterSkin = new Skin(baseSkin);
+            
         }
         //characterSkin.AddSkin(skeletonData.FindSkin(baseSkin));
 
        // characterSkin.AddSkin(_skeleton.Data.FindSkin(skinName));
 
         Skin attachmentSkin = skeletonData.FindSkin(skinName);
+        
         characterSkin.AddSkin(attachmentSkin);
+        
     }
 
     void UpdateCombinedSkin()
