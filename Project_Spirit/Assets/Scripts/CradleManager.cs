@@ -38,12 +38,13 @@ public class CradleManager : MonoBehaviour
 
     // 성장 관련 변수들
     private int Level = 0;
+    [SerializeField]
     private int GrowthPoint = 0;
     private int GrowthState = 0;
     private int[] GrowthValue = { 50, 25, 10, -40 };
     private float GrowthTime = 0f;
     private float GrowthCooldown = 3f;
-    private int[] LevelPoint = { 36000, 40000, 45000, 50000, 53000, 54000, 55000, 60000 };
+    private int[] LevelPoint = { 3600, 4000, 4500, 5000, 5300, 5400, 5500, 6000 };
 
     private bool cradleUIenable = false;
     bool first = false;
