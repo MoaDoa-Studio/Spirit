@@ -13,6 +13,7 @@ public class Building : MonoBehaviour
     private int BuildID;
     [SerializeField]
     GameObject sliderUI;
+   
     [SerializeField]
     GameObject PreviewParent;
     [SerializeField]
@@ -30,6 +31,7 @@ public class Building : MonoBehaviour
     public Tuple<Vector2Int, Vector2Int> connectedRoads;
     
     public List<GameObject> gameObjectList;
+    ResearchManager researchManager;
     BuildingDataManager buildingDataManager;
     List<BuildData> buildDataList;
     List<StructUniqueData> structUniqueDataList;
@@ -62,6 +64,7 @@ public class Building : MonoBehaviour
     public int StructureCondition;
     public float constructionAmount = 0;
 
+    [SerializeField]
     float constructiondevote = 0;
   
     [SerializeField]
@@ -327,7 +330,7 @@ public class Building : MonoBehaviour
             soundManager.BuildingOnbound(0);
         }
 
-        if (buildOperator == BuildOperator.Done)
+        if (buildOperator == BuildOperator.Finish)
         {
             if (UniqueProperties == 101)
             {
@@ -369,6 +372,7 @@ public class Building : MonoBehaviour
             if(structureID == 1008)
             {
                 gameObject.GetComponent<Spirit>().SetSpiritID(1);
+                Debug.Log("왜 안함?");
                 // 잔여 체력을 감소
                 gameObject.GetComponent<Spirit>().TakeDamageOfBuilding();
             }
@@ -528,6 +532,7 @@ public class Building : MonoBehaviour
             {
                 gameManager.GetComponentInChildren<ResouceManager>().Max_Timber_reserves += 500;
             }            
+            // 마법의 동상
             else if(StructureEffect == 220)
             {               
             }            
@@ -535,6 +540,13 @@ public class Building : MonoBehaviour
             {                    
             }
         }
+        // 연구소 지어지면 퀘스트 클리어
+        if(structureID == 1007)
+        {
+            GameObject.Find("QuestManager").GetComponent<QuestManager>().researchSettlement += 1;
+            GameObject.Find("QuestManager").GetComponent<QuestManager>().GainItem();
+        }
+
     }    
     private void OnDisable()
     {
@@ -660,6 +672,13 @@ public class Building : MonoBehaviour
                 infoUIActive = true;
             }
         }
+        if(structureID == 1007)
+        {
+            researchManager = GameObject.Find("ResearchManager").GetComponent<ResearchManager>();
+            researchManager.ShowResearchUI();
+            researchManager.gainWorkUI.SetActive(true);
+        }
+
     }
 
     private void ToggleBuildingInfoUI()
@@ -681,7 +700,7 @@ public class Building : MonoBehaviour
     }
 
     // 객체가 파괴되기 전에 호출되는 매서드
-    private void OnDestroy()
+    public void Destroy()
     {
         foreach (Transform child in building_info.transform)
         {
@@ -692,6 +711,6 @@ public class Building : MonoBehaviour
             }
         }
 
-        soundManager.BuildingOnbound(3);
+        SoundManager.instance.BuildingOnbound(3);
     }
 }

@@ -254,6 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeleteUI: {fileID: 6574188827189336212}
+  first: 0
 --- !u!1 &4103777416369240903
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,7 +462,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 11
-  m_Sprite: {fileID: 1206443137, guid: aa9c5ad38432e5d43a825b1c4a85ff6a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 22fc0c5bb68d28a4399f29c2f550f362, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

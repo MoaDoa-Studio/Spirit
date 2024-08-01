@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<text>
+		<QuestID>1001</QuestID>
+		<QuestName>폭우 피해 축소</QuestName>
+		<QuestBody>폭우 기간 동안에도 정령왕이 성장을 멈추지 않도록 정령 세계를 관리해주세요.</QuestBody>
+		<QuestCondition>1001</QuestCondition>
+		<QuestCCondition>1002</QuestCCondition>
+		<QuestConditionMent>제한 시간 동안 성장 상태 유지</QuestConditionMent>
+		<QuestClearMent>나무 100개</QuestClearMent>
+		<QuestFailMent>정령왕 게이지 소폭 감소</QuestFailMent>
+		<QuestClearTime>10860</QuestClearTime>
+		<QuestReward>401</QuestReward>
+		<QuestDisadvantage>402</QuestDisadvantage>
+	</text>
+	<text>
+		<QuestID>1002</QuestID>
+		<QuestName>연구소 설치</QuestName>
+		<QuestBody>건물 모드에 들어가 연구소를 설치하세요.</QuestBody>
+		<QuestCondition>기획서 참고</QuestCondition>
+		<QuestCCondition>1003</QuestCCondition>
+		<QuestConditionMent>연구소</QuestConditionMent>
+		<QuestClearMent>정령왕 게이지 소폭 증가</QuestClearMent>
+		<QuestFailMent>없음</QuestFailMent>
+		<QuestClearTime>2880</QuestClearTime>
+		<QuestReward>null</QuestReward>
+		<QuestDisadvantage>403</QuestDisadvantage>
+	</text>
+	<text>
+		<QuestID>1003</QuestID>
+		<QuestName>정령왕의 성장기</QuestName>
+		<QuestBody>정령왕의 성장기가 찾아왔습니다. 성장기 동안 정령왕이 필요로 하는 원소 기여도가 증가하니 이를 주의하세요</QuestBody>
+		<QuestCondition>1004</QuestCondition>
+		<QuestCCondition>1005</QuestCCondition>
+		<QuestConditionMent>제한 시간 동안 성장 상태 유지</QuestConditionMent>
+		<QuestClearMent>정령 원소 1개</QuestClearMent>
+		<QuestFailMent>정령왕 게이지 대폭 감소</QuestFailMent>
+		<QuestClearTime>13980</QuestClearTime>
+		<QuestReward>404</QuestReward>
+		<QuestDisadvantage>405</QuestDisadvantage>
+	</text>
+	<text>
+		<QuestID>1004</QuestID>
+		<QuestName>돌 캐기</QuestName>
+		<QuestBody>돌을 캐는 것은 정령 세계 관리에 있어 가장 기초적인 것입니다. 길을 설치하여 돌을 캐세요</QuestBody>
+		<QuestCondition>1006</QuestCondition>
+		<QuestCCondition>1007</QuestCCondition>
+		<QuestConditionMent>돌</QuestConditionMent>
+		<QuestClearMent>정령왕 게이지 소폭 증가</QuestClearMent>
+		<QuestFailMent>없음</QuestFailMent>
+		<QuestClearTime>7200</QuestClearTime>
+		<QuestReward>406</QuestReward>
+		<QuestDisadvantage>null</QuestDisadvantage>
+	</text>
+	<text>
+		<QuestID>1005</QuestID>
+		<QuestName>나무 베기</QuestName>
+		<QuestBody>나무를 베는 것은 정령 세계 관리에 있어 가장 기초적인 것입니다. 길을 설치하여 나무를 베세요</QuestBody>
+		<QuestCondition>1006</QuestCondition>
+		<QuestCCondition>1008</QuestCCondition>
+		<QuestConditionMent>나무</QuestConditionMent>
+		<QuestClearMent>정령왕 게이지 소폭 증가</QuestClearMent>
+		<QuestFailMent>없음</QuestFailMent>
+		<QuestClearTime>7200</QuestClearTime>
+		<QuestReward>406</QuestReward>
+		<QuestDisadvantage>null</QuestDisadvantage>
+	</text>
+</root>

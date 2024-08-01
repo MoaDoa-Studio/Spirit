@@ -1,3 +1,4 @@
+
  using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -96,7 +97,7 @@ public class Spirit : MonoBehaviour
 
     public void TakeDamage25ByWeather()
     {
-        HP  -= HP - 0.041667f; 
+        HP  -= 0.041667f; 
     }
 
     public void TakeDamage25OverByWeather(float temp)
@@ -153,6 +154,7 @@ public class Spirit : MonoBehaviour
 
         if(collision.gameObject.tag == "Cradle")
         {
+            CradleManager.GetComponent<CradleManager>().AddElement(type, (int)HP);
             GetComponent<DetectMove>().SetDetection(DetectMove.Detect.Dead);
             Destroy(gameObject);
         }
@@ -179,7 +181,7 @@ public class Spirit : MonoBehaviour
 
             if (t.gameObject.name == "title")
             {
-                t.GetComponent<TextMeshProUGUI>().text = $"      @@ ({SpiritJob})  @@ {SpiritName}";
+                t.GetComponent<TextMeshProUGUI>().text = $"        직업({SpiritJob})  {SpiritName}";
                
             }
             if (t.gameObject.name == "gauge")
@@ -187,21 +189,28 @@ public class Spirit : MonoBehaviour
                 t.GetComponent<Slider>().maxValue = SDefaultLife;
                 t.GetComponent <Slider>().value = HP;
             }
+
+            if (t.gameObject.name == SpiritElement.ToString())
+            {
+                t.gameObject.SetActive(true);
+            }
         }
 
 
     }
 
     // UI 정보 초기화
-    void InitializeUIInfo()
+    public void InitializeUIInfo()
     {
-        foreach (Transform t in transform)
+        ui_characater_info = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().characterinfo_UI;
+        foreach (Transform t in ui_characater_info.transform)
         {
             if (t.gameObject.name == SpiritElement.ToString())
             {
                 t.gameObject.SetActive(false);
             }
         }
+        ui_characater_info.SetActive(false);
     }
 
     private void ToggleCharacterInfoUI()
@@ -219,8 +228,8 @@ public class Spirit : MonoBehaviour
                          t.gameObject.SetActive(false);
                     }
                 }
-                SoundManager.instance.UIButtonclick();
                 ui_characater_info.SetActive(false);
+                SoundManager.instance.UIButtonclick();
             }
         }
     }

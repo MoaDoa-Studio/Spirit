@@ -7,6 +7,6 @@ public class CharacterInfoUI : MonoBehaviour
    public void ToggleOffUI()
     {
         SoundManager.instance.UIButtonclick();
-        gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
     }
 }

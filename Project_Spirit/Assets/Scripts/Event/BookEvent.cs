@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BookEvent : MonoBehaviour
 {
@@ -9,8 +10,20 @@ public class BookEvent : MonoBehaviour
     private GameObject bookPrefab;
     [SerializeField]
     private GameObject bookEventUI;
-    
+    [SerializeField]
+    private Sprite HotbookImage;
+    [SerializeField]
+    private GameObject research;
+    [SerializeField]
+    private GameObject scholar;
+    [SerializeField]
+    private GameObject LeaderTraining;
+
+        
+
     private bool eventhasoccured;
+    private bool Hothasoccured;
+    public bool Hoteventhasoccured;
     bool bookSpawned = false;
     Node[,] nodes;
 
@@ -33,6 +46,18 @@ public class BookEvent : MonoBehaviour
                 GameObject.FindAnyObjectByType<Camera>().orthographicSize = 11f;
 
                 // 연구소 퀘스트 창 나오게 한다.
+                ResearchTaskQuest();
+                eventhasoccured = false;
+            }
+        }
+
+        if(Hothasoccured)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                Time.timeScale = 1f;
+                bookEventUI.SetActive(false );
+                GameObject.FindAnyObjectByType<Camera>().orthographicSize = 11f;
             }
         }
     }
@@ -66,13 +91,13 @@ public class BookEvent : MonoBehaviour
                 {
                     Debug.Log("책이 소환할 수 없는 위치입니다.");
                     BookEventTrigger();
-                    SoundManager.instance.BookDrop(0);
                 }
             }
             
            if(validLocation)
            {
                Instantiate(bookPrefab, new Vector3(x + 0.5f, y + 0.5f, 0), Quaternion.identity);
+                 SoundManager.instance.EvemtSFX(0);
                 bookSpawned = true;
                 return;
            }
@@ -83,6 +108,17 @@ public class BookEvent : MonoBehaviour
         }    
 
 
+
+    }
+
+    void ResearchTaskQuest()
+    {
+        // QuestID 1002번 
+        QuestManager.instance.InstantiateQuest(1002);
+
+        // 연구소와 학자 & 기술자 훈련소가 잠금 해제됨
+        LeaderTraining.SetActive(true);
+        scholar.SetActive(true);
 
     }
 
@@ -117,13 +153,38 @@ public class BookEvent : MonoBehaviour
 
     }
 
+    public void WeatherHotEvent()
+    {
+        bookEventUI.SetActive(true);
+        Hoteventhasoccured = true;
+        foreach(Transform transform in bookEventUI.transform)
+        {
+            if(transform.gameObject.name == "BookOpen_img")
+            {
+                transform.gameObject.GetComponent<Image>().sprite = HotbookImage;
+            }
+        }
+        StartCoroutine(ShowWarnHotText());
+        Time.timeScale = 0.01f;
+    }
+
+
     IEnumerator ShowBookText()
     {
         yield return new WaitForSecondsRealtime (0.8f);
         SetActiveRecursively(bookEventUI, true);
 
         yield return new WaitForSecondsRealtime(7f);
-        eventhasoccured = true;
+       eventhasoccured = true;
+    }
+
+    IEnumerator ShowWarnHotText()
+    {
+        yield return new WaitForSecondsRealtime(0.8f);
+        SetActiveRecursively(bookEventUI, true);
+
+        yield return new WaitForSecondsRealtime(7f);
+        Hothasoccured = true;
     }
 
     private void SetActiveRecursively(GameObject obj, bool state)

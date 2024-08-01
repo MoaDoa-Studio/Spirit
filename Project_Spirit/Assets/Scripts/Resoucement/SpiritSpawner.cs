@@ -32,11 +32,13 @@ public class SpiritSpawner : MonoBehaviour
     public float sliderValue = 0;
     [HideInInspector]
     public int elementNum = 0;
-    public Tilemap NoticeTilemap;
-    public Tile NoteTile;
+
+    public GameObject noteTilePrefab; // 프리팹을 지정합니다.
+    private GameObject[] NoteTile = new GameObject[2];
 
     int[,] Area = new int[103, 103];
-    float[] Spawn = new float[] { 8f, 6f, 4f };   // 정령 스폰 시간 1,2,3 단계  96, 72, 48
+    float[] Spawn = new float[] {8f, 8f, 6f, 4f };   // 정령 스폰 시간 1,2,3 단계  96, 72, 48
+    float[] sliderBar = new float[] { 96, 96, 72, 48f };    // 슬라이더바 값 조정
     float SpawnDuration = 0f;
 
     float gameTimer = 0f;
@@ -45,6 +47,7 @@ public class SpiritSpawner : MonoBehaviour
     public int spwLv { get; set; } = 1;
 
     TimeManager timeManager;
+    WaterFallEvent waterFallEvent;
     int termcnt = 0;
     Vector2 bottomLeft;
     Vector2 topRight;
@@ -54,8 +57,6 @@ public class SpiritSpawner : MonoBehaviour
     Text textComp;
     Node[,] nodes;
 
-    [SerializeField]
-    GameObject noteTile;
     Vector2Int spawnPos1;
     Vector2Int spawnPos2;
 
@@ -66,6 +67,7 @@ public class SpiritSpawner : MonoBehaviour
  
     // 정령 생산 속도 가중치.
     public float spawnWeight = 1f;
+    float reducement = 1f;
     enum Dir
     {
         Up = 0,
@@ -81,6 +83,7 @@ public class SpiritSpawner : MonoBehaviour
         SpawnDuration = Spawn[0];
         SpawnUI.GetComponent<SpawnerUI>().ReceiveDefaultSpiritSpawnInfo(SetUIInfo());
         timeManager = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>();
+        waterFallEvent = GameObject.Find("[EventManager]").GetComponent<WaterFallEvent>();
     }
 
     private void Update()
@@ -91,17 +94,23 @@ public class SpiritSpawner : MonoBehaviour
 
         if(isTwoRoadAttached())
         {
-            NoticeTilemap.SetTile(new Vector3Int(spawnPos1.x, spawnPos1.y, 0), null);
-            NoticeTilemap.SetTile(new Vector3Int(spawnPos2.x, spawnPos2.y, 0), null);
+           NoteTile[0].gameObject.SetActive(false);
+           NoteTile[1].gameObject.SetActive(false);
 
             if (CanReachCradle(road))
             {
                 //Debug.Log("길이 정령까지 존재합니다.");
 
+                if (waterFallEvent.waterFallEvent && elementNum == 2)
+                    reducement = 0.6f;
+                else
+                    reducement = 1f;
+                        
+
                 gameTimer += Time.deltaTime * realTimeToGameTimeRatio *timeManager.timeSpeed;
 
-                float spawnTime = sliderValue * 720f;
-                if (gameTimer >= realTimeToGameTimeRatio * SpawnDuration + spawnTime / spawnWeight)
+                float spawnTime = (sliderValue / sliderBar[spwLv]) * 720f;
+                if (gameTimer >= (realTimeToGameTimeRatio * Spawn[spwLv] + spawnTime / spawnWeight) * reducement)
                 {
                     SpawnSpirit();
 
@@ -118,7 +127,7 @@ public class SpiritSpawner : MonoBehaviour
         {
             // 알림 타일맵 알림 부여
             NoticeTileMap(); 
-            Debug.Log("Oneroad is null");
+            //Debug.Log("Oneroad is null");
         }
        
 
@@ -213,8 +222,8 @@ public class SpiritSpawner : MonoBehaviour
                 //Debug.Log("땅영역");
                 elementNum = 3;
                 SetGamePrefabForSpawner();
-                spawnPos1 = new Vector2Int(96, 50);
-                spawnPos2 = new Vector2Int(96, 51);
+                spawnPos1 = new Vector2Int(96, 49);
+                spawnPos2 = new Vector2Int(96, 50);
             }
         }
         bottomLeft = new Vector2(97, 49);
@@ -233,8 +242,8 @@ public class SpiritSpawner : MonoBehaviour
                 //Debug.Log("불영역");
                 elementNum = 1;
                 SetGamePrefabForSpawner();
-                spawnPos1 = new Vector2Int(6, 50);
-                spawnPos2 = new Vector2Int(6, 51);
+                spawnPos1 = new Vector2Int(6, 49);
+                spawnPos2 = new Vector2Int(6, 50);
             }
         }
         bottomLeft = new Vector2(0, 49);
@@ -275,6 +284,7 @@ public class SpiritSpawner : MonoBehaviour
                 SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos1.x + 0.5f;
                 SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos1.y + 0.5f;
                 SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos1.x, spawnPos1.y);
+                SpiritObject.GetComponent<DetectMove>().moveSpeed = timeManager.timeSpeed;
                 return;
             }
             else
@@ -285,6 +295,7 @@ public class SpiritSpawner : MonoBehaviour
                 SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos2.x + 0.5f;
                 SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos2.y + 0.5f;
                 SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos2.x, spawnPos2.y);
+                SpiritObject.GetComponent<DetectMove>().moveSpeed = timeManager.timeSpeed;
                 return;
             }
 
@@ -297,6 +308,7 @@ public class SpiritSpawner : MonoBehaviour
             SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos1.x + 0.5f;
             SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos1.y + 0.5f;
             SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos1.x, spawnPos1.y);
+                SpiritObject.GetComponent<DetectMove>().moveSpeed = timeManager.timeSpeed;
 
         }
         else if (TileDataManager.instance.GetTileType(spawnPos1.x, spawnPos1.y) != 3 && TileDataManager.instance.GetTileType(spawnPos2.x, spawnPos2.y) == 3)
@@ -307,6 +319,7 @@ public class SpiritSpawner : MonoBehaviour
             SpiritObject.GetComponent<DetectMove>().CurposX = spawnPos2.x + 0.5f;
             SpiritObject.GetComponent<DetectMove>().CurposY = spawnPos2.y + 0.5f;
             SpiritObject.GetComponent<DetectMove>()._dir = Redirection(spawnPos2.x, spawnPos2.y);
+                SpiritObject.GetComponent<DetectMove>().moveSpeed = timeManager.timeSpeed;
         }
     }
 
@@ -534,43 +547,63 @@ public class SpiritSpawner : MonoBehaviour
     }
 
     private void NoticeTileMap()
-    {  
-        NoticeTilemap.SetTile(new Vector3Int(spawnPos1.x, spawnPos1.y, 0), NoteTile);
-        NoticeTilemap.SetTile(new Vector3Int(spawnPos2.x, spawnPos2.y, 0), NoteTile);
+    {
+        // NoteTile[0]이 null이면 프리팹을 생성합니다.
+        if (NoteTile[0] == null)
+        {
+            NoteTile[0] = Instantiate(noteTilePrefab, new Vector3(spawnPos1.x + 0.5f, spawnPos1.y + 0.5f, 0), Quaternion.identity);
+        }
+        else
+        {
+            NoteTile[0].transform.position = new Vector3(spawnPos1.x + 0.5f, spawnPos1.y + 0.5f, 0);
+            NoteTile[0].SetActive(true); // 이미 존재하는 프리팹을 활성화합니다.
+        }
+
+        // NoteTile[1]이 null이면 프리팹을 생성합니다.
+        if (NoteTile[1] == null)
+        {
+            NoteTile[1] = Instantiate(noteTilePrefab, new Vector3(spawnPos2.x + 0.5f, spawnPos2.y + 0.5f, 0), Quaternion.identity);
+        }
+        else
+        {
+            NoteTile[1].transform.position = new Vector3(spawnPos2.x + 0.5f, spawnPos2.y + 0.5f, 0);
+            NoteTile[1].SetActive(true); // 이미 존재하는 프리팹을 활성화합니다.
+        }
 
 
         StartCoroutine(ChangeTileAlpha());
     }
 
-    IEnumerator ChangeTileAlpha()
+    private IEnumerator ChangeTileAlpha()
     {
         while (true)
         {
-            yield return StartCoroutine(FadeAlpha(alphaMin, alphaMax, duration));
-            yield return StartCoroutine(FadeAlpha(alphaMax, alphaMin, duration));
+            yield return StartCoroutine(FadeAlpha(alphaMin, alphaMax, duration / 2)); // duration/2로 설정하여 전체 사이클이 1초가 되도록 합니다.
+            yield return StartCoroutine(FadeAlpha(alphaMax, alphaMin, duration / 2));
         }
     }
 
-    IEnumerator FadeAlpha(float startAlpha, float endAlpha, float duration)
+    private IEnumerator FadeAlpha(float startAlpha, float endAlpha, float duration)
     {
         float elapsed = 0f;
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
-            SetTileAlpha((Vector3Int)spawnPos1, newAlpha);
-            SetTileAlpha((Vector3Int)spawnPos2, newAlpha);
+            SetTileAlpha(NoteTile[0], newAlpha);
+            SetTileAlpha(NoteTile[1], newAlpha);
             yield return null;
         }
     }
 
-    void SetTileAlpha(Vector3Int position, float alpha)
+    private void SetTileAlpha(GameObject tile, float alpha)
     {
-        if (NoticeTilemap.HasTile(position))
+        SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
+        if (renderer != null)
         {
-            Color tileColor = NoticeTilemap.GetColor(position);
-            tileColor.a = alpha;
-            NoticeTilemap.SetColor(position, tileColor);
+            Color color = renderer.color;
+            color.a = alpha;
+            renderer.color = color;
         }
     }
 }

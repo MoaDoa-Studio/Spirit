@@ -7,6 +7,7 @@ using TMPro;
 public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private Quest currentQuest;
+    QuestManager questManager;
     private int remainTime;
 
     public int CurrentConditionAchieve;
@@ -19,7 +20,9 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     
     private bool isCleared;
     private float time;
-    
+
+    private int QuestID;
+
     // For Debug.
     public void Start()
     {
@@ -28,6 +31,7 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         time = 0f;
         
         TimeText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        questManager = GameObject.Find("QuestManager").GetComponent<QuestManager>();
     }
 
     public void Update()
@@ -60,6 +64,7 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = quest.QuestName;
         transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = quest.QuestBody;
         transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = quest.QuestConditionMent;
+        QuestID = quest.QuestID;
         remainTime = quest.QuestClearTime;
 
         SetTime();
@@ -79,6 +84,16 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public bool CheckClear()
     {
+        // 연구소 설치 퀘스트
+        if (QuestID == 1002)
+        {
+            if (questManager.researchSettlement > 0)
+            {
+                Debug.Log("성공햇잖이");
+                return true;
+            }
+        }
+
         // For Debug.
         if (CurrentConditionAchieve >= 10)
             return true;
@@ -132,4 +147,6 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         QuestManager.instance.UpdateQuestUI();
     }    
+
+  
 }

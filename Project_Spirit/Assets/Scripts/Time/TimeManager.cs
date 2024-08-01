@@ -23,12 +23,17 @@ public class TimeManager : MonoBehaviour
     DateTime CurrentDate;
     DateTime calc;
     DateTime weatherEventDate = new DateTime(1, 3, 13); 
-    DateTime weatherEventOverDate = new DateTime(1, 3, 21); 
+    DateTime weatherEventOverDate = new DateTime(1, 3, 15); 
+    DateTime weatherHotDate = new DateTime(1, 4, 27); 
+    DateTime weatherHotOverDate = new DateTime(1, 5, 6); 
+    DateTime HotWarnDate = new DateTime(1, 4, 20);
     DateTime BookEventDate = new DateTime(1, 3, 25);
-
     int bookEventHour = 13;
     int weatherEventHour = 17;
     int weatherEventOverHour = 6;
+    int weatherHotHour = 7;
+    int weatherHotOverHour = 0;
+    int weatherwarnHour = 7;
 
     int currentWeather;
     int temporature;
@@ -40,10 +45,19 @@ public class TimeManager : MonoBehaviour
     TemperatureManager temperatureManager;
     SpiritManager spiritManager;
     BuildingDataManager buildingDataManager;
+
+    [Header("조명 세팅")]
+    public Image lightImage; // LightController에 연결된 Image 컴포넌트
+    public Color nightColor = new Color(56f / 255f, 0f / 255f, 130f / 255f, 160f / 255f);
+    public Color morningColor = new Color(61f / 255f, 0f / 255f, 182f / 255f, 160f / 255f);
+    public Color dayColor = new Color(255f / 255f, 255f / 255f, 255f / 255f, 1f);
+    public Color eveningColor = new Color(255f / 255f, 0f / 255f, 23f / 255f, 60f / 255f);
+
+
     private void Start()
     {
-        DefaultDate = DateTime.ParseExact("03-01 07:00:00", "MM-dd HH:mm:ss", null);
-        CurrentDate = DateTime.ParseExact("03-01 07:00:00", "MM-dd HH:mm:ss", null);
+        DefaultDate = DateTime.ParseExact("03-01 06:00:00", "MM-dd HH:mm:ss", null);
+        CurrentDate = DateTime.ParseExact("03-01 06:00:00", "MM-dd HH:mm:ss", null);
         calc = DateTime.Now;
 
         // For Debug.
@@ -64,8 +78,9 @@ public class TimeManager : MonoBehaviour
     {
         CalculateTime();
         SetTimeText();
-        //SetSunLight();
+        SetSunLight();
         CheckEventDate();
+        CheckEventBGM();
         SetBGM();
     }
 
@@ -73,7 +88,7 @@ public class TimeManager : MonoBehaviour
     {
         // 현실 시간 1초 = 게임 시간 12분
         float deltaTime = (float)(DateTime.Now - calc).TotalSeconds;
-        accumulatedGameTime += deltaTime * Time.timeScale * 12f * 60f * timeSpeed;
+        accumulatedGameTime += deltaTime * Time.timeScale * 12f * 60f * timeSpeed * 2;  // 플레이 시간이 너무 긺 
         calc = DateTime.Now;
 
         // 누적된 게임 시간을 이용해 현재 게임 날짜와 시간을 계산합니다.
@@ -87,65 +102,131 @@ public class TimeManager : MonoBehaviour
             Time_text.text = "PM " + CurrentDate.ToString("hh:mm");
         else
             Time_text.text = "AM " + CurrentDate.ToString("hh:mm");
-        Date_text.text = CurrentDate.ToString("MM-dd");
-       
+        Date_text.text = CurrentDate.ToString("M월 d일");
+
     }
 
-    void SetBGM()
+    void SetBGMbyTime()
     {
-        if(EventManager.GetComponent<WaterFallEvent>().waterFallEvent)
+        // 오전 6:30에 BGM 설정
+        if (CurrentDate.Hour == 6 && CurrentDate.Minute == 30)
+        {
+            SetBGM();
+       
+        }
+
+        // 오후 6:30에 BGM 설정
+        if (CurrentDate.Hour == 18 && CurrentDate.Minute == 30)
+        {
+            SetBGM();
+         
+        }
+    }
+
+    void CheckEventBGM()
+    {
+        if (EventManager.GetComponent<WaterFallEvent>().waterFallEvent)
         {
             soundController.GetComponent<SoundManager>().PlayBgm("Rain");
         }
-        else
+    }
+    void SetBGM()
+    {
+
+        // 특정 시간대 (오전 6:30부터 오후 6:30까지)인지 확인하는 함수
+        bool IsDayTime()
         {
+            return (CurrentDate.Hour > 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute >= 30)) &&
+                   (CurrentDate.Hour < 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute < 30));
+        }
 
-            if(CurrentDate.Hour >= 7 && CurrentDate.Hour < 18)
+        // 4월 27일 이후인지 확인
+        bool IsAfterApril27()
+        {
+            return CurrentDate.Month > 4 || (CurrentDate.Month == 4 && CurrentDate.Day >= 27);
+        }
+
+        // 짝수 날인지 확인
+        bool IsEvenDay()
+        {
+            return CurrentDate.Day % 2 == 0;
+        }
+
+        if (IsAfterApril27())
+        {
+            if (IsDayTime())
             {
-                soundController.GetComponent<SoundManager>().PlayBgm("BGM4");
+                if (IsEvenDay())
+                {
+                    soundController.GetComponent<SoundManager>().PlayBgm("Summer_BGM_01");
+                }
+                else
+                {
+                    soundController.GetComponent<SoundManager>().PlayBgm("Summer_BGM_02");
+                }
             }
-            else if ((CurrentDate.Hour > 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute >= 30)) ||
-                  (CurrentDate.Hour < 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute < 20)))
+            else
             {
-                soundController.GetComponent<SoundManager>().PlayBgm("BGM5");
-
+                soundController.GetComponent<SoundManager>().PlayBgm("BGM_Night");
             }
         }
+        else
+        {
+            if (IsDayTime())
+            {
+                if (IsEvenDay())
+                {
+                    soundController.GetComponent<SoundManager>().PlayBgm("BGM_Day0");
+                }
+                else
+                {
+                    soundController.GetComponent<SoundManager>().PlayBgm("BGM_Day1");
+                }
+            }
+            else
+            {
+                soundController.GetComponent<SoundManager>().PlayBgm("BGM_Night");
+            }
+        }
+    }
+
+    // 메인테마 사운드
+    public void SetMainThemeBGM()
+    {
+
+        soundController.GetComponent<SoundManager>().PlayBgm("MainTheme");
     }
 
     void SetSunLight()
     {
         int hour = CurrentDate.Hour;
-        if (hour >= 19 || hour < 4)
-        {
-            // �ּ� ���.
-            LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
-        }    
-        else if (hour >= 8 && hour < 15)
-        {
-            // �ִ� ���.
-            LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0f);
-        }
-        else if (hour >= 5 && hour < 8)
-        {
-            // ���� �����            
-            if (hour == 5)            
-                LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.6f);
-            else if (hour == 6)
-                LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.2f);
-            else if (hour == 7)
-                LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.1f);
-        }
-        else
-        {
-            // ���� ��ο���.
-            if (hour == 16)
-                LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.1f);            
-            else if (hour == 17)
-                LightController.GetComponent<Image>().color = new Color(1, 0.5f, 0, 0.2f);
-            else if (hour == 18)
-                LightController.GetComponent<Image>().color = new Color(0, 0, 0, 0.6f);
 
+        float t = (CurrentDate.Minute + CurrentDate.Second / 60f) / 60f; // 분과 초를 0-1 사이의 값으로 변환
+
+        if (hour >= 21 || hour < 5)
+        {
+            // 밤 색상
+            lightImage.color = Color.Lerp(nightColor, nightColor, t); // 변화 없음
+        }
+        else if (hour >= 5 && hour < 7)
+        {
+            // 밤 -> 아침 색상 전환
+            lightImage.color = Color.Lerp(nightColor, morningColor, t + (hour - 5));
+        }
+        else if (hour >= 7 && hour < 18)
+        {
+            // 아침 -> 낮 색상 전환
+            lightImage.color = Color.Lerp(morningColor, dayColor, (hour - 7 + t) / 11f);
+        }
+        else if (hour >= 18 && hour < 21)
+        {
+            // 낮 -> 저녁 색상 전환
+            lightImage.color = Color.Lerp(dayColor, eveningColor, (hour - 18 + t) / 3f);
+        }
+        else if (hour >= 21 && hour < 24)
+        {
+            // 저녁 -> 밤 색상 전환
+            lightImage.color = Color.Lerp(eveningColor, nightColor, (hour - 21 + t) / 3f);
         }
     }
 
@@ -159,6 +240,7 @@ public class TimeManager : MonoBehaviour
         return currentWeather;
     }
 
+    // 날짜별 이벤트 호출 메서드
     void CheckEventDate()
     {
         if (CurrentDate.Month == weatherEventDate.Month && CurrentDate.Day == weatherEventDate.Day && CurrentDate.Hour == weatherEventHour)
@@ -176,6 +258,18 @@ public class TimeManager : MonoBehaviour
             EventManager.GetComponent<BookEvent>().BookEventTrigger();
         }
 
+        if (CurrentDate.Month == HotWarnDate.Month && CurrentDate.Day == HotWarnDate.Day && CurrentDate.Hour == weatherwarnHour)
+        {
+            EventManager.GetComponent<BookEvent>().WeatherHotEvent();
+        }
+        if (CurrentDate.Month == weatherHotDate.Month && CurrentDate.Day == weatherHotDate.Day && CurrentDate.Hour == weatherHotHour)
+        {
+            EventManager.GetComponent<WaterFallEvent>().HotEventTrigger();
+        }
+        if (CurrentDate.Month == weatherHotOverDate.Month && CurrentDate.Day == weatherHotOverDate.Day && CurrentDate.Hour == weatherHotOverHour)
+        {
+            EventManager.GetComponent<WaterFallEvent>().HotEventEventEnd();
+        }
     }
 
    public void PauseCradleUI()
@@ -248,12 +342,22 @@ public class TimeManager : MonoBehaviour
     {
         SetDate(3, 25);
     }
+
+    public void MoveTo420()
+    {
+        SetDate(4, 20);
+    }
+
+    public void MoveTo427()
+    {
+        SetDate(4, 27);
+    }
     // 1분마다 TakeDamageByWeather 메서드를 실행하는 Coroutine
     IEnumerator TakeDamageRoutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(3600); // 1분 대기
+            yield return new WaitForSeconds(0.1f); // 1분 대기
 
             // 예시: EventManager의 하위 오브젝트에 대해 피해를 입힘
             temperatureManager.WeatherAndSpiritRealtion(); ;
