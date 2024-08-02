@@ -24,6 +24,7 @@ public class CradleManager : MonoBehaviour
     [SerializeField]
     private Sprite[] cradleGageSprite;
 
+    TimeManager timeManager;
     // 요소 큐 선언
     Queue<Tuple<int, DateTime>>[] elementQueue = { 
         new Queue<Tuple<int, DateTime>>(), 
@@ -44,30 +45,45 @@ public class CradleManager : MonoBehaviour
     private int[] GrowthValue = { 50, 25, 10, -40 };
     private float GrowthTime = 0f;
     private float GrowthCooldown = 3f;
-    private int[] LevelPoint = { 3600, 4000, 4500, 5000, 5300, 5400, 5500, 6000 };
+    private int[] LevelPoint = { 1500, 2000, 2500, 3000, 5300, 5400, 5500, 6000 };
 
+
+    // 시간 경과 추적 변수
+    private float timeSinceLastAverageCalculation = 0f;
+    private const float AverageCalculationInterval = 3f; // 3초 간격
+    [SerializeField]
     private bool cradleUIenable = false;
+    [SerializeField]
     bool first = false;
+
+
     void Start()
     {
         SetCradleMap();
+        timeManager = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>();   
     }
 
     // Update is called once per frame    
     void Update()
     {
         RemoveExpiredElement();
-        CalculateElementAverage();
+
+        timeSinceLastAverageCalculation += Time.deltaTime;
+        if (timeSinceLastAverageCalculation >= AverageCalculationInterval)
+        {
+            CalculateElementAverage(); // 3초마다 평균 계산
+            timeSinceLastAverageCalculation = 0f; // 타이머 초기화
+        }
 
         // �� ������ ���� �� ���� �� ���Ŀ��� ���ɿ� ���� ǥ��.
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             if (!checkFirstElement[i])
                 return;
             else
             {
                 if(!first)
-                StartCoroutine(EnableCradleUIAfterDelay(120));
+                StartCoroutine(EnableCradleUIAfterDelay(60 / timeManager.timeSpeed));
                
             }
         }
@@ -100,7 +116,7 @@ public class CradleManager : MonoBehaviour
     }
     private IEnumerator EnableCradleUIAfterDelay(float delay)
     {
-        SetCradleGrowthState(1);
+        //SetCradleGrowthState(1);
         yield return new WaitForSeconds(delay);
         cradleUIenable = true;
         first = true;

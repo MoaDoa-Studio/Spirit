@@ -99,11 +99,11 @@ public class SpawnerUI : MonoBehaviour
                 // 입력할 수 있는 값보다 높은 값을 받으면
                 if(inputValue > SpawnTime[spwnLv -1])
                 {
-                    warnigTxt.SetActive(true);
+                    //warnigTxt.SetActive(true);
                     return;
                 }
                 MainSpawner.GetComponent<SpiritSpawner>().sliderValue = inputValue;
-                warnigTxt.SetActive(false);
+                //warnigTxt.SetActive(false);
                 Debug.Log(MainSpawner.GetComponent<SpiritSpawner>().sliderValue);
             }
         }
