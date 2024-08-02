@@ -9,8 +9,16 @@ public class TimeManager : MonoBehaviour
     public int Month;
     public int Day;
 
+    [Header("승리/패배 UI 세팅")]
     [SerializeField]
     private TextMeshProUGUI Time_text;
+    [SerializeField]
+    private TextMeshProUGUI ClearTime_text;
+    [SerializeField]
+    private TextMeshProUGUI DefeatTime_text;
+    [SerializeField]
+    private TextMeshProUGUI SpiritKingLv_text;
+
     [SerializeField]
     private TextMeshProUGUI Date_text;
     [SerializeField]
@@ -58,11 +66,15 @@ public class TimeManager : MonoBehaviour
     private int previousRandomNumber = -1; // 이전 랜덤 숫자를 저장할 변수, 초기값은 임의의 값으로 설정
     private bool bgmPlayed = false;
 
+    // 승.패 UI 확인용 시간.
+    private DateTime gameStartDate;
+
     private void Start()
     {
         DefaultDate = DateTime.ParseExact("03-01 06:00:00", "MM-dd HH:mm:ss", null);
         CurrentDate = DateTime.ParseExact("03-01 06:00:00", "MM-dd HH:mm:ss", null);
         calc = DateTime.Now;
+        gameStartDate = DateTime.Now; // 게임 시작 시점을 기록
 
         // For Debug.
         temporature = 26;
@@ -403,4 +415,63 @@ public void SetMainThemeBGM()
             temperatureManager.WeatherAndSpiritRealtion(); ;
         }
     }
+
+    public void CheckGameTime()
+    {
+        // DefaultDate부터 CurrentDate까지의 경과 시간 계산
+        TimeSpan elapsedDateSpan = CurrentDate - DefaultDate;
+        int months = (CurrentDate.Year - DefaultDate.Year) * 12 + CurrentDate.Month - DefaultDate.Month;
+        int days = elapsedDateSpan.Days;
+        // 요일 부분을 제외한 일수를 계산
+        days -= months * 30; // 대략적인 평균 일수로 계산
+
+        string elapsedDateText = $"{months}개월 {days}일";
+
+        // 게임 시작부터 Check 메서드 호출까지 걸린 시간 계산
+        TimeSpan elapsedGameTimeSpan = DateTime.Now - gameStartDate;
+        string elapsedGameTimeText = $"{elapsedGameTimeSpan.Hours:D2}시간 {elapsedGameTimeSpan.Minutes:D2}분";
+
+        // 결과 출력
+        ClearTime_text.text = elapsedDateText + " " + elapsedGameTimeText;
+        Debug.Log($"경과 시간: {elapsedDateText}");
+        Debug.Log($"게임 시작부터 체크 호출까지 걸린 시간: {elapsedGameTimeText}");
+
+
+
+
+
+        // 모든 시간 일시정지
+
+        timeSpeed = 0;
+    }
+
+    public void CheckGameLoseTime(int lv)
+    {
+        // DefaultDate부터 CurrentDate까지의 경과 시간 계산
+        TimeSpan elapsedDateSpan = CurrentDate - DefaultDate;
+        int months = (CurrentDate.Year - DefaultDate.Year) * 12 + CurrentDate.Month - DefaultDate.Month;
+        int days = elapsedDateSpan.Days;
+        // 요일 부분을 제외한 일수를 계산
+        days -= months * 30; // 대략적인 평균 일수로 계산
+
+        string elapsedDateText = $"{months}개월 {days}일";
+
+        // 게임 시작부터 Check 메서드 호출까지 걸린 시간 계산
+        TimeSpan elapsedGameTimeSpan = DateTime.Now - gameStartDate;
+        string elapsedGameTimeText = $"{elapsedGameTimeSpan.Hours:D2}시간 {elapsedGameTimeSpan.Minutes:D2}분";
+
+        // 결과 출력
+        DefeatTime_text.text = elapsedDateText + " " + elapsedGameTimeText;
+        Debug.Log($"경과 시간: {elapsedDateText}");
+        Debug.Log($"게임 시작부터 체크 호출까지 걸린 시간: {elapsedGameTimeText}");
+
+        SpiritKingLv_text.text = $"{lv}단계";
+
+
+
+        // 모든 시간 일시정지
+
+        timeSpeed = 0;
+    }
+
 }

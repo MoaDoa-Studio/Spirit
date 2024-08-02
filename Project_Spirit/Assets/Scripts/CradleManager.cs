@@ -66,6 +66,9 @@ public class CradleManager : MonoBehaviour
     // Update is called once per frame    
     void Update()
     {
+        // 임시 클리어 조건.
+        CheckTempWin();
+
         RemoveExpiredElement();
 
         timeSinceLastAverageCalculation += Time.deltaTime;
@@ -332,4 +335,25 @@ public class CradleManager : MonoBehaviour
             }
         }
     }
+
+    void CheckTempWin()
+    {
+        if(Level > 2)
+        {
+           GameObject.Find("GameManager").GetComponent<InputManager>().WinUI.SetActive(true);
+           
+            // WinUI 동기화.
+            timeManager.CheckGameTime();
+        }
+    }
+
+    void CheckTempLose()
+    {
+       GameObject.Find("GameManager").GetComponent<InputManager>().LoseUI.SetActive(true);
+        
+
+        timeManager.CheckGameLoseTime(Level);
+    }
+
+
 }
