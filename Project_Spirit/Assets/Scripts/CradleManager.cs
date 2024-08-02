@@ -38,7 +38,7 @@ public class CradleManager : MonoBehaviour
     TimeSpan span = TimeSpan.FromSeconds(5);    // 성장 속도 계산 시간.
 
     // 성장 관련 변수들
-    private int Level = 0;
+    public int Level = 0;
     [SerializeField]
     private int GrowthPoint = 0;
     private int GrowthState = 0;
@@ -336,7 +336,7 @@ public class CradleManager : MonoBehaviour
         }
     }
 
-    void CheckTempWin()
+    public void CheckTempWin()
     {
         if(Level > 2)
         {
@@ -347,7 +347,7 @@ public class CradleManager : MonoBehaviour
         }
     }
 
-    void CheckTempLose()
+    public void CheckTempLose()
     {
        GameObject.Find("GameManager").GetComponent<InputManager>().LoseUI.SetActive(true);
         

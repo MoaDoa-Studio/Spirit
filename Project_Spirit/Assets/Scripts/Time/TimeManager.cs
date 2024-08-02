@@ -32,10 +32,12 @@ public class TimeManager : MonoBehaviour
     DateTime calc;
     DateTime weatherEventDate = new DateTime(1, 3, 13); 
     DateTime weatherEventOverDate = new DateTime(1, 3, 15); 
-    DateTime weatherHotDate = new DateTime(1, 4, 27); 
-    DateTime weatherHotOverDate = new DateTime(1, 4, 30); 
-    DateTime HotWarnDate = new DateTime(1, 4, 20);
-    DateTime BookEventDate = new DateTime(1, 3, 25);
+    DateTime weatherHotDate = new DateTime(1, 4, 02); 
+    DateTime weatherHotOverDate = new DateTime(1, 4, 05); 
+    DateTime HotWarnDate = new DateTime(1, 3, 29);
+    DateTime BookEventDate = new DateTime(1, 3, 21);
+    DateTime TempEndDate = new DateTime(1, 4, 15);
+    
     int bookEventHour = 13;
     int weatherEventHour = 17;
     int weatherEventOverHour = 6;
@@ -53,6 +55,7 @@ public class TimeManager : MonoBehaviour
     TemperatureManager temperatureManager;
     SpiritManager spiritManager;
     BuildingDataManager buildingDataManager;
+    CradleManager cradleManager;
 
     [Header("조명 세팅")]
     public Image lightImage; // LightController에 연결된 Image 컴포넌트
@@ -82,6 +85,7 @@ public class TimeManager : MonoBehaviour
 
         EventManager = GameObject.Find("[EventManager]");
         spiritManager = GameObject.Find("GameManager").GetComponent<SpiritManager>();
+        cradleManager = GameObject.Find("CradleManager").GetComponent<CradleManager>();
         buildingDataManager = GameObject.Find("GameManager").GetComponent<BuildingDataManager>();
         temperatureManager = GetComponent<TemperatureManager>();
 
@@ -322,6 +326,14 @@ public void SetMainThemeBGM()
         {
             EventManager.GetComponent<WaterFallEvent>().HotEventEventEnd();
         }
+        if(CurrentDate.Month == TempEndDate.Month && CurrentDate.Day == TempEndDate.Day)
+        {
+            if (cradleManager.Level > 2)
+                cradleManager.CheckTempWin();
+            else
+                cradleManager.CheckTempLose();
+        }
+
     }
 
    public void PauseCradleUI()
@@ -385,24 +397,29 @@ public void SetMainThemeBGM()
         CheckEventDate();
     }
 
-    public void MoveDateTo312()
+    public void MoveDateTo313()
     {
-        SetDate(3, 12);
+        SetDate(3, 13);
     }
 
-    public void MoveDateTo325()
+    public void MoveDateTo321()
     {
-        SetDate(3, 25);
+        SetDate(3, 21);
     }
 
-    public void MoveTo420()
+    public void MoveTo329()
     {
-        SetDate(4, 20);
+        SetDate(3, 29);
     }
 
-    public void MoveTo427()
+    public void MoveTo42()
     {
-        SetDate(4, 27);
+        SetDate(4, 02);
+    }
+
+    public void MoveTo415()
+    {
+        SetDate(4, 15);
     }
     // 1분마다 TakeDamageByWeather 메서드를 실행하는 Coroutine
     IEnumerator TakeDamageRoutine()
