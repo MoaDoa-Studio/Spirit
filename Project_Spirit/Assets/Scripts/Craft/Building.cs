@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-public class Building : MonoBehaviour
+public class Building : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
     private int BuildID;
@@ -124,6 +124,12 @@ public class Building : MonoBehaviour
         BuildStater();
         ToggleBuildingInfoUI();
         // �ܹ߼� �ǹ� ȿ��
+        // UI 요소가 클릭된 경우 2D 오브젝트의 클릭을 차단
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            Debug.Log("UI is blocking interaction.");
+            return; // 클릭 이벤트를 차단
+        }
 
     }
     void BuildOperation()
@@ -738,5 +744,25 @@ public class Building : MonoBehaviour
         }
 
         SoundManager.instance.BuildingOnbound(3);
+    }
+
+
+    // UI 요소가 앞에 있는지 확인할 메서드
+    private bool IsUIElementHovered()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // UI 요소 위에 클릭이 있는지 확인
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            Debug.Log("Click blocked due to UI element.");
+            return; // 클릭 이벤트를 차단
+        }
+
+        // 클릭이 허용된 경우
+        Debug.Log("2D object clicked.");
     }
 }

@@ -5,10 +5,11 @@ using System.Linq;
 using System.Resources;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 
-public class ResourceBuilding : MonoBehaviour
+public class ResourceBuilding : MonoBehaviour, IPointerClickHandler
 {
     public int Resource_reserves;
     public int yOffset = 2;
@@ -401,6 +402,25 @@ public class ResourceBuilding : MonoBehaviour
     {
         ToggleObject(gameObject.transform.parent, "Detail");
         Debug.Log(" warningbutton clicked");
+    }
+
+    // UI 요소가 앞에 있는지 확인할 메서드
+    private bool IsUIElementHovered()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // UI 요소가 있는 경우 클릭을 차단
+        if (IsUIElementHovered())
+        {
+            Debug.Log("Click blocked due to UI element.");
+            return; // 클릭 이벤트를 차단
+        }
+
+        // 클릭이 허용된 경우
+        Debug.Log("2D object clicked.");
     }
 }
 
