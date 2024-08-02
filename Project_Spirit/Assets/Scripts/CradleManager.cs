@@ -35,7 +35,7 @@ public class CradleManager : MonoBehaviour
     private float[] elementAverage = { 0, 0, 0, 0 };
     private int[] elementSum = { 0, 0, 0, 0 };
     private bool[] checkFirstElement = { false, false, false, false };
-    TimeSpan span = TimeSpan.FromSeconds(600);
+    TimeSpan span = TimeSpan.FromSeconds(5);    // 성장 속도 계산 시간.
 
     // 성장 관련 변수들
     private int Level = 0;

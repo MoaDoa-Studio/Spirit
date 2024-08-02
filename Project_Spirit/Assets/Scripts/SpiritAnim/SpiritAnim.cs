@@ -125,7 +125,7 @@ public class SpiritAnim : MonoBehaviour
     private void Start()
     {
         characterSkin = _skeleton.Skin;
-        Debug.Log(characterSkin);
+        //Debug.Log(characterSkin);
         spiritelement = GetComponent<Spirit>().SpiritElement;
         currentState = GetComponent<DetectMove>().GetDetection();
         currentDirection = GetComponent<DetectMove>().GetDirection();

@@ -194,8 +194,8 @@ public class Building : MonoBehaviour
         if(!RestrictAccessToBuilding())
         {  return false; }
 
-        // �����߿� ������� ���� ������ �������� ����
-        if(buildOperator != BuildOperator.Done)
+        // 공사 완료되고 나서 정령 진입체크
+        if(buildOperator != BuildOperator.Finish)
         {
             if(CheckForAccesibleBeforeBuilt(_gameObject))
             { return true; }
