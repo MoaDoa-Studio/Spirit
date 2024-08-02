@@ -18,8 +18,7 @@ public class WaterFallEvent : MonoBehaviour
     private Sprite HotbookImage;
 
     [Header("Æø¿° ÀÌº¥Æ® UI ¼¼ÆÃ")]
-    [SerializeField]
-    private GameObject HealthUI;
+   
     [SerializeField]
     private GameObject magicStatue;
 
@@ -39,7 +38,6 @@ public class WaterFallEvent : MonoBehaviour
     {
        NewsPaperEventUI.SetActive(true);
         NewsPaper.GetComponent<Image>().sprite = HotbookImage;
-        Debug.Log("µÊ?");
        
         StartCoroutine(ShowHotnewsText());
     }

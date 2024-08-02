@@ -105,6 +105,14 @@ public class Spirit : MonoBehaviour
         HP -= (0.041667f * (temp - 25) / 10);
     }
 
+    public void HealInMagicStatueGrid(float temp)
+    {
+        HP += temp;
+        // 최대 체력 초과시
+        if(HP > SDefaultLife) HP = SDefaultLife;
+
+        Debug.Log("HP. " + HP);
+    }
     #region 정령충돌 감지
     private void OnTriggerEnter(Collider collision)
     {

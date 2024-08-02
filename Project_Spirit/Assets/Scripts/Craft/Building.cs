@@ -20,8 +20,7 @@ public class Building : MonoBehaviour
     public int GameObjectCount;
     
     //private float cellsize = 1f;
-    [SerializeField]
-    private GameObject cellPrefab;
+  
     [SerializeField]
     private GameObject building_info;
 
@@ -36,6 +35,7 @@ public class Building : MonoBehaviour
     List<BuildData> buildDataList;
     List<StructUniqueData> structUniqueDataList;
     BuildData buildData;
+    TimeManager timeManager;
     StructUniqueData structUniqueData;
     SoundManager soundManager;
     GameObject gameManager;
@@ -100,6 +100,7 @@ public class Building : MonoBehaviour
         gameObjectList = new List<GameObject>();
         gameManager = GameObject.Find("GameManager");
         soundManager = GameObject.Find("AudioManager").GetComponent<SoundManager>();
+        timeManager = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>();
         buildDataList = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().buildDataList;
         structUniqueDataList = GameObject.Find("GameManager").GetComponent<BuildingDataManager>().structUniqueDataList;
         building_info = gameManager.GetComponent<BuildingDataManager>().buildinginfo_UI;
@@ -113,7 +114,8 @@ public class Building : MonoBehaviour
         structUniqueData = FindDataFromStructUnique(structUniqueDataList, buildData.UniqueProperties);
         SycnXMLDataToBuilding(buildData, structUniqueData);
         CalculateWorkingTimeInGame();
-        GetStartSprite();
+        GetStartSprite(); // 빌딩 스프라이트 관리
+        checkStatue();
     }
     private void Update()
     {
@@ -534,7 +536,8 @@ public class Building : MonoBehaviour
             }            
             // 마법의 동상
             else if(StructureEffect == 220)
-            {               
+            {
+               
             }            
             else if(StructureEffect == 221)
             {                    
@@ -582,29 +585,52 @@ public class Building : MonoBehaviour
             }            
             else if(StructureEffect == 220)
             {
-                //GenerateHealGrid(bottomLeft, 7, 7, cellsize);
+               // GenerateHealGrid(bottomLeft, 7, 7);
             }            
             else if(StructureEffect == 221)
             {
                // GenerateHealGrid(bottomLeft, 9, 9, cellsize);
             }
         }
-    }    
-    void GenerateHealGrid(Vector2 center, int rows, int cols, float cellsize)
+    }
+
+  void checkStatue()
     {
-        int halfRow = rows / 2;
-        int halfCol = cols / 2;
-        for(int i = -halfRow; i <= halfCol; i++)
+        if(StructureEffect == 220)
         {
-            for(int j = -halfCol; i <= halfCol; j++)
-            {                
-                Vector2 position = new Vector2(center.x + j * cellsize , center.y + i * cellsize);
-                Instantiate(cellPrefab, position, quaternion.identity);
-            }
+            StartCoroutine(CheckObjectsInRangeRoutine());
         }
     }
 
-    private void OnMouseButtonDown()
+    IEnumerator CheckObjectsInRangeRoutine()
+    {
+        while (true)
+        {
+            // 5초마다 GenerateHealGrid 메서드를 호출합니다.
+            GenerateHealGrid(bottomLeft);
+            yield return new WaitForSeconds(5f / (2f * timeManager.timeSpeed) );
+        }
+    }
+    // 마법의 동상 효과
+    void GenerateHealGrid(Vector2 center)
+    {
+       
+        GameObject[] spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
+
+        if (spiritObjects.Length == 0) return;
+        foreach (var obj in spiritObjects)
+        {
+            float distance = Vector3.Distance(center, obj.transform.position);
+            if (distance <= 3.5f)
+            {
+                Debug.Log("Spirit within range: " + obj.name);
+                obj.GetComponent<Spirit>().HealInMagicStatueGrid(0.5f);
+            }
+        }
+
+    }
+
+    private void OnMouseEnter()
     {
         if(PreviewParent != null)
         {
