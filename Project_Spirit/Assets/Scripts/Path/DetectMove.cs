@@ -116,7 +116,7 @@ public class DetectMove : MonoBehaviour
         CradleManager = GameObject.Find("CradleManager");
 
         // 변경되는 스피드에 맞게 생성
-        moveSpeed = SpiritManager.instance.spiritMoveSpeed;
+        moveSpeed = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>().timeSpeed;
     }
     private void Update()
     {  

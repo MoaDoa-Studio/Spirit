@@ -10,16 +10,17 @@ public class BookEvent : MonoBehaviour
     private GameObject bookPrefab;
     [SerializeField]
     private GameObject bookEventUI;
-    [SerializeField]
-    private Sprite HotbookImage;
+   
     [SerializeField]
     private GameObject research;
     [SerializeField]
     private GameObject scholar;
     [SerializeField]
     private GameObject LeaderTraining;
-
-        
+    [SerializeField]
+    private GameObject knight;
+    [SerializeField]
+    private GameObject viking;
 
     private bool eventhasoccured;
     private bool Hothasoccured;
@@ -119,7 +120,8 @@ public class BookEvent : MonoBehaviour
         // 연구소와 학자 & 기술자 훈련소가 잠금 해제됨
         LeaderTraining.SetActive(true);
         scholar.SetActive(true);
-
+        research.SetActive(true);
+       
     }
 
 
@@ -153,21 +155,6 @@ public class BookEvent : MonoBehaviour
 
     }
 
-    public void WeatherHotEvent()
-    {
-        bookEventUI.SetActive(true);
-        Hoteventhasoccured = true;
-        foreach(Transform transform in bookEventUI.transform)
-        {
-            if(transform.gameObject.name == "BookOpen_img")
-            {
-                transform.gameObject.GetComponent<Image>().sprite = HotbookImage;
-            }
-        }
-        StartCoroutine(ShowWarnHotText());
-        Time.timeScale = 0.01f;
-    }
-
 
     IEnumerator ShowBookText()
     {
@@ -178,14 +165,7 @@ public class BookEvent : MonoBehaviour
        eventhasoccured = true;
     }
 
-    IEnumerator ShowWarnHotText()
-    {
-        yield return new WaitForSecondsRealtime(0.8f);
-        SetActiveRecursively(bookEventUI, true);
-
-        yield return new WaitForSecondsRealtime(7f);
-        Hothasoccured = true;
-    }
+   
 
     private void SetActiveRecursively(GameObject obj, bool state)
     {
