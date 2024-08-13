@@ -736,6 +736,8 @@ partial class CraftManager
         // 건물이 1칸인 경우.
         if (upperRight == bottomLeft)
         {
+            return null;
+            Debug.Log("upperright는 " + upperRight);
             int[] dx = { 0, 0, -1, 1 };
             int[] dy = { 1, -1, 0, 0 };
             for(int i = 0; i < 4; i++)

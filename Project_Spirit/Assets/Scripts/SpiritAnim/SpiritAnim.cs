@@ -125,7 +125,7 @@ public class SpiritAnim : MonoBehaviour
     private void Start()
     {
         characterSkin = _skeleton.Skin;
-        Debug.Log(characterSkin);
+        //Debug.Log(characterSkin);
         spiritelement = GetComponent<Spirit>().SpiritElement;
         currentState = GetComponent<DetectMove>().GetDetection();
         currentDirection = GetComponent<DetectMove>().GetDirection();
@@ -380,7 +380,7 @@ public class SpiritAnim : MonoBehaviour
         {
             case DetectMove.Detect.None:
                 stateName = null;
-                /*
+                
                 if (currentDirection == 0)
                 {
                     stateName = "Back_idle";
@@ -396,10 +396,10 @@ public class SpiritAnim : MonoBehaviour
                 {
                     stateName = "Front_idle";
                 }
-                */
+                
                 break;
             case DetectMove.Detect.CheckTile:
-                /*
+                
                 if (currentDirection == 0)
                 {
                     stateName = "Back_idle";
@@ -416,7 +416,7 @@ public class SpiritAnim : MonoBehaviour
                 
                     stateName = "Front_idle";
                 }
-                */
+                
                 stateName = null;
                 break;
             case DetectMove.Detect.Wait:

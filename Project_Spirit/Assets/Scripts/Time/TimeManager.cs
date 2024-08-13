@@ -9,8 +9,16 @@ public class TimeManager : MonoBehaviour
     public int Month;
     public int Day;
 
+    [Header("승리/패배 UI 세팅")]
     [SerializeField]
     private TextMeshProUGUI Time_text;
+    [SerializeField]
+    private TextMeshProUGUI ClearTime_text;
+    [SerializeField]
+    private TextMeshProUGUI DefeatTime_text;
+    [SerializeField]
+    private TextMeshProUGUI SpiritKingLv_text;
+
     [SerializeField]
     private TextMeshProUGUI Date_text;
     [SerializeField]
@@ -24,10 +32,12 @@ public class TimeManager : MonoBehaviour
     DateTime calc;
     DateTime weatherEventDate = new DateTime(1, 3, 13); 
     DateTime weatherEventOverDate = new DateTime(1, 3, 15); 
-    DateTime weatherHotDate = new DateTime(1, 4, 27); 
-    DateTime weatherHotOverDate = new DateTime(1, 5, 6); 
-    DateTime HotWarnDate = new DateTime(1, 4, 20);
-    DateTime BookEventDate = new DateTime(1, 3, 25);
+    DateTime weatherHotDate = new DateTime(1, 4, 02); 
+    DateTime weatherHotOverDate = new DateTime(1, 4, 05); 
+    DateTime HotWarnDate = new DateTime(1, 3, 29);
+    DateTime BookEventDate = new DateTime(1, 3, 21);
+    DateTime TempEndDate = new DateTime(1, 4, 15);
+    
     int bookEventHour = 13;
     int weatherEventHour = 17;
     int weatherEventOverHour = 6;
@@ -45,6 +55,7 @@ public class TimeManager : MonoBehaviour
     TemperatureManager temperatureManager;
     SpiritManager spiritManager;
     BuildingDataManager buildingDataManager;
+    CradleManager cradleManager;
 
     [Header("조명 세팅")]
     public Image lightImage; // LightController에 연결된 Image 컴포넌트
@@ -53,12 +64,20 @@ public class TimeManager : MonoBehaviour
     public Color dayColor = new Color(255f / 255f, 255f / 255f, 255f / 255f, 1f);
     public Color eveningColor = new Color(255f / 255f, 0f / 255f, 23f / 255f, 60f / 255f);
 
+    // BGM 설정
+    private bool RainBgm = false;
+    private int previousRandomNumber = -1; // 이전 랜덤 숫자를 저장할 변수, 초기값은 임의의 값으로 설정
+    private bool bgmPlayed = false;
+
+    // 승.패 UI 확인용 시간.
+    private DateTime gameStartDate;
 
     private void Start()
     {
         DefaultDate = DateTime.ParseExact("03-01 06:00:00", "MM-dd HH:mm:ss", null);
         CurrentDate = DateTime.ParseExact("03-01 06:00:00", "MM-dd HH:mm:ss", null);
         calc = DateTime.Now;
+        gameStartDate = DateTime.Now; // 게임 시작 시점을 기록
 
         // For Debug.
         temporature = 26;
@@ -66,6 +85,7 @@ public class TimeManager : MonoBehaviour
 
         EventManager = GameObject.Find("[EventManager]");
         spiritManager = GameObject.Find("GameManager").GetComponent<SpiritManager>();
+        cradleManager = GameObject.Find("CradleManager").GetComponent<CradleManager>();
         buildingDataManager = GameObject.Find("GameManager").GetComponent<BuildingDataManager>();
         temperatureManager = GetComponent<TemperatureManager>();
 
@@ -81,7 +101,7 @@ public class TimeManager : MonoBehaviour
         SetSunLight();
         CheckEventDate();
         CheckEventBGM();
-        SetBGM();
+        CheckBGMTime();
     }
 
     void CalculateTime()
@@ -114,12 +134,29 @@ public class TimeManager : MonoBehaviour
             SetBGM();
        
         }
-
-        // 오후 6:30에 BGM 설정
-        if (CurrentDate.Hour == 18 && CurrentDate.Minute == 30)
+        // 특정 시간이 지난 후 bgmPlayed를 false로 재설정
+        if (CurrentDate.Hour == 6 && CurrentDate.Minute == 20)
         {
-            SetBGM();
-         
+            bgmPlayed = false;
+        }
+
+    }
+
+    void CheckBGMTime()
+    {
+        // 오전 6:30 또는 오후 6:30에 BGM 설정
+        if ((CurrentDate.Hour == 6 && CurrentDate.Minute == 30) || (CurrentDate.Hour == 18 && CurrentDate.Minute == 30))
+        {
+            if (!bgmPlayed)
+            {
+                SetBGM();
+                bgmPlayed = true;
+            }
+        }
+        else if (CurrentDate.Minute != 30)
+        {
+            // 30분이 아닐 때는 bgmPlayed를 false로 설정하여 다시 재생할 수 있도록 함
+            bgmPlayed = false;
         }
     }
 
@@ -128,70 +165,88 @@ public class TimeManager : MonoBehaviour
         if (EventManager.GetComponent<WaterFallEvent>().waterFallEvent)
         {
             soundController.GetComponent<SoundManager>().PlayBgm("Rain");
+            RainBgm = true;
         }
+        else
+            RainBgm = false;
     }
     void SetBGM()
     {
+        if (RainBgm) return;
 
-        // 특정 시간대 (오전 6:30부터 오후 6:30까지)인지 확인하는 함수
-        bool IsDayTime()
-        {
-            return (CurrentDate.Hour > 6 || (CurrentDate.Hour == 6 && CurrentDate.Minute >= 30)) &&
-                   (CurrentDate.Hour < 18 || (CurrentDate.Hour == 18 && CurrentDate.Minute < 30));
-        }
-
+    
         // 4월 27일 이후인지 확인
         bool IsAfterApril27()
         {
             return CurrentDate.Month > 4 || (CurrentDate.Month == 4 && CurrentDate.Day >= 27);
         }
 
-        // 짝수 날인지 확인
-        bool IsEvenDay()
+
+        // 특정 시간 (오전 6:30)인지 확인하는 함수
+        bool IsSpecificTime()
         {
-            return CurrentDate.Day % 2 == 0;
+            return CurrentDate.Hour == 6 && CurrentDate.Minute == 30;
+        }
+
+        // 전 BGM과 다른 BGM 호출
+        int GenerateRandomNumber(int min, int max)
+        {
+            System.Random random = new System.Random();
+            int newRandomNumber;
+            do
+            {
+                newRandomNumber = random.Next(min, max);
+            } while (newRandomNumber == previousRandomNumber);
+            previousRandomNumber = newRandomNumber;
+            return newRandomNumber;
         }
 
         if (IsAfterApril27())
         {
-            if (IsDayTime())
+            if (IsSpecificTime() && !bgmPlayed)
             {
-                if (IsEvenDay())
+                int randomNumber = GenerateRandomNumber(0, 2);
+                switch (randomNumber)
                 {
-                    soundController.GetComponent<SoundManager>().PlayBgm("Summer_BGM_01");
+                    case 0:
+                        soundController.GetComponent<SoundManager>().PlayBgm("Summer_BGM_01");
+                        break;
+                    case 1:
+                        soundController.GetComponent<SoundManager>().PlayBgm("Summer_BGM_02");
+                        break;
+                   
                 }
-                else
-                {
-                    soundController.GetComponent<SoundManager>().PlayBgm("Summer_BGM_02");
-                }
-            }
-            else
-            {
-                soundController.GetComponent<SoundManager>().PlayBgm("BGM_Night");
+                return;
             }
         }
         else
         {
-            if (IsDayTime())
+            if (IsSpecificTime())
             {
-                if (IsEvenDay())
+                int randomNumber = GenerateRandomNumber(0, 3);
+                switch (randomNumber)
                 {
-                    soundController.GetComponent<SoundManager>().PlayBgm("BGM_Day0");
+                    case 0:
+                        soundController.GetComponent<SoundManager>().PlayBgm("BGM_Day0");
+                        break;
+                    case 1:
+                        soundController.GetComponent<SoundManager>().PlayBgm("BGM_Day1");
+                        break;
+                    case 2:
+                        soundController.GetComponent<SoundManager>().PlayBgm("BGM_Night");
+                        break;
+                   
                 }
-                else
-                {
-                    soundController.GetComponent<SoundManager>().PlayBgm("BGM_Day1");
-                }
-            }
-            else
-            {
-                soundController.GetComponent<SoundManager>().PlayBgm("BGM_Night");
+                return;
             }
         }
+
+      
     }
 
-    // 메인테마 사운드
-    public void SetMainThemeBGM()
+
+// 메인테마 사운드
+public void SetMainThemeBGM()
     {
 
         soundController.GetComponent<SoundManager>().PlayBgm("MainTheme");
@@ -257,11 +312,12 @@ public class TimeManager : MonoBehaviour
         {
             EventManager.GetComponent<BookEvent>().BookEventTrigger();
         }
-
+        // 폭염 경고창
         if (CurrentDate.Month == HotWarnDate.Month && CurrentDate.Day == HotWarnDate.Day && CurrentDate.Hour == weatherwarnHour)
         {
-            EventManager.GetComponent<BookEvent>().WeatherHotEvent();
+            EventManager.GetComponent<WaterFallEvent>().HotnewsEventTrigger();
         }
+        // 폭염 이벤트 시작
         if (CurrentDate.Month == weatherHotDate.Month && CurrentDate.Day == weatherHotDate.Day && CurrentDate.Hour == weatherHotHour)
         {
             EventManager.GetComponent<WaterFallEvent>().HotEventTrigger();
@@ -270,6 +326,14 @@ public class TimeManager : MonoBehaviour
         {
             EventManager.GetComponent<WaterFallEvent>().HotEventEventEnd();
         }
+        if(CurrentDate.Month == TempEndDate.Month && CurrentDate.Day == TempEndDate.Day)
+        {
+            if (cradleManager.Level > 2)
+                cradleManager.CheckTempWin();
+            else
+                cradleManager.CheckTempLose();
+        }
+
     }
 
    public void PauseCradleUI()
@@ -333,24 +397,29 @@ public class TimeManager : MonoBehaviour
         CheckEventDate();
     }
 
-    public void MoveDateTo312()
+    public void MoveDateTo313()
     {
-        SetDate(3, 12);
+        SetDate(3, 13);
     }
 
-    public void MoveDateTo325()
+    public void MoveDateTo321()
     {
-        SetDate(3, 25);
+        SetDate(3, 21);
     }
 
-    public void MoveTo420()
+    public void MoveTo329()
     {
-        SetDate(4, 20);
+        SetDate(3, 29);
     }
 
-    public void MoveTo427()
+    public void MoveTo42()
     {
-        SetDate(4, 27);
+        SetDate(4, 02);
+    }
+
+    public void MoveTo415()
+    {
+        SetDate(4, 15);
     }
     // 1분마다 TakeDamageByWeather 메서드를 실행하는 Coroutine
     IEnumerator TakeDamageRoutine()
@@ -363,4 +432,63 @@ public class TimeManager : MonoBehaviour
             temperatureManager.WeatherAndSpiritRealtion(); ;
         }
     }
+
+    public void CheckGameTime()
+    {
+        // DefaultDate부터 CurrentDate까지의 경과 시간 계산
+        TimeSpan elapsedDateSpan = CurrentDate - DefaultDate;
+        int months = (CurrentDate.Year - DefaultDate.Year) * 12 + CurrentDate.Month - DefaultDate.Month;
+        int days = elapsedDateSpan.Days;
+        // 요일 부분을 제외한 일수를 계산
+        days -= months * 30; // 대략적인 평균 일수로 계산
+
+        string elapsedDateText = $"{months}개월 {days}일";
+
+        // 게임 시작부터 Check 메서드 호출까지 걸린 시간 계산
+        TimeSpan elapsedGameTimeSpan = DateTime.Now - gameStartDate;
+        string elapsedGameTimeText = $"{elapsedGameTimeSpan.Hours:D2}시간 {elapsedGameTimeSpan.Minutes:D2}분";
+
+        // 결과 출력
+        ClearTime_text.text = elapsedDateText + " " + elapsedGameTimeText;
+        Debug.Log($"경과 시간: {elapsedDateText}");
+        Debug.Log($"게임 시작부터 체크 호출까지 걸린 시간: {elapsedGameTimeText}");
+
+
+
+
+
+        // 모든 시간 일시정지
+
+        timeSpeed = 0;
+    }
+
+    public void CheckGameLoseTime(int lv)
+    {
+        // DefaultDate부터 CurrentDate까지의 경과 시간 계산
+        TimeSpan elapsedDateSpan = CurrentDate - DefaultDate;
+        int months = (CurrentDate.Year - DefaultDate.Year) * 12 + CurrentDate.Month - DefaultDate.Month;
+        int days = elapsedDateSpan.Days;
+        // 요일 부분을 제외한 일수를 계산
+        days -= months * 30; // 대략적인 평균 일수로 계산
+
+        string elapsedDateText = $"{months}개월 {days}일";
+
+        // 게임 시작부터 Check 메서드 호출까지 걸린 시간 계산
+        TimeSpan elapsedGameTimeSpan = DateTime.Now - gameStartDate;
+        string elapsedGameTimeText = $"{elapsedGameTimeSpan.Hours:D2}시간 {elapsedGameTimeSpan.Minutes:D2}분";
+
+        // 결과 출력
+        DefeatTime_text.text = elapsedDateText + " " + elapsedGameTimeText;
+        Debug.Log($"경과 시간: {elapsedDateText}");
+        Debug.Log($"게임 시작부터 체크 호출까지 걸린 시간: {elapsedGameTimeText}");
+
+        SpiritKingLv_text.text = $"{lv}단계";
+
+
+
+        // 모든 시간 일시정지
+
+        timeSpeed = 0;
+    }
+
 }

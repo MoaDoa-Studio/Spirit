@@ -100,6 +100,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -1.48
       objectReference: {fileID: 0}
+    - target: {fileID: 6860816802252849850, guid: 7ac7e5b397ad6124ea48c74244479eea, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860816802252849850, guid: 7ac7e5b397ad6124ea48c74244479eea, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -4.69
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

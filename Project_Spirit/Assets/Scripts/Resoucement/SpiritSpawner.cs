@@ -14,6 +14,8 @@ public class SpiritSpawner : MonoBehaviour
     GameObject SpawnUI;
     [SerializeField]
     Transform SpawnParent;
+    [SerializeField]
+    GameObject spawntooltip;
 
     GameObject Spiritprefab;
     [SerializeField]
@@ -99,7 +101,8 @@ public class SpiritSpawner : MonoBehaviour
 
             if (CanReachCradle(road))
             {
-                //Debug.Log("길이 정령까지 존재합니다.");
+                // 정령왕 가는길 존재
+               spawntooltip.SetActive(false);
 
                 if (waterFallEvent.waterFallEvent && elementNum == 2)
                     reducement = 0.6f;
@@ -119,7 +122,9 @@ public class SpiritSpawner : MonoBehaviour
             }
             else
             {
-                Debug.Log("정령왕의 요람까지 가는길이 존재하지 않습니다.");
+                // 정령왕 까지 가는길 존재 x.
+                spawntooltip.SetActive(true);
+               
             }
 
         }
