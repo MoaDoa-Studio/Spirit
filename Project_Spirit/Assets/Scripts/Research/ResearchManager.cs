@@ -128,7 +128,7 @@ partial class ResearchManager : MonoBehaviour
     // 정령이 연구소에서 일할 때 호출 될 함수 로직.
     public void OnClickWork()
     {        
-        currentWork += 2000;
+        currentWork += 100;
         UpdateStudyProgress();
         if (currentWork >= currentStudy.WorkRequirement)
         {
@@ -155,9 +155,22 @@ partial class ResearchManager
     [SerializeField]
     private GameObject LeaderTraining;
     [SerializeField]
+    private GameObject HealTraining;
+    [SerializeField]
+    private GameObject HealFoundation;
+    [SerializeField]
     private GameObject WoodRoad;
     [SerializeField]
+    private GameObject SpawnerUI;
+    [SerializeField]
     private GameObject SpawnerSpiritUpgradeButton;
+    [SerializeField]
+    private GameObject SpawnerSpiritSpawnUpgradeButton;
+    [SerializeField]
+    private GameObject[] LowUp;
+    [SerializeField]
+    private GameObject[] highUp;
+
 
     [Header("효과 적용 스크립트")]
     [SerializeField]
@@ -234,6 +247,8 @@ partial class ResearchManager
                 {
                     spiritSpawner[i].spawnWeight = 1.2f;
                 }
+                SpawnerSpiritSpawnUpgradeButton.GetComponent<Button>().interactable = true;
+                SpawnerSpiritSpawnUpgradeButton.GetComponent<Image>().sprite = SpawnerUI.GetComponent<SpawnerUI>().UpgradeSprite[1];
                 break;
             case 1112: // 정령 이동 속도 상승 1
                 SpiritManager.instance.spiritMoveSpeed = 1.03f;
@@ -276,6 +291,93 @@ partial class ResearchManager
                 break;
             case 1223: // 자원 채집 환경 개선 2
                 SpiritManager.instance.resourceBuildingDamagePercent = 0.9f;
+                break;
+            case 2001:  // 2단계 연구들을 잠금 해제
+                break;
+            case 3001: // 3단계 연구들을 잠금 해제
+                break;
+            case 1301:  // 정령왕 1단계 해금
+                Blurry[3].transform.GetChild(0).gameObject.SetActive(false);
+                StepButton[3].transform.GetChild(1).GetComponent<Button>().interactable = true;
+                break;
+            case 1302:  // 정령왕 2단계 해금
+                Blurry[3].transform.GetChild(1).gameObject.SetActive(false);
+                StepButton[3].transform.GetChild(2).GetComponent<Button>().interactable = true;
+                break;
+            case 1303:  // 정령왕 3단계 해금
+                Blurry[3].transform.GetChild(2).gameObject.SetActive(false);
+                StepButton[3].transform.GetChild(3).GetComponent<Button>().interactable = true;
+                break;
+            case 1304:  // 정령왕 4단계 해금
+                Blurry[3].transform.GetChild(3).gameObject.SetActive(false);
+                break;
+            case 1401:  // 정령세계 1 해금
+                Blurry[4].transform.GetChild(0).gameObject.SetActive(false);
+                StepButton[4].transform.GetChild(1).GetComponent<Button>().interactable = true;
+                break;
+            case 1402:  // 정령세계 2 해금
+                Blurry[4].transform.GetChild(1).gameObject.SetActive(false);
+                StepButton[4].transform.GetChild(2).GetComponent<Button>().interactable = true;
+                break;
+            case 1403:  // 정령세계 3 해금
+                Blurry[4].transform.GetChild(2).gameObject.SetActive(false);
+                StepButton[4].transform.GetChild(3).GetComponent<Button>().interactable = true;
+                break;
+            case 1404:  // 정령세계 4해금
+                Blurry[4].transform.GetChild(3).gameObject.SetActive(false);
+                break;
+            case 1321:  // 정령왕 저성장 지원 1
+                for(int i = 0; i < 2; i++)
+                { highUp[i].gameObject.GetComponent<Button>().interactable = false;}
+                break;
+            case 1322:  // 정령왕 고성장 지원 1
+                for (int i = 0; i < 2; i++)
+                { LowUp[i].gameObject.GetComponent<Button>().interactable = false; }
+                break;
+            case 1331:  // 정령왕 저성장 지원 2
+                for (int i = 0; i < 2; i++)
+                { highUp[i].gameObject.GetComponent<Button>().interactable = false; }
+                break;
+            case 1332:  // 정령왕 고성장 지원 2
+                for (int i = 0; i < 2; i++)
+                { LowUp[i].gameObject.GetComponent<Button>().interactable = false; }
+                break;
+            case 1411:  // 정령 세계 냉각 1
+                break;
+            case 1421:  // 정령 세계 냉각 2
+                break;
+            case 1431:  // 정령 세계 냉각 3
+                break;
+            case 1031:  // 돌 생산소- 기술자 2개
+                break;
+            case 1032:  // 나무 생산소 기술자 2개
+                break;
+            case 1033:  // 귀족 훈련소 피통 4배
+                break;
+            case 1034:  // 치유사 훈련소 해금
+                HealTraining.SetActive(true);
+                break;
+            case 1131:  // 정령 스폰 시간 단축 2
+                for (int i = 0; i < 4; i++)
+                {
+                    spiritSpawner[i].spawnWeight = 1.31f;
+                }
+                SpawnerSpiritSpawnUpgradeButton.GetComponent<Button>().interactable = true;
+                SpawnerSpiritSpawnUpgradeButton.GetComponent<Image>().sprite = SpawnerUI.GetComponent<SpawnerUI>().UpgradeSprite[1];
+                break;
+            case 1132:  // 정령 이동 속도 상승 3
+                SpiritManager.instance.spiritMoveSpeed = 1.14f;
+                SpiritManager.instance.ChangeSpiritSpeed(1.14f);
+                Tree[1].transform.Find("Studies/Step3/Speed3").GetComponent<Button>().interactable = true;
+                break;
+            case 1133:  // 정령 단계 업그레이드 2
+                SpawnerSpiritUpgradeButton.GetComponent<Button>().interactable = true;
+                break;
+            case 1231:  // 자원 자연 생산량 증가 2
+                resourceManager.IncreaseResourceWeightMax();
+                break;
+            case 1035:  // 마법의 분수
+                HealFoundation.SetActive(true);
                 break;
         }
     }

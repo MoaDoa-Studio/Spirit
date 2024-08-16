@@ -346,35 +346,41 @@ public class Building : MonoBehaviour, IPointerClickHandler
                 if (structureID == 1001)
                 {
                     // ����ڰ� �� ����Ҹ� �̿��� ��  / �� �Ѱ��� ����µ� �ʿ��� ����� �� ��ŭ ���� ����
-                    EarnRockResourceAmount += 0.5f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 0.5f;
+                    EarnRockResourceAmount += 1f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1f;
                 }
                 else if (structureID == 1002)
                 {
                     EarnRockResourceAmount += 1f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1.5f;
                 }
                 else if (structureID == 1003)
                 {
                     EarnRockResourceAmount += 1.5f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 2f;
                 }
                 // ���� �����
                 else if (structureID == 1004)
                 {
                     EarnWoodResourceAmount += 0.5f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 0.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1f;
                 }
                 else if (structureID == 1005)
                 {
                     EarnWoodResourceAmount += 1f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1.5f;
                 }
                 else if (structureID == 1006)
                 {
                     EarnWoodResourceAmount += 1.5f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 2f;
                 }
+            }
+
+            // 연구소
+            if(structureID == 1007)
+            {
+                GameObject.Find("ResourceManager").GetComponent<ResearchManager>().OnClickWork();
             }
             // 기술자 훈련소
             if(structureID == 1008)
@@ -427,8 +433,13 @@ public class Building : MonoBehaviour, IPointerClickHandler
     // 빌딩에서 일한 이후.
     public void DeleteWorkingSprit(GameObject _gameObject) 
     {
+        if (_gameObject.GetComponent<Spirit>().SpiritJob == 1)
+        { constructiondevote += 3; }
+        else
+        { constructiondevote++; }
+
         gameObjectList.Remove(_gameObject);
-        constructiondevote++;
+        
         soundManager.BuildingOnbound(1);
     }
     // ���๰ ������ ���̺� ����ȭ => ����

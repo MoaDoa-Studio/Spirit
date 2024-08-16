@@ -224,9 +224,9 @@ public class ResourceDeployment : MonoBehaviour
     // 나무자원 배분
     private void RandomlySetWoodResources()
     {
-        int total = 1200;
+        int total = 600;
         int minPerGroup = 100;
-        int maxPerGroup = 400;
+        int maxPerGroup = 200;
 
         // 랜덤하게 그룹에 숫자 할당
         int remaingTotal = total;
@@ -256,9 +256,9 @@ public class ResourceDeployment : MonoBehaviour
     // 돌 자원
     private void RandomlySetRockResources()
     {
-        int total = 1200;
+        int total = 600;
         int minPerGroup = 100;
-        int maxPerGroup = 400;
+        int maxPerGroup = 200;
 
         // 랜덤하게 그룹에 숫자 할당
         int remaingTotal = total;

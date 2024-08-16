@@ -210,6 +210,10 @@ public class ResouceManager : MonoBehaviour
     {
         resourceWeight += 1;
     }
+    public void IncreaseResourceWeightMax()
+    {
+        resourceWeight += 2;
+    }
     void RelocateTileasWood(Vector2Int minCoord, int _updateValue, GameObject _setparents)
     {
         Vector3 col = new Vector3(minCoord.x + 0.5f, minCoord.y + 0.5f, 0);

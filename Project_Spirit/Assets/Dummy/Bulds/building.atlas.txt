@@ -1,0 +1,131 @@
+building.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+Spirit/back/air_back
+bounds:2,804,800,1200
+Spirit/back/fire_back
+bounds:804,804,800,1200
+Spirit/back/soil_back
+bounds:2,2,800,1200
+rotate:90
+resources/stone(p) Lv1_side
+bounds:1204,2,800,750
+rotate:90
+vocational training center/vocational training center left side
+bounds:1606,1004,401,1000
+
+building_2.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+Spirit/back/water_back
+bounds:2,804,800,1200
+Spirit/front/air_front
+bounds:804,804,800,1200
+Spirit/front/fire_front
+bounds:2,2,800,1200
+rotate:90
+resources/stone(p) Lv2_side
+bounds:1204,2,800,750
+rotate:90
+vocational training center/vocational training center right side
+bounds:1606,1004,401,1000
+
+building_3.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+Spirit/front/soil_front
+bounds:2,804,800,1200
+Spirit/front/water_front
+bounds:804,804,800,1200
+Spirit/side1/air_side1
+bounds:2,2,1057,800
+resources/stone(p) Lv3_side
+bounds:1061,2,800,750
+rotate:90
+vocational training center/scholar_left side
+bounds:1606,1004,400,1000
+
+building_4.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+Spirit/side1/fire_side1
+bounds:2,1206,1057,800
+Spirit/side1/soil_side1
+bounds:2,404,1057,800
+Spirit/side1/water_side1
+bounds:1061,949,1057,800
+rotate:90
+resources/wood(p) Lv1_side
+bounds:1061,197,800,750
+vocational training center/scholar_right side
+bounds:2,2,400,1000
+rotate:90
+
+building_5.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+Research Institute/Research Institute left side
+bounds:2,2,361,1020
+rotate:90
+Spirit/side2/air_side2
+bounds:2,1167,1043,800
+Spirit/side2/fire_side2
+bounds:2,365,1043,800
+Spirit/side2/soil_side2
+bounds:1047,924,1043,800
+rotate:90
+resources/wood(p) Lv2_side
+bounds:1047,172,800,750
+
+building_6.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+Spirit/side2/water_side2
+bounds:2,1084,1043,800
+vocational training center/knight
+bounds:2,2,720,1080
+vocational training center/scholar_front
+bounds:1047,884,800,1000
+vocational training center/vocational training center front
+bounds:724,82,800,1000
+rotate:90
+
+building_7.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+Research Institute/Research Institute front
+bounds:2,2,480,1020
+rotate:90
+Research Institute/Research Institute right side
+bounds:1024,121,361,1020
+rotate:90
+resources/stone(p) Lv1_front
+bounds:2,1236,1000,750
+resources/stone(p) Lv2_front
+bounds:2,484,1000,750
+resources/stone(p) Lv3_front
+bounds:1004,1236,1000,750
+resources/wood(p) Lv1_front
+bounds:1004,484,1000,750
+
+building_8.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+resources/wood(p) Lv2_front
+bounds:2,1206,1000,750
+resources/wood(p) Lv3_front
+bounds:2,454,1000,750
+resources/wood(p) Lv3_side
+bounds:1004,604,800,750
+vocational training center/strong person_front
+bounds:1004,1356,1000,600
+vocational training center/strong person_side
+bounds:1004,2,600,600

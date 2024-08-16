@@ -115,8 +115,10 @@ public class DetectMove : MonoBehaviour
         capsuleCollider = this.GetComponent<CapsuleCollider>();
         CradleManager = GameObject.Find("CradleManager");
 
-        // 변경되는 스피드에 맞게 생성
+        // 배속에 따른 스피드에 맞게 생성
         moveSpeed = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>().timeSpeed;
+        // 연구 적용 스피드
+        moveSpeed *= GameObject.Find("SpiritManager").GetComponent<SpiritManager>().spiritMoveSpeed;
     }
     private void Update()
     {  

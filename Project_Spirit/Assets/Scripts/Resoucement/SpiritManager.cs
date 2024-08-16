@@ -26,6 +26,7 @@ public class SpiritManager : MonoBehaviour
         {
             SpawnSlot.transform.GetChild(i).GetComponent<DetectMove>().moveSpeed = speed;
         }
+        spiritMoveSpeed = speed;
     }
 
     // 지정해주기
