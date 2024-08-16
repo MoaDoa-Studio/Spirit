@@ -88,7 +88,12 @@ partial class ResearchManager : MonoBehaviour
         ProgressSlider.value = (float)currentWork / currentStudy.WorkRequirement;                
 
         StudyDetail.SetActive(false);
-        StudyProgress.SetActive(true);
+        
+        // 해당 창을 띄우는 것이 아닌 애니메이션이 출력되어야함
+        // StudyProgress.SetActive(true);
+
+
+
     }
     
     public void OnClickResearchStartButton(Study _study)
@@ -97,12 +102,16 @@ partial class ResearchManager : MonoBehaviour
         currentStudy = _study;
         currentWork = 0;                
 
+        // 연구에 필요한 자원이 차감됨.
+
         UpdateStudyProgress();
     }
 
     public void CompleteStudy()
     {
         currentStudy.isComplete = true;
+
+        // 연구 애니메이션을 종료함
 
         ApplyStudyEffect();                
         ShowStudyComplete();
