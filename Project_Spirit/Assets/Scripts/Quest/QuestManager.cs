@@ -7,8 +7,10 @@ public class QuestManager : MonoBehaviour
     public static QuestManager instance = null;
 
     public GameObject QuestPrefab;
-    public Transform QuestUI_Transform;        
+    public Transform QuestUI_Transform;
 
+
+    public int researchSettlement;
     private void Awake()
     {
         if (instance == null)
@@ -40,7 +42,7 @@ public class QuestManager : MonoBehaviour
     }
         
     // For Debug. 이후, 구독 발행 모델로 퀘스트 컨디션 체크하면 될듯.
-    public void GainItem(int targetNum, int count)
+    public void GainItem()
     {
         // targetNum의 아이템을 count개 획득했다.        
         Stack<int> clearIndex = new Stack<int>();

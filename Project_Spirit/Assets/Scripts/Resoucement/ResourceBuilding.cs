@@ -269,6 +269,7 @@ public class ResourceBuilding : MonoBehaviour
     public bool CheckForCapacity()
     {
         if (connectedRoads == null) return false;
+        if(!CanUse) return false;
         if (ResourcegameObjectList.Count >= 0 && ResourcegameObjectList.Count < 4)
         {
             return true;

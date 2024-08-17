@@ -19,6 +19,6 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadPlayScene()
     {
-        SceneManager.LoadScene("PathFinder");
+        SceneManager.LoadScene("AlphaScene");
     }
 }

@@ -74,6 +74,7 @@ public class BuildingDataManager : MonoBehaviour
 
         // 리스트에서 제거해주고 오브젝트 파괴.
         BuildingList.Remove(building);
+        building.Destroy();
         Destroy(obj);
     }
     
@@ -99,9 +100,10 @@ public class BuildingDataManager : MonoBehaviour
             buildData.essenceRequirement = float.Parse(xmlNode.SelectSingleNode("EssenceRequirement").InnerText);
             buildData.StructureDescription = xmlNode.SelectSingleNode("StructureDescription").InnerText;
             buildData.UniqueProperties = int.Parse(xmlNode.SelectSingleNode("UniqueProperties").InnerText);
-            //buildData.StructureEffect = int.Parse(xmlNode.SelectSingleNode("StructureEffect").InnerText);
+            buildData.StructureEffect = int.Parse(xmlNode.SelectSingleNode("StructureEffect").InnerText);
             buildData.baseState = xmlNode.SelectSingleNode("BasicStructure").InnerText;
             buildData.ConstructionAmount = int.Parse(xmlNode.SelectSingleNode("ConstructionAmount").InnerText);
+          
             buildDataList.Add(buildData);
         }
     }

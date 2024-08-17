@@ -23,7 +23,8 @@ partial class ResearchManager : MonoBehaviour
     private GameObject[] Blurry;
     [SerializeField]
     private GameObject[] StepButton;
-
+  
+    public GameObject gainWorkUI;
     private GameObject currentClickedObj;
     private Study currentStudy;
     public int currentWork;

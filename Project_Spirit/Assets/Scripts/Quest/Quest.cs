@@ -8,6 +8,8 @@ public class Quest : MonoBehaviour
     public string QuestName;
     public string QuestBody;
     public string QuestConditionMent;
+    public string QuestClearMent;
+    public string QuestFailMent;
     public int QuestCondition;
     public int QuestClearCondition;
     public int QuestClearTime;

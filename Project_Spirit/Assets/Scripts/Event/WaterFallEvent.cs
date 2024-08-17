@@ -7,6 +7,8 @@ public class WaterFallEvent : MonoBehaviour
     [SerializeField]
     private GameObject RainDropEventUI;
     [SerializeField]
+    private GameObject RainDropimgUI;
+    [SerializeField]
     private GameObject NewsPaperEventUI;
    
     [SerializeField]
@@ -24,6 +26,15 @@ public class WaterFallEvent : MonoBehaviour
     {
         RainDropEventUI.SetActive(true);
         waterFallEvent = true;
+
+        foreach (Transform t in RainDropEventUI.transform)
+        {
+            if (t.gameObject.name == "RainDrop_img")
+            {
+                t.GetComponent<HotDay>().enabled = false;
+            }
+        }
+
         // 물 정령 생산소 두배로 출력하게 하는 매서드
 
     }
@@ -34,6 +45,23 @@ public class WaterFallEvent : MonoBehaviour
         waterFallEvent = false;
         // 물 정령 생산소 출력양 복구하게 출력하게 하는 매서드
     }    
+
+    public void HotEventTrigger()
+    {
+        RainDropEventUI.SetActive(true);
+        
+         RainDropimgUI.gameObject.SetActive(true);
+        RainDropimgUI.GetComponent<RainDrop>().enabled = false;
+        RainDropimgUI.GetComponent<HotDay>().enabled = true;
+            
+        
+    }
+
+    public void HotEventEventEnd()
+    {
+        RainDropEventUI.SetActive(false);
+    }
+
 
     private void FixedUpdate()
     {
