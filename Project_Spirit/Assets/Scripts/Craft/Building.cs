@@ -114,7 +114,6 @@ public class Building : MonoBehaviour, IPointerClickHandler
         structUniqueData = FindDataFromStructUnique(structUniqueDataList, buildData.UniqueProperties);
         SycnXMLDataToBuilding(buildData, structUniqueData);
         CalculateWorkingTimeInGame();
-        GetStartSprite(); // 빌딩 스프라이트 관리
         checkStatue();
     }
     private void Update()
@@ -137,12 +136,12 @@ public class Building : MonoBehaviour, IPointerClickHandler
         switch (buildOperator)
         {   // ���� ���� �� ����
             case BuildOperator.None:
-                if (constructionAmount > 0)
+                if (constructiondevote > 0)
                 { buildOperator = BuildOperator.Construct; }
                 break;
             // ���� ���� �ܰ�
             case BuildOperator.Construct:
-
+                GetStartSprite();
                 // ���� ������ �����̴� ǥ��
                 if(UniqueProperties != 107)
                 ShowBuildSlideBarToUI();
@@ -645,6 +644,11 @@ public class Building : MonoBehaviour, IPointerClickHandler
             }
         }
 
+    }
+
+    public void SetBuildOperator(BuildOperator some)
+    {
+        buildOperator = some;
     }
 
     private void OnMouseEnter()
