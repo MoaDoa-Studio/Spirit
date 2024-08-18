@@ -26,8 +26,8 @@ public class ResouceManager : MonoBehaviour
     public GameObject resourceShowbox;
 
     public float Element_reserves { get; set; }
-    public float Timber_reserves { get; set; }
-    public float Rock_reserves { get; set; }
+    public float Timber_reserves { get; set; } = 1000;
+    public float Rock_reserves { get; set; } = 1000;
     public float Essence_reserves { get; set; }
     
     public float Max_Timber_reserves { get; set; }

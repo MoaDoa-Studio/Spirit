@@ -707,20 +707,22 @@ public class Building : MonoBehaviour, IPointerClickHandler
 
     private void OnMouseDown()
     {
-        foreach(Transform child in building_info.transform)
+        if (structureID == 1007)
+        {
+            researchManager = GameObject.Find("ResearchManager").GetComponent<ResearchManager>();
+            researchManager.ShowPriorUI();
+            researchManager.gainWorkUI.SetActive(true);
+        }
+        foreach (Transform child in building_info.transform)
         {
             if (child.gameObject.name == structureID.ToString())
-            { 
+            {
+                if (structureID == 1007) return;
                 child.gameObject.SetActive(true);    
                 infoUIActive = true;
             }
         }
-        if(structureID == 1007)
-        {
-            researchManager = GameObject.Find("ResearchManager").GetComponent<ResearchManager>();
-            researchManager.ShowResearchUI();
-            researchManager.gainWorkUI.SetActive(true);
-        }
+       
 
     }
 

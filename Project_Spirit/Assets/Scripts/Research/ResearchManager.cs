@@ -10,7 +10,9 @@ partial class ResearchManager : MonoBehaviour
 {
     [Header("오브젝트")]
     [SerializeField]
-    private GameObject Research_UI;    
+    private GameObject Research_UI;
+    [SerializeField]
+    private GameObject Research_prior;
     [SerializeField]
     private GameObject StudyDetail;
     [SerializeField]
@@ -31,10 +33,15 @@ partial class ResearchManager : MonoBehaviour
     private bool inProgress;
 
     public GameObject gainWorkUI;
-    private Study currentStudy;
     public int currentWork;
 
+    private GameObject StudyObject;
+    private Study currentStudy;
+    
+
+    bool priorUI = false;
     int tabInt;
+    int studyNum;
     private void Start()
     {
         inProgress = false;
@@ -44,11 +51,42 @@ partial class ResearchManager : MonoBehaviour
     // 연구소 UI 띄워주는 함수.
     public void ShowResearchUI()
     {
+        // 선행 UI 토글 Off.
+        Research_prior.SetActive(false);
+
         if (inProgress)
             UpdateStudyProgress();
         Research_UI.SetActive(true);
     }
+    public void ShowPriorUI()
+    {
+        Research_prior.SetActive(true);
+        priorUI = true;
 
+        // 연구 진행중일 상황
+        if(inProgress)
+        {
+            Research_prior.transform.Find("Slider").gameObject.SetActive(true);
+            Research_prior.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"pictogram 1/{currentStudy.StudyID}");
+            Slider ProgressSlider = Research_prior.transform.GetChild(3).GetComponent<Slider>();
+
+            ProgressSlider.gameObject.SetActive(true);
+            ProgressSlider.value = (float)currentWork / currentStudy.WorkRequirement;
+        }
+        else
+        {
+            Research_prior.transform.Find("Slider").gameObject.SetActive(false);
+            Research_prior.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"pictogram 1/button");
+        }
+    }
+
+    private void Update()
+    {
+        if(priorUI)
+        { if(Input.GetKeyDown(KeyCode.Escape))
+            { Research_prior.SetActive(false);  priorUI = false; }
+        }
+    }
     Study GetStudy(int StudyID)
     {
         if (!DatabaseManager.instance.Studies.ContainsKey(StudyID))
@@ -65,7 +103,7 @@ partial class ResearchManager : MonoBehaviour
         currentClickedObj = EventSystem.current.currentSelectedGameObject;
         SetStudyDetail(_study);
         StudyDetail.SetActive(true);
-
+        studyNum = StudyID;
         // 이미 연구중이라면, 다른 연구 시작 불가, 버튼 비활성화.
         if(inProgress)
         {
@@ -73,11 +111,27 @@ partial class ResearchManager : MonoBehaviour
 
             // 연구 하위 이미지 누끼 적용
 
-            // 연구 하위 자원 소모 적용
         }
         else
         {
+            // 연구 하위 이미지 누끼 적용 
+         
+            // 연구 하위 자원 소모 적용
+            StudyDetail.transform.GetChild(4).transform.Find("wood_icon/Text").GetComponent<TextMeshProUGUI>().text = _study.WoodRequirement.ToString();
+            StudyDetail.transform.GetChild(4).transform.Find("rock_icon/Text").GetComponent<TextMeshProUGUI>().text = _study.StoneRequirement.ToString();
             StudyDetail.transform.GetChild(4).GetComponent<Button>().interactable = true;
+
+            // 자원 여유량 체크
+            if (resourceManager.GetComponent<ResouceManager>().Timber_reserves - _study.WoodRequirement < 0)
+            {
+                StudyDetail.transform.GetChild(4).GetComponent<Button>().interactable = false;
+                
+            }
+            if (resourceManager.GetComponent<ResouceManager>().Rock_reserves - _study.StoneRequirement < 0)
+            {
+                StudyDetail.transform.GetChild(4).GetComponent<Button>().interactable = false;
+               
+            }
         }
 
     }
@@ -92,12 +146,28 @@ partial class ResearchManager : MonoBehaviour
         Detail_Explain.text = _study.StudyContent;
         Detail_StartButton.gameObject.SetActive(true);
         Detail_StartButton.onClick.RemoveAllListeners();
-        Detail_StartButton.onClick.AddListener(() => OnClickResearchStartButton(_study));        
+        Detail_StartButton.onClick.AddListener(() => OnClickResearchStartButton(_study));
+
+        StudyObject = currentClickedObj;
 
         StudyDetail.SetActive(true);
         StudyProgress.SetActive(false);        
         //if (_study.WoodRequire < (현재 나무) || _study.StoneRequire < (현재 돌))
-        // StartBtn.interactable = false;               
+       
+        // 연구에서 쓰일 자원 소모
+        if(resourceManager.GetComponent<ResouceManager>().Timber_reserves - _study.WoodRequirement < 0)
+        {
+            StudyDetail.transform.GetChild(4).GetComponent<Button>().interactable = false;
+            return;
+        }
+        if(resourceManager.GetComponent<ResouceManager>().Rock_reserves - _study.StoneRequirement < 0)
+        {
+            StudyDetail.transform.GetChild(4).GetComponent<Button>().interactable = false;
+            return ;
+        }
+        resourceManager.GetComponent<ResouceManager>().Timber_reserves -= _study.WoodRequirement;
+        resourceManager.GetComponent<ResouceManager>().Rock_reserves -= _study.StoneRequirement;
+                    
     }
 
     void UpdateStudyProgress()
@@ -171,34 +241,37 @@ partial class ResearchManager : MonoBehaviour
     // 연구소 UI 창에서 연구 트리를 설치할떄, 연구소 플라스크 띄울 오브젝트 지정하는 함수.
     private void SetFlaskObj()
     {
+        for(int j = 0; j < 5; j++)
+            Flask_UI[j].SetActive(false);
+
         switch (tabInt)
         {
             case 0:
-                RectTransform currentRect = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform currentRect = StudyObject.GetComponent<RectTransform>();
                 RectTransform rect1 = Flask_UI[tabInt].GetComponent<RectTransform>();
                 Flask_UI[tabInt].SetActive(true);
                 rect1.anchoredPosition = new Vector2(currentRect.anchoredPosition.x + 50, currentRect.anchoredPosition.y + 70);
                 break;
             case 1:
-                RectTransform currentRect2 = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform currentRect2 = StudyObject.GetComponent<RectTransform>();
                 RectTransform rect2 = Flask_UI[tabInt].GetComponent<RectTransform>();
                 Flask_UI[tabInt].SetActive(true);
                 rect2.anchoredPosition = new Vector2(currentRect2.anchoredPosition.x + 50, currentRect2.anchoredPosition.y + 70);
                 break;
             case 2:
-                RectTransform currentRect3 = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform currentRect3 = StudyObject.GetComponent<RectTransform>();
                 RectTransform rect3 = Flask_UI[tabInt].GetComponent<RectTransform>();
                 Flask_UI[tabInt].SetActive(true);
                 rect3.anchoredPosition = new Vector2(currentRect3.anchoredPosition.x + 50, currentRect3.anchoredPosition.y + 70);
                 break;
             case 3:
-                RectTransform currentRect4 = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform currentRect4 = StudyObject.GetComponent<RectTransform>();
                 RectTransform rect4 = Flask_UI[tabInt].GetComponent<RectTransform>();
                 Flask_UI[tabInt].SetActive(true);
                 rect4.anchoredPosition = new Vector2(currentRect4.anchoredPosition.x + 50, currentRect4.anchoredPosition.y + 70);
                 break;
             case 4:
-                RectTransform currentRect5 = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform currentRect5 = StudyObject.GetComponent<RectTransform>();
                 RectTransform rect5 = Flask_UI[tabInt].GetComponent<RectTransform>();
                 Flask_UI[tabInt].SetActive(true);
                 rect5.anchoredPosition = new Vector2(currentRect5.anchoredPosition.x + 50, currentRect5.anchoredPosition.y + 70);
