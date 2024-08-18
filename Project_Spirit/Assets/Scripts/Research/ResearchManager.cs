@@ -23,13 +23,18 @@ partial class ResearchManager : MonoBehaviour
     private GameObject[] Blurry;
     [SerializeField]
     private GameObject[] StepButton;
-  
-    public GameObject gainWorkUI;
+    [SerializeField]
+    private GameObject[] Flask_UI;
+    [SerializeField]
     private GameObject currentClickedObj;
-    private Study currentStudy;
-    public int currentWork;
+    [SerializeField]
     private bool inProgress;
 
+    public GameObject gainWorkUI;
+    private Study currentStudy;
+    public int currentWork;
+
+    int tabInt;
     private void Start()
     {
         inProgress = false;
@@ -60,6 +65,21 @@ partial class ResearchManager : MonoBehaviour
         currentClickedObj = EventSystem.current.currentSelectedGameObject;
         SetStudyDetail(_study);
         StudyDetail.SetActive(true);
+
+        // 이미 연구중이라면, 다른 연구 시작 불가, 버튼 비활성화.
+        if(inProgress)
+        {
+            StudyDetail.transform.GetChild(4).GetComponent<Button>().interactable = false;
+
+            // 연구 하위 이미지 누끼 적용
+
+            // 연구 하위 자원 소모 적용
+        }
+        else
+        {
+            StudyDetail.transform.GetChild(4).GetComponent<Button>().interactable = true;
+        }
+
     }
 
     void SetStudyDetail(Study _study)
@@ -88,10 +108,10 @@ partial class ResearchManager : MonoBehaviour
         ProgressSlider.value = (float)currentWork / currentStudy.WorkRequirement;                
 
         StudyDetail.SetActive(false);
-        
-        // 해당 창을 띄우는 것이 아닌 애니메이션이 출력되어야함
-        // StudyProgress.SetActive(true);
 
+        // 해당 창을 띄우는 것이 아닌 애니메이션이 출력되어야함
+        SetFlaskObj();
+        // StudyProgress.SetActive(true);
 
 
     }
@@ -112,6 +132,8 @@ partial class ResearchManager : MonoBehaviour
         currentStudy.isComplete = true;
 
         // 연구 애니메이션을 종료함
+        for(int i = 0; i < 5; i++)
+        Flask_UI[i].SetActive(false);
 
         ApplyStudyEffect();                
         ShowStudyComplete();
@@ -143,6 +165,71 @@ partial class ResearchManager : MonoBehaviour
         {
             currentWork = 0;            
             CompleteStudy();            
+        }
+    }
+
+    // 연구소 UI 창에서 연구 트리를 설치할떄, 연구소 플라스크 띄울 오브젝트 지정하는 함수.
+    private void SetFlaskObj()
+    {
+        switch (tabInt)
+        {
+            case 0:
+                RectTransform currentRect = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform rect1 = Flask_UI[tabInt].GetComponent<RectTransform>();
+                Flask_UI[tabInt].SetActive(true);
+                rect1.anchoredPosition = new Vector2(currentRect.anchoredPosition.x + 50, currentRect.anchoredPosition.y + 70);
+                break;
+            case 1:
+                RectTransform currentRect2 = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform rect2 = Flask_UI[tabInt].GetComponent<RectTransform>();
+                Flask_UI[tabInt].SetActive(true);
+                rect2.anchoredPosition = new Vector2(currentRect2.anchoredPosition.x + 50, currentRect2.anchoredPosition.y + 70);
+                break;
+            case 2:
+                RectTransform currentRect3 = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform rect3 = Flask_UI[tabInt].GetComponent<RectTransform>();
+                Flask_UI[tabInt].SetActive(true);
+                rect3.anchoredPosition = new Vector2(currentRect3.anchoredPosition.x + 50, currentRect3.anchoredPosition.y + 70);
+                break;
+            case 3:
+                RectTransform currentRect4 = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform rect4 = Flask_UI[tabInt].GetComponent<RectTransform>();
+                Flask_UI[tabInt].SetActive(true);
+                rect4.anchoredPosition = new Vector2(currentRect4.anchoredPosition.x + 50, currentRect4.anchoredPosition.y + 70);
+                break;
+            case 4:
+                RectTransform currentRect5 = currentClickedObj.GetComponent<RectTransform>();
+                RectTransform rect5 = Flask_UI[tabInt].GetComponent<RectTransform>();
+                Flask_UI[tabInt].SetActive(true);
+                rect5.anchoredPosition = new Vector2(currentRect5.anchoredPosition.x + 50, currentRect5.anchoredPosition.y + 70);
+                break;
+        }
+       
+      
+    }
+
+    public void SetTab(int idx)
+    {
+        switch (idx)
+        {
+            case 0:
+               tabInt = 0;
+                break;
+            case 1:
+                tabInt = 1;
+                break;
+            case 2:
+                tabInt = 2;
+              
+                break;
+            case 3:
+                tabInt = 3;
+              
+                break;
+            case 4:
+                tabInt = 4;
+              
+                break;
         }
     }
     #endregion

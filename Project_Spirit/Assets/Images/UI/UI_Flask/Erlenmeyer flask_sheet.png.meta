@@ -1,0 +1,787 @@
+fileFormatVersion: 2
+guid: cd21fd37b959d35498c715965b8f0c8e
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3762
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 925b48206dd58fc4cb6f797d72fcc1bd
+      internalID: -51063752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_1
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 3762
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 946abfabd49845e48a4d183e13b5cc8b
+      internalID: 8402881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_2
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 3762
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53bf0f7ae89f3dc408f2cd8d4151e6c6
+      internalID: -1319207549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3344
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5acbb91f95b1d0409ba339267943830
+      internalID: 652523821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_4
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 3344
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2072455e0d9173243ac1875c3adce500
+      internalID: 2059331918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_5
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 3344
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f90449302790258478036b8bde153e63
+      internalID: 1661601423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2926
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29f324b3a447351468c1cefeaa3ab774
+      internalID: -1350240444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_7
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 2926
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83b4841adce14f2448197b0e02a23109
+      internalID: 537296049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_8
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 2926
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ae3b9352d31a6540874d79324737e11
+      internalID: 622568926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2508
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ce5470c8f6ca9a4f8e19ea7d5e05056
+      internalID: 1434699232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_10
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 2508
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e97e5b7c2169fa94aad5fc7fc5ff22e6
+      internalID: 1992843914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_11
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 2508
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf3c271b843eb9b4bbe3fba71fab8543
+      internalID: -1033932415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2090
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31ce2fbedc4861c48bbcb0675005aa59
+      internalID: -278449337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_13
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 2090
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02aaa87393f46de4b92e49c42306578c
+      internalID: -2020821132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_14
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 2090
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f18f931a361a4443b010955a99b4a34
+      internalID: -2069745681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1672
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5802463d487d5a44cb3fbb138ac32ec9
+      internalID: -173194447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_16
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 1672
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa66a6bf266e0e84789fb10d958db704
+      internalID: -1882010405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_17
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 1672
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdf61f4ab277a9d40a363c6db6fe9b2a
+      internalID: 860224468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1254
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d88b9da37c412d644845d12dde2c28d8
+      internalID: 1516221703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_19
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 1254
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7e4a5d29c5b23746bbf500c869c8f72
+      internalID: 1673108038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_20
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 1254
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7f63cc7e986b79438aee9dceeb598e0
+      internalID: 457281622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 836
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3aa3f8baca93dfa48a85d41fb7d65897
+      internalID: 1475509088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_22
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 836
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a19f54f4c583dfc4691d95ffeaba2b72
+      internalID: 1834202894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_23
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 836
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f77d0ecc34fbd74aaeb40a2c7597a3a
+      internalID: -582781955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 418
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bc2c3396bd4bc04587be4704d81ea0d
+      internalID: 241485846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_25
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 418
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb8e32d12dee18a46a1164a835c3d0af
+      internalID: -51546340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_26
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 418
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 890a9ea535e1a564fa2bde9f9c6deef2
+      internalID: 1364032009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_27
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 449f05d13a8bd854bb20f02583405e92
+      internalID: 422523816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_28
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 0
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f852fa9b9ba6fd4bb5577417f6f23e5
+      internalID: -157690765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Erlenmeyer flask_sheet_29
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 0
+        width: 440
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 753b341a6356f674bae18cb6b8a15a7a
+      internalID: 965988705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Erlenmeyer flask_sheet_0: -51063752
+      Erlenmeyer flask_sheet_1: 8402881
+      Erlenmeyer flask_sheet_10: 1992843914
+      Erlenmeyer flask_sheet_11: -1033932415
+      Erlenmeyer flask_sheet_12: -278449337
+      Erlenmeyer flask_sheet_13: -2020821132
+      Erlenmeyer flask_sheet_14: -2069745681
+      Erlenmeyer flask_sheet_15: -173194447
+      Erlenmeyer flask_sheet_16: -1882010405
+      Erlenmeyer flask_sheet_17: 860224468
+      Erlenmeyer flask_sheet_18: 1516221703
+      Erlenmeyer flask_sheet_19: 1673108038
+      Erlenmeyer flask_sheet_2: -1319207549
+      Erlenmeyer flask_sheet_20: 457281622
+      Erlenmeyer flask_sheet_21: 1475509088
+      Erlenmeyer flask_sheet_22: 1834202894
+      Erlenmeyer flask_sheet_23: -582781955
+      Erlenmeyer flask_sheet_24: 241485846
+      Erlenmeyer flask_sheet_25: -51546340
+      Erlenmeyer flask_sheet_26: 1364032009
+      Erlenmeyer flask_sheet_27: 422523816
+      Erlenmeyer flask_sheet_28: -157690765
+      Erlenmeyer flask_sheet_29: 965988705
+      Erlenmeyer flask_sheet_3: 652523821
+      Erlenmeyer flask_sheet_4: 2059331918
+      Erlenmeyer flask_sheet_5: 1661601423
+      Erlenmeyer flask_sheet_6: -1350240444
+      Erlenmeyer flask_sheet_7: 537296049
+      Erlenmeyer flask_sheet_8: 622568926
+      Erlenmeyer flask_sheet_9: 1434699232
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
