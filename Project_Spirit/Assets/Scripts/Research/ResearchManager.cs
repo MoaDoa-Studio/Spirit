@@ -358,6 +358,10 @@ partial class ResearchManager
             case 1002: // 건물 2단계 해금
                 Blurry[0].transform.GetChild(1).gameObject.SetActive(false);
                 StepButton[0].transform.GetChild(2).GetComponent<Button>().interactable = true;
+                
+                // 연구 2단계 퀘스트
+                if(QuestManager.instance.ResearchMode)
+                { QuestManager.instance.ResearchMode2 = true; QuestManager.instance.GainItem(); }
                 break;
             case 1003: // 건물 3단계 해금
                 Blurry[0].transform.GetChild(2).gameObject.SetActive(false);
@@ -403,6 +407,10 @@ partial class ResearchManager
             case 1102: // 정령 2단계 해금
                 Blurry[1].transform.GetChild(1).gameObject.SetActive(false);
                 StepButton[1].transform.GetChild(2).GetComponent<Button>().interactable = true;
+
+                // 연구 2단계 퀘스트
+                if (QuestManager.instance.ResearchMode)
+                { QuestManager.instance.ResearchMode2 = true; QuestManager.instance.GainItem(); }
                 break;
             case 1103: // 정령 3단계 해금
                 Blurry[1].transform.GetChild(2).gameObject.SetActive(false);
@@ -439,6 +447,10 @@ partial class ResearchManager
             case 1202: // 자원 2단계 해금
                 Blurry[2].transform.GetChild(1).gameObject.SetActive(false);
                 StepButton[2].transform.GetChild(2).GetComponent<Button>().interactable = true;
+
+                // 연구 2단계 퀘스트
+                if (QuestManager.instance.ResearchMode)
+                { QuestManager.instance.ResearchMode2 = true;   QuestManager.instance.GainItem(); }
                 break;
             case 1203: // 자원 3단계 해금
                 Blurry[2].transform.GetChild(2).gameObject.SetActive(false);
@@ -472,7 +484,12 @@ partial class ResearchManager
             case 1302:  // 정령왕 2단계 해금
                 Blurry[3].transform.GetChild(1).gameObject.SetActive(false);
                 StepButton[3].transform.GetChild(2).GetComponent<Button>().interactable = true;
+
+                // 연구 2단계 퀘스트
+                if (QuestManager.instance.ResearchMode)
+                { QuestManager.instance.ResearchMode2 = true; QuestManager.instance.GainItem(); }
                 break;
+
             case 1303:  // 정령왕 3단계 해금
                 Blurry[3].transform.GetChild(2).gameObject.SetActive(false);
                 StepButton[3].transform.GetChild(3).GetComponent<Button>().interactable = true;
@@ -487,7 +504,11 @@ partial class ResearchManager
             case 1402:  // 정령세계 2 해금
                 Blurry[4].transform.GetChild(1).gameObject.SetActive(false);
                 StepButton[4].transform.GetChild(2).GetComponent<Button>().interactable = true;
+                // 연구 2단계 퀘스트
+                if (QuestManager.instance.ResearchMode)
+                { QuestManager.instance.ResearchMode2 = true; QuestManager.instance.GainItem(); }
                 break;
+
             case 1403:  // 정령세계 3 해금
                 Blurry[4].transform.GetChild(2).gameObject.SetActive(false);
                 StepButton[4].transform.GetChild(3).GetComponent<Button>().interactable = true;

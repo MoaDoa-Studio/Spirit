@@ -338,12 +338,14 @@ partial class CraftManager
         if (resourcemanager.Rock_reserves - mouseIndicator.GetComponent<Building>().stoneRequirement < 0)
         {
             Destroy(mouseIndicator);
+            ResetGridTile();
             ChangeCraftMode(CraftMode.Default);
             return;
         }
         if (resourcemanager.Timber_reserves - mouseIndicator.GetComponent<Building>().woodRequirement < 0)
         {
             Destroy(mouseIndicator);
+            ResetGridTile();
             ChangeCraftMode(CraftMode.Default);
             return;
         }

@@ -8,6 +8,7 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     private Quest currentQuest;
     QuestManager questManager;
+    ResouceManager ResouceManager;
     private int remainTime;
 
     public int CurrentConditionAchieve;
@@ -15,8 +16,8 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField]
     private TextMeshProUGUI TimeText;
 
-    private readonly float[] QuestPrefabHeight = new float[] { 50, 100 };
-    private readonly float[] QuestNamePos = new float[] { 0, 25 };
+    private readonly float[] QuestPrefabHeight = new float[] { 50, 180 };
+    private readonly float[] QuestNamePos = new float[] { 0, 70 };
     
     private bool isCleared;
     private float time;
@@ -32,6 +33,7 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         
         TimeText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         questManager = GameObject.Find("QuestManager").GetComponent<QuestManager>();
+        ResouceManager = GameObject.Find("[ResourceManager]").GetComponent <ResouceManager>();
     }
 
     public void Update()
@@ -85,19 +87,87 @@ public class QuestPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public bool CheckClear()
     {
         // 연구소 설치 퀘스트
-        if (QuestID == 1002)
+        if (QuestManager.instance.Research)
         {
-            if (questManager.researchSettlement > 0)
+            if (QuestID == 1002)
             {
-                Debug.Log("성공햇잖이");
-                return true;
+                if (QuestManager.instance.researchSettlement > 0)
+                {
+                    Debug.Log("성공햇잖이");
+
+                    // 성공 보수 주어지면 될듯
+                    QuestManager.instance.Research = false;
+                    return true;
+                }
             }
         }
 
-        // For Debug.
-        if (CurrentConditionAchieve >= 10)
-            return true;
-        return false;
+        if (QuestManager.instance.rain)
+        {
+            if (QuestID == 1001)    // 폭우 피해 축소
+            {
+                if (QuestManager.instance.OverRain)
+                {
+                    QuestManager.instance.rain = false;
+                    return true;
+                }
+            }
+        }
+
+        if (QuestManager.instance.Spirit)
+        {
+            if (QuestID == 1003)    // 정령왕의 성장기
+            {
+                if (QuestManager.instance.SpiritKing)
+                {
+                    ResouceManager.Essence_reserves += 1;
+                    QuestManager.instance.Spirit = false;
+                    return true;
+                }
+            }
+        }
+
+        if (QuestManager.instance.GainR)
+        {
+            if (QuestID == 1004)    // 자원 흭득
+            {
+                if (QuestManager.instance.GainResource)
+                {
+                    ResouceManager.Timber_reserves += 100;
+                    // 저장소 건설 연달은 퀘스트
+                    QuestManager.instance.GainR = false;
+                    QuestManager.instance.InstantiateQuest(1005);
+                    QuestManager.instance.Storage = true;
+                    return true;
+                }
+            }
+        }
+
+        if (QuestManager.instance.Storage)
+        {
+            if (QuestID == 1005)    // 저장소 건설
+            {
+                if (QuestManager.instance.StorageSettlement)
+                {
+                    QuestManager.instance.Storage = false;
+                    return true;
+                }
+            }
+        }
+
+        if (QuestManager.instance.ResearchMode)
+        {
+            if (QuestID == 1006)    // 연구소 2단계 해금
+            {
+                if (QuestManager.instance.ResearchMode2)
+                {
+                    QuestManager.instance.ResearchMode = false;
+                    return true;
+                }
+            }
+        }
+
+        return false; // 모든 조건에 해당하지 않으면 false 반환
     }
 
     public void ClearQuest()

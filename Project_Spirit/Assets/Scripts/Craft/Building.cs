@@ -142,6 +142,7 @@ public class Building : MonoBehaviour, IPointerClickHandler
             // ���� ���� �ܰ�
             case BuildOperator.Construct:
                 GetStartSprite();
+                ResearchQuestInquire(); // 최초 연구소 설치 완료
                 // ���� ������ �����̴� ǥ��
                 if(UniqueProperties != 107)
                 ShowBuildSlideBarToUI();
@@ -559,14 +560,26 @@ public class Building : MonoBehaviour, IPointerClickHandler
             {                    
             }
         }
+      
+    }    
+
+    void ResearchQuestInquire()
+    {
         // 연구소 지어지면 퀘스트 클리어
-        if(structureID == 1007)
+        if (structureID == 1007)
         {
             GameObject.Find("QuestManager").GetComponent<QuestManager>().researchSettlement += 1;
             GameObject.Find("QuestManager").GetComponent<QuestManager>().GainItem();
         }
 
-    }    
+        if(StructureEffect >= 214 && StructureEffect <= 219)
+        {
+            if(GameObject.Find("QuestManager").GetComponent<QuestManager>().Storage)
+            GameObject.Find("QuestManager").GetComponent<QuestManager>().StorageSettlement = true;
+            GameObject.Find("QuestManager").GetComponent<QuestManager>().GainItem();
+        }
+
+    }
     private void OnDisable()
     {
         DeactivateCondition();

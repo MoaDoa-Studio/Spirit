@@ -97,12 +97,10 @@ public class WaterFallEvent : MonoBehaviour
 
                 NewsPaperEventUI.SetActive(false);
                 Time.timeScale = 1f;
-                newsPaperOpened =false;
-                // 비 이벤트 발생
-                RainDropEventTrigger();
+                newsPaperOpened = false;
             }
         }
-
+               
         if (HotnewsPaperOpened)
         {
             // 물 정령 스폰시간 절반으로 줄이기

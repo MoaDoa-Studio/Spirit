@@ -9,8 +9,23 @@ public class QuestManager : MonoBehaviour
     public GameObject QuestPrefab;
     public Transform QuestUI_Transform;
 
+    // 퀘스트 시작 체크
+    public bool Research;
+    public bool rain;
+    public bool GainR;
+    public bool Storage;
+    public bool ResearchMode;
+    public bool Spirit;
 
-    public int researchSettlement;
+    // 퀘스트 클리어 조건
+    public int researchSettlement;  // 연구소 설치
+    public bool OverRain;       // 폭우 기간
+    public bool GainResource;   // 자원 획득
+    public bool StorageSettlement; // 저장소 건설
+    public bool ResearchMode2;  // 연구소 2단계 해금
+    public bool SpiritKing; // 정령왕의 성장기
+
+
     private void Awake()
     {
         if (instance == null)
