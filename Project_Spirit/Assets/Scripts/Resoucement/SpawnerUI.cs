@@ -39,7 +39,12 @@ public class SpawnerUI : MonoBehaviour
     
     public Sprite[] HandleSprite;
     public Sprite[] HandleSubSprite;
-    
+    public Sprite[] UpgradeSprite;
+
+    [Header("효과 적용 스크립트")]
+    [SerializeField]
+    private ResouceManager resourceManager;
+
     GameObject MainSpawner;
 
     private List<SpiritSpawnInfo> spawnInfoList = new List<SpiritSpawnInfo>();
@@ -395,9 +400,20 @@ public class SpawnerUI : MonoBehaviour
         MainSpawner.GetComponent<SpiritSpawner>().spLv += 1; 
         MainSpawner.GetComponent<SpiritSpawner>().UpgradeByUIButton();
 
-        // sliderParent max Value 값을 96, 72, 48로 변경해야함
-
+        // 활성화 후 잠김.
+        SpiritLv.GetComponent<Button>().interactable = false;
    }
+
+    public void UpgradeSpawnUI()
+    {
+        for(int i = 0;i < 4;i++)
+        {
+            Spawner[i].GetComponent<SpiritSpawner>().spwLv += 1;
+        }
+        // 활성화 후 초기상태로 돌려줌
+        SpawnLv.GetComponent<Image>().sprite = UpgradeSprite[0];
+        SpawnLv.GetComponent<Button>().interactable = false;
+    }
 
     // UI 버튼별 상호작용 case문 작성 예시
     public void CloseTab()

@@ -26,8 +26,8 @@ public class ResouceManager : MonoBehaviour
     public GameObject resourceShowbox;
 
     public float Element_reserves { get; set; }
-    public float Timber_reserves { get; set; }
-    public float Rock_reserves { get; set; }
+    public float Timber_reserves { get; set; } = 1000;
+    public float Rock_reserves { get; set; } = 1000;
     public float Essence_reserves { get; set; }
     
     public float Max_Timber_reserves { get; set; }
@@ -209,6 +209,10 @@ public class ResouceManager : MonoBehaviour
     public void IncreaseResourceWeight()
     {
         resourceWeight += 1;
+    }
+    public void IncreaseResourceWeightMax()
+    {
+        resourceWeight += 2;
     }
     void RelocateTileasWood(Vector2Int minCoord, int _updateValue, GameObject _setparents)
     {

@@ -30,26 +30,47 @@ public class TimeManager : MonoBehaviour
     DateTime DefaultDate;
     DateTime CurrentDate;
     DateTime calc;
-    DateTime weatherEventDate = new DateTime(1, 3, 13); 
-    DateTime weatherEventOverDate = new DateTime(1, 3, 15); 
-    DateTime weatherHotDate = new DateTime(1, 4, 02); 
-    DateTime weatherHotOverDate = new DateTime(1, 4, 05); 
-    DateTime HotWarnDate = new DateTime(1, 3, 29);
-    DateTime BookEventDate = new DateTime(1, 3, 21);
+
+    // 날짜별 이벤트 데이터.
+    DateTime weatherEventDate = new DateTime(1, 3, 3);  // 폭우 정령 뉴스
+    DateTime weatherEventBegin = new DateTime(1, 3, 15);
+    DateTime weatherEventOverDate = new DateTime(1, 3, 17); 
+    DateTime weatherHotDate = new DateTime(1, 4, 27); 
+    DateTime weatherHotOverDate = new DateTime(1, 5, 6); 
+    DateTime HotWarnDate = new DateTime(1, 4, 20);
+    DateTime BookEventDate = new DateTime(1, 3, 4);
     DateTime TempEndDate = new DateTime(1, 4, 15);
-    
+
+
+    // 퀘스트 이벤트 데이터.
+    DateTime RainQuest = new DateTime(1, 3, 15);
+    DateTime SpiritQuest = new DateTime(1, 4, 27);
+    DateTime ResourceQuest = new DateTime(1, 3, 1);
+    DateTime ResearchQuest = new DateTime(1,3,13);
+
+    // 날짜별 이벤트 시간
     int bookEventHour = 13;
-    int weatherEventHour = 17;
+    int weatherEventHour = 19;
+    int weatherEventBeginHour = 9;
     int weatherEventOverHour = 6;
     int weatherHotHour = 7;
     int weatherHotOverHour = 0;
     int weatherwarnHour = 7;
+
+
+    // 퀘스트 이벤트 시간
+    int RainQuestHour = 9;
+    int SpiritQuestHour = 7;
+    int ResourcQuestHour = 12;
+    int ResearchQuestHour = 8;
+
 
     int currentWeather;
     int temporature;
     public int timeSpeed = 1;
     public float accumulatedGameTime = 0f;
 
+    bool isResource;
     
     TimeSpan span = TimeSpan.FromSeconds(10);
     TemperatureManager temperatureManager;
@@ -97,11 +118,12 @@ public class TimeManager : MonoBehaviour
     private void Update()
     {
         CalculateTime();
-        SetTimeText();
-        SetSunLight();
+        SetTimeText();      // 인게임 시간 UI
+        SetSunLight();      // 조명 효과 세팅
         CheckEventDate();
-        CheckEventBGM();
-        CheckBGMTime();
+        CheckEventBGM();    // 폭우 BGM 조건
+        CheckBGMTime();     // BGM 조건
+        CheckQuestDate();   // 퀘스트 조건
     }
 
     void CalculateTime()
@@ -167,7 +189,7 @@ public class TimeManager : MonoBehaviour
             soundController.GetComponent<SoundManager>().PlayBgm("Rain");
             RainBgm = true;
         }
-        else
+        else if(!EventManager.GetComponent<WaterFallEvent>())
             RainBgm = false;
     }
     void SetBGM()
@@ -302,10 +324,17 @@ public void SetMainThemeBGM()
         {
             EventManager.GetComponent<WaterFallEvent>().NewsPaperEventTrigger();
         }
+        if(CurrentDate.Month == weatherEventBegin.Month && CurrentDate.Day == weatherEventBegin.Hour && CurrentDate.Hour == weatherEventBeginHour)
+        {
+            EventManager.GetComponent<WaterFallEvent>().RainDropEventTrigger();
+            QuestManager.instance.rain = true;
+        }
 
         if (CurrentDate.Month == weatherEventOverDate.Month && CurrentDate.Day == weatherEventOverDate.Day && CurrentDate.Hour == weatherEventOverHour)
         {
             EventManager.GetComponent<WaterFallEvent>().RainDropEventEnd();
+            // 비 이벤트 종료 후 보상 지급
+            QuestManager.instance.GainItem();
         }
 
         if(CurrentDate.Month == BookEventDate.Month && CurrentDate.Day == BookEventDate.Day && CurrentDate.Hour == bookEventHour)
@@ -335,6 +364,48 @@ public void SetMainThemeBGM()
         }
 
     }
+
+    // 퀘스트 날짜별 부여
+    private void CheckQuestDate()
+    {
+        // 폭우 피해 축소 퀘스트 Q.1001
+        if(CurrentDate.Month == RainQuest.Month && CurrentDate.Day == RainQuest.Day && CurrentDate.Hour == RainQuestHour)
+        {
+            QuestManager.instance.InstantiateQuest(1001);
+            QuestManager.instance.OverRain = true;
+        }
+
+        // 정령왕의 성장기 Q.1003
+        if(CurrentDate.Month == SpiritQuest.Month && CurrentDate.Day == SpiritQuest.Day && CurrentDate.Hour == SpiritQuestHour)
+        {
+            QuestManager.instance.InstantiateQuest(1003);
+            QuestManager.instance.Spirit = true;
+        }
+        // 자원 흭득 Q.1004 
+        if (CurrentDate.Month == ResourceQuest.Month && CurrentDate.Day == ResourceQuest.Day && CurrentDate.Hour == ResourcQuestHour)
+        {
+            if(!isResource)
+            {
+                QuestManager.instance.InstantiateQuest(1004);
+                QuestManager.instance.GainR = true;
+                // 중복 호출 방지
+                isResource = true;
+            }
+            
+        }
+
+        // 저장소 건설 Q.1005
+        // 저장소 퀘스트 미구현
+
+        // 연구소 2단계 해금 Q. 1006
+        if(CurrentDate.Month == ResearchQuest.Month && CurrentDate.Day == ResearchQuest.Day && CurrentDate.Hour == ResearchQuestHour)
+        {
+            QuestManager.instance.InstantiateQuest(1006);
+            QuestManager.instance.ResearchMode = true;
+        }
+
+    }
+
 
    public void PauseCradleUI()
    {

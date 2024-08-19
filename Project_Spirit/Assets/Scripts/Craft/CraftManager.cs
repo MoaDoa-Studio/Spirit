@@ -26,6 +26,7 @@ public partial class CraftManager : MonoBehaviour
     public Tilemap GridTilemap;
     public Tile defaultTile, greenTile, orangeTile, redTile;
 
+    [SerializeField]
     private GameObject mouseIndicator;
     private Tile selectedRoad;
     private Tile selectedSign;
@@ -35,6 +36,7 @@ public partial class CraftManager : MonoBehaviour
 
     Node[,] nodes;
     SoundManager soundManager;
+    ResouceManager resourcemanager;
     [SerializeField]
     private List<Vector3Int> roadBufferList = new List<Vector3Int>();
     [SerializeField]
@@ -64,6 +66,7 @@ public partial class CraftManager : MonoBehaviour
         mouseIndicator = null; 
         deleteStart = Vector3Int.back;        
         soundManager = GameObject.Find("AudioManager").GetComponent<SoundManager>();
+        resourcemanager = GameObject.Find("[ResourceManager]").GetComponent<ResouceManager>();
     }
 
     void ChangeCraftMode(CraftMode mode)
@@ -280,6 +283,7 @@ partial class CraftManager
     public void OnClickBuildingSelectButton(GameObject building)
     {
         mouseIndicator = Instantiate(building, BuildingSlot);        
+       
         ChangeCraftMode(CraftMode.PlaceBuilding);
         // 선택한 건물 버튼 외 다른 버튼 흑백 처리 로직도 들어가야 함.        
     }
@@ -329,7 +333,27 @@ partial class CraftManager
             x = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.y;
             y = (int)mouseIndicator.transform.GetComponent<BoxCollider2D>().size.x;
         }
-        
+
+        // 자원에서 빌딩 가격 차감.
+        if (resourcemanager.Rock_reserves - mouseIndicator.GetComponent<Building>().stoneRequirement < 0)
+        {
+            Destroy(mouseIndicator);
+            ResetGridTile();
+            ChangeCraftMode(CraftMode.Default);
+            return;
+        }
+        if (resourcemanager.Timber_reserves - mouseIndicator.GetComponent<Building>().woodRequirement < 0)
+        {
+            Destroy(mouseIndicator);
+            ResetGridTile();
+            ChangeCraftMode(CraftMode.Default);
+            return;
+        }
+
+        resourcemanager.Rock_reserves -= mouseIndicator.GetComponent<Building>().stoneRequirement;
+        resourcemanager.Timber_reserves -= mouseIndicator.GetComponent<Building>().woodRequirement;
+
+
         Vector2Int upperRight = new Vector2Int(Mathf.RoundToInt(mouseIndicator.transform.position.x), Mathf.RoundToInt(mouseIndicator.transform.position.y));
         Vector2Int bottomLeft = new Vector2Int(upperRight.x - x + 1, upperRight.y - y + 1);
         ResetGridTile();
@@ -352,6 +376,7 @@ partial class CraftManager
         mouseIndicator.GetComponent<Building>().SetBuildingPos(upperRight, bottomLeft);
         BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());
         soundManager.BuildingOnbound(4);
+        mouseIndicator.GetComponent<Building>().SetBuildOperator(Building.BuildOperator.Construct);
         mouseIndicator = null;        
 
         ChangeCraftMode(CraftMode.Default);        
@@ -508,7 +533,7 @@ partial class CraftManager
                 return;
             }
             else if (isOverlapRoad(pos))
-                GridTilemap.SetTile(pos, orangeTile);
+                GridTilemap.SetTile(pos, greenTile);
             else
                 GridTilemap.SetTile(pos, greenTile);
 

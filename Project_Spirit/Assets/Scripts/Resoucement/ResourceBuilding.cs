@@ -321,6 +321,7 @@ public class ResourceBuilding : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    // 정령 자원 채집
     public void Addamount(int num)
     {
         if (resourceType == ResourceType.Rock)
@@ -330,6 +331,12 @@ public class ResourceBuilding : MonoBehaviour, IPointerClickHandler
         else
             resourceManager.AddTimer(num);
 
+        if(QuestManager.instance.GainR)
+        {
+            QuestManager.instance.GainResource = true;
+            // 자원 얻은 거 확인
+            QuestManager.instance.GainItem();
+        }
     }
 
     void WarningContent()

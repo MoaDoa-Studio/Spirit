@@ -45,8 +45,8 @@ public class SpiritSpawner : MonoBehaviour
 
     float gameTimer = 0f;
     float realTimeToGameTimeRatio = 720f;
-    public int spLv { get; set; } = 1;
-    public int spwLv { get; set; } = 1;
+    public int spLv { get; set; } = 1;  // 정령 단계
+    public int spwLv { get; set; } = 1; // 스폰 단계
 
     TimeManager timeManager;
     WaterFallEvent waterFallEvent;

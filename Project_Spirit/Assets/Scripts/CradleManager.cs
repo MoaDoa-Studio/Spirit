@@ -69,6 +69,8 @@ public class CradleManager : MonoBehaviour
         // 임시 클리어 조건.
         CheckTempWin();
 
+        // 정령왕의 성장기 조건 퀘스트
+
         RemoveExpiredElement();
 
         timeSinceLastAverageCalculation += Time.deltaTime;
@@ -149,6 +151,9 @@ public class CradleManager : MonoBehaviour
         {
             // ���� Ŭ���� ����.
         }
+
+        // 정령왕 성장 퀘스트
+        QuestCradleLvUp();
     }
 
     // 요소 추가 시 호출되는 메서드
@@ -355,5 +360,12 @@ public class CradleManager : MonoBehaviour
         timeManager.CheckGameLoseTime(Level);
     }
 
+    void QuestCradleLvUp()
+    {
+        if(QuestManager.instance.Spirit)
+        {
+            QuestManager.instance.GainItem();
+        }
+    }
 
 }

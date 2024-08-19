@@ -55,7 +55,7 @@ public class TemperatureManager : MonoBehaviour
         foreach (XmlNode xmlNode in xmlNodeList)
         {
             TemperatureData TempData = ScriptableObject.CreateInstance<TemperatureData>();
-            TempData.Nowtime = xmlNode.SelectSingleNode("NowTime").InnerText;
+            TempData.Nowtime = "0"+xmlNode.SelectSingleNode("NowTime").InnerText;
             TempData.Temperature = float.Parse(xmlNode.SelectSingleNode("Temperature").InnerText);
             temperatureDatas.Add(TempData);
         }

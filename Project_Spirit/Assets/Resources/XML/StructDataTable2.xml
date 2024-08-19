@@ -14,7 +14,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>201</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>12</ConstructionAmount>
+		<ConstructionAmount>6</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1002</StructureID>
@@ -29,7 +29,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>202</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>15</ConstructionAmount>
+		<ConstructionAmount>7</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1003</StructureID>
@@ -44,7 +44,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>203</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>18</ConstructionAmount>
+		<ConstructionAmount>9</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1004</StructureID>
@@ -59,7 +59,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>204</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>12</ConstructionAmount>
+		<ConstructionAmount>6</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1005</StructureID>
@@ -74,7 +74,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>205</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>15</ConstructionAmount>
+		<ConstructionAmount>7</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1006</StructureID>
@@ -89,7 +89,7 @@
 		<UniqueProperties>101</UniqueProperties>
 		<StructureEffect>206</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>18</ConstructionAmount>
+		<ConstructionAmount>9</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1007</StructureID>
@@ -104,7 +104,7 @@
 		<UniqueProperties>102</UniqueProperties>
 		<StructureEffect>207</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>22</ConstructionAmount>
+		<ConstructionAmount>11</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1008</StructureID>
@@ -114,12 +114,12 @@
 		<StoneRequirement>350</StoneRequirement>
 		<WoodRequirement>150</WoodRequirement>
 		<EssenceRequirement>0</EssenceRequirement>
-		<StructureDescription>돌과 나무 생산소를 이용할 수 있는 기술자들을 육성하는 훈련소입니다.</StructureDescription>
+		<StructureDescription>돌과 나무 생산소를 이용하고 건물을 더 빠르게 지을 수 있는 기술자들을 육성하는 훈련소입니다.</StructureDescription>
 		<StructureSize>(8, 4)</StructureSize>
 		<UniqueProperties>103</UniqueProperties>
 		<StructureEffect>208</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>20</ConstructionAmount>
+		<ConstructionAmount>10</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1009</StructureID>
@@ -134,7 +134,7 @@
 		<UniqueProperties>103</UniqueProperties>
 		<StructureEffect>209</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>20</ConstructionAmount>
+		<ConstructionAmount>10</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1010</StructureID>
@@ -149,7 +149,7 @@
 		<UniqueProperties>104</UniqueProperties>
 		<StructureEffect>210</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>25</ConstructionAmount>
+		<ConstructionAmount>10</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1011</StructureID>
@@ -164,7 +164,7 @@
 		<UniqueProperties>104</UniqueProperties>
 		<StructureEffect>211</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>25</ConstructionAmount>
+		<ConstructionAmount>10</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1012</StructureID>
@@ -179,7 +179,7 @@
 		<UniqueProperties>105</UniqueProperties>
 		<StructureEffect>212</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>30</ConstructionAmount>
+		<ConstructionAmount>10</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1013</StructureID>
@@ -194,7 +194,7 @@
 		<UniqueProperties>106</UniqueProperties>
 		<StructureEffect>213</StructureEffect>
 		<BasicStructure>false</BasicStructure>
-		<ConstructionAmount>30</ConstructionAmount>
+		<ConstructionAmount>10</ConstructionAmount>
 	</StructData>
 	<StructData>
 		<StructureID>1014</StructureID>

@@ -114,7 +114,6 @@ public class Building : MonoBehaviour, IPointerClickHandler
         structUniqueData = FindDataFromStructUnique(structUniqueDataList, buildData.UniqueProperties);
         SycnXMLDataToBuilding(buildData, structUniqueData);
         CalculateWorkingTimeInGame();
-        GetStartSprite(); // 빌딩 스프라이트 관리
         checkStatue();
     }
     private void Update()
@@ -137,12 +136,13 @@ public class Building : MonoBehaviour, IPointerClickHandler
         switch (buildOperator)
         {   // ���� ���� �� ����
             case BuildOperator.None:
-                if (constructionAmount > 0)
+                if (constructiondevote > 0)
                 { buildOperator = BuildOperator.Construct; }
                 break;
             // ���� ���� �ܰ�
             case BuildOperator.Construct:
-
+                GetStartSprite();
+                ResearchQuestInquire(); // 최초 연구소 설치 완료
                 // ���� ������ �����̴� ǥ��
                 if(UniqueProperties != 107)
                 ShowBuildSlideBarToUI();
@@ -346,35 +346,41 @@ public class Building : MonoBehaviour, IPointerClickHandler
                 if (structureID == 1001)
                 {
                     // ����ڰ� �� ����Ҹ� �̿��� ��  / �� �Ѱ��� ����µ� �ʿ��� ����� �� ��ŭ ���� ����
-                    EarnRockResourceAmount += 0.5f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 0.5f;
+                    EarnRockResourceAmount += 1f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1f;
                 }
                 else if (structureID == 1002)
                 {
                     EarnRockResourceAmount += 1f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1.5f;
                 }
                 else if (structureID == 1003)
                 {
                     EarnRockResourceAmount += 1.5f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 1.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Rock_reserves += 2f;
                 }
                 // ���� �����
                 else if (structureID == 1004)
                 {
                     EarnWoodResourceAmount += 0.5f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 0.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1f;
                 }
                 else if (structureID == 1005)
                 {
                     EarnWoodResourceAmount += 1f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1.5f;
                 }
                 else if (structureID == 1006)
                 {
                     EarnWoodResourceAmount += 1.5f;
-                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 1.5f;
+                    gameManager.GetComponentInChildren<ResouceManager>().Timber_reserves += 2f;
                 }
+            }
+
+            // 연구소
+            if(structureID == 1007)
+            {
+                GameObject.Find("ResourceManager").GetComponent<ResearchManager>().OnClickWork();
             }
             // 기술자 훈련소
             if(structureID == 1008)
@@ -427,8 +433,13 @@ public class Building : MonoBehaviour, IPointerClickHandler
     // 빌딩에서 일한 이후.
     public void DeleteWorkingSprit(GameObject _gameObject) 
     {
+        if (_gameObject.GetComponent<Spirit>().SpiritJob == 1)
+        { constructiondevote += 3; }
+        else
+        { constructiondevote++; }
+
         gameObjectList.Remove(_gameObject);
-        constructiondevote++;
+        
         soundManager.BuildingOnbound(1);
     }
     // ���๰ ������ ���̺� ����ȭ => ����
@@ -549,14 +560,26 @@ public class Building : MonoBehaviour, IPointerClickHandler
             {                    
             }
         }
+      
+    }    
+
+    void ResearchQuestInquire()
+    {
         // 연구소 지어지면 퀘스트 클리어
-        if(structureID == 1007)
+        if (structureID == 1007)
         {
             GameObject.Find("QuestManager").GetComponent<QuestManager>().researchSettlement += 1;
             GameObject.Find("QuestManager").GetComponent<QuestManager>().GainItem();
         }
 
-    }    
+        if(StructureEffect >= 214 && StructureEffect <= 219)
+        {
+            if(GameObject.Find("QuestManager").GetComponent<QuestManager>().Storage)
+            GameObject.Find("QuestManager").GetComponent<QuestManager>().StorageSettlement = true;
+            GameObject.Find("QuestManager").GetComponent<QuestManager>().GainItem();
+        }
+
+    }
     private void OnDisable()
     {
         DeactivateCondition();
@@ -636,6 +659,11 @@ public class Building : MonoBehaviour, IPointerClickHandler
 
     }
 
+    public void SetBuildOperator(BuildOperator some)
+    {
+        buildOperator = some;
+    }
+
     private void OnMouseEnter()
     {
         if(PreviewParent != null)
@@ -696,20 +724,22 @@ public class Building : MonoBehaviour, IPointerClickHandler
 
     private void OnMouseDown()
     {
-        foreach(Transform child in building_info.transform)
+        if (structureID == 1007)
+        {
+            researchManager = GameObject.Find("ResearchManager").GetComponent<ResearchManager>();
+            researchManager.ShowPriorUI();
+            researchManager.gainWorkUI.SetActive(true);
+        }
+        foreach (Transform child in building_info.transform)
         {
             if (child.gameObject.name == structureID.ToString())
-            { 
+            {
+                if (structureID == 1007) return;
                 child.gameObject.SetActive(true);    
                 infoUIActive = true;
             }
         }
-        if(structureID == 1007)
-        {
-            researchManager = GameObject.Find("ResearchManager").GetComponent<ResearchManager>();
-            researchManager.ShowResearchUI();
-            researchManager.gainWorkUI.SetActive(true);
-        }
+       
 
     }
 

@@ -116,6 +116,8 @@ public class BookEvent : MonoBehaviour
     {
         // QuestID 1002번 
         QuestManager.instance.InstantiateQuest(1002);
+        QuestManager.instance.Research = true;
+
 
         // 연구소와 학자 & 기술자 훈련소가 잠금 해제됨
         LeaderTraining.SetActive(true);
