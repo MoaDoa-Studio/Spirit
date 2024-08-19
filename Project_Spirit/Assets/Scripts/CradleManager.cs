@@ -25,6 +25,7 @@ public class CradleManager : MonoBehaviour
     private Sprite[] cradleGageSprite;
 
     TimeManager timeManager;
+    ResouceManager resouceManager;
     // 요소 큐 선언
     Queue<Tuple<int, DateTime>>[] elementQueue = { 
         new Queue<Tuple<int, DateTime>>(), 
@@ -60,7 +61,8 @@ public class CradleManager : MonoBehaviour
     void Start()
     {
         SetCradleMap();
-        timeManager = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>();   
+        timeManager = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>(); 
+        resouceManager = GameObject.Find("[ResourceManager]").GetComponent<ResouceManager>();
     }
 
     // Update is called once per frame    
@@ -156,6 +158,16 @@ public class CradleManager : MonoBehaviour
             // ���� Ŭ���� ����.
         }
 
+        // 성장에 따른 원수 정수 공급
+        if(Level == 1)
+        {
+            resouceManager.Essence_reserves += 3; 
+        }
+        else if(Level == 2)
+        {
+            resouceManager.Essence_reserves += 3; 
+
+        }
         // 정령왕 성장 퀘스트
         QuestCradleLvUp();
     }

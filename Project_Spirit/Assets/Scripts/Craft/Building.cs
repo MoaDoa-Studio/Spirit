@@ -8,9 +8,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class Building : MonoBehaviour, IPointerClickHandler
-{
-    [SerializeField]
-    private int BuildID;
+{   
+    public int BuildID;
     [SerializeField]
     GameObject sliderUI;
    
