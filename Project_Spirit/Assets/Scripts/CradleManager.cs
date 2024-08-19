@@ -44,8 +44,8 @@ public class CradleManager : MonoBehaviour
     private int GrowthState = 0;
     private int[] GrowthValue = { 50, 25, 10, -40 };
     private float GrowthTime = 0f;
-    private float GrowthCooldown = 3f;
-    private int[] LevelPoint = { 1500, 2000, 2500, 3000, 5300, 5400, 5500, 6000 };
+    private float GrowthCooldown = 1.25f;
+    private int[] LevelPoint = { 12000, 10000, 12500, 12500, 13000, 13100, 13200, 16000 };
 
 
     // 시간 경과 추적 변수
@@ -80,24 +80,26 @@ public class CradleManager : MonoBehaviour
             timeSinceLastAverageCalculation = 0f; // 타이머 초기화
         }
 
-        // �� ������ ���� �� ���� �� ���Ŀ��� ���ɿ� ���� ǥ��.
+        // checkFirstElement의 모든 값이 true인지 확인
+        bool allElementsTrue = true;
         for (int i = 0; i < 4; i++)
         {
             if (!checkFirstElement[i])
-                return;
-            else
             {
-                if(!first)
-                StartCoroutine(EnableCradleUIAfterDelay(60 / timeManager.timeSpeed));
-               
+                allElementsTrue = false;
+                break;
             }
         }
 
-        if(cradleUIenable)
+        // 모든 요소가 true일 때만 로직 실행
+        if (allElementsTrue)
         {
+            // if(!first)
+            // StartCoroutine(EnableCradleUIAfterDelay(60 / timeManager.timeSpeed));
             AddCradleGrowth();
             UpdateCradleUI();
         }
+
     }
 
     // 4가지 요소를 기반으로 성장 추가           
@@ -130,12 +132,14 @@ public class CradleManager : MonoBehaviour
     {
         if (GrowthPoint < 0)
         {            
-            cradleGage.GetComponent<Image>().fillAmount = GrowthPoint * 0.01f * (-1f);
+            cradleGage.GetComponent<Image>().fillAmount =   (float)GrowthPoint / LevelPoint[Level];
+            //Debug.Log($"GrowthPoint: {GrowthPoint}, LevelPoint: {LevelPoint[Level]}, fillAmount: {GrowthPoint / LevelPoint[Level]}");
             cradleGage.GetComponent<Image>().sprite = cradleGageSprite[1];
         }
         else
         {            
-            cradleGage.GetComponent<Image>().fillAmount = GrowthPoint * 0.01f;
+            cradleGage.GetComponent<Image>().fillAmount = (float)GrowthPoint / LevelPoint[Level];
+            //Debug.Log($"GrowthPoint: {GrowthPoint}, LevelPoint: {LevelPoint[Level]}, fillAmount: {GrowthPoint / LevelPoint[Level]}");
             cradleGage.GetComponent<Image>().sprite = cradleGageSprite[0];
         }
     }
