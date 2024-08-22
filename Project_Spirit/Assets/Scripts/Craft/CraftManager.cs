@@ -12,6 +12,7 @@ public partial class CraftManager : MonoBehaviour
     public GameObject BuildingSelectUI;
     public GameObject RoadSelectUI;
     public GameObject CradleUI;
+    public GameObject BuildingTooltipUI;
 
     public Grid grid; // 그리드.    
     public GameObject craftGrid; // 건축 모드 시 격자 표시.
@@ -282,8 +283,8 @@ partial class CraftManager
     #region 건물 배치 관련
     public void OnClickBuildingSelectButton(GameObject building)
     {
-        mouseIndicator = Instantiate(building, BuildingSlot);        
-       
+        mouseIndicator = Instantiate(building, BuildingSlot);
+        BuildingTooltipUI.SetActive(false); // 빌딩 툴팁 꺼줌
         ChangeCraftMode(CraftMode.PlaceBuilding);
         // 선택한 건물 버튼 외 다른 버튼 흑백 처리 로직도 들어가야 함.        
     }
@@ -375,7 +376,8 @@ partial class CraftManager
 
         mouseIndicator.GetComponent<Building>().SetBuildingPos(upperRight, bottomLeft);
         BuildingDataManager.instance.AddBuilding(mouseIndicator.GetComponent<Building>());
-        soundManager.BuildingOnbound(4);
+        soundManager.BuildingOnbound(4);    // 길 설치 소리 재생
+        BuildingTooltipUI.SetActive(false); // 빌딩 툴팁 끄기
         mouseIndicator.GetComponent<Building>().SetBuildOperator(Building.BuildOperator.Construct);
         mouseIndicator = null;        
 

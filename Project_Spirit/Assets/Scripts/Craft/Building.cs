@@ -723,6 +723,7 @@ public class Building : MonoBehaviour, IPointerClickHandler
 
     private void OnMouseDown()
     {
+        if (buildOperator == BuildOperator.None) return;
         if (structureID == 1007)
         {
             researchManager = GameObject.Find("ResearchManager").GetComponent<ResearchManager>();
