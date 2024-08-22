@@ -68,7 +68,7 @@ public class InputManager : MonoBehaviour
 
 
 
-    public void LoadPlayScene()
+    public void LoadMainScene()
     {
         SceneManager.LoadScene("MainMenu");
     }

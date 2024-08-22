@@ -8,15 +8,16 @@ using UnityEngine.Events;
 public class BuildingSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,IPointerClickHandler
 {
     // Start is called before the first frame update
+    [SerializeField]
     GameObject itemTooltip;
+
     BuildTooltipUI buildTooltipUI;
     Transform go_base;
     Button button;
 
     UnityEvent myEvent;
     void Start()
-    {
-        itemTooltip = GameObject.Find("BuildTooltip");
+    {  
         buildTooltipUI = itemTooltip.GetComponent<BuildTooltipUI>();
         button = GetComponent<Button>();
         // onClick 이벤트를 가져옴

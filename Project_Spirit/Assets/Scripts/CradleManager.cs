@@ -359,7 +359,7 @@ public class CradleManager : MonoBehaviour
 
     public void CheckTempWin()
     {
-        if(Level > 2)
+        if(Level > 3)
         {
            GameObject.Find("GameManager").GetComponent<InputManager>().WinUI.SetActive(true);
            

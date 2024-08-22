@@ -18,6 +18,10 @@ public class TimeManager : MonoBehaviour
     private TextMeshProUGUI DefeatTime_text;
     [SerializeField]
     private TextMeshProUGUI SpiritKingLv_text;
+    [SerializeField]
+    private GameObject GameOver;
+    [SerializeField]
+    private GameObject GameClear;
 
     [SerializeField]
     private TextMeshProUGUI Date_text;
@@ -39,7 +43,7 @@ public class TimeManager : MonoBehaviour
     DateTime weatherHotOverDate = new DateTime(1, 5, 6); 
     DateTime HotWarnDate = new DateTime(1, 4, 20);
     DateTime BookEventDate = new DateTime(1, 3, 4);
-    DateTime TempEndDate = new DateTime(1, 4, 15);
+    DateTime TempEndDate = new DateTime(1, 5, 6);
 
 
     // 퀘스트 이벤트 데이터.
@@ -357,7 +361,7 @@ public void SetMainThemeBGM()
         }
         if(CurrentDate.Month == TempEndDate.Month && CurrentDate.Day == TempEndDate.Day)
         {
-            if (cradleManager.Level > 2)
+            if (cradleManager.Level > 3)
                 cradleManager.CheckTempWin();
             else
                 cradleManager.CheckTempLose();
@@ -519,18 +523,10 @@ public void SetMainThemeBGM()
         TimeSpan elapsedGameTimeSpan = DateTime.Now - gameStartDate;
         string elapsedGameTimeText = $"{elapsedGameTimeSpan.Hours:D2}시간 {elapsedGameTimeSpan.Minutes:D2}분";
 
-        // 결과 출력
-        ClearTime_text.text = elapsedDateText + " " + elapsedGameTimeText;
-        Debug.Log($"경과 시간: {elapsedDateText}");
-        Debug.Log($"게임 시작부터 체크 호출까지 걸린 시간: {elapsedGameTimeText}");
-
-
-
-
-
         // 모든 시간 일시정지
-
         timeSpeed = 0;
+
+        StartCoroutine(UpdateClearUIText(elapsedDateText, elapsedGameTimeText));
     }
 
     public void CheckGameLoseTime(int lv)
@@ -548,18 +544,45 @@ public void SetMainThemeBGM()
         TimeSpan elapsedGameTimeSpan = DateTime.Now - gameStartDate;
         string elapsedGameTimeText = $"{elapsedGameTimeSpan.Hours:D2}시간 {elapsedGameTimeSpan.Minutes:D2}분";
 
-        // 결과 출력
+        // 모든 시간 일시정지
+        timeSpeed = 0;
+
+        // 결과 출력을 위한 Coroutine 호출
+        StartCoroutine(UpdateFailUIText(elapsedDateText, elapsedGameTimeText, lv));
+
+    }
+
+
+    private IEnumerator UpdateFailUIText(string elapsedDateText, string elapsedGameTimeText, int lv)
+    {
+        // 0.25초 대기 후 DefeatTime_text 업데이트
+        yield return new WaitForSeconds(0.25f);
+        
+        GameOver.transform.GetChild(4).gameObject.SetActive(true);
+        GameOver.transform.GetChild(5).gameObject.SetActive(true);
+
+        // 추가로 0.25초 대기 후 SpiritKingLv_text 업데이트
+        yield return new WaitForSeconds(0.25f);
+        GameOver.transform.GetChild(6).gameObject.SetActive(true);
+        GameOver.transform.GetChild(7).gameObject.SetActive(true);
         DefeatTime_text.text = elapsedDateText + " " + elapsedGameTimeText;
         Debug.Log($"경과 시간: {elapsedDateText}");
         Debug.Log($"게임 시작부터 체크 호출까지 걸린 시간: {elapsedGameTimeText}");
-
-        SpiritKingLv_text.text = $"{lv}단계";
-
-
-
-        // 모든 시간 일시정지
-
-        timeSpeed = 0;
+        SpiritKingLv_text.text = $"{lv + 1}단계";
     }
 
+    private IEnumerator UpdateClearUIText(string elapsedDateText, string elapsedGameTimeText)
+    {
+        // 0.25초 대기 후 Clear 업데이트
+        yield return new WaitForSeconds(0.25f);
+
+        GameClear.transform.GetChild(3).gameObject.SetActive(true);
+        GameClear.transform.GetChild(4).gameObject.SetActive(true);
+
+        // 결과 출력
+        ClearTime_text.text = elapsedDateText + " " + elapsedGameTimeText;
+        Debug.Log($"경과 시간: {elapsedDateText}");
+        Debug.Log($"게임 시작부터 체크 호출까지 걸린 시간: {elapsedGameTimeText}");
+        
+    }
 }
