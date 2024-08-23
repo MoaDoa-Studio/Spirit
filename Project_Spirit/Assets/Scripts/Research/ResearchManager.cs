@@ -86,6 +86,11 @@ partial class ResearchManager : MonoBehaviour
         { if(Input.GetKeyDown(KeyCode.Escape))
             { Research_prior.SetActive(false);  priorUI = false; }
         }
+        if(StudyDetail.activeSelf)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            { StudyDetail.SetActive(false);}    
+        }
     }
     Study GetStudy(int StudyID)
     {

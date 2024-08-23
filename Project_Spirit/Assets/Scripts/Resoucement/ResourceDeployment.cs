@@ -78,10 +78,15 @@ public class ResourceDeployment : MonoBehaviour
      
     public (int, int) MakeRamdom()
     {
+        
         int RandomX = UnityEngine.Random.Range(10, 93);
         int RandomY = UnityEngine.Random.Range(10, 93);
+        if(RandomX >= 10 && RandomY >= 10 && RandomX < 45 && RandomY < 45 || RandomX >= 57 && RandomY >= 57 && RandomX < 94 && RandomY < 94 )
+        {
 
         return (RandomX, RandomY);
+        }
+        else return MakeRamdom();
     }
     public void PlaceRockTiles()
     {

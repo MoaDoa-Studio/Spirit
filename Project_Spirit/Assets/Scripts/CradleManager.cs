@@ -25,6 +25,7 @@ public class CradleManager : MonoBehaviour
     private Sprite[] cradleGageSprite;
 
     TimeManager timeManager;
+    ResouceManager resouceManager;
     // 요소 큐 선언
     Queue<Tuple<int, DateTime>>[] elementQueue = { 
         new Queue<Tuple<int, DateTime>>(), 
@@ -44,8 +45,8 @@ public class CradleManager : MonoBehaviour
     private int GrowthState = 0;
     private int[] GrowthValue = { 50, 25, 10, -40 };
     private float GrowthTime = 0f;
-    private float GrowthCooldown = 3f;
-    private int[] LevelPoint = { 1500, 2000, 2500, 3000, 5300, 5400, 5500, 6000 };
+    private float GrowthCooldown = 1.25f;
+    private int[] LevelPoint = { 12000, 10000, 12500, 12500, 13000, 13100, 13200, 16000 };
 
 
     // 시간 경과 추적 변수
@@ -60,7 +61,8 @@ public class CradleManager : MonoBehaviour
     void Start()
     {
         SetCradleMap();
-        timeManager = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>();   
+        timeManager = GameObject.Find("TimeNTemperatureManager").GetComponent<TimeManager>(); 
+        resouceManager = GameObject.Find("[ResourceManager]").GetComponent<ResouceManager>();
     }
 
     // Update is called once per frame    
@@ -80,24 +82,26 @@ public class CradleManager : MonoBehaviour
             timeSinceLastAverageCalculation = 0f; // 타이머 초기화
         }
 
-        // �� ������ ���� �� ���� �� ���Ŀ��� ���ɿ� ���� ǥ��.
+        // checkFirstElement의 모든 값이 true인지 확인
+        bool allElementsTrue = true;
         for (int i = 0; i < 4; i++)
         {
             if (!checkFirstElement[i])
-                return;
-            else
             {
-                if(!first)
-                StartCoroutine(EnableCradleUIAfterDelay(60 / timeManager.timeSpeed));
-               
+                allElementsTrue = false;
+                break;
             }
         }
 
-        if(cradleUIenable)
+        // 모든 요소가 true일 때만 로직 실행
+        if (allElementsTrue)
         {
+            // if(!first)
+            // StartCoroutine(EnableCradleUIAfterDelay(60 / timeManager.timeSpeed));
             AddCradleGrowth();
             UpdateCradleUI();
         }
+
     }
 
     // 4가지 요소를 기반으로 성장 추가           
@@ -130,12 +134,14 @@ public class CradleManager : MonoBehaviour
     {
         if (GrowthPoint < 0)
         {            
-            cradleGage.GetComponent<Image>().fillAmount = GrowthPoint * 0.01f * (-1f);
+            cradleGage.GetComponent<Image>().fillAmount =   (float)GrowthPoint / LevelPoint[Level];
+            //Debug.Log($"GrowthPoint: {GrowthPoint}, LevelPoint: {LevelPoint[Level]}, fillAmount: {GrowthPoint / LevelPoint[Level]}");
             cradleGage.GetComponent<Image>().sprite = cradleGageSprite[1];
         }
         else
         {            
-            cradleGage.GetComponent<Image>().fillAmount = GrowthPoint * 0.01f;
+            cradleGage.GetComponent<Image>().fillAmount = (float)GrowthPoint / LevelPoint[Level];
+            //Debug.Log($"GrowthPoint: {GrowthPoint}, LevelPoint: {LevelPoint[Level]}, fillAmount: {GrowthPoint / LevelPoint[Level]}");
             cradleGage.GetComponent<Image>().sprite = cradleGageSprite[0];
         }
     }
@@ -152,6 +158,16 @@ public class CradleManager : MonoBehaviour
             // ���� Ŭ���� ����.
         }
 
+        // 성장에 따른 원수 정수 공급
+        if(Level == 1)
+        {
+            resouceManager.Essence_reserves += 3; 
+        }
+        else if(Level == 2)
+        {
+            resouceManager.Essence_reserves += 3; 
+
+        }
         // 정령왕 성장 퀘스트
         QuestCradleLvUp();
     }
@@ -343,7 +359,7 @@ public class CradleManager : MonoBehaviour
 
     public void CheckTempWin()
     {
-        if(Level > 2)
+        if(Level > 3)
         {
            GameObject.Find("GameManager").GetComponent<InputManager>().WinUI.SetActive(true);
            

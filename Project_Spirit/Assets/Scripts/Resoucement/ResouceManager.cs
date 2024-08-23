@@ -25,7 +25,6 @@ public class ResouceManager : MonoBehaviour
     
     public GameObject resourceShowbox;
 
-    public float Element_reserves { get; set; }
     public float Timber_reserves { get; set; } = 1000;
     public float Rock_reserves { get; set; } = 1000;
     public float Essence_reserves { get; set; }
@@ -368,7 +367,7 @@ public class ResouceManager : MonoBehaviour
     private void ShowTotalResource()
     {
 
-        ElementTxt_UI.GetComponent<TextMeshProUGUI>().text = Element_reserves.ToString();
+        ElementTxt_UI.GetComponent<TextMeshProUGUI>().text = Essence_reserves.ToString(); 
         TimberTxt_UI.GetComponent<TextMeshProUGUI>().text = Timber_reserves.ToString();
         RockTxt_UI.GetComponent<TextMeshProUGUI>().text = Rock_reserves.ToString();
     }

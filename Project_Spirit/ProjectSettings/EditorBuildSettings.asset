@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/PathFinder.unity
     guid: 73a264a2793a1a14286df37a6cb276e8
   - enabled: 1
+    path: Assets/Scenes/Loading.unity
+    guid: 67d5950ab6468ef4db4a399946b83eed
+  - enabled: 1
     path: Assets/Scenes/AlphaScene.unity
     guid: c7b7363e7999b6c499d51231d12f6b1f
   m_configObjects: {}

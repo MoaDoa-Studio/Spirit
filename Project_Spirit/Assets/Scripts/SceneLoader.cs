@@ -19,6 +19,6 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadPlayScene()
     {
-        SceneManager.LoadScene("AlphaScene");
+        LoadingSceneController.LoadScene("AlphaScene");
     }
 }

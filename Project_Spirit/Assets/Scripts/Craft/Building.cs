@@ -8,9 +8,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class Building : MonoBehaviour, IPointerClickHandler
-{
-    [SerializeField]
-    private int BuildID;
+{   
+    public int BuildID;
     [SerializeField]
     GameObject sliderUI;
    
@@ -724,6 +723,7 @@ public class Building : MonoBehaviour, IPointerClickHandler
 
     private void OnMouseDown()
     {
+        if (buildOperator == BuildOperator.None) return;
         if (structureID == 1007)
         {
             researchManager = GameObject.Find("ResearchManager").GetComponent<ResearchManager>();
