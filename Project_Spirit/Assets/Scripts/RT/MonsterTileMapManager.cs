@@ -293,6 +293,11 @@ public class MonsterTileMapManager : MonoBehaviour
                 {
                     objNodeList[i].isBreaking = true; //건물 닿은 판정으로 만들기
 
+                    if(objNodeList[i].obj.gameObject.GetComponent<Building>().bomb)
+                    {
+                        // 스턴 넣는 ...
+                    }
+
                     //건물 파괴 코드 작성해보기
                     //Destroy(objNodeList[i].obj);
                     //objNodeList.RemoveAt(i);
