@@ -148,6 +148,7 @@ public class MonsterMove : MonoBehaviour
 
                 //다음 타일을 밟기 시작할 때 검은 타일로 변경
                 monsterTileMapManager.P_SetDeadTile(target.x, target.y, size);
+
             }
 
             else //끝까지 갔으면

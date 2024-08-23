@@ -9,6 +9,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class Building : MonoBehaviour, IPointerClickHandler
 {   
+    public bool bomb;
+
     public int BuildID;
     [SerializeField]
     GameObject sliderUI;
