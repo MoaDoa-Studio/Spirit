@@ -30,6 +30,7 @@ public class Building : MonoBehaviour, IPointerClickHandler
     
     public List<GameObject> gameObjectList;
     ResearchManager researchManager;
+    MonsterTileMapManager monsterTileMapManager;
     BuildingDataManager buildingDataManager;
     List<BuildData> buildDataList;
     List<StructUniqueData> structUniqueDataList;
@@ -94,7 +95,7 @@ public class Building : MonoBehaviour, IPointerClickHandler
     public int MaxPlayer = 4;
     private void Start()
     {
-
+        monsterTileMapManager = MonsterTileMapManager.instance;
         connectedRoads = null;
         gameObjectList = new List<GameObject>();
         gameManager = GameObject.Find("GameManager");
@@ -312,6 +313,10 @@ public class Building : MonoBehaviour, IPointerClickHandler
     {
         this.upperRight = upperRight;
         this.bottomLeft = bottomLeft;
+
+        Tuple<Vector2Int, Vector2Int> range = new Tuple<Vector2Int, Vector2Int>(upperRight, bottomLeft);
+
+        monsterTileMapManager.P_GetObjNode(gameObject, range);
     }
     public Tuple<Vector2Int, Vector2Int> GetConnectedRoad()
     {
